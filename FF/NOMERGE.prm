@@ -1,0 +1,21 @@
+[options]
+
+[atom_types]
+! Ligand vdW parameters
+! End ligand vdW parameters
+
+[bonds]
+! Ligand bond parameters
+! End ligand bond parameters
+
+[angles]
+! Ligand angle parameters
+! End ligand angle parameters
+
+[torsions]
+! Ligand torsion parameters
+! End Ligand torsion parameters
+
+[impropers]
+! Ligand improper parameters
+! End ligand improper parameters

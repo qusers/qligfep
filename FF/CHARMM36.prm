@@ -1,0 +1,1317 @@
+*-------------------------------------------------------------------------------
+*
+* Q-FF parameters:  CHARMM36 All-Hydrogen Parameter File for Proteins  parameters
+*
+*-------------------------------------------------------------------------------
+* CHARMM36 All-Hydrogen Parameter File for Proteins 
+* Parameters translated for Q with charmm2q.py (Geir V. Isaksen, 2016)
+* with small changes by Mauricio Esguerra and Christoffer Lind.
+*-------------------------------------------------------------------------------
+[options] force-field options
+name                Q  CHARMM36 All-Hydrogen Parameter File for Proteins 
+vdw_rule            arithmetic   ! vdW combination rule (geometric or arithmetic )
+scale_14            1.0          ! electrostatic 1-4 scaling factor
+switch_atoms        off          ! on = use switch atom; off = use charge group
+improper_definition explicit     ! improper representation by 2 or four atoms
+improper_potential  harmonic
+coulomb_constant    332.0716     ! Constant in electrostatic energy calculation; default = 332.
+force_field         charmm       ! Force Field Type (GROMOS (default), AMBER or CHARMM)
+
+
+[atom_types]
+* V(Lennard-Jones) = Eps,i,j[(Rmin,i,j/ri,j)**12 - 2(Rmin,i,j/ri,j)**6]
+* epsilon: kcal/mole, Eps,i,j = sqrt(eps,i * eps,j)
+* Rmin/2: A, Rmin,i,j = Rmin/2,i + Rmin/2,j
+*-iac------Avdw1------Avdw2-----Bvdw1------Avdw3-----Bvdw2&3----mass---SYBYL-name-old-comment
+*** IONS ***
+SOD        1.5320     1.5320    0.1000     1.5320    0.1000    22.990  1 !  Sodium Ion
+MG         1.3200     1.3200    0.0220     1.3200    0.0220    24.305  1 !  Magnesium Ion
+ZN         1.0900     1.0900    0.2500     1.0900    0.2500    65.370  1 !  zinc (II) cation
+K          2.6580     0         0.000328   2.6580    0.0001640 39.10   1 !  K+ ion (from amber95 030922/StT)
+*** HOH ***
+HT         0.2245     0.2245    0.0460     0.2245    0.0460     1.008  1 !  TIPS3P WATER HYDROGEN
+OT         1.7682     1.7682    0.1521     1.7682    0.1521    15.999  1 !  TIPS3P WATER OXYGEN
+*** protein ***
+C          2.0000     2.0000    0.1100     2.0000    0.1100     12.0110 1 ! ALLOW   PEP POL ARO
+CA         1.9924     1.9924    0.0700     1.9924    0.0700     12.0110 1 ! ALLOW   ARO
+CC         2.0000     2.0000    0.0700     2.0000    0.0700     12.0110 1 ! ALLOW   PEP POL ARO
+CD         2.0000     2.0000    0.0700     2.0000    0.0700     12.0110 1 ! ALLOW  POL
+CE1        2.0900     2.0900    0.0680     2.0900    0.0680     12.0110 1 ! 
+CE2        2.0800     2.0800    0.0640     2.0800    0.0640     12.0110 1 ! 
+CP1        2.2750     2.2750    0.0200     1.9000    0.0100     12.0110 1 ! ALLOW   ALI
+CP2        2.1750     2.1750    0.0550     1.9000    0.0100     12.0110 1 ! ALLOW   ALI
+CP3        2.1750     2.1750    0.0550     1.9000    0.0100     12.0110 1 ! ALLOW   ALI
+CPH1       1.8000     1.8000    0.0500     1.8000    0.0500     12.0110 1 ! ALLOW ARO
+CPH2       1.8000     1.8000    0.0500     1.8000    0.0500     12.0110 1 ! ALLOW ARO
+CS         2.2000     2.2000    0.1100     2.2000    0.1100     12.0110 1 ! ALLOW SUL
+CPT        1.8600     1.8600    0.0990     1.8600    0.0990     12.0110 1 ! atm, indole vaporization 5/05
+CY         1.9900     1.9900    0.0730     1.9900    0.0730     12.0110 1 ! atm, indole vaporization 5/05
+CAI        1.9900     1.9900    0.0730     1.9900    0.0730     12.0110 1 ! atm, indole vaporization 5/05
+CT         2.2750     2.2750    0.0200     1.9000    0.0100     12.0110 1 ! 
+CT1        2.0000     2.0000    0.0320     1.9000    0.0100     12.0110 1 ! alkane, 4/07, viv and adm jr.
+CT2        2.0100     2.0100    0.0560     1.9000    0.0100     12.0110 1 ! alkane, 4/98, yin, adm jr.
+CT2A       2.0100     2.0100    0.0560     1.9000    0.0100     12.0110 1 ! from CT2 (GLU, HSP), 05282010, zhu
+CT3        2.0400     2.0400    0.0780     1.9000    0.0100     12.0110 1 ! alkane, 4/98, yin, adm jr.
+H          0.2245     0.2245    0.0460     0.2245    0.0460      1.0080 1 ! ALLOW PEP POL SUL ARO ALC
+HA         1.3200     1.3200    0.0220     1.3200    0.0220      1.0080 1 ! ALLOW PEP ALI POL SUL ARO PRO ALC
+HB1        1.3200     1.3200    0.0220     1.3200    0.0220      1.0080 1 ! 
+HB2        1.3400     1.3400    0.0280     1.3400    0.0280      1.0080 1 ! 
+HE1        1.2500     1.2500    0.0310     1.2500    0.0310      1.0080 1 ! 
+HE2        1.2600     1.2600    0.0260     1.2600    0.0260      1.0080 1 ! 
+HC         0.2245     0.2245    0.0460     0.2245    0.0460      1.0080 1 ! ALLOW POL
+HP         1.3582     1.3582    0.0300     1.3582    0.0300      1.0080 1 ! ALLOW ARO
+HR1        0.9000     0.9000    0.0460     0.9000    0.0460      1.0080 1 ! ALLOW ARO
+HR2        0.7000     0.7000    0.0460     0.7000    0.0460      1.0080 1 ! ALLOW ARO
+HR3        1.4680     1.4680    0.0078     1.4680    0.0078      1.0080 1 ! ALLOW ARO
+HS         0.4500     0.4500    0.1000     0.4500    0.1000      1.0080 1 ! ALLOW SUL
+HA1        1.3400     1.3400    0.0450     1.3400    0.0450      1.0080 1 ! alkane, viv and adm jr., 4/07
+HA2        1.3400     1.3400    0.0340     1.3400    0.0340      1.0080 1 ! alkane, viv and adm jr., 4/07
+HA3        1.3400     1.3400    0.0240     1.3400    0.0240      1.0080 1 ! alkane, yin and mackerell, 4/98
+N          1.8500     1.8500    0.2000     1.8500    0.0001     14.0070 1 ! ALLOW   PRO
+NC2        1.8500     1.8500    0.2000     1.8500    0.2000     14.0070 1 ! ALLOW   POL
+NH1        1.8500     1.8500    0.2000     1.5500    0.2000     14.0070 1 ! ALLOW   PEP POL ARO
+NH2        1.8500     1.8500    0.2000     1.8500    0.2000     14.0070 1 ! ALLOW   POL
+NH3        1.8500     1.8500    0.2000     1.8500    0.2000     14.0070 1 ! ALLOW   POL
+NP         1.8500     1.8500    0.2000     1.8500    0.2000     14.0070 1 ! ALLOW  PRO
+NR1        1.8500     1.8500    0.2000     1.8500    0.2000     14.0070 1 ! ALLOW ARO
+NR2        1.8500     1.8500    0.2000     1.8500    0.2000     14.0070 1 ! ALLOW ARO
+NR3        1.8500     1.8500    0.2000     1.8500    0.2000     14.0070 1 ! ALLOW ARO
+NY         1.8500     1.8500    0.2000     1.8500    0.2000     14.0070 1 ! atm, indole vaporization 5/05
+O          1.7000     1.7000    0.1200     1.4000    0.1200     15.9990 1 ! ALLOW   PEP POL
+OB         1.7000     1.7000    0.1200     1.4000    0.1200     15.9990 1 ! ALLOW   PEP POL ARO
+OC         1.7000     1.7000    0.1200     1.7000    0.1200     15.9990 1 ! ALLOW   POL ION
+OH1        1.7700     1.7700    0.1521     1.7700    0.1521     15.9990 1 ! ALLOW   ALC ARO
+OS         1.7700     1.7700    0.1521     1.7700    0.1521     15.9994 1 ! ALLOW   ALC ARO
+S          2.0000     2.0000    0.4500     2.0000    0.4500     32.0600 1 ! ALLOW   SUL ION
+SM         1.9750     1.9750    0.3800     1.9750    0.3800     32.0600 1 ! ALLOW  SUL  ION
+SS         2.2000     2.2000    0.4700     2.2000    0.4700     32.0600 1 ! ALLOW  SUL
+
+! Ligand vdW parameters
+! End ligand vdW parameters
+
+[bonds]
+* V(bond) = Kb(b - b0)**2
+* Kb: kcal/mole/A**2
+* b0: A
+* atom type Kb          b0
+*
+* iaci  iacj     force.c.    dist.
+*-------------------------------------------------------------------------------
+*** HOH ***
+HT      HT           0.000   1.514
+HT      OT         900.000   0.957
+*** protein ***
+NH2    CT1      480.000     1.455 ! From LSN NH2-CT2
+CA     CAI      610.000     1.375 ! from CA CA
+CAI    CAI      610.000     1.375 ! atm, methylindole, fit CCDSS
+CPT    CA       600.000     1.360 ! atm, methylindole, fit CCDSS
+CPT    CAI      600.000     1.360 ! atm, methylindole, fit CCDSS
+CPT    CPT      720.000     1.385 ! atm, methylindole, fit CCDSS
+CY     CA       700.000     1.365 ! trj, adm jr., 5/08/91, indole CCDB structure search
+CY     CAI      700.000     1.365 ! from CY CA
+CY     CPT      700.000     1.430 ! atm, methylindole, fit CDS data
+CY     CT3      750.000     1.492 ! atm, methylindole, fit CDS data
+CY     CT2      750.000     1.492 ! atm, methylindole, fit CDS data
+HP     CAI      680.000     1.080 ! from HP CA
+HP     CY       700.000     1.080 ! trp, adm jr., 12/30/91
+NY     CA       540.000     1.370 ! trp, adm jr., 12/30/91
+NY     CPT      540.000     1.370 ! atm, methylindole, from CCDS 1/17/04
+NY     H       1075.000     0.976 ! atm, methylindole, 1/17/04
+CA     CA       610.000     1.375 ! ALLOW   ARO
+CE1    CE1      880.000     1.340 ! 
+CE1    CE2     1000.000     1.342 ! 
+CE1    CT2      730.000     1.502 ! 
+CE1    CT3      766.000     1.504 ! 
+CE2    CE2     1020.000     1.330 ! 
+CP1    C        500.000     1.490 ! ALLOW PRO
+CP1    CC       500.000     1.490 ! ALLOW PRO
+CP1    CD       400.000     1.490 ! ALLOW PRO
+CP2    CP1      445.000     1.527 ! ALLOW PRO
+CP2    CP2      445.000     1.537 ! ALLOW PRO
+CP3    CP2      445.000     1.537 ! ALLOW PRO
+CPH1   CPH1     820.000     1.360 ! ALLOW ARO
+CT1    C        500.000     1.490 ! ALLOW   ALI PEP POL ARO
+CT1    CC       400.000     1.522 ! ALLOW   POL
+CT1    CD       400.000     1.522 ! ALLOW   POL
+CT1    CT1      445.000     1.500 ! ALLOW   ALI
+CT2    C        500.000     1.490 ! ALLOW   ALI PEP POL ARO
+CT2    CA       460.000     1.490 ! ALLOW   ALI ARO
+CT2    CC       400.000     1.522 ! ALLOW   POL
+CT2    CD       400.000     1.522 ! ALLOW   POL
+CT2    CPH1     459.260     1.500 ! ALLOW ARO
+CT2    CT1      445.000     1.538 ! ALLOW   ALI
+CT2    CT2      445.000     1.530 ! ALLOW   ALI
+CT3    C        500.000     1.490 ! ALLOW   ALI PEP POL ARO
+CT3    CA       460.000     1.490 ! ALLOW   ALI ARO
+CT3    CC       400.000     1.522 ! ALLOW   POL
+CT3    CD       400.000     1.522 ! ALLOW   POL
+CT3    CPH1     459.260     1.500 ! ALLOW ARO
+CT3    CS       380.000     1.531 ! ALLOW   SUL
+CT3    CT1      445.000     1.538 ! ALLOW   ALI
+CT3    CT2      445.000     1.528 ! ALLOW   ALI
+CT3    CT3      445.000     1.530 ! ALLOW   ALI
+H      CD       660.000     1.110 ! ALLOW   PEP POL ARO
+HA1    CC       634.260     1.100 ! ALLOW POL
+HA2    CP2      618.000     1.111 ! ALLOW PRO
+HA2    CP3      618.000     1.111 ! ALLOW PRO
+HA2    CS       600.000     1.111 ! ALLOW   SUL
+HA3    CS       600.000     1.111 ! ALLOW   SUL
+HA1    CT1      618.000     1.111 ! ALLOW   ALI
+HA2    CT2      618.000     1.111 ! ALLOW   ALI
+HA3    CT3      644.000     1.111 ! ALLOW   ALI
+HE1    CE1      721.000     1.100 ! 
+HE2    CE2      730.000     1.100 ! 
+HB1    CP1      660.000     1.080 ! ALLOW PRO
+HB1    CT1      660.000     1.080 ! ALLOW   PEP
+HB2    CT2      660.000     1.080 ! ALLOW   PEP
+HP     CA       680.000     1.080 ! ALLOW   ARO
+HR1    CPH1     750.000     1.083 ! ALLOW ARO
+HR1    CPH2     680.000     1.090 ! ALLOW ARO
+HR2    CPH2     666.000     1.070 ! ALLOW ARO
+HR3    CPH1     730.000     1.083 ! ALLOW ARO
+N      C        520.000     1.300 ! ALLOW PEP POL ARO PRO
+N      CP1      640.000     1.434 ! ALLOW PRO
+N      CP3      640.000     1.455 ! ALLOW PRO
+NC2    C        900.000     1.365 ! ALLOW   PEP POL ARO
+NC2    CT2      780.000     1.490 ! ALLOW   ALI POL
+NC2    CT3      780.000     1.490 ! ALLOW   ALI POL
+NC2    HC       910.000     1.000 ! ALLOW   POL
+NH1    C        740.000     1.345 ! ALLOW   PEP POL ARO
+NH1    CT1      640.000     1.430 ! ALLOW   ALI PEP POL ARO
+NH1    CT2      640.000     1.430 ! ALLOW   ALI PEP POL ARO
+NH1    CT3      640.000     1.430 ! ALLOW   ALI PEP POL ARO
+NH1    H        880.000     0.997 ! ALLOW   PEP POL ARO
+NH1    HC       810.000     0.980 ! ALLOW   PEP POL ARO
+NH2    CC       860.000     1.360 ! ALLOW   PEP POL ARO
+NH2    CT2      480.000     1.455  
+NH2    CT3      480.000     1.455 ! ALLOW   POL
+NH2    H        960.000     1.000 ! ALLOW   POL
+NH2    HC       920.000     1.000 ! ALLOW   POL
+NH3    CT1      400.000     1.480 ! ALLOW   ALI POL
+NH3    CT2      400.000     1.480 ! ALLOW   ALI POL
+NH3    CT3      400.000     1.480 ! ALLOW   ALI POL
+NH3    HC       806.000     1.040 ! ALLOW   POL
+NP     CP1      640.000     1.485 ! ALLOW PRO
+NP     CP3      640.000     1.502 ! ALLOW PRO
+NP     HC       920.000     1.006 ! ALLOW PRO
+NR1    CPH1     800.000     1.380 ! ALLOW ARO
+NR1    CPH2     800.000     1.360 ! ALLOW ARO
+NR1    H        932.000     1.000 ! ALLOW ARO
+NR2    CPH1     800.000     1.380 ! ALLOW ARO
+NR2    CPH2     800.000     1.320 ! ALLOW ARO
+NR3    CPH1     760.000     1.370 ! ALLOW ARO
+NR3    CPH2     760.000     1.320 ! ALLOW ARO
+NR3    H        906.000     1.000 ! ALLOW ARO
+O      C       1240.000     1.230 ! ALLOW   PEP POL ARO
+O      CC      1300.000     1.230 ! ALLOW   PEP POL ARO
+OB     CC      1500.000     1.220 ! ALLOW   PEP POL ARO
+OB     CD      1500.000     1.220 ! ALLOW   PEP POL ARO
+OC     CA      1050.000     1.260 ! ALLOW   PEP POL ARO ION
+OC     CC      1050.000     1.260 ! ALLOW   PEP POL ARO ION
+OC     CT2      900.000     1.330 ! ALLOW   ALC
+OC     CT3      900.000     1.330 ! ALLOW   ALC
+OH1    CA       668.600     1.411 ! ALLOW   ARO ALC
+OH1    CD       460.000     1.400 ! ALLOW   PEP POL ARO ALC
+OH1    CT1      856.000     1.420 ! ALLOW   ALI ALC ARO
+OH1    CT2      856.000     1.420 ! ALLOW   ALI ALC ARO
+OH1    CT3      856.000     1.420 ! ALLOW   ALI ALC ARO
+OH1    H       1090.000     0.960 ! ALLOW   ALC ARO
+OS     CD       300.000     1.334 ! ALLOW POL PEP
+OS     CT3      680.000     1.430 ! ALLOW POL PEP
+S      CT2      396.000     1.818 ! ALLOW   ALI SUL ION
+S      CT3      480.000     1.816 ! ALLOW   ALI SUL ION
+S      HS       550.000     1.325 ! ALLOW   SUL ION
+SM     CT2      428.000     1.816 ! ALLOW   SUL ION
+SM     CT3      428.000     1.816 ! ALLOW   SUL ION
+SM     SM       346.000     2.029 ! ALLOW   SUL ION
+SS     CS       410.000     1.836 ! ALLOW   SUL
+HR1    CD       660.000     1.110 ! acetaldehyde, benzaldehyde, 3ALP
+O      CD      1440.000     1.205 ! acetaldehyde, benzaldehyde, 3ALP. from stream/toppar_all27_na_bkb_modifications.str
+CT2A   CT1      445.000     1.538 ! from CT2  CT1, Zhu
+CT2    CT2A     445.000     1.530 ! from CT2  CT2, Zhu
+CT2A   HA2      618.000     1.111 ! from HA2  CT2, Zhu
+CT2A   CPH1     459.260     1.500 ! from CT2  CPH1, Zhu
+
+! Ligand bond parameters
+! End ligand bond parameters
+
+[angles]
+* V(angle) = Ktheta(Theta - Theta0)**2
+* V(Urey-Bradley) = Kub(S - S0)**2
+* Ktheta: kcal/mole/rad**2
+* Theta0: degrees
+* Kub: kcal/mole/A**2 (Urey-Bradley)
+* S0: A
+* atom types     Ktheta    Theta0   Kub     S0
+* 
+* iaci  iacj   iack      forceK   angle0     forceUB    Stheta
+*-------------------------------------------------------------------------------
+*** HOH ***
+HT      OT      HT        110.00  104.52   0.00    0.00000
+*** protein ***
+H      NH2    CT1       100.00    111.0      0.00      0.00 ! From LSN HC-NH2-CT2
+NH2    CT1    CT2       135.40    110.0      0.00      0.00 ! From LSN NH2-CT2-CT2
+NH2    CT1    CT3       135.40    110.0      0.00      0.00 ! From LSN NH2-CT2-CT2
+CT1    CD     OH1       110.00    110.5      0.00      0.00 ! From ASPP CT2-CD-OH1
+CT3    CT1    CD        104.00    108.0      0.00      0.00 ! Ala cter
+NH2    CT1    HB1        76.00    109.5     50.00      2.14 ! From LSN NH2-CT2-HA
+NH2    CT1    C         100.00    107.0      0.00      0.00 ! From ALA Dipep. NH1-CT2-C
+CAI    CAI    CA         80.00    120.0     35.00      2.42 ! from CA CA CA
+CAI    CA     CA         80.00    120.0     35.00      2.42 ! from CA CA CA
+CPT    CA     CA        100.00    113.2      0.00      0.00 ! atm, methylindole, 1/17/04
+CPT    CPT    CA        100.00    110.0      0.00      0.00 ! atm, methylindole, 1/17/04
+CPT    CAI    CA        100.00    113.2      0.00      0.00 ! atm, methylindole, 1/17/04
+CPT    CPT    CAI       100.00    110.0      0.00      0.00 ! atm, methylindole, 1/17/04
+CPT    CY     CA        170.00    106.4     25.00      2.26 ! atm, methylindole, 1/17/04
+CPT    NY     CA        170.00    112.0      0.00      0.00 ! atm, methylindole, 1/17/04
+CT2    CY     CA         60.00    127.0      0.00      0.00 ! atm, methylindole, CT3  CY   CA
+CT2    CY     CPT        60.00    126.7      0.00      0.00 ! atm, methylindole, 1/17/04
+CT3    CY     CA         60.00    127.0      0.00      0.00 ! atm, methylindole, CT3  CY   CA
+CT3    CY     CPT        60.00    126.7      0.00      0.00 ! atm, methylindole, 1/17/04
+CY     CPT    CA        260.00    133.5      0.00      0.00 ! atm, methylindole, 1/17/04
+CY     CPT    CAI       260.00    133.5      0.00      0.00 ! atm, methylindole, 1/17/04
+CY     CPT    CPT       170.00    108.0      0.00      0.00 ! atm, methylindole, 1/17/04
+CY     CT2    CT1       116.70    114.0      0.00      0.00 ! from TRP crystal, JWK
+CY     CT2    CT3       116.70    114.0      0.00      0.00 ! from TRP crystal, JWK
+H      NY     CA         56.00    126.0      0.00      0.00 ! trp, adm jr., 12/30/91
+H      NY     CAI        56.00    126.0      0.00      0.00 ! trp, adm jr., 12/30/91
+H      NY     CPT        56.00    126.0      0.00      0.00 ! trp, adm jr., 12/30/91
+HA2    CT2    CY        110.00    109.5      0.00      0.00 ! atm, methylindole, 1/17/04
+HA3    CT3    CY        110.00    109.5      0.00      0.00 ! atm, methylindole, 1/17/04
+HP     CA     CAI        60.00    120.0     22.00      2.15 ! from HP CA CA
+HP     CAI    CA         60.00    120.0     22.00      2.15 ! from HP CA CA
+HP     CA     CPT        60.00    122.0     22.00      2.15 ! trp, adm jr., 12/30/91
+HP     CAI    CPT        60.00    122.0     22.00      2.15 ! from HP CA CPT
+HP     CA     CY         64.00    125.0     25.00      2.17 ! JWK 05/14/91 new theta0 and r0UB from indole
+HP     CY     CA         64.00    126.4     25.00      2.19 ! trp, adm jr., 12/30/91
+HP     CY     CPT        64.00    126.4     25.00      2.25 ! JWK 05/14/91 new theta0 and r0UB from indole
+NY     CA     CY        170.00    110.5     25.00      2.24 ! trp, adm jr., 12/30/91
+NY     CA     HP         64.00    125.0     25.00      2.18 ! JWK 05/14/91 new theta0 and r0UB from indole
+NY     CPT    CA        260.00    129.5      0.00      0.00 ! atm, methylindole, 1/17/04
+NY     CPT    CAI       260.00    129.5      0.00      0.00 ! atm, methylindole, 1/17/04
+NY     CPT    CPT       190.00    107.4      0.00      0.00 ! atm, methylindole, 1/17/04
+CA     CA     CA         80.00    120.0     35.00      2.42 ! ALLOW   ARO
+CE1    CE1    CT2        96.00    123.5      0.00      0.00 !
+CE1    CE1    CT3        96.00    123.5      0.00      0.00 ! 
+CE1    CT2    CT3        64.00    112.2      0.00      0.00 ! 
+CE2    CE1    CT2        96.00    126.0      0.00      0.00 ! 
+CE2    CE1    CT3        94.00    125.2      0.00      0.00 ! 
+CP1    N      C         120.00    117.0      0.00      0.00 ! ALLOW PRO
+CP2    CP1    C         104.00    112.3      0.00      0.00 ! ALLOW PRO
+CP2    CP1    CC        104.00    112.3      0.00      0.00 ! ALLOW PRO
+CP2    CP1    CD        100.00    112.3      0.00      0.00 ! ALLOW PRO PEP
+CP2    CP2    CP1       140.00    108.5      0.00      0.00 ! ALLOW PRO
+CP3    CP2    CP2       140.00    108.5      0.00      0.00 ! ALLOW PRO
+CP3    N      C         120.00    117.0      0.00      0.00 ! ALLOW PRO
+CP3    N      CP1       200.00    114.2      0.00      0.00 ! ALLOW PRO
+CP3    NP     CP1       200.00    111.0      0.00      0.00 ! ALLOW PRO
+CPH2   NR1    CPH1      260.00    107.5      0.00      0.00 ! ALLOW ARO
+CPH2   NR2    CPH1      260.00    104.0      0.00      0.00 ! ALLOW ARO
+CPH2   NR3    CPH1      290.00    108.0      0.00      0.00 ! ALLOW ARO
+CT1    CT1    C         104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT1    CT1    CC        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT1    CT1    CT1       106.70    111.0      8.00      2.56 ! ALLOW ALI
+CT1    CT2    CA        103.60    107.5      0.00      0.00 ! ALLOW   ALI ARO
+CT1    CT2    CC        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT1    CT2    CD        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT1    CT2    CPH1      116.70    113.0      0.00      0.00 ! ALLOW ARO
+CT1    CT2    CT1       116.70    113.5     11.16      2.56 ! ALLOW   ALI
+CT1    NH1    C         100.00    120.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2    CA     CA         91.60    122.3      0.00      0.00 ! ALLOW   ALI ARO
+CT2    CPH1   CPH1       91.60    130.0      0.00      0.00 ! ALLOW ARO
+CT2    CT1    C         104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2    CT1    CC        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2A   CT1    CC        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2    CT1    CD        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2    CT1    CT1       106.70    111.0      8.00      2.56 ! ALLOW   ALI
+CT2    CT2    C         104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2    CT2    CC        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT3    CT2    CC        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2    CT2    CD        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2A   CT2    CD        104.00    108.0      0.00      0.00 ! for GLUP, ZHU
+CT2    CT2    CT1       116.70    113.5     11.16      2.56 ! ALLOW   ALI
+CT2    CT2    CT2       116.70    113.6     11.16      2.56 ! ALLOW   ALI
+CT2    CT3    CT1       116.70    113.5     11.16      2.56 ! ALLOW   ALI
+CT2    NC2    C         124.60    120.0      0.00      0.00 ! ALLOW   ALI POL PEP ARO
+CT2    NH1    C         100.00    120.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT2    OS     CD         80.00    109.6     30.00      2.27 ! ALLOW  POL PEP
+CT3    CA     CA         91.60    122.3      0.00      0.00 ! ALLOW   ALI ARO
+CT3    CPH1   CPH1       91.60    130.0      0.00      0.00 ! ALLOW ARO
+CT3    CT1    C         104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT3    CT1    CC        104.00    108.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT3    CT1    CT1       106.70    108.5      8.00      2.56 ! ALLOW   ALI
+CT3    CT1    CT2       106.70    114.0      8.00      2.56 ! ALLOW   ALI
+CT3    CT1    CT3       106.70    114.0      8.00      2.56 ! ALLOW   ALI
+CT3    CT2    CA        103.60    107.5      0.00      0.00 ! ALLOW   ALI ARO
+CT3    CT2    CPH1      116.70    113.0      0.00      0.00 ! ALLOW ARO
+CT3    CT2    CT1       116.70    113.5     11.16      2.56 ! ALLOW   ALI
+CT3    CT2    CT2       116.00    115.0      8.00      2.56 ! ALLOW   ALI
+CT3    CT2    CT3       106.70    114.0      8.00      2.56 ! ALLOW   ALI
+CT3    NC2    C         124.60    120.0      0.00      0.00 ! ALLOW   ALI POL PEP ARO
+CT3    NH1    C         100.00    120.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+CT3    OS     CD         80.00    109.6     30.00      2.27 ! ALLOW  POL PEP
+CT3    S      CT2        68.00     95.0      0.00      0.00 ! ALLOW   ALI SUL ION
+H      NH1    C          68.00    123.0      0.00      0.00 ! ALLOW   PEP POL ARO
+H      NH1    CT1        70.00    117.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+H      NH1    CT2        70.00    117.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+H      NH1    CT3        70.00    117.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+H      NH2    CC        100.00    120.0      0.00      0.00 ! ALLOW   POL PEP ARO
+H      NH2    H          46.00    120.0      0.00      0.00 ! ALLOW   POL
+H      NR1    CPH1       60.00    125.5     20.00      2.15 ! ALLOW ARO
+H      NR1    CPH2       60.00    127.0     20.00      2.14 ! ALLOW ARO
+H      NR3    CPH1       50.00    126.0     15.00      2.13 ! ALLOW ARO
+H      NR3    CPH2       50.00    126.0     15.00      2.09 ! ALLOW ARO
+H      OH1    CA        130.00    108.0      0.00      0.00 ! ALLOW   ALC ARO
+H      OH1    CD        110.00    115.0      0.00      0.00 ! ALLOW   ALC ARO PEP POL
+H      OH1    CT1       115.00    106.0      0.00      0.00 ! ALLOW   ALC ARO ALI
+H      OH1    CT2       115.00    106.0      0.00      0.00 ! ALLOW   ALC ARO ALI
+H      OH1    CT3       115.00    106.0      0.00      0.00 ! ALLOW   ALC ARO ALI
+HA2    CP2    CP1        66.86    110.1     22.53      2.18 ! ALLOW ALI PRO
+HA2    CP2    CP2        53.00    110.1     22.53      2.18 ! ALLOW ALI PRO
+HA2    CP2    CP3        53.00    110.1     22.53      2.18 ! ALLOW ALI PRO
+HA2    CP2    HA2        71.00    109.0      5.40      1.80 ! ALLOW ALI PRO
+HA2    CP3    CP2        53.00    110.1     22.53      2.18 ! ALLOW ALI PRO
+HA2    CP3    HA2        71.00    109.0      5.40      1.80 ! ALLOW ALI PRO
+HA2    CS     CT3        69.20    110.1     22.53      2.18 ! ALLOW SUL
+HA2    CS     HA2        71.00    108.4     14.00      1.77 ! ALLOW SUL
+HA3    CS     HA3        71.00    108.4     14.00      1.77 ! ALLOW SUL
+HA1    CT1    C          66.00    109.5     30.00      2.16 ! ALLOW   ALI PEP POL ARO
+HA1    CT1    CD         66.00    109.5     30.00      2.16 ! ALLOW   ALI PEP POL ARO
+HA1    CT1    CT1        69.00    110.1     22.53      2.18 ! ALLOW   ALI
+HA1    CT1    CT2        69.00    110.1     22.53      2.18 ! ALLOW   ALI
+HA1    CT1    CT3        69.00    110.1     22.53      2.18 ! ALLOW   ALI
+HA1    CT1    HA1        71.00    109.0      5.40      1.80 ! TEST for test cpd
+HA2    CT2    C          66.00    109.5     30.00      2.16 ! ALLOW   ALI PEP POL ARO
+HA2    CT2    CA         98.60    107.5      0.00      0.00 ! ALLOW   ALI ARO
+HA2    CT2    CC         66.00    109.5     30.00      2.16 ! ALLOW   ALI PEP POL ARO
+HA2    CT2    CD         66.00    109.5     30.00      2.16 ! ALLOW   ALI PEP POL ARO
+HA2    CT2    CE1        90.00    111.5      0.00      0.00 ! 
+HA2    CT2    CPH1       66.86    109.5      0.00      0.00 ! ALLOW ARO
+HA2    CT2    CT1        53.00    110.1     22.53      2.18 ! ALLOW   ALI
+HA2    CT2    CT2        53.00    110.1     22.53      2.18 ! ALLOW   ALI
+HA2    CT2    CT3        69.20    110.1     22.53      2.18 ! ALLOW   ALI
+HA2    CT2    HA2        71.00    109.0      5.40      1.80 ! ALLOW   ALI
+HA3    CT3    C          66.00    109.5     30.00      2.16 ! ALLOW   ALI PEP POL ARO
+HA3    CT3    CA         98.60    107.5      0.00      0.00 ! ALLOW   ALI ARO
+HA3    CT3    CC         66.00    109.5     30.00      2.16 ! ALLOW   ALI PEP POL ARO
+HA3    CT3    CD         66.00    109.5     30.00      2.16 ! ALLOW   ALI PEP POL ARO
+HA3    CT3    CE1        84.00    111.5      0.00      0.00 ! 
+HA3    CT3    CPH1       66.86    109.5      0.00      0.00 ! ALLOW ARO
+HA3    CT3    CS         69.20    110.1     22.53      2.18 ! ALLOW SUL
+HA3    CT3    CT1        66.86    110.1     22.53      2.18 ! ALLOW   ALI
+HA3    CT3    CT2        69.20    110.1     22.53      2.18 ! ALLOW   ALI
+HA3    CT3    CT3        75.00    110.1     22.53      2.18 ! ALLOW   ALI
+HA3    CT3    HA3        71.00    108.4      5.40      1.80 ! ALLOW   ALI
+HE1    CE1    CE1       104.00    119.5      0.00      0.00 ! 
+HE1    CE1    CE2        84.00    118.0      0.00      0.00 ! 
+HE1    CE1    CT2        80.00    116.0      0.00      0.00 ! 
+HE1    CE1    CT3        44.00    117.0      0.00      0.00 ! 
+HE2    CE2    CE1        90.00    120.5      0.00      0.00 ! 
+HE2    CE2    CE2       111.00    120.5      0.00      0.00 ! 
+HE2    CE2    HE2        38.00    119.0      0.00      0.00 ! 
+HB1    CP1    C         100.00    112.0      0.00      0.00 ! ALLOW PEP PRO
+HB1    CP1    CC        100.00    112.0      0.00      0.00 ! ALLOW PEP PRO
+HB1    CP1    CD        100.00    112.0      0.00      0.00 ! ALLOW PEP POL PRO
+HB1    CP1    CP2        70.00    118.0      0.00      0.00 ! ALLOW PEP PRO
+HB1    CT1    C         100.00    109.5      0.00      0.00 ! ALLOW  PEP
+HB1    CT1    CC        100.00    109.5      0.00      0.00 ! ALLOW  PEP POL
+HB1    CT1    CD        100.00    109.5      0.00      0.00 ! ALLOW  PEP POL
+HB1    CT1    CT1        70.00    111.0      0.00      0.00 ! ALLOW  PEP
+HB1    CT1    CT2        70.00    111.0      0.00      0.00 ! ALLOW  PEP
+HB1    CT1    CT3        70.00    111.0      0.00      0.00 ! ALLOW  PEP
+HB2    CT2    C         100.00    109.5      0.00      0.00 ! ALLOW  PEP
+HB2    CT2    CC        100.00    109.5      0.00      0.00 ! ALLOW  PEP POL
+HB2    CT2    CD        100.00    109.5      0.00      0.00 ! ALLOW  PEP POL
+HB2    CT2    HB2        72.00    115.0      0.00      0.00 ! ALLOW   PEP
+HC     NC2    C          98.00    120.0      0.00      0.00 ! ALLOW   POL PEP ARO
+HC     NC2    CT2        80.80    120.0      0.00      0.00 ! ALLOW   POL ALI
+HC     NC2    CT3        80.80    120.0      0.00      0.00 ! ALLOW   POL ALI
+HC     NC2    HC         50.00    120.0      0.00      0.00 ! ALLOW   POL
+HC     NH2    CT2       100.00    111.0      0.00      0.00 ! ALLOW   POL
+HC     NH2    CT3       100.00    111.0      0.00      0.00 ! ALLOW   POL
+HC     NH2    HC         78.00    106.5      0.00      0.00 ! ALLOW   POL
+HC     NH3    CT1        60.00    109.5     20.00      2.07 ! ALLOW   POL ALI
+HC     NH3    CT2        60.00    109.5     20.00      2.07 ! ALLOW   POL ALI
+HC     NH3    CT3        60.00    109.5     20.00      2.07 ! ALLOW   POL ALI
+HC     NH3    HC         88.00    109.5      0.00      0.00 ! ALLOW   POL
+HC     NP     CP1        66.00    109.5      4.00      2.06 ! ALLOW POL ALI PRO
+HC     NP     CP3        66.00    109.5      4.00      2.06 ! ALLOW POL ALI PRO
+HC     NP     HC        102.00    107.5      0.00      0.00 ! ALLOW PRO
+HP     CA     CA         60.00    120.0     22.00      2.15 ! ALLOW   ARO
+HR1    CPH1   CPH1       44.00    130.0     15.00      2.21 ! ALLOW ARO
+HR3    CPH1   CPH1       50.00    130.0     20.00      2.20 ! ALLOW ARO
+HS     S      CT2        77.60     95.0      0.00      0.00 ! ALLOW   SUL ION ALI
+HS     S      CT3        86.00     95.0      0.00      0.00 ! ALLOW   SUL ION ALI
+N      C      CP1        40.00    112.5      0.00      0.00 ! ALLOW PRO
+N      C      CT1        40.00    112.5      0.00      0.00 ! ALLOW ALI PEP POL ARO PRO
+N      C      CT2        40.00    112.5      0.00      0.00 ! ALLOW ALI PEP POL ARO PRO
+N      C      CT3        40.00    112.5      0.00      0.00 ! ALLOW ALI PEP POL ARO PRO
+N      CP1    C         100.00    108.2      0.00      0.00 ! ALLOW PRO
+N      CP1    CC        100.00    108.2      0.00      0.00 ! ALLOW PRO
+N      CP1    CD        100.00    108.2      0.00      0.00 ! ALLOW PRO PEP
+N      CP1    CP2       140.00    110.8      0.00      0.00 ! ALLOW PRO
+N      CP1    HB1        96.00    112.0      0.00      0.00 ! ALLOW PEP PRO
+N      CP3    CP2       140.00    110.5      0.00      0.00 ! ALLOW PRO
+N      CP3    HA2        96.00    108.0      0.00      0.00 ! ALLOW PEP PRO
+NC2    C      NC2        80.00    120.0     70.00      2.31  
+NC2    CT2    CT2       135.40    107.5      0.00      0.00 ! ALLOW   ALI POL
+NC2    CT2    HA2       113.00    107.5      0.00      0.00 ! ALLOW   ALI POL
+NC2    CT3    HA3       113.00    107.5      0.00      0.00 ! ALLOW   ALI POL
+NH1    C      CP1       160.00    116.5      0.00      0.00 ! ALLOW PEP PRO
+NH1    C      CT1       160.00    116.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH1    C      CT2       160.00    116.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH1    C      CT3       160.00    116.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH1    CT1    C         100.00    107.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH1    CT1    CC        100.00    107.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH1    CT1    CD        100.00    107.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH1    CT1    CT1       140.00    113.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH1    CT1    CT2       140.00    113.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH1    CT1    CT3       140.00    113.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH1    CT1    HB1        96.00    108.0      0.00      0.00 ! ALLOW PEP
+NH1    CT2    C         100.00    107.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH1    CT2    CC        100.00    107.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH1    CT2    CD        100.00    107.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH1    CT2    CT2       140.00    113.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH1    CT2    HA2       103.00    109.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH1    CT2    HB2        96.00    108.0      0.00      0.00 ! ALLOW PEP
+NH1    CT3    HA3       103.00    109.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+NH2    CC     CP1       160.00    112.5      0.00      0.00 ! ALLOW ALI PEP POL ARO PRO
+NH2    CC     CT1       100.00    116.5     50.00      2.45 ! ALLOW   ALI PEP POL ARO
+NH2    CC     CT2       100.00    116.5     50.00      2.45 ! ALLOW   ALI PEP POL ARO
+NH2    CC     CT3       100.00    116.5     50.00      2.45 ! ALLOW   ALI PEP POL ARO
+NH2    CC     HA1        88.00    111.0     50.00      1.98 ! ALLOW POL
+NH2    CT2    HB2        76.00    109.5     50.00      2.14  
+NH2    CT2    CD        104.00    108.0      0.00      0.00  
+NH2    CT2    CT2       135.40    110.0      0.00      0.00 ! ALLOW   ALI POL
+NH2    CT2    HA2        76.00    109.5     50.00      2.14  
+NH2    CT3    HA3        76.00    109.5     50.00      2.14 ! ALLOW POL
+NH3    CT1    C          87.40    110.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH3    CT1    CC         87.40    110.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH3    CT1    CT1       135.40    110.0      0.00      0.00 ! ALLOW   ALI POL
+NH3    CT1    CT2       135.40    110.0      0.00      0.00 ! ALLOW   ALI POL
+NH3    CT1    CT3       135.40    110.0      0.00      0.00 ! ALLOW   ALI POL
+NH3    CT1    HB1       103.00    107.5      0.00      0.00 ! ALLOW   ALI POL PEP
+NH3    CT2    C          87.40    110.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH3    CT2    CC         87.40    110.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH3    CT2    CD         87.40    110.0      0.00      0.00 ! ALLOW   PEP POL ARO ALI
+NH3    CT2    CT2       135.40    110.0      0.00      0.00 ! ALLOW   ALI POL
+NH3    CT2    CT3       135.40    110.0      0.00      0.00 ! ALLOW   ALI POL
+NH3    CT2    HA2        90.00    107.5     35.00      2.10 ! ALLOW   ALI POL
+NH3    CT2    HB2       103.00    107.5      0.00      0.00 ! ALLOW   ALI POL PEP
+NH3    CT3    HA3        90.00    107.5     35.00      2.10 ! ALLOW   ALI POL
+NP     CP1    C         100.00    106.0      0.00      0.00 ! ALLOW PRO
+NP     CP1    CC        100.00    106.0      0.00      0.00 ! ALLOW PRO
+NP     CP1    CD        100.00    106.0      0.00      0.00 ! ALLOW PRO PEP
+NP     CP1    CP2       140.00    108.5      0.00      0.00 ! ALLOW PRO
+NP     CP1    HB1       103.00    107.5      0.00      0.00 ! ALLOW ALI POL PEP PRO
+NP     CP3    CP2       140.00    108.5      0.00      0.00 ! ALLOW PRO
+NP     CP3    HA2       103.00    109.2      0.00      0.00 ! ALLOW PEP PRO
+NR1    CPH1   CPH1      260.00    106.0      0.00      0.00 ! ALLOW ARO
+NR1    CPH1   CT2        91.60    124.0      0.00      0.00 ! ALLOW ARO
+NR1    CPH1   CT3        91.60    124.0      0.00      0.00 ! ALLOW ARO
+NR1    CPH1   HR3        50.00    124.0     20.00      2.14 ! ALLOW ARO
+NR1    CPH2   HR1        50.00    122.5     20.00      2.14 ! ALLOW ARO
+NR2    CPH1   CPH1      260.00    110.0      0.00      0.00 ! ALLOW ARO
+NR2    CPH1   CT2        91.60    120.0      0.00      0.00 ! ALLOW ARO
+NR2    CPH1   HR3        50.00    120.0     20.00      2.14 ! ALLOW ARO
+NR2    CPH2   HR1        50.00    125.0     20.00      2.12 ! ALLOW ARO
+NR2    CPH2   NR1       260.00    112.5      0.00      0.00 ! ALLOW ARO
+NR3    CPH1   CPH1      290.00    108.0      0.00      0.00 ! ALLOW ARO
+NR3    CPH1   CT2        91.60    122.0      0.00      0.00 ! ALLOW ARO
+NR3    CPH1   HR1        44.00    122.0     15.00      2.18 ! ALLOW ARO
+NR3    CPH2   HR2        64.00    126.0     25.00      2.14 ! ALLOW ARO
+NR3    CPH2   NR3       290.00    108.0      0.00      0.00 ! ALLOW ARO
+O      C      CP1       160.00    118.0      0.00      0.00 ! ALLOW PEP PRO
+O      C      CT1       160.00    121.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+O      C      CT2       160.00    121.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+O      C      CT3       160.00    121.0      0.00      0.00 ! ALLOW   ALI PEP POL ARO
+O      C      H         100.00    121.7      0.00      0.00 ! ALLOW   PEP POL ARO
+O      C      N         160.00    122.5      0.00      0.00 ! ALLOW PRO PEP POL ARO
+O      C      NH1       160.00    122.5      0.00      0.00 ! ALLOW   PEP POL ARO
+O      CC     CP1       160.00    118.0      0.00      0.00 ! ALLOW ALI PEP POL ARO PRO
+O      CC     CT1        30.00    121.0     50.00      2.44 ! ALLOW   ALI PEP POL ARO
+O      CC     CT2        30.00    121.0     50.00      2.44 ! ALLOW   ALI PEP POL ARO
+O      CC     CT3        30.00    121.0     50.00      2.44 ! ALLOW   ALI PEP POL ARO
+O      CC     HA1        88.00    122.0      0.00      0.00 ! ALLOW POL
+O      CC     NH2       150.00    122.5     50.00      2.37 ! ALLOW   POL PEP ARO
+OB     CD     CP1       140.00    125.0     20.00      2.44 ! ALLOW ALI PEP POL ARO PRO
+OB     CD     CT1       140.00    125.0     20.00      2.44 ! ALLOW   ALI PEP POL ARO
+OB     CD     CT2       140.00    125.0     20.00      2.44 ! ALLOW   ALI PEP POL ARO
+OB     CD     CT3       140.00    125.0     20.00      2.44 ! ALLOW   ALI PEP POL ARO
+OC     CA     CA         80.00    120.0      0.00      0.00 ! ALLOW  POL ARO
+OC     CC     CP1        80.00    118.0     50.00      2.39 ! ALLOW ALI PEP POL ARO ION PRO
+OC     CC     CT1        80.00    118.0     50.00      2.39 ! ALLOW   ALI PEP POL ARO ION
+OC     CC     CT2        80.00    118.0     50.00      2.39 ! ALLOW   ALI PEP POL ARO ION
+OC     CC     CT3        80.00    118.0     50.00      2.39 ! ALLOW   ALI PEP POL ARO ION
+OC     CC     OC        200.00    124.0     70.00      2.23 ! ALLOW   POL ION PEP ARO
+OC     CT2    CT3       130.00    122.0      0.00      0.00 ! ALLOW  ALC
+OC     CT2    HA2       130.00    118.3      0.00      0.00 ! ALLOW  ALC
+OC     CT3    HA3       130.00    118.3      0.00      0.00 ! ALLOW  ALC
+OH1    CA     CA         90.40    120.0      0.00      0.00 ! ALLOW   ARO ALC
+OH1    CD     CT2       110.00    110.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO ALC
+OH1    CD     CT3       110.00    110.5      0.00      0.00 ! ALLOW   ALI PEP POL ARO ALC
+OH1    CD     OB        100.00    123.0    210.00      2.26 ! ALLOW   PEP POL ARO ALC
+OH1    CT1    CT1       151.40    110.1      0.00      0.00 ! ALLOW   ALI ALC ARO
+OH1    CT1    CT3       151.40    110.1      0.00      0.00 ! ALLOW   ALI ALC ARO
+OH1    CT1    HA1        91.80    108.9      0.00      0.00 ! ALLOW   ALI ALC ARO
+OH1    CT2    CT1       151.40    110.1      0.00      0.00 ! ALLOW   ALI ALC ARO
+OH1    CT2    CT2       151.40    110.1      0.00      0.00 ! ALLOW   ALI ALC ARO
+OH1    CT2    CT3       151.40    110.1      0.00      0.00 ! ALLOW   ALI ALC ARO
+OH1    CT2    HA2        91.80    108.9      0.00      0.00 ! ALLOW   ALI ALC ARO
+OH1    CT3    HA3        91.80    108.9      0.00      0.00 ! ALLOW   ALI ALC ARO
+OS     CD     CP1       110.00    109.0     20.00      2.33 ! ALLOW POL PEP PRO
+OS     CD     CT1       110.00    109.0     20.00      2.33 ! ALLOW POL PEP
+OS     CD     CT2       110.00    109.0     20.00      2.33 ! ALLOW POL PEP
+OS     CD     CT3       110.00    109.0     20.00      2.33 ! ALLOW POL PEP
+OS     CD     OB        180.00    125.9    160.00      2.26 ! ALLOW  PEP POL
+OS     CT2    HA2       120.00    109.5      0.00      0.00 ! ALLOW PEP POL
+OS     CT3    HA3       120.00    109.5      0.00      0.00 ! ALLOW PEP POL
+S      CT2    CT1       116.00    112.5      0.00      0.00 ! ALLOW   ALI SUL ION
+S      CT2    CT2       116.00    114.5      0.00      0.00 ! ALLOW   ALI SUL ION
+S      CT2    CT3       116.00    114.5      0.00      0.00 ! ALLOW   ALI SUL ION
+S      CT2    HA2        92.20    111.3      0.00      0.00 ! ALLOW   ALI SUL ION
+S      CT3    HA3        92.20    111.3      0.00      0.00 ! ALLOW   ALI SUL ION
+SM     CT2    CT1       116.00    112.5      0.00      0.00 ! ALLOW   ALI SUL ION
+SM     CT2    CT3       116.00    112.5      0.00      0.00 ! ALLOW   ALI SUL ION
+SM     CT2    HA2        76.00    111.0      0.00      0.00 ! ALLOW   ALI SUL ION
+SM     CT3    HA3        76.00    111.0      0.00      0.00 ! ALLOW   ALI SUL ION
+SM     SM     CT2       145.00    103.3      0.00      0.00 ! ALLOW   ALI SUL ION
+SM     SM     CT3       145.00    103.3      0.00      0.00 ! ALLOW   ALI SUL ION
+SS     CS     CT3       110.00    118.0      0.00      0.00 ! ALLOW SUL
+SS     CS     HA2        80.00    112.3      0.00      0.00 ! ALLOW SUL
+SS     CS     HA3        80.00    112.3      0.00      0.00 ! ALLOW SUL
+O      CD     HR1       150.00    121.0      0.00      0.00 ! acetaldehyde, benzaldehyde, 3ALP, retinal
+NH1    CT1    CT2A      140.00    113.5      0.00      0.00 ! from NH1  CT1  CT2
+HB1    CT1    CT2A       70.00    111.0      0.00      0.00 ! from HB1  CT1  CT2
+CT2A   CT1    C         104.00    108.0      0.00      0.00 ! from CT2  CT1  C
+CT1    CT2A   HA2        53.00    110.1     22.53      2.18 ! from HA2  CT2  CT1
+CT1    CT2A   CT2       116.70    113.5     11.16      2.56 ! from CT2  CT2  CT1
+HA2    CT2A   HA2        71.00    109.0      5.40      1.80 ! from HA2  CT2  HA2
+HA2    CT2A   CT2        53.00    110.1     22.53      2.18 ! from HA2  CT2  CT2
+CT2A   CT2    HA2        53.00    110.1     22.53      2.18 ! from HA2  CT2  CT2
+CT2A   CT2    CC        104.00    108.0      0.00      0.00 ! from CT2  CT2  CC
+CT1    CT2A   CPH1      116.70    113.0      0.00      0.00 ! from CT1  CT2  CPH1 
+HA2    CT2A   CPH1       66.86    109.5      0.00      0.00 ! from HA2  CT2  CPH1
+CT2A   CPH1   CPH1       91.60    130.0      0.00      0.00 ! from CT2  CPH1 CPH1
+CT2A   CPH1   NR3        91.60    122.0      0.00      0.00 ! from NR3  CPH1 CT2
+
+! Ligand angle parameters
+! End ligand angle parameters
+
+[torsions]
+* V(dihedral) = Kchi(1 + cos(n(chi) - delta))
+* Kchi: kcal/mole
+* n: multiplicity
+* delta: degrees
+* atom types             Kchi    n   delta
+* Neutral N terminus
+* 
+*iaci  iacj   iack   iacl      forceK   #minima     phase   #paths
+*-------------------------------------------------------------------------------
+NH2    CT1    C      O          0.000     1.000     0.000     1  
+NH2    CT1    C      NH1        0.000     1.000     0.000     1  
+H      NH2    CT1    CT1        0.000     1.000     0.000     1  
+H      NH2    CT1    C          0.000     1.000     0.000     1  
+H      NH2    CT1    HB1        0.110     3.000     0.000     1 ! From LSN HC-NH2-CT2-HA
+H      NH2    CT1    CT2        0.110     3.000     0.000     1 ! From LSN HC-NH2-CT2-CT2
+H      NH2    CT1    CT3        0.110     3.000     0.000     1 ! From LSN HC-NH2-CT2-CT2
+CAI    CA     CA     CAI        3.100     2.000   180.000     1 ! from CA CA CA CA
+CA     CPT    CPT    CA         3.000     2.000   180.000     1 ! atm, methylindole, 1/17/04	
+CAI    CPT    CPT    CAI        3.000     2.000   180.000     1 ! atm, methylindole, 1/17/04	
+CA     CY     CPT    CA         3.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CA     CY     CPT    CAI        3.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CA     NY     CPT    CA         3.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CPT    CA     CA     CA         3.000     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+CPT    CPT    CA     CA         3.000     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+CA     NY     CPT    CAI        3.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CPT    CAI    CA     CA         3.000     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+CPT    CPT    CAI    CA         3.000     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+CPT    CPT    CY     CA         5.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CPT    CPT    NY     CA         6.500     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CT3    CY     CPT    CA         2.500     2.000   180.000     1 ! atm, methylindole, r6r5
+CT3    CY     CPT    CAI        2.500     2.000   180.000     1 ! atm, methylindole, r6r5
+CT3    CY     CPT    CPT        3.000     2.000   180.000     1 ! atm, methylindole, meth
+CT2    CY     CPT    CA         2.500     2.000   180.000     1 ! atm, methylindole, r6r5
+CT2    CY     CPT    CAI        2.500     2.000   180.000     1 ! atm, methylindole, r6r5
+CT2    CY     CPT    CPT        3.000     2.000   180.000     1 ! atm, methylindole, meth
+CY     CA     NY     CPT        6.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CY     CPT    CA     CA         4.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CY     CPT    CPT    CA         4.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CY     CPT    CAI    CA         4.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+CY     CPT    CPT    CAI        4.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+H      NY     CA     CY         0.050     2.000   180.000     1 ! atm, methylindole, 1/17/04
+H      NY     CPT    CA         0.200     2.000   180.000     1 ! atm, methylindole, 1/17/04
+H      NY     CPT    CAI        0.200     2.000   180.000     1 ! atm, methylindole, 1/17/04
+H      NY     CPT    CPT        0.850     2.000   180.000     1 ! atm, methylindole, 1/17/04
+HP     CAI    CA     CA         4.200     2.000   180.000     1 ! from HP CA CA CA
+HP     CA     CA     CPT        3.000     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+HP     CA     CPT    CPT        3.000     2.000   180.000     1 ! JWK indole 05/14/91
+HP     CA     CPT    CY         4.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+HP     CA     CA     CAI        4.200     2.000   180.000     1 ! from HP CA CA CA
+HP     CA     CAI    CPT        3.000     2.000   180.000     1 ! from HP CA CA CPT
+HP     CAI    CA     HP         2.400     2.000   180.000     1 ! from HP CA CA HP
+HP     CAI    CPT    CPT        3.000     2.000   180.000     1 ! from HP CA CPT CPT
+HP     CAI    CPT    CY         4.000     2.000   180.000     1 ! from HP CA CPT CY, r6r5
+HP     CA     CY     CPT        2.800     2.000   180.000     1 ! adm jr., 12/30/91, for jwk
+HP     CA     CY     CT3        1.200     2.000   180.000     1 ! atm, methylindole
+HP     CA     CY     CT2        1.200     2.000   180.000     1 ! atm, methylindole
+HP     CA     NY     CPT        2.600     2.000   180.000     1 ! adm jr., 12/30/91, for jwk
+HP     CA     NY     H          0.400     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+HP     CY     CA     HP         1.000     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+HP     CY     CPT    CA         2.800     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+HP     CY     CPT    CAI        2.800     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+HP     CY     CPT    CPT        2.600     2.000   180.000     1 ! JWK 05/14/91 fit to indole
+NY     CA     CY     CPT        5.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+NY     CA     CY     CT3        2.500     2.000   180.000     1 ! atm, methylindole, from NY   CA   CY   CT3
+NY     CA     CY     CT2        2.500     2.000   180.000     1 ! atm, methylindole, from NY   CA   CY   CT3
+NY     CA     CY     HP         3.500     2.000   180.000     1 ! JWK indole 05/14/91
+NY     CPT    CA     CA         3.000     2.000   180.000     1 ! atm, methylindole, 1/17/04, r6r5 
+NY     CPT    CA     HP         3.000     2.000   180.000     1 ! JWK 05/14/91 fit to indole, r6r5
+NY     CPT    CPT    CA         4.000     2.000   180.000     1 ! atm, methylindole, 1/17/04, bfly
+NY     CPT    CAI    CA         3.000     2.000   180.000     1 ! atm, methylindole, 1/17/04
+NY     CPT    CAI    HP         3.000     2.000   180.000     1 ! JWK 05/14/91 fit to indole, r6r5
+NY     CPT    CPT    CAI        4.000     2.000   180.000     1 ! atm, methylindole, 1/17/04, bfly
+NY     CPT    CPT    CY         6.500     2.000   180.000     1 ! JWK 05/14/91 fit to indole,  r5 t1
+CT3    CT2    CY     CA         0.380     2.000     0.000     1 ! trp, from ethylbenzene, adm jr., 3/7/92
+CT3    CT2    CY     CPT        0.250    -2.000   180.000     1 ! atm 1/14/04 3-ethylindole
+CT3    CT2    CY     CPT        0.300     3.000     0.000     1 ! atm 1/14/04 3-ethylindole
+HA3    CT3    CY     CA         0.010     3.000     0.000     1 ! atm, methylindole, 1/17/04
+HA3    CT3    CY     CPT        0.200     3.000     0.000     1 ! atm, methylindole, 1/17/04
+HA2    CT2    CY     CA         0.010     3.000     0.000     1 ! atm, methylindole, 1/17/04
+HA2    CT2    CY     CPT        0.200     3.000     0.000     1 ! atm, methylindole, 1/17/04
+?      CS     SS     ?          0.000     3.000     0.200     1 ! guess
+C      CT1    NH1    C          0.200     1.000   180.000     1 ! ALLOW PEP
+C      CT2    NH1    C          0.200     1.000   180.000     1 ! ALLOW PEP
+C      N      CP1    C          0.800     3.000     0.000     1 ! ALLOW PRO PEP
+CA     CA     CA     CA         3.100     2.000   180.000     1 ! ALLOW   ARO
+CC     CP1    N      C          0.800     3.000     0.000     1 ! ALLOW PRO PEP
+CC     CT1    CT2    CA         0.040     3.000     0.000     1 ! ALLOW   ARO
+CC     CT1    NH1    C          0.200     1.000   180.000     1 ! ALLOW PEP POL
+CC     CT2    NH1    C          0.200     1.000   180.000     1 ! ALLOW PEP POL
+CD     CP1    N      C          0.000     1.000   180.000     1 ! ALLOW PRO PEP
+CD     CT1    NH1    C          0.200     1.000   180.000     1 ! ALLOW PEP POL
+CD     CT2    NH1    C          0.200     1.000   180.000     1 ! ALLOW PEP POL
+CE1    CE1    CT3    HA3        0.030     3.000     0.000     1 ! 
+CE2    CE1    CT2    CT3        0.500    -1.000   180.000     1 !
+CE2    CE1    CT2    CT3        1.300     3.000   180.000     1 !
+CE2    CE1    CT2    HA2        0.120     3.000     0.000     1 ! 
+CE2    CE1    CT3    HA3        0.050     3.000   180.000     1 ! 
+CP1    C      N      CP1        2.750    -2.000   180.000     1 ! ALLOW PRO
+CP1    C      N      CP1        0.300     4.000     0.000     1 ! ALLOW PRO
+CP2    CP1    N      C          0.800     3.000     0.000     1 ! ALLOW PRO PEP
+CP2    CP3    N      C          0.000     3.000   180.000     1 ! ALLOW PRO PEP
+CP2    CP3    N      CP1        0.100     3.000     0.000     1 ! ALLOW PRO
+CP2    CP3    NP     CP1        0.080     3.000     0.000     1 ! ALLOW PRO
+CP3    N      C      CP1        2.750    -2.000   180.000     1 ! ALLOW PRO
+CP3    N      C      CP1        0.300     4.000     0.000     1 ! ALLOW PRO
+CP3    N      CP1    C          0.100     3.000     0.000     1 ! ALLOW PRO
+CP3    N      CP1    CC         0.100     3.000     0.000     1 ! ALLOW PRO
+CP3    N      CP1    CP2        0.100     3.000     0.000     1 ! ALLOW PRO
+CP3    NP     CP1    C          0.080     3.000     0.000     1 ! ALLOW PRO
+CP3    NP     CP1    CC         0.080     3.000     0.000     1 ! ALLOW PRO
+CP3    NP     CP1    CD         0.080     3.000     0.000     1 ! ALLOW PRO PEP
+CP3    NP     CP1    CP2        0.080     3.000     0.000     1 ! ALLOW PRO
+CPH2   NR1    CPH1   CPH1      14.000     2.000   180.000     1 ! ALLOW ARO
+CPH2   NR2    CPH1   CPH1      14.000     2.000   180.000     1 ! ALLOW ARO
+CPH2   NR3    CPH1   CPH1      12.000     2.000   180.000     1 ! ALLOW ARO
+CT1    C      N      CP1        2.750    -2.000   180.000     1 ! ALLOW PRO
+CT1    C      N      CP1        0.300     4.000     0.000     1 ! ALLOW PRO
+CT1    C      N      CP3        2.750    -2.000   180.000     1 ! ALLOW PRO
+CT1    C      N      CP3        0.300     4.000     0.000     1 ! ALLOW PRO
+CT1    C      NH1    CT1        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT1    C      NH1    CT1        2.500     2.000   180.000     1 !  ALLOW PEP
+CT1    CT1    NH1    C          1.800     1.000     0.000     1 ! ALLOW PEP
+CT1    NH1    C      CP1        1.600    -1.000     0.000     1 ! ALLOW PEP PRO
+CT1    NH1    C      CP1        2.500     2.000   180.000     1 ! ALLOW PEP PRO
+CT2    C      N      CP1        2.750    -2.000   180.000     1 ! ALLOW PRO
+CT2    C      N      CP1        0.300     4.000     0.000     1 ! ALLOW PRO
+CT2    C      N      CP3        2.750    -2.000   180.000     1 ! ALLOW PRO
+CT2    C      N      CP3        0.300     4.000     0.000     1 ! ALLOW PRO
+CT2    C      NH1    CT1        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT2    C      NH1    CT1        2.500     2.000   180.000     1 !  ALLOW PEP
+CT2    C      NH1    CT2        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT2    C      NH1    CT2        2.500     2.000   180.000     1 !  ALLOW PEP
+CT2    C      NH1    CT3        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT2    C      NH1    CT3        2.500     2.000   180.000     1 !  ALLOW PEP
+CT2    CA     CA     CA         3.100     2.000   180.000     1 ! ALLOW   ARO
+CT2    CPH1   NR1    CPH2       3.000     2.000   180.000     1 ! ALLOW ARO
+CT2    CPH1   NR2    CPH2       3.000     2.000   180.000     1 ! ALLOW ARO
+CT2    CPH1   NR3    CPH2       2.500     2.000   180.000     1 ! ALLOW ARO
+CT2    CT1    NH1    C          1.800     1.000     0.000     1 ! ALLOW PEP
+CT2    CT2    CPH1   CPH1       0.400     1.000     0.000     1 ! ALLOW ARO
+CT2    CT2    CT2    CT2        0.100    -2.000   180.000     1 ! alkane, 4/98, adm jr.
+CT2    CT2    CT2    CT2        0.150    -4.000     0.000     1 ! alkane, 4/98, adm jr.
+CT2    CT2    CT2    CT2        0.100     6.000   180.000     1 ! alkane, 4/98, adm jr.
+CT2    CT2    CT2    CT3        0.100    -2.000   180.000     1 ! alkane, 4/98, adm jr.
+CT2    CT2    CT2    CT3        0.150    -4.000     0.000     1 ! alkane, 4/98, adm jr.
+CT2    CT2    CT2    CT3        0.100     6.000   180.000     1 ! alkane, 4/98, adm jr.
+CT2    CT2    NH1    C          1.800     1.000     0.000     1 ! ALLOW PEP
+CT2    NH1    C      CP1        1.600    -1.000     0.000     1 ! ALLOW PEP PRO
+CT2    NH1    C      CP1        2.500     2.000   180.000     1 ! ALLOW PEP PRO
+CT2    NH1    C      CT1        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT2    NH1    C      CT1        2.500     2.000   180.000     1 !  ALLOW PEP
+CT2    SM     SM     CT2        1.000    -1.000     0.000     1 ! ALLOW ALI SUL ION
+CT2    SM     SM     CT2        4.100    -2.000     0.000     1 ! ALLOW ALI SUL ION
+CT2    SM     SM     CT2        0.900     3.000     0.000     1 ! ALLOW   ALI SUL ION
+CT3    C      N      CP1        2.750    -2.000   180.000     1 ! ALLOW PRO
+CT3    C      N      CP1        0.300     4.000     0.000     1 ! ALLOW PRO
+CT3    C      N      CP3        2.750    -2.000   180.000     1 ! ALLOW PRO
+CT3    C      N      CP3        0.300     4.000     0.000     1 ! ALLOW PRO
+CT3    C      NH1    CT1        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT3    C      NH1    CT1        2.500     2.000   180.000     1 !  ALLOW PEP
+CT3    C      NH1    CT2        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT3    C      NH1    CT2        2.500     2.000   180.000     1 !  ALLOW PEP
+CT3    C      NH1    CT3        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT3    C      NH1    CT3        2.500     2.000   180.000     1 !  ALLOW PEP
+CT3    CA     CA     CA         3.100     2.000   180.000     1 ! ALLOW   ARO
+CT3    CE1    CE2    HE2        5.200     2.000   180.000     1 ! 
+CT3    CPH1   NR1    CPH2       3.000     2.000   180.000     1 ! ALLOW ARO
+CT3    CT1    NH1    C          1.800     1.000     0.000     1 ! ALLOW PEP
+CT3    CT2    CA     CA         0.230     2.000   180.000     1 ! ALLOW   ARO ALI
+CT3    CT2    CPH1   CPH1       0.200    -1.000     0.000     1 ! ALLOW ARO
+CT3    CT2    CPH1   CPH1       0.270    -2.000     0.000     1 ! ALLOW ARO
+CT3    CT2    CPH1   CPH1       0.000     3.000     0.000     1 ! ALLOW ARO
+CT3    CT2    S      CT3        0.240    -1.000   180.000     1 ! ALOW ALI SUL ION
+CT3    CT2    S      CT3        0.370     3.000     0.000     1 ! ALOW    ALI SUL ION
+CT3    NH1    C      CP1        1.600    -1.000     0.000     1 ! ALLOW PEP PRO
+CT3    NH1    C      CP1        2.500     2.000   180.000     1 ! ALLOW PEP PRO
+CT3    NH1    C      CT1        1.600    -1.000     0.000     1 ! ALLOW PEP
+CT3    NH1    C      CT1        2.500     2.000   180.000     1 !  ALLOW PEP
+CT3    S      CT2    CT2        0.240    -1.000   180.000     1 ! ALOW ALI SUL ION
+CT3    S      CT2    CT2        0.370     3.000     0.000     1 ! ALOW    ALI SUL ION
+CT3    SM     SM     CT3        1.000    -1.000     0.000     1 ! ALLOW ALI SUL ION
+CT3    SM     SM     CT3        4.100    -2.000     0.000     1 ! ALLOW ALI SUL ION
+CT3    SM     SM     CT3        0.900     3.000     0.000     1 ! ALLOW   ALI SUL ION
+H      NH1    C      CP1        2.500     2.000   180.000     1 ! ALLOW PEP PRO
+H      NH1    C      CT1        2.500     2.000   180.000     1 !  ALLOW PEP
+H      NH1    C      CT2        2.500     2.000   180.000     1 !  ALLOW PEP
+H      NH1    C      CT3        2.500     2.000   180.000     1 !  ALLOW PEP
+H      NH1    CT1    C          0.000     1.000     0.000     1 ! ALLOW PEP
+H      NH1    CT1    CC         0.000     1.000     0.000     1 ! ALLOW PEP POL
+H      NH1    CT1    CD         0.000     1.000     0.000     1 ! ALLOW PEP POL
+H      NH1    CT1    CT1        0.000     1.000     0.000     1 ! ALLOW PEP
+H      NH1    CT1    CT2        0.000     1.000     0.000     1 ! ALLOW PEP
+H      NH1    CT1    CT3        0.000     1.000     0.000     1 ! ALLOW PEP
+H      NH1    CT2    C          0.000     1.000     0.000     1 ! ALLOW PEP
+H      NH1    CT2    CC         0.000     1.000     0.000     1 ! ALLOW PEP POL
+H      NH1    CT2    CD         0.000     1.000     0.000     1 ! ALLOW PEP POL
+H      NH1    CT2    CT2        0.000     1.000     0.000     1 ! ALLOW PEP
+H      NH1    CT2    CT3        0.000     1.000     0.000     1 ! ALLOW PEP
+H      NH2    CC     CT1        1.400     2.000   180.000     1 !  ALLOW   PEP POL ARO PRO
+H      NH2    CC     CT2        1.400     2.000   180.000     1 !  ALLOW   PEP POL ARO PRO
+H      NH2    CC     CT3        1.400     2.000   180.000     1 !  ALLOW   PEP POL ARO PRO
+H      NH2    CC     CP1        2.500     2.000   180.000     1 ! ALLOW PEP POL ARO PRO
+H      NR1    CPH1   CPH1       1.000     2.000   180.000     1 ! ALLOW ARO
+H      NR1    CPH1   CT2        1.000     2.000   180.000     1 ! ALLOW ARO
+H      NR1    CPH1   CT3        1.000     2.000   180.000     1 ! ALLOW ARO
+H      NR3    CPH1   CPH1       1.400     2.000   180.000     1 ! ALLOW ARO
+H      NR3    CPH1   CT2        3.000     2.000   180.000     1 ! ALLOW ARO
+H      NR3    CPH1   CT3        3.000     2.000   180.000     1 ! ALLOW ARO
+H      OH1    CA     CA         0.990     2.000   180.000     1 ! ALLOW   ARO ALC
+H      OH1    CT1    CT3        1.330    -1.000     0.000     1 ! ALLOW ALC
+H      OH1    CT1    CT3        0.180    -2.000     0.000     1 ! ALLOW ALC
+H      OH1    CT1    CT3        0.320     3.000     0.000     1 ! ALLOW ALC
+H      OH1    CT2    CT2        1.300    -1.000     0.000     1 ! ALLOW ALC
+H      OH1    CT2    CT2        0.300    -2.000     0.000     1 ! ALLOW ALC
+H      OH1    CT2    CT2        0.420     3.000     0.000     1 ! ALLOW ALC
+H      OH1    CT2    CT3        1.300    -1.000     0.000     1 ! ALLOW ALC
+H      OH1    CT2    CT3        0.300    -2.000     0.000     1 ! ALLOW ALC
+H      OH1    CT2    CT3        0.420     3.000     0.000     1 ! ALLOW ALC
+HA1    CC     NH2    H          1.400     2.000   180.000     1 !  ALLOW PEP POL
+HA2    CP3    N      C          0.000     3.000   180.000     1 ! ALLOW PRO PEP
+HA2    CP3    N      CP1        0.100     3.000     0.000     1 ! ALLOW PRO
+HA2    CP3    NP     CP1        0.080     3.000     0.000     1 ! ALLOW PRO
+HA1    CT1    CT2    CA         0.040     3.000     0.000     1 ! ALLOW   ARO
+HA2    CT2    CPH1   CPH1       0.000     3.000     0.000     1 ! ALLOW ARO
+HA2    CT2    NH1    C          0.000     3.000     0.000     1 ! ALLOW PEP
+HA2    CT2    NH1    H          0.000     3.000     0.000     1 ! ALLOW PEP
+HA2    CT2    S      CT3        0.280     3.000     0.000     1 ! ALLOW   ALI SUL ION
+HA3    CT3    CPH1   CPH1       0.000     3.000     0.000     1 ! ALLOW ARO
+HA3    CT3    CS     HA2        0.160     3.000     0.000     1 ! ALLOW SUL
+HA3    CT3    CS     HA3        0.160     3.000     0.000     1 ! ALLOW SUL
+HA3    CT3    CT2    CA         0.040     3.000     0.000     1 ! ALLOW   ARO
+HA3    CT3    NH1    C          0.000     3.000     0.000     1 ! ALLOW PEP
+HA3    CT3    NH1    H          0.000     3.000     0.000     1 ! ALLOW PEP
+HA3    CT3    S      CT2        0.280     3.000     0.000     1 ! ALLOW   ALI SUL ION
+HE1    CE1    CE1    HE1        1.000     2.000   180.000     1 ! 
+CT3    CE1    CE1    HE1        1.000     2.000   180.000     1 !
+HE1    CE1    CE2    HE2        5.200     2.000   180.000     1 ! 
+HE1    CE1    CT2    HA2        0.000     3.000     0.000     1  
+HE1    CE1    CT2    CT3        0.120     3.000     0.000     1 ! 
+HE1    CE1    CT3    HA3        0.000     3.000     0.000     1  
+HE2    CE2    CE1    CT2        5.200     2.000   180.000     1 ! 
+HB1    CP1    N      C          0.800     3.000     0.000     1 ! ALLOW PRO PEP
+HB1    CP1    N      CP3        0.100     3.000     0.000     1 ! ALLOW PRO
+HB1    CP1    NP     CP3        0.080     3.000     0.000     1 ! ALLOW PRO
+HB1    CT1    NH1    C          0.000     1.000     0.000     1 ! ALLOW PEP
+HB1    CT1    NH1    H          0.000     1.000     0.000     1 ! ALLOW PEP
+HB2    CT2    NH1    C          0.000     1.000     0.000     1 ! ALLOW PEP
+HB2    CT2    NH1    H          0.000     1.000     0.000     1 ! ALLOW PEP
+HC     NH2    CT2    HB2        0.110     3.000     0.000     1  
+HC     NH2    CT2    CD         0.110     3.000     0.000     1  
+HC     NH2    CT2    CT2        0.110     3.000     0.000     1  
+HC     NH2    CT2    HA2        0.110     3.000     0.000     1  
+HC     NP     CP1    C          0.080     3.000     0.000     1 ! ALLOW PRO
+HC     NP     CP1    CC         0.080     3.000     0.000     1 ! ALLOW PRO
+HC     NP     CP1    CD         0.080     3.000     0.000     1 ! ALLOW PRO PEP
+HC     NP     CP1    CP2        0.080     3.000     0.000     1 ! ALLOW PRO
+HC     NP     CP1    HB1        0.080     3.000     0.000     1 ! ALLOW PRO
+HC     NP     CP3    CP2        0.080     3.000     0.000     1 ! ALLOW PRO
+HC     NP     CP3    HA2        0.080     3.000     0.000     1 ! ALLOW PRO
+HP     CA     CA     CA         4.200     2.000   180.000     1 ! ALLOW   ARO
+HP     CA     CA     CT2        4.200     2.000   180.000     1 ! ALLOW   ARO
+HP     CA     CA     CT3        4.200     2.000   180.000     1 ! ALLOW   ARO
+HP     CA     CA     HP         2.400     2.000   180.000     1 ! ALLOW   ARO
+HR1    CPH1   CPH1   CT2        1.000     2.000   180.000     1 ! ALLOW ARO
+HR1    CPH1   CPH1   CT3        1.000     2.000   180.000     1 ! ALLOW ARO
+HR1    CPH1   CPH1   HR1        1.000     2.000   180.000     1 ! ALLOW ARO
+HR1    CPH1   NR3    CPH2       2.500     2.000   180.000     1 ! ALLOW ARO
+HR1    CPH1   NR3    H          3.000     2.000   180.000     1 ! ALLOW ARO
+HR1    CPH2   NR1    CPH1       3.000     2.000   180.000     1 ! ALLOW ARO
+HR1    CPH2   NR1    H          1.000     2.000   180.000     1 ! ALLOW ARO
+HR1    CPH2   NR2    CPH1       3.000     2.000   180.000     1 ! ALLOW ARO
+HR2    CPH2   NR3    CPH1       3.000     2.000   180.000     1 ! ALLOW ARO
+HR2    CPH2   NR3    H          0.000     2.000   180.000     1 ! ALLOW ARO
+HR3    CPH1   CPH1   CT2        2.000     2.000   180.000     1 ! ALLOW ARO
+HR3    CPH1   CPH1   CT3        2.000     2.000   180.000     1 ! ALLOW ARO
+HR3    CPH1   CPH1   HR3        2.000     2.000   180.000     1 ! ALLOW ARO
+HR3    CPH1   NR1    CPH2       3.000     2.000   180.000     1 ! ALLOW ARO
+HR3    CPH1   NR1    H          1.000     2.000   180.000     1 ! ALLOW ARO
+HR3    CPH1   NR2    CPH2       3.000     2.000   180.000     1 ! ALLOW ARO
+HS     S      CT2    CT3        0.240    -1.000     0.000     1 ! ALLOW ALI SUL ION
+HS     S      CT2    CT3        0.150    -2.000     0.000     1 ! ALLOW ALI SUL ION
+HS     S      CT2    CT3        0.270     3.000     0.000     1 ! ALLOW   ALI SUL ION
+HS     S      CT2    HA2        0.200     3.000     0.000     1 ! ALLOW   ALI SUL ION
+HS     S      CT3    HA3        0.200     3.000     0.000     1 ! ALLOW   ALI SUL ION
+N      C      CP1    CP2        0.400    -1.000     0.000     1 ! ALLOW PEP PRO
+N      C      CP1    CP2        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+N      C      CP1    HB1        0.400    -1.000   180.000     1 ! ALLOW PEP PRO
+N      C      CP1    HB1        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+N      C      CP1    N          0.300    -1.000     0.000     1 ! ALLOW PEP PRO
+N      C      CP1    N         -0.300     4.000     0.000     1 ! ALLOW PEP PRO
+N      C      CT1    CT1        0.000     1.000     0.000     1 ! ALLOW PEP PRO
+N      C      CT1    CT2        0.000     1.000     0.000     1 ! ALLOW PEP PRO
+N      C      CT1    CT3        0.000     1.000     0.000     1 ! ALLOW PEP PRO
+N      C      CT1    HB1        0.000     1.000     0.000     1 ! ALLOW PEP PRO
+N      C      CT2    HB2        0.000     1.000     0.000     1 ! ALLOW PEP PRO
+N      C      CT3    HA3        0.000     1.000     0.000     1 ! ALLOW PEP PRO
+N      CT1    CT2    CA         0.040     3.000     0.000     1 ! ALLOW   ARO
+NH1    C      CP1    CP2        0.400    -1.000     0.000     1 ! ALLOW PEP PRO
+NH1    C      CP1    CP2        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+NH1    C      CP1    HB1        0.400    -1.000   180.000     1 ! ALLOW PEP PRO
+NH1    C      CP1    HB1        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+NH1    C      CP1    N          0.300    -1.000     0.000     1 ! ALLOW PEP PRO
+NH1    C      CP1    N         -0.300     4.000     0.000     1 ! ALLOW PEP PRO
+NH1    C      CT1    CT1        0.000     1.000     0.000     1 !   ALLOW PEP
+NH1    C      CT1    CT2        0.000     1.000     0.000     1 !   ALLOW PEP
+NH1    C      CT1    CT3        0.000     1.000     0.000     1 !   ALLOW PEP
+NH1    C      CT1    HB1        0.000     1.000     0.000     1 !   ALLOW PEP
+NH1    C      CT1    NH1        0.600     1.000     0.000     1 !   ALLOW PEP
+NH1    C      CT2    CT2        0.000     1.000     0.000     1 !   ALLOW PEP
+NH1    C      CT2    HA2        0.000     3.000     0.000     1 ! ALLOW PEP
+NH1    C      CT2    HB2        0.000     1.000     0.000     1 !   ALLOW PEP
+NH1    C      CT2    NH1        0.600     1.000     0.000     1 !   ALLOW PEP
+NH1    C      CT3    HA3        0.000     3.000     0.000     1 ! ALLOW PEP
+NH1    CT1    C      N          0.400     1.000     0.000     1 ! ALLOW PEP PRO
+NH1    CT2    C      N          0.400     1.000     0.000     1 ! ALLOW PEP PRO
+NH2    CC     CP1    CP2        0.400    -1.000     0.000     1 ! ALLOW PEP PRO
+NH2    CC     CP1    CP2        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+NH2    CC     CP1    HB1        0.400    -1.000   180.000     1 ! ALLOW PEP PRO
+NH2    CC     CP1    HB1        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+NH2    CC     CP1    N          0.300    -1.000     0.000     1 ! ALLOW PEP PRO
+NH2    CC     CP1    N         -0.300     4.000     0.000     1 ! ALLOW PEP PRO
+NH2    CC     CT2    HA2        0.000     3.000   180.000     1 ! ALLOW POL
+NH3    CT1    C      N          0.400     1.000     0.000     1 ! ALLOW PEP PRO
+NH3    CT1    C      NH1        0.600     1.000     0.000     1 ! ALLOW PEP PRO
+NH3    CT1    CC     NH2        0.400     1.000     0.000     1 ! ALLOW PEP PRO
+NH3    CT2    C      N          0.400     1.000     0.000     1 ! ALLOW PEP PRO
+NH3    CT2    C      NH1        0.400     1.000     0.000     1 ! ALLOW PEP PRO
+NH3    CT2    CC     NH2        0.400     1.000     0.000     1 ! ALLOW PEP PRO
+NP     CP1    C      N          0.300     1.000     0.000     1 ! ALLOW PEP PRO
+NP     CP1    C      NH1        0.300     1.000     0.000     1 ! ALLOW PEP PRO
+NP     CP1    CC     NH2        0.300     1.000     0.000     1 ! ALLOW PEP PRO
+NR1    CPH1   CPH1   CT2        3.000     2.000   180.000     1 ! ALLOW ARO
+NR1    CPH1   CPH1   CT3        3.000     2.000   180.000     1 ! ALLOW ARO
+NR1    CPH1   CPH1   HR3        3.000     2.000   180.000     1 ! ALLOW ARO
+NR1    CPH1   CT2    CT2        0.190     3.000     0.000     1 ! ALLOW ARO
+NR1    CPH1   CT2    CT3        0.190     3.000     0.000     1 ! ALLOW ARO
+NR1    CPH1   CT2    HA2        0.190     3.000     0.000     1 ! ALLOW ARO
+NR1    CPH1   CT3    HA3        0.190     3.000     0.000     1 ! ALLOW ARO
+NR1    CPH2   NR2    CPH1      14.000     2.000   180.000     1 ! ALLOW ARO
+NR2    CPH1   CPH1   CT2        3.000     2.000   180.000     1 ! ALLOW ARO
+NR2    CPH1   CPH1   CT3        3.000     2.000   180.000     1 ! ALLOW ARO
+NR2    CPH1   CPH1   HR3        3.000     2.000   180.000     1 ! ALLOW ARO
+NR2    CPH1   CPH1   NR1       14.000     2.000   180.000     1 ! ALLOW ARO
+NR2    CPH1   CT2    CT2        0.190     3.000     0.000     1 ! ALLOW ARO
+NR2    CPH1   CT2    CT3        0.190     3.000     0.000     1 ! ALLOW ARO
+NR2    CPH1   CT2    HA2        0.190     3.000     0.000     1 ! ALLOW ARO
+NR2    CPH1   CT3    HA3        0.190     3.000     0.000     1 ! ALLOW ARO
+NR2    CPH2   NR1    CPH1      14.000     2.000   180.000     1 ! ALLOW ARO
+NR2    CPH2   NR1    H          1.000     2.000   180.000     1 ! ALLOW ARO
+NR3    CPH1   CPH1   CT2        2.500     2.000   180.000     1 ! ALLOW ARO
+NR3    CPH1   CPH1   CT3        2.500     2.000   180.000     1 ! ALLOW ARO
+NR3    CPH1   CPH1   HR1        2.500     2.000   180.000     1 ! ALLOW ARO
+NR3    CPH1   CPH1   NR3       12.000     2.000   180.000     1 ! ALLOW ARO
+NR3    CPH1   CT2    CT2        0.190     3.000     0.000     1 ! ALLOW ARO
+NR3    CPH1   CT2    CT3        0.190     3.000     0.000     1 ! ALLOW ARO
+NR3    CPH1   CT2    HA2        0.190     3.000     0.000     1 ! ALLOW ARO
+NR3    CPH1   CT3    HA3        0.190     3.000     0.000     1 ! ALLOW ARO
+NR3    CPH2   NR3    CPH1      12.000     2.000   180.000     1 ! ALLOW ARO
+NR3    CPH2   NR3    H          1.400     2.000   180.000     1 ! ALLOW ARO
+O      C      CP1    CP2        0.400    -1.000   180.000     1 ! ALLOW PEP PRO
+O      C      CP1    CP2        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+O      C      CP1    HB1        0.400    -1.000     0.000     1 ! ALLOW PEP PRO
+O      C      CP1    HB1        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+O      C      CP1    N         -0.300     4.000     0.000     1 ! ALLOW PEP PRO
+O      C      CT1    CT1        1.400     1.000     0.000     1 !   ALLOW PEP
+O      C      CT1    CT2        1.400     1.000     0.000     1 !   ALLOW PEP
+O      C      CT1    CT3        1.400     1.000     0.000     1 !   ALLOW PEP
+O      C      CT1    HB1        0.000     1.000     0.000     1 !   ALLOW PEP
+O      C      CT1    NH1        0.000     1.000     0.000     1 !   ALLOW PEP
+O      C      CT1    NH3        0.000     1.000     0.000     1 ! ALLOW PEP PRO
+O      C      CT2    CT2        1.400     1.000     0.000     1 !   ALLOW PEP
+O      C      CT2    HA2        0.000     3.000   180.000     1 ! ALLOW POL
+O      C      CT2    HB2        0.000     1.000     0.000     1 !   ALLOW PEP
+O      C      CT2    NH1        0.000     1.000     0.000     1 !   ALLOW PEP
+O      C      CT2    NH3        0.000     1.000     0.000     1 ! ALLOW PEP PRO
+O      C      CT3    HA3        0.000     3.000   180.000     1 ! ALLOW POL
+O      C      N      CP1        2.750    -2.000   180.000     1 ! ALLOW PRO
+O      C      N      CP1        0.300     4.000     0.000     1 ! ALLOW PRO
+O      C      N      CP3        2.750    -2.000   180.000     1 ! ALLOW PRO
+O      C      N      CP3        0.300     4.000     0.000     1 ! ALLOW PRO
+O      C      NH1    CT1        2.500     2.000   180.000     1 !  ALLOW PEP
+O      C      NH1    CT2        2.500     2.000   180.000     1 !  ALLOW PEP
+O      C      NH1    CT3        2.500     2.000   180.000     1 !  ALLOW PEP
+O      C      NH1    H          2.500     2.000   180.000     1 !  ALLOW PEP
+O      CC     CP1    CP2        0.400    -1.000   180.000     1 ! ALLOW PEP PRO
+O      CC     CP1    CP2        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+O      CC     CP1    HB1        0.400    -1.000     0.000     1 ! ALLOW PEP PRO
+O      CC     CP1    HB1        0.600     2.000     0.000     1 ! ALLOW PEP PRO
+O      CC     CP1    N         -0.300     4.000     0.000     1 ! ALLOW PEP PRO
+O      CC     CT2    HA2        0.000     3.000   180.000     1 ! ALLOW POL
+O      CC     NH2    H          1.400     2.000   180.000     1 !  ALLOW PEP POL ARO PRO
+OB     CD     OS     CT2        0.965    -1.000   180.000     1 ! ALLOW PEP POL
+OB     CD     OS     CT2        3.850     2.000   180.000     1 ! ALLOW   PEP POL
+OB     CD     OS     CT3        0.965    -1.000   180.000     1 ! ALLOW PEP POL
+OB     CD     OS     CT3        3.850     2.000   180.000     1 ! ALLOW   PEP POL
+OC     CA     CA     CA         3.100     2.000   180.000     1 ! ALLOW   ARO
+OC     CA     CA     HP         4.200     2.000   180.000     1 ! ALLOW   ARO
+OC     CC     CP1    CP2        0.160     3.000     0.000     1 ! ALLOW PEP PRO POL
+OC     CC     CP1    HB1        0.160     3.000     0.000     1 ! ALLOW PEP PRO POL
+OC     CC     CP1    N          0.160     3.000     0.000     1 ! ALLOW PEP PRO POL
+OC     CC     CP1    NP         0.160     3.000     0.000     1 ! ALLOW PEP PRO POL
+OC     CC     CT1    NH3        3.200     2.000   180.000     1 ! ALLOW PEP PRO
+OC     CC     CT2    NH3        3.200     2.000   180.000     1 ! ALLOW PEP PRO
+OH1    CA     CA     CA         3.100     2.000   180.000     1 ! ALLOW   ARO
+OH1    CA     CA     HP         4.200     2.000   180.000     1 ! ALLOW   ARO
+S      CT2    CT2    HA2        0.010     3.000     0.000     1 ! ALLOW   ALI SUL ION
+SM     CT2    CT2    HA2        0.010     3.000     0.000     1 ! ALLOW   ALI SUL ION
+SM     SM     CT2    CT1        0.310     3.000     0.000     1 ! ALLOW  SUL ALI
+SM     SM     CT2    CT2        0.310     3.000     0.000     1 ! ALLOW  SUL ALI
+SM     SM     CT2    CT3        0.310     3.000     0.000     1 ! ALLOW  SUL ALI
+SM     SM     CT2    HA2        0.158     3.000     0.000     1 ! ALLOW   ALI SUL ION
+SM     SM     CT3    HA3        0.158     3.000     0.000     1 ! ALLOW   ALI SUL ION
+SS     CS     CT3    HA3        0.150     3.000     0.000     1 ! ALLOW SUL
+?      C      NC2    ?          2.250     2.000   180.000     1 ! ALLOW   PEP POL ARO
+?      CD     OH1    ?          2.050     2.000   180.000     1 ! ALLOW   PEP POL ARO ALC
+?      CD     OS     ?          2.050     2.000   180.000     1 ! ALLOW   PEP POL
+?      CE1    CE1    ?          0.150     1.000     0.000     1  
+?      CE1    CE1    ?          8.500     2.000   180.000     1  
+?      CE2    CE2    ?          4.900     2.000   180.000     1 ! 
+?      CP1    C      ?          0.000     6.000   180.000     1 ! ALLOW   POL PEP PRO
+?      CP1    CC     ?          0.000     6.000   180.000     1 ! ALLOW   POL PEP
+?      CP1    CD     ?          0.000     6.000   180.000     1 ! ALLOW   POL PEP
+?      CP1    CP2    ?          0.140     3.000     0.000     1 ! ALLOW PRO
+?      CP2    CP2    ?          0.160     3.000     0.000     1 ! ALLOW PRO
+?      CP3    CP2    ?          0.140     3.000     0.000     1 ! ALLOW PRO
+?      CT1    CC     ?          0.050     6.000   180.000     1 ! ALLOW   POL PEP
+?      CT1    CD     ?          0.000     6.000   180.000     1 ! ALLOW   POL PEP
+?      CT1    CT1    ?          0.200     3.000     0.000     1 ! ALLOW   ALI
+?      CT1    CT2    ?          0.200     3.000     0.000     1 ! ALLOW   ALI
+?      CT1    CT3    ?          0.200     3.000     0.000     1 ! ALLOW   ALI
+?      CT1    NH3    ?          0.100     3.000     0.000     1 ! ALLOW   ALI POL
+?      CT1    OH1    ?          0.140     3.000     0.000     1 ! ALLOW   ALI ALC ARO
+?      CT1    OS     ?         -0.100     3.000     0.000     1 ! ALLOW   PEP POL
+?      CT2    CA     ?          0.000     6.000     0.000     1 ! ALLOW   ALI ARO
+?      CT2    CC     ?          0.050     6.000   180.000     1 ! ALLOW   POL PEP
+?      CT2    CD     ?          0.000     6.000   180.000     1 ! ALLOW   POL PEP
+?      CT2    CT2    ?          0.190     3.000     0.000     1 ! ALLOW   ALI
+?      CT2    CT3    ?          0.160     3.000     0.000     1 ! ALLOW   ALI
+?      CT2    NC2    ?          0.000     6.000   180.000     1 ! ALLOW   ALI POL
+?      CT2    NH3    ?          0.100     3.000     0.000     1 ! ALLOW   ALI POL
+?      CT2    OH1    ?          0.140     3.000     0.000     1 ! ALLOW   ALI ALC ARO
+?      CT2    OS     ?         -0.100     3.000     0.000     1 ! ALLOW   PEP POL
+?      CT3    CA     ?          0.000     6.000     0.000     1 ! ALLOW   ALI ARO
+?      CT3    CC     ?          0.050     6.000   180.000     1 ! ALLOW   POL PEP
+?      CT3    CD     ?          0.000     6.000   180.000     1 ! ALLOW   POL PEP
+?      CT3    CT3    ?          0.152     3.000     0.000     1 ! ALLOW   ALI
+?      CT3    NC2    ?          0.000     6.000   180.000     1 ! ALLOW   ALI POL
+?      CT3    NH2    ?          0.110     3.000     0.000     1 ! ALLOW   POL
+?      CT3    NH3    ?          0.090     3.000     0.000     1 ! ALLOW   ALI POL
+?      CT3    OH1    ?          0.140     3.000     0.000     1 ! ALLOW   ALI ALC ARO
+?      CT3    OS     ?         -0.100     3.000     0.000     1 ! ALLOW   PEP POL
+NH1    CT1    CT1    HA1        0.200     3.000     0.000     1 ! From X    CT1  CT1  X
+HB1    CT1    CT1    HA1        0.200     3.000     0.000     1 ! From X    CT1  CT1  X
+HB1    CT1    CT1    CT3        0.200     3.000     0.000     1 ! From X    CT1  CT1  X
+HA1    CT1    CT1    C          0.200     3.000     0.000     1 ! From X    CT1  CT1  X
+NH1    CT1    CT2    HA2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HB1    CT1    CT2    HA2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HB1    CT1    CT2    OH1        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HB1    CT1    CT2    CT2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HA2    CT2    CT1    C          0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HA2    CT2    OH1    H          0.140     3.000     0.000     1 ! From X    CT2  OH1  X      
+CT1    CT2    CT2    HA2        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+HA2    CT2    CT2    HA2        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+HA2    CT2    CT2    CC         0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+HB1    CT1    CT2    S          0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+CT2    CT2    CT2    HA2        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+CT2    CT2    CT2    NC2        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+CT2    CT2    NC2    HC         0.000     6.000   180.000     1 ! From X    CT2  NC2  X
+CT2    CT2    NC2    C          0.000     6.000   180.000     1 ! From X    CT2  NC2  X
+HA2    CT2    CT2    NC2        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+CT2    NC2    C      NC2        2.250     2.000   180.000     1 ! From X    C    NC2  X
+HA2    CT2    NC2    HC         0.000     6.000   180.000     1 ! From X    CT2  NC2  X
+HA2    CT2    NC2    C          0.000     6.000   180.000     1 ! From X    CT2  NC2  X
+NC2    C      NC2    HC         2.250     2.000   180.000     1 ! From X    C    NC2  X
+HB1    CT1    CT2    CC         0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HB1    CT1    CT2    CY         0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HA2    CT2    CC     OC         0.050     6.000   180.000     1 ! From X    CT2  CC   X
+HB1    CT1    CT2    CPH1       0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+CT1    CT1    CT3    HA3        0.200     3.000     0.000     1 ! From X    CT1  CT3  X
+CT1    CT1    CT2    HA2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HB1    CT1    CT1    CT2        0.200     3.000     0.000     1 ! From X    CT1  CT1  X
+CT1    CT2    CT3    HA3        0.160     3.000     0.000     1 ! From X    CT2  CT3  X
+HA1    CT1    CT3    HA3        0.200     3.000     0.000     1 ! From X    CT1  CT3  X
+HA1    CT1    CT2    HA2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HA1    CT1    CT2    CT3        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+CT3    CT1    CT2    HA2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+CT3    CT1    CT2    CT3        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HA3    CT3    CT1    CT2        0.200     3.000     0.000     1 ! From X    CT1  CT3  X
+HA2    CT2    CT3    HA3        0.160     3.000     0.000     1 ! From X    CT2  CT3  X
+CT1    CT2    CT1    HA1        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HB1    CT1    CT2    CT1        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+CT3    CT1    CT3    HA3        0.200     3.000     0.000     1 ! From X    CT1  CT3  X
+CT2    CT2    CT2    NH3        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+CT2    CT2    NH3    HC         0.100     3.000     0.000     1 ! From X    CT2  NH3  X
+HA2    CT2    CT2    NH3        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+HA2    CT2    NH3    HC         0.100     3.000     0.000     1 ! From X    CT2  NH3  X
+HB1    CT1    CT2    CA         0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HA2    CT2    CA     CA         0.000     6.000     0.000     1 ! From X    CT2  CA   X
+HB1    CT1    CT1    OH1        0.200     3.000     0.000     1 ! From X    CT1  CT1  X
+HA1    CT1    OH1    H          0.140     3.000     0.000     1 ! From X    CT1  OH1  X
+OH1    CT1    CT3    HA3        0.200     3.000     0.000     1 ! From X    CT1  CT3  X
+CT2    CT2    CC     O          0.050     6.000   180.000     1 ! From X    CT2  CC   X
+CT2    CT2    CC     NH2        0.050     6.000   180.000     1 ! From X    CT2  CC   X
+CT2    CT2    CC     OC         0.050     6.000   180.000     1 ! From X    CT2  CC   X
+NH1    CT1    CT2A   HA2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+CT1    CT2A   CT2    HA2        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+HB1    CT1    CT2A   HA2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HB1    CT1    CT2A   CT2        0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HA2    CT2A   CT1    C          0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+HA2    CT2A   CT1    CC         0.200     3.000     0.000     1 ! RB: added for C-ter Glu
+HA2    CT2A   CT2    HA2        0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+HA2    CT2A   CT2    CC         0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+HB1    CT1    CT2A   CPH1       0.200     3.000     0.000     1 ! From X    CT1  CT2  X
+C      NH1    CT1    CT2A       1.800     1.000     0.000     1 ! from CT2  CT1  NH1  C
+H      NH1    CT1    CT2A       0.000     1.000     0.000     1 ! from H    NH1  CT1  CT2
+CT2A   CT1    C      O          1.400     1.000     0.000     1 ! from O    C    CT1  CT2
+CT2A   CT1    C      NH1        0.000     1.000     0.000     1 ! NH1  C    CT1  CT2
+CT2A   CT1    C      N          0.000     1.000     0.000     1 ! RB: added for GLU-PRO in UBQ
+CT1    CT2A   CT2    CD         0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+HA2    CT2A   CT2    CD         0.190     3.000     0.000     1 ! From X    CT2  CT2  X
+CT2A   CPH1   CPH1   HR1        1.000     2.000   180.000     1 ! from HR1  CPH1 CPH1 CT2
+CT2A   CPH1   CPH1   NR3        2.500     2.000   180.000     1 ! from NR3  CPH1 CPH1 CT2
+CT2A   CPH1   NR3    H          3.000     2.000   180.000     1 ! from H    NR3  CPH1 CT2
+CT2A   CPH1   NR3    CPH2       2.500     2.000   180.000     1 ! from CT2  CPH1 NR3  CPH2
+HA2    CT2A   CPH1   CPH1       0.000     3.000     0.000     1 ! from HA2  CT2  CPH1 CPH1
+HA2    CT2A   CPH1   NR3        0.190     3.000     0.000     1 ! from NR3  CPH1 CT2  HA2
+C      CT1    CT2    CT2        0.350    -1.000   180.000     1 ! -180, +60
+C      CT1    CT2    CT2        0.420    -2.000   180.000     1 ! -180, +60
+C      CT1    CT2    CT2        1.910     3.000   180.000     1  
+CT2    CT2    CT1    NH1        0.880    -1.000   180.000     1 
+CT2    CT2    CT1    NH1        0.000    -2.000   180.000     1 ! (-180), +60
+CT2    CT2    CT1    NH1        1.900     3.000     0.000     1  
+CC     CT2    CT2    CT1        1.840    -1.000   180.000     1 ! (-180), -60, +60
+CC     CT2    CT2    CT1        0.840    -2.000   180.000     1 
+CC     CT2    CT2    CT1        0.390     3.000   180.000     1  
+CT1    CT2    CT2    CT2        0.630    -1.000   180.000     1 
+CT1    CT2    CT2    CT2        0.010    -2.000     0.000     1 
+CT1    CT2    CT2    CT2        0.150     3.000     0.000     1  
+CT1    CT2    CT2    S          0.140    -1.000   180.000     1 
+CT1    CT2    CT2    S          0.540    -2.000     0.000     1 
+CT1    CT2    CT2    S          0.690     3.000     0.000     1  
+C      CT1    CT2    CC         1.410    -1.000   180.000     1 
+C      CT1    CT2    CC         1.290    -2.000   180.000     1 
+C      CT1    CT2    CC         0.590     3.000   180.000     1  
+CC     CT2    CT1    NH1        0.280    -1.000   180.000     1 
+CC     CT2    CT1    NH1        0.500    -2.000   180.000     1 
+CC     CT2    CT1    NH1        0.380     3.000     0.000     1  
+CT1    CT2    CC     NH2        0.620    -1.000   180.000     1 
+CT1    CT2    CC     NH2        0.660    -2.000   180.000     1 
+CT1    CT2    CC     NH2        0.720     3.000   180.000     1  
+CT1    CT2    CC     O          0.420    -1.000   180.000     1 
+CT1    CT2    CC     O          0.150    -2.000   180.000     1 
+CT1    CT2    CC     O          0.950     3.000   180.000     1  
+CT1    CT2    CC     OC         0.840    -1.000     0.000     1 
+CT1    CT2    CC     OC         0.980    -2.000   180.000     1 
+CT1    CT2    CC     OC         1.460     3.000     0.000     1  
+CT1    CT2    S      HS         0.200    -1.000     0.000     1 
+CT1    CT2    S      HS         0.650    -2.000     0.000     1 
+CT1    CT2    S      HS         0.220     3.000     0.000     1  
+C      CT1    CT2    S          0.240    -1.000   180.000     1 
+C      CT1    CT2    S          0.750    -2.000   180.000     1 
+C      CT1    CT2    S          1.350     3.000   180.000     1  
+NH1    CT1    CT2    S          0.340    -1.000     0.000     1 
+NH1    CT1    CT2    S          0.500    -2.000   180.000     1 
+NH1    CT1    CT2    S          1.430     3.000     0.000     1  
+CC     CT2    CT2A   CT1        3.000    -1.000   180.000     1 
+CC     CT2    CT2A   CT1        0.380    -2.000     0.000     1 
+CC     CT2    CT2A   CT1        0.590     3.000   180.000     1  
+C      CT1    CT2A   CT2        0.110    -1.000     0.000     1 
+C      CT1    CT2A   CT2        0.980    -2.000   180.000     1 
+C      CT1    CT2A   CT2        1.600     3.000   180.000     1  
+CC     CT1    CT2A   CT2        1.600     3.000   180.000     1  
+CT2    CT2A   CT1    NH1        0.300    -1.000     0.000     1 ! (-180), (-60)
+CT2    CT2A   CT1    NH1        0.350    -2.000     0.000     1 ! -180
+CT2    CT2A   CT1    NH1        1.760     3.000     0.000     1  
+CPH1   CPH1   CT2    CT1        1.740    -1.000     0.000     1 
+CPH1   CPH1   CT2    CT1        0.150    -2.000     0.000     1 
+CPH1   CPH1   CT2    CT1        0.770     3.000   180.000     1  
+CT1    CT2    CPH1   NR1        1.490    -1.000     0.000     1 
+CT1    CT2    CPH1   NR1        0.090    -2.000   180.000     1 
+CT1    CT2    CPH1   NR1        0.790     3.000   180.000     1  
+CT1    CT2    CPH1   NR2        1.090    -1.000     0.000     1 
+CT1    CT2    CPH1   NR2        0.090    -2.000     0.000     1 
+CT1    CT2    CPH1   NR2        0.670     3.000   180.000     1  
+C      CT1    CT2    CPH1       0.180    -1.000   180.000     1 
+C      CT1    CT2    CPH1       0.640    -2.000   180.000     1 
+C      CT1    CT2    CPH1       0.870     3.000   180.000     1  
+CPH1   CT2    CT1    NH1        0.000    -1.000     0.000     1 
+CPH1   CT2    CT1    NH1        0.000    -2.000   180.000     1 
+CPH1   CT2    CT1    NH1        0.900     3.000     0.000     1  
+CPH1   CPH1   CT2A   CT1        2.040    -1.000     0.000     1 
+CPH1   CPH1   CT2A   CT1        0.440    -2.000     0.000     1 
+CPH1   CPH1   CT2A   CT1        0.130     3.000   180.000     1  
+CT1    CT2A   CPH1   NR3        0.530    -1.000   180.000     1 
+CT1    CT2A   CPH1   NR3        0.420    -2.000   180.000     1 
+CT1    CT2A   CPH1   NR3        0.300     3.000   180.000     1  
+C      CT1    CT2A   CPH1       1.750    -1.000   180.000     1 
+C      CT1    CT2A   CPH1       0.130    -2.000     0.000     1 
+C      CT1    CT2A   CPH1       1.860     3.000   180.000     1  
+CPH1   CT2A   CT1    NH1        1.090    -1.000   180.000     1 
+CPH1   CT2A   CT1    NH1        0.220    -2.000   180.000     1 
+CPH1   CT2A   CT1    NH1        2.320     3.000     0.000     1  
+CT1    CT1    CT2    CT3        0.380    -1.000   180.000     1 
+CT1    CT1    CT2    CT3        0.130    -2.000   180.000     1 
+CT1    CT1    CT2    CT3        0.290     3.000   180.000     1  
+C      CT1    CT1    CT2        0.100    -1.000   180.000     1 ! -180,-,+60
+C      CT1    CT1    CT2        0.520    -2.000   180.000     1 
+C      CT1    CT1    CT2        0.290     3.000   180.000     1  
+CT2    CT1    CT1    NH1        0.120    -1.000   180.000     1 
+CT2    CT1    CT1    NH1        0.360    -2.000   180.000     1 ! -180,-,-
+CT2    CT1    CT1    NH1        0.410     3.000     0.000     1  
+CT1    CT2    CT1    CT3        0.050    -1.000     0.000     1 
+CT1    CT2    CT1    CT3        0.100    -2.000   180.000     1 
+CT1    CT2    CT1    CT3        0.010     3.000   180.000     1  
+C      CT1    CT2    CT1        0.320    -1.000   180.000     1 
+C      CT1    CT2    CT1        0.610    -2.000   180.000     1 ! -60
+C      CT1    CT2    CT1        0.720     3.000   180.000     1  
+CT1    CT2    CT1    NH1        0.480    -1.000   180.000     1 
+CT1    CT2    CT1    NH1        0.420    -2.000   180.000     1 
+CT1    CT2    CT1    NH1        0.650     3.000     0.000     1  
+CA     CA     CT2    CT1        1.070    -1.000     0.000     1 
+CA     CA     CT2    CT1        0.240    -2.000   180.000     1 
+CA     CA     CT2    CT1        0.170     3.000   180.000     1  
+C      CT1    CT2    CA         1.280    -1.000   180.000     1 ! (-180),-60,+60
+C      CT1    CT2    CA         0.940    -2.000   180.000     1 ! -60
+C      CT1    CT2    CA         1.570     3.000   180.000     1 ! all
+CA     CT2    CT1    NH1        0.520    -1.000   180.000     1 ! -60,+60
+CA     CT2    CT1    NH1        0.620    -2.000   180.000     1 ! -60,+60
+CA     CT2    CT1    NH1        1.580     3.000     0.000     1 ! none
+CT1    CT2    OH1    H          0.020    -1.000     0.000     1 
+CT1    CT2    OH1    H          0.560    -2.000     0.000     1 
+CT1    CT2    OH1    H          0.490     3.000     0.000     1  
+C      CT1    CT2    OH1        0.650    -1.000   180.000     1 
+C      CT1    CT2    OH1        0.250    -2.000   180.000     1 
+C      CT1    CT2    OH1        1.170     3.000   180.000     1  
+NH1    CT1    CT2    OH1        0.180    -1.000   180.000     1 
+NH1    CT1    CT2    OH1        0.190    -2.000   180.000     1 
+NH1    CT1    CT2    OH1        1.460     3.000     0.000     1  
+CT1    CT1    OH1    H          0.180    -1.000     0.000     1 
+CT1    CT1    OH1    H          0.060    -2.000     0.000     1 
+CT1    CT1    OH1    H          0.250     3.000     0.000     1  
+C      CT1    CT1    OH1        0.790    -1.000   180.000     1 ! raise
+C      CT1    CT1    OH1        0.390    -2.000   180.000     1 !lower this value if needed
+C      CT1    CT1    OH1        0.990     3.000   180.000     1  
+NH1    CT1    CT1    OH1        0.090    -1.000     0.000     1 ! raise to lower -180
+NH1    CT1    CT1    OH1        0.190    -2.000   180.000     1 
+NH1    CT1    CT1    OH1        0.170     3.000     0.000     1  
+CA     CY     CT2    CT1        0.030    -1.000     0.000     1 
+CA     CY     CT2    CT1        0.550    -2.000     0.000     1 
+CA     CY     CT2    CT1        0.390     3.000   180.000     1  
+CPT    CY     CT2    CT1        0.360    -1.000   180.000     1 
+CPT    CY     CT2    CT1        0.050    -2.000     0.000     1 
+CPT    CY     CT2    CT1        0.190     3.000   180.000     1  
+C      CT1    CT2    CY         1.090    -1.000   180.000     1 ! modulates -180, +60
+C      CT1    CT2    CY         0.500    -2.000   180.000     1 ! modulates -180, +60
+C      CT1    CT2    CY         1.170     3.000   180.000     1  
+CY     CT2    CT1    NH1        0.290    -1.000   180.000     1 ! modulates -180
+CY     CT2    CT1    NH1        0.660    -2.000   180.000     1 ! modulates -60,60
+CY     CT2    CT1    NH1        1.170     3.000     0.000     1  
+C      CT1    CT1    CT3        0.140    -1.000   180.000     1 
+C      CT1    CT1    CT3        0.260    -2.000   180.000     1 
+C      CT1    CT1    CT3        0.330     3.000   180.000     1  
+CT3    CT1    CT1    NH1        0.180    -1.000     0.000     1 
+CT3    CT1    CT1    NH1        0.060    -2.000     0.000     1 
+CT3    CT1    CT1    NH1        0.590     3.000     0.000     1  
+
+! Ligand torsion parameters
+! End Ligand torsion parameters
+
+[impropers]
+* V(improper) = Kpsi(psi - psi0)**2
+* Kpsi: kcal/mole/rad**2
+* psi0: degrees
+* note that the second column of numbers (0) is ignored
+* atom types           Kpsi                   psi0
+* 
+* iaci  iacj   iack   iacl      forceK     imp0
+*-------------------------------------------------------------------------------
+HE2    HE2    CE2    CE2        6.000     0.000 ! 
+HR1    NR1    NR2    CPH2       1.000     0.000 ! ALLOW ARO
+HR1    NR2    NR1    CPH2       1.000     0.000 ! ALLOW ARO
+HR3    CPH1   NR1    CPH1       1.000     0.000 ! ALLOW ARO
+HR3    CPH1   NR2    CPH1       1.000     0.000 ! ALLOW ARO
+HR3    CPH1   NR3    CPH1       2.000     0.000 ! ALLOW ARO
+HR3    NR1    CPH1   CPH1       1.000     0.000 ! ALLOW ARO
+HR3    NR2    CPH1   CPH1       1.000     0.000 ! ALLOW ARO
+N      C      CP1    CP3        0.000     0.000 ! ALLOW PRO
+?      NC2    C      ?         90.000     0.000 ! ALLOW   PEP POL ARO
+C      HC     HC     NC2        0.000     0.000  
+?      NC2    HC     ?         -4.000     0.000  
+?      NH1    H      ?         40.000     0.000 ! ALLOW   PEP POL ARO
+?      NH2    H      ?          8.000     0.000 ! ALLOW   POL
+NR1    CPH1   CPH2   H          0.900     0.000 ! ALLOW ARO
+NR1    CPH2   CPH1   H          0.900     0.000 ! ALLOW ARO
+NR3    CPH1   CPH2   H          2.400     0.000 ! ALLOW ARO
+NR3    CPH2   CPH1   H          2.400     0.000 ! ALLOW ARO
+O      CP1    NH2    CC        90.000     0.000 ! ALLOW PEP POL PRO
+O      CT1    NH2    CC        90.000     0.000 ! ALLOW PEP POL
+O      CT2    NH2    CC        90.000     0.000 ! ALLOW PEP POL
+O      CT3    NH2    CC        90.000     0.000 ! ALLOW PEP POL
+O      HA1    NH2    CC        90.000     0.000 ! ALLOW PEP POL PRO
+O      N      CT2    CC       240.000     0.000 ! ALLOW PEP POL PRO
+O      NH2    CP1    CC        90.000     0.000 ! ALLOW PEP POL PRO
+O      NH2    CT1    CC        90.000     0.000 ! ALLOW PEP POL
+O      NH2    CT2    CC        90.000     0.000 ! ALLOW PEP POL
+O      NH2    CT3    CC        90.000     0.000 ! ALLOW PEP POL
+O      NH2    HA1    CC        90.000     0.000 ! ALLOW PEP POL
+?      O      C      ?        240.000     0.000 ! ALLOW   PEP POL ARO
+?      OB     CD     ?        200.000     0.000 ! ALLOW   ALC ARO POL
+?      OC     CC     ?        192.000     0.000 ! ALLOW   PEP POL ARO ION
+?      CC     CT1    ?        192.000     0.000 ! ALLOW   PEP POL ARO ION
+?      CC     CT2    ?        192.000     0.000 ! ALLOW   PEP POL ARO ION
+?      CC     CT3    ?        192.000     0.000 ! ALLOW   PEP POL ARO ION
+
+! Ligand improper parameters
+! End ligand improper parameters

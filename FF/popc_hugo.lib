@@ -1,0 +1,135 @@
+{POP}                 ! POPC
+    [info]
+        SYBYLtype  RESIDUE     !SYBYL substructure type
+    [atoms]
+         1 N4 	   LNL	      -0.5000
+         2 P8 	   LP          1.700
+         3 C12	   LC2	       0.400
+         4 O7 	   LOS	      -0.800
+         5 C13	   LH1	       0.300
+         6 O11 	   LOS	      -0.700
+         7 C32	   LC2	       0.50
+         8 O9 	   LOM	      -0.800
+         9 O10 	   LOM	      -0.800
+        10 C5	   LH2	       0.3000
+        11 C1	   LC3	       0.4000
+        12 C2	   LC3	       0.4000
+        13 C3	   LC3	       0.4000
+        14 C6	   LC2	       0.4000
+        15 C15	   LC	       0.7000
+        16 O14	   LOS	      -0.700
+        17 C17	   LP2	       0.0
+        18 O16	   LO	      -0.700
+        19 C18	   LP2         0.0    
+        20 C19	   LP2         0.0		  
+        21 C20	   LP2         0.0
+        22 C21	   LP2         0.0
+        23 C22     LP2         0.0
+        24 C23     LP2         0.0
+        25 C24	   LH1	       0.0
+        26 C34	   LC	       0.800
+        27 O33	   LOS	      -0.70
+        28 C36	   LP2	       0.0
+        29 O35	   LO	      -0.60
+        30 C37     LP2         0.0
+        31 C38     LP2         0.0
+        32 C39	   LP2         0.0
+        33 C40     LP2         0.0
+        34 C41     LP2         0.0
+        35 C42     LP2         0.0
+        36 C43     LP2         0.0
+        37 C25     LH1         0.0
+        38 C26     LP2         0.0
+        39 C27     LP2         0.0
+        40 C28     LP2         0.0
+        41 C29     LP2         0.0
+        42 C30     LP2         0.0
+        43 C31     LP2         0.0
+        44 CA1     LP2         0.0
+        45 CA2	   LP3	       0.0
+        46 C44	   LP2         0.0
+        47 C45	   LP2         0.0
+        48 C46	   LP2         0.0
+        49 C47	   LP2         0.0
+        50 C48	   LP2         0.0
+        51 C49	   LP2         0.0
+        52 C50     LP3         0.0                     
+    
+    [bonds]                !connect i -- j
+       N4   C1
+       N4   C2
+       N4   C3
+       N4   C5
+       C5   C6
+       C6   O7
+       P8   O7
+       P8   O11
+       P8   O9
+       P8   O10
+       C12  O11
+       C12  C13
+       C13  O14
+       C15  O14
+       C15  O16
+       C15  C17
+       C17  C18
+       C18  C19
+       C19  C20
+       C20  C21
+       C21  C22
+       C22  C23
+       C23  C24
+       C24  C25
+       C25 C26
+       C26 C27
+       C27 C28
+       C28 C29
+       C29 C30
+       C30 C31
+       C31 CA1
+       CA1 CA2
+       C13  C32
+       C32  O33
+       C34  O33
+       C34  O35
+       C34  C36
+       C36  C37
+       C37  C38
+       C38  C39
+       C39  C40
+       C40  C41
+       C41  C42
+       C42  C43
+       C43  C44
+       C44 C45
+       C45 C46
+       C46 C47
+       C47 C48
+       C48 C49
+       C49 C50
+
+    [connections]   !tail and head connections
+
+    [impropers]
+        O14  C15    O16   C17
+        O33  C34    O35   C36
+        O14  C13    C12   C32
+    [charge_groups] !charge groups, with switch atom first                  
+        C6  N4  C1  C2  C3  C5 P8  O7  O9  O10  O11
+        O14  C12  C13  C15  O16
+        C17  C18  C19        
+        C20  C21        
+        C22  C23        
+        C24  C25                       
+        C26  C27        
+        C28  C29        
+        C30  C31        
+        CA1  CA2                             
+	O33  C32  C34  O35
+        C36  C37  C38        
+        C39  C40        
+        C41  C42        
+        C43  C44
+        C45  C46               
+	C47  C48	
+	C49  C50
