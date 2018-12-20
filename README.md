@@ -17,11 +17,7 @@ with a detailed description of the setup procedure as published in
 Jespers et al. (resFEP/ligFEP). This tutorial includes the generation
 of ligand parameters using OPLS, how to prepare a protein system, and
 how to run ligand and protein FEP calculations. These examples are 
-based on ligand binding of CDk2 inhibitors, and protein stability
-calculations on T4-lysozyme. Each topic is stored within a separate
-folder, and includes a README file including a step by step description
-of the protocol.  
-
+based on ligand binding of CDk2 inhibitors.
 
 # Installing setupFEP  
 
