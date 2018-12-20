@@ -8,10 +8,6 @@ detail below:
 - setupFEP.py: module to generate ligand FEP calculations using a
 dual topology approach, see Jespers et al. (doi:/MS_SUBMITTED).  
 
-- resFEP.py: module to setup protein FEP calculations, based on 
-Boukharta et al. (https://doi.org/10.1371/journal.pcbi.1003585) and 
-Jespers et al. (see doi://MS_SUBMITTED).  
-
 - opls2Q and charmm2Q.py: tools to translate from OPLS (ffld_server) 
 and CHARMM (cgenff) to Q readable file formats.  
 
