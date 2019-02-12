@@ -34,8 +34,16 @@ class Run(object):
             try:
                 energies = IO.read_qfep(filename)
             except:
-                print "Could not retrieve energies for: " + filename
-                energies = [np.nan, np.nan, np.nan, np.nan, np.nan]
+                if FEP == 'FEP2':
+                    energies = [0.00,0.00,0.00,0.00,0.00]
+                else:
+                    print "Could not retrieve energies for: " + filename
+                    energies = [np.nan, np.nan, np.nan, np.nan, np.nan]
+            #try:
+            #    energies = IO.read_qfep(filename)
+            #except:
+            #    print "Could not retrieve energies for: " + filename
+            #    energies = [np.nan, np.nan, np.nan, np.nan, np.nan]
 
             for key in methods_list:
                 i += 1
@@ -46,7 +54,7 @@ class Run(object):
         for method in methods:
             dG_array = []
             for key in methods[method]:
-                print method, key, methods[method][key]
+                #print method, key, methods[method][key]
                 dG_array.append(methods[method][key])
             dG_array = np.array(dG_array)
             dG_array = dG_array.astype(np.float)

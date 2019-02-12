@@ -10,12 +10,12 @@ import settings as s
 
 ## Some useful objects TO DO add GLH etc.
 charged_res = {'HIS': {'HD1' : 'HID',
-                       'HE2' : 'HIE'},
+                                  'HE2' : 'HIE'},
                
-               'GLU': {'HE2' : 'GLH'},
+                          'GLU': {'HE2' : 'GLH'},
                
-               'ASP': {'HD2' : 'ASH'}
-              }    
+                          'ASP': {'HD2' : 'ASH'}
+                         }    
 
 def pdb_parse_in(line, include=('ATOM','HETATM')):
     """
@@ -70,8 +70,13 @@ def pdb_parse_out(line):
     """
     Takes a list and parses it into a pdb writeable line
     """
-    line = '{:6s}{:5d}  {:3s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
-           '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
+    if len(line[2]) <= 3: 
+        line = '{:6s}{:5d}  {:3s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
+               '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
+            
+    elif len(line[2]) == 4: 
+        line = '{:6s}{:5d} {:4s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
+               '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
     return line
 
 def replace(string, replacements):

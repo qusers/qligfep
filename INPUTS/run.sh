@@ -58,5 +58,5 @@ if [ $index -lt 1 ]; then
 #EQ_FILES
 fi
 #RUN_FILES
-done
 timeout 30s QFEP < qfep.inp > qfep.out
+done

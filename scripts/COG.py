@@ -35,6 +35,7 @@ class Run(object):
                   for i in range(len(coordinates))]) for j in range(3)]
             center = [str(round(center[i], 3)) for i in range(3)]
             center = ':'.join(center)
+            center = '[' + center + ']'
         return center
 
 if __name__ == "__main__":

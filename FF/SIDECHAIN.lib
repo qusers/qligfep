@@ -1,0 +1,973 @@
+*------------------------------------------------------------------
+* Library for amino acid side chain calculations
+*
+*------------------------------------------------------------------
+{ALA}            !charge: 0.00 ||  
+    [atoms]
+         1 N      N238       -0.500
+         2 H      H241        0.300
+         3 CA     C224        0.140
+         4 HA     H140        0.060
+         5 CB     C135       -0.180
+         6 HB1    H140        0.060
+         7 HB2    H140        0.060
+         8 HB3    H140        0.060
+         9 C      C235        0.500
+        10 O      O236       -0.500
+    [bonds]
+       CB     CA    
+       N      H     
+       N      CA    
+       C      CA    
+       CA     HA    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       O      C     
+    [connections]
+        head N     
+        tail C     
+    [impropers]
+         H      N      -C     CA    
+         O      C      CA     +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB1   HB2   HB3   
+        C     O     
+*------------------------------------------------------------------
+{ARG}            !charge: 1.00 ||  
+    [atoms]
+	1	HB1	H140	0.06
+	2	CB	C136	-0.18
+	3	HB2	H140	0.060
+	4	HB3	H140	0.060
+	5	CG	C308	-0.050
+	6	HG2	H140	0.060
+	7	HG3	H140	0.060
+	8	CD	C307	0.190
+	9	HD2	H140	0.060
+	10	HD3	H140	0.060
+	11	NE	N303	-0.700
+	12	HE	H304	0.440
+	13	CZ	C302	0.640
+	14	NH1	N300	-0.800
+	15	HH11	H301	0.460
+	16	HH12	H301	0.460
+	17	NH2	N300	-0.800
+	18	HH21	H301	0.460
+	19	HH22	H301	0.460
+    [bonds]
+       CG     CB    
+       CD     CG    
+       NE     CD   
+       CZ     NE    
+       NH2    CZ    
+       CB     HB1    
+       CB     HB2   
+       CB     HB3   
+       CG     HG2   
+       CG     HG3   
+       CD     HD2   
+       CD     HD3   
+       NE     HE    
+       NH1    HH11  
+       NH1    HH12  
+       NH2    HH21  
+       NH2    HH22  
+       CZ     NH1   
+    [connections]
+  
+    [impropers]
+         NH2    CZ     NE     NH1   
+         HE     NE     CD     CZ    
+         HH12   NH1    CZ     HH11  
+         HH22   NH2    CZ     HH21  
+    [charge_groups]
+        CB    HB1 HB2   HB3   
+        CG    HG2   HG3   CD   HD2   HD3   NE    HE    CZ    NH1   HH11  HH12  NH2   HH21  HH22  
+
+*------------------------------------------------------------------
+{ARN}            !charge: 0.00 ||
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C308       -0.120
+         6 HG2    H140        0.060
+         7 HG3    H140        0.060
+         8 CD     C307        0.040
+         9 HD2    H140        0.060
+        10 HD3    H140        0.060
+        11 NE     N303       -0.620
+        12 HE     H304        0.380
+        13 CZ     C302        0.550
+        14 NH1    N300       -0.785
+        15 HH11   H301        0.380
+        16 NH2    N300       -0.785
+        17 HH21   H301        0.360
+        18 HH22   H301        0.360
+        
+    [bonds]
+       CG     CB
+       CD     CG
+       NE     CD
+       CZ     NE
+       NH2    CZ
+       CB     HB1
+       CB     HB2
+       CB     HB3
+       CG     HG2
+       CG     HG3
+       CD     HD2
+       CD     HD3
+       NE     HE
+       NH1    HH11
+       NH2    HH21
+       NH2    HH22
+       CZ     NH1
+
+    [impropers]
+         NH2    CZ     NE     NH1
+         HE     NE     CD     CZ
+         
+    [charge_groups]
+        CB    HB1   HB2   HB3
+        CG    HG2   HG3   CD   HD2   HD3   NE    HE    CZ    NH1   HH11  NH2   HH21  HH22  
+*------------------------------------------------------------------
+{ASH}            !charge: 0.0 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C267        0.520
+         6 OD2    O269       -0.440
+         7 OD1    O268       -0.530
+         8 HD1    H270        0.450
+    [bonds]
+       CG     CB    
+       OD2    CG    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       CG     OD1   
+       OD1    HD1   
+   
+    [impropers]
+         OD2    CG     CB     OD1   
+         
+    [charge_groups]
+        CB    HB1   HB2   HB3   CG    OD1   OD2   HD1   
+*------------------------------------------------------------------
+{ASN}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C235        0.500
+         6 OD1    O236       -0.500
+         7 ND2    N237       -0.760
+         8 HD21   H240        0.380
+         9 HD22   H240        0.380
+
+    [bonds]
+       CB     HB1    
+       CG     CB    
+       ND2    CG    
+       CB     HB2   
+       CB     HB3   
+       ND2    HD21
+       ND2    HD22
+       CG     OD1  
+       
+    [impropers]
+         OD1    CG     CB     ND2   
+         HD22   ND2    CG     HD21  
+    [charge_groups]
+        CB    HB1 HB2   HB3   
+        CG    OD1   
+        ND2   HD21  HD22  
+*------------------------------------------------------------------
+{ASP}            !charge: -1.00 ||  
+    [atoms]
+         1 CB     C274       -0.280
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C271        0.700
+         6 OD1    O272       -0.800
+         7 OD2    O272       -0.800
+        
+    [bonds]
+       CG     CB    
+       OD2    CG    
+       CB     HB1    
+       CB     HB2   
+       CB     HB3   
+       CG     OD1   
+  
+    [impropers]
+         OD2    CG     CB     OD1   
+    [charge_groups]
+        CB    HB1   HB2   HB3   CG    OD1   OD2   
+*------------------------------------------------------------------
+{CYS}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C206        0.000
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 SG     S200       -0.335
+         6 HG     H204        0.155
+
+    [bonds]
+       SG     CB    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       SG     HG   
+   
+    [impropers]
+   
+    [charge_groups]
+        CB SG HB1 HB2 HB3 HG   
+*------------------------------------------------------------------
+{GLH}            !charge: 0.0 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C136       -0.120
+         6 HG2    H140        0.060
+         7 HG3    H140        0.060
+         8 CD     C267        0.520
+         9 OE2    O269       -0.440
+        10 OE1    O268       -0.530
+        11 HE1    H270        0.450
+        
+    [bonds]
+       CG     CB    
+       CD     CG    
+       OE2    CD    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       CG     HG2   
+       CG     HG3   
+       CD     OE1   
+       OE1    HE1   
+
+    [impropers]
+         OE2    CD     CG     OE1   
+         
+    [charge_groups]
+        CB    HB1   HB2   HB3   
+        CG    HG2   HG3   CD    OE1   OE2   HE1   
+*------------------------------------------------------------------
+{GLN}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C136       -0.120
+         6 HG2    H140        0.060
+         7 HG3    H140        0.060
+         8 CD     C235        0.500
+         9 OE1    O236       -0.500
+        10 NE2    N237       -0.760
+        11 HE21   H240        0.380
+        12 HE22   H240        0.380
+        
+    [bonds]
+       CG     CB    
+       CD     CG    
+       NE2    CD 
+       CB     HB1    
+       CB     HB2   
+       CB     HB3   
+       CG     HG2   
+       CG     HG3   
+       NE2    HE21  
+       NE2    HE22  
+       CD     OE1   
+
+    [impropers]
+         OE1    CD     CG     NE2   
+         HE22   NE2    CD    HE21  
+    [charge_groups]
+        CB    HB1 HB2   HB3   
+        CG    HG2   HG3   
+        CD    OE1   
+        NE2   HE21  HE22  
+*------------------------------------------------------------------
+{GLU}            !charge: -1.00 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C274       -0.220
+         6 HG2    H140        0.060
+         7 HG3    H140        0.060
+         8 CD     C271        0.700
+         9 OE1    O272       -0.800
+        10 OE2    O272       -0.800
+        
+    [bonds]
+       CG     CB    
+       CD     CG    
+       OE2    CD 
+       CB     HB1    
+       CB     HB2   
+       CB     HB3   
+       CG     HG2   
+       CG     HG3   
+       CD     OE1   
+
+    [impropers]
+         OE2    CD     CG     OE1   
+    [charge_groups]
+        CB    HB1   HB2   HB3   
+        CG    HG2   HG3   CD    OE1   OE2   
+*------------------------------------------------------------------
+{GLY}            !charge: 0.00 ||  
+    [atoms]
+         1 N      N238       -0.500
+         2 H      H241        0.300
+         3 CA     C223        0.080
+         4 HA2    H140        0.060
+         5 HA3    H140        0.060
+         6 C      C235        0.500
+         7 O      O236       -0.500
+    [bonds]
+       N      H     
+       N      CA    
+       C      CA    
+       CA     HA2   
+       CA     HA3   
+       O      C     
+    [connections]
+        head N     
+        tail C     
+    [impropers]
+         H      N      -C     CA    
+         O      C      CA     +N    
+    [charge_groups]
+        N     H     CA    HA2   HA3   
+        C     O     
+*------------------------------------------------------------------
+{HID}            !charge: 0.00 ||  neutral HIS, proton on ND1
+    [atoms]
+         1 CB     C505       -0.065
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 ND1    N503       -0.570
+         6 HD1    H504        0.420
+         7 CG     C508        0.015
+         8 CE1    C506        0.295
+         9 HE1    H146        0.115
+        10 NE2    N511       -0.490
+        11 CD2    C507       -0.015
+        12 HD2    H146        0.115
+        
+    [bonds]
+       CG     CB    
+       ND1    CG    
+       CE1    ND1   
+       NE2    CD2   
+       CB     HB1    
+       CB     HB2   
+       CB     HB3   
+       ND1    HD1   
+       CD2    HD2   
+       CE1    HE1   
+       CG     CD2   
+       CE1    NE2  
+       
+    [impropers]
+         HD1    ND1    CG     CE1   
+         HD2    CD2    NE2    CG    
+         HE1    CE1    ND1    NE2   
+         CB     CG     ND1    CD2   
+    [charge_groups]
+        CB    HB1   HB2   HB3   ND1   HD1   CG    CE1   HE1   NE2   CD2   HD2
+*------------------------------------------------------------------
+{HIE}            !charge: 0.00 ||  neutral His, proton on NE2
+    [atoms]
+         1 CB     C505       -0.065
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 ND1    N511       -0.490
+         6 CG     C507       -0.015
+         7 CE1    C506        0.295
+         8 HE1    H146        0.115
+         9 NE2    N503       -0.570
+        10 HE2    H504        0.420
+        11 CD2    C508        0.015
+        12 HD2    H146        0.115
+        
+    [bonds]
+       CG     CB    
+       ND1    CG    
+       NE2    CD2   
+       NE2    CE1   
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       NE2    HE2   
+       CD2    HD2   
+       CE1    HE1   
+       CD2    CG    
+       CE1    ND1   
+   
+    [impropers]
+         HE2    NE2    CE1    CD2   
+         HD2    CD2    NE2    CG    
+         HE1    CE1    ND1    NE2   
+         CB     CG     ND1    CD2   
+    [charge_groups]
+        CB    HB1   HB2   HB3   ND1   CG    CE1   HE1   NE2   HE2   CD2   HD2 
+*------------------------------------------------------------------
+{HIP}            !charge: 1.00 ||  Protonated His
+    [atoms]
+         1 CB     C505       -0.055
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CD2    C510        0.215
+         6 HD2    H146        0.115
+         7 CG     C510        0.215
+         8 NE2    N512       -0.540
+         9 HE2    H513        0.460
+        10 ND1    N512       -0.540
+        11 HD1    H513        0.460
+        12 CE1    C509        0.385
+        13 HE1    H146        0.115
+        
+    [bonds]
+       CG     CB    
+       ND1    CG    
+       CE1    ND1   
+       NE2    CD2   
+       CB     HB2   
+       CB     HB3   
+       ND1    HD1   
+       NE2    HE2   
+       CD2    HD2   
+       CE1    HE1   
+       CD2    CG    
+       NE2    CE1   
+
+    [impropers]
+         HD1    ND1    CG     CE1   
+         HE1    CE1    ND1    NE2   
+         HE2    NE2    CE1    CD2   
+         HD2    CD2    NE2    CG    
+         CB     CG     ND1    CD2   
+         
+    [charge_groups]
+        CB    HB1  HB2   HB3   CD2   HD2   CG    NE2   HE2   ND1   HD1   CE1 HE1
+*------------------------------------------------------------------
+{ILE}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C137       -0.120
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 CG2    C135       -0.180
+         5 HG21   H140        0.060
+         6 HG22   H140        0.060
+         7 HG23   H140        0.060
+         8 CG1    C136       -0.120
+         9 HG12   H140        0.060
+        10 HG13   H140        0.060
+        11 CD1    C135       -0.180
+        12 HD11   H140        0.060
+        13 HD12   H140        0.060
+        14 HD13   H140        0.060
+        
+    [bonds]
+       CG1    CB    
+       CG2    CB    
+       CD1    CG1   
+       CB     HB1  
+       CB     HB2    
+       CG1    HG12  
+       CG1    HG13  
+       CG2    HG21  
+       CG2    HG22  
+       CG2    HG23  
+       CD1    HD11   
+       CD1    HD12   
+       CD1    HD13   
+
+    [impropers]
+
+    [charge_groups]
+        CB    HB1   HB2    
+        CG2   HG21  HG22  HG23  
+        CG1   HG12  HG13  
+        CD1   HD11  HD12   HD13   
+*------------------------------------------------------------------
+{LEU}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C137       -0.060
+         6 HG     H140        0.060
+         7 CD1    C135       -0.180
+         8 HD11   H140        0.060
+         9 HD12   H140        0.060
+        10 HD13   H140        0.060
+        11 CD2    C135       -0.180
+        12 HD21   H140        0.060
+        13 HD22   H140        0.060
+        14 HD23   H140        0.060
+        
+    [bonds]
+       CG     CB    
+       CD1    CG    
+       CD2    CG    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       CG     HG    
+       CD1    HD11  
+       CD1    HD12  
+       CD1    HD13  
+       CD2    HD21  
+       CD2    HD22  
+       CD2    HD23  
+   
+    [impropers]
+ 
+    [charge_groups]
+        CB    HB1   HB2   HB3   
+        CG    HG    
+        CD1   HD11  HD12  HD13  
+        CD2   HD21  HD22  HD23  
+*------------------------------------------------------------------
+{LYS}            !charge: 1.00 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C136       -0.120
+         6 HG2    H140        0.060
+         7 HG3    H140        0.060
+         8 CD     C136       -0.120
+         9 HD2    H140        0.060
+        10 HD3    H140        0.060
+        11 CE     C292        0.190
+        12 HE2    H140        0.060
+        13 HE3    H140        0.060
+        14 NZ     N287       -0.300
+        15 HZ1    H290        0.330
+        16 HZ2    H290        0.330
+        17 HZ3    H290        0.330
+        
+    [bonds]
+       CG     CB    
+       CD     CG    
+       CE     CD    
+       NZ     CE    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       CG     HG2   
+       CG     HG3   
+       CD     HD2   
+       CD     HD3   
+       CE     HE2   
+       CE     HE3   
+       NZ     HZ1   
+       NZ     HZ2   
+       NZ     HZ3   
+ 
+    [impropers]
+  
+    [charge_groups]
+        CB    HB1   HB2   HB3   
+        CG    HG2   HG3   
+        CD    HD2   HD3   
+        CE    HE2   HE3   NZ    HZ1   HZ2   HZ3   
+*------------------------------------------------------------------
+{LYN}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C136       -0.120
+         6 HG2    H140        0.060
+         7 HG3    H140        0.060
+         8 CD     C136       -0.120
+         9 HD2    H140        0.060
+        10 HD3    H140        0.060
+        11 CE     C292        0.060
+        12 HE2    H140        0.060
+        13 HE3    H140        0.060
+        14 NZ     N287       -0.900
+        15 HZ1    H241        0.360
+        16 HZ2    H241        0.360
+        
+    [bonds]
+       CG     CB    
+       CD     CG    
+       CE     CD    
+       NZ     CE    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       CG     HG2   
+       CG     HG3   
+       CD     HD2   
+       CD     HD3   
+       CE     HE2   
+       CE     HE3   
+       NZ     HZ1   
+       NZ     HZ2   
+       
+    [impropers]
+    
+    [charge_groups]
+        CB    HB1   HB2   HB3   
+        CG    HG2   HG3   
+        CD    HD2   HD3   
+        CE    HE2   HE3   NZ    HZ1   HZ2     
+*------------------------------------------------------------------
+{MET}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C210       0.0475
+         6 HG2    H140        0.060
+         7 HG3    H140        0.060
+         8 SD     S202       -0.335
+         9 CE     C209      -0.0125
+        10 HE1    H140        0.060
+        11 HE2    H140        0.060
+        12 HE3    H140        0.060
+        
+    [bonds]
+       CG     CB    
+       SD     CG    
+       CE     SD    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       CG     HG2   
+       CG     HG3   
+       CE     HE1   
+       CE     HE2   
+       CE     HE3   
+       
+    [connections]
+
+    [impropers]
+
+    [charge_groups]
+        CB    HB1   HB2   HB3   
+        CG    HG2   HG3   SD    CE    HE1   HE2   HE3   
+*------------------------------------------------------------------
+{PHE}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C149       -0.065
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C145       -0.115
+         6 CD1    C145       -0.115
+         7 HD1    H146        0.115
+         8 CE1    C145       -0.115
+         9 HE1    H146        0.115
+        10 CZ     C145       -0.115
+        11 HZ     H146        0.115
+        12 CE2    C145       -0.115
+        13 HE2    H146        0.115
+        14 CD2    C145       -0.115
+        15 HD2    H146        0.115
+        
+    [bonds]
+       CG     CB    
+       CD2    CG    
+       CE1    CD1   
+       CZ     CE2   
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       CD1    HD1   
+       CD2    HD2   
+       CE1    HE1   
+       CD1    CG    
+       CZ     CE1   
+       CE2    CD2   
+       CE2    HE2   
+       CZ     HZ
+          
+    [impropers]
+         HD1    CD1    CG     CE1   
+         HE1    CE1    CD1    CZ    
+         HZ     CZ     CE1    CE2   
+         CB     CG     CD1    CD2   
+         HD2    CD2    CE2    CG    
+         HE2    CE2    CZ     CD2   
+    [charge_groups]
+        CB    HB1   HB2   HB3   CG    
+        CD1   HD1   
+        CE1   HE1   
+        CZ    HZ    
+        CD2   HD2   
+        CE2   HE2   
+*------------------------------------------------------------------
+{SER}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C157        0.085
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 OG     O154       -0.683
+         6 HG     H155        0.418
+    [bonds]
+       OG     CB    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       OG     HG  
+       
+    [impropers]
+ 
+    [charge_groups]
+        CB    HB1   HB2   HB3   OG    HG   
+*------------------------------------------------------------------
+{THR}            !charge: 0.00 ||  
+    [atoms]
+         1 CB      C158           0.1450
+         2 HB1     H140           0.0600
+         3 HB2     H140           0.0600
+         4 CG2     C135          -0.1800
+         5 HG21    H140           0.0600
+         6 HG22    H140           0.0600
+         7 HG23    H140           0.0600
+         8 OG1     O154          -0.6830
+         9 HG1     H155           0.4180
+
+    [bonds]
+       OG1    CB    
+       CG2    CB    
+       CB     HB1    
+       CB     HB2   
+       OG1    HG1   
+       CG2    HG21  
+       CG2    HG22  
+       CG2    HG23  
+   
+    [impropers]
+  
+    [charge_groups]
+        CB    HB1   HB1   OG1   HG1   
+        CG2   HG21  HG22  HG23  
+*------------------------------------------------------------------
+{TIP3}            !charge: 0.000 ||  tip3p water model, generate using noangle nodihedral
+    [atoms]
+         1 OH2    OT         -0.834
+         2 H1     HT          0.417
+         3 H2     HT          0.417
+    [bonds]
+       OH2    H1    
+       OH2    H2    
+       H1     H2    
+    [charge_groups]
+        OH2   H1    H2    
+*------------------------------------------------------------------
+{HOH}            !charge: 0.000 ||  tip3p water model, generate using noangle nodihedral
+    [info]
+        solvent 1
+        density 0.0335
+    [atoms]
+         1 O      OT         -0.834
+         2 H1     HT          0.417
+         3 H2     HT          0.417
+    [bonds]
+       O      H1
+       O      H2
+       H1     H2
+    [charge_groups]
+        O     H1    H2
+*------------------------------------------------------------------
+{WAT}            !charge: 0.000 ||  tip3p water model, generate using noangle nodihedral
+    [atoms]
+         1 O      OT         -0.834
+         2 H1     HT          0.417
+         3 H2     HT          0.417
+    [bonds]
+       O      H1
+       O      H2
+      !! H1     H2
+    [charge_groups]
+        O     H1    H2
+*------------------------------------------------------------------
+{TRP}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C136       -0.180
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C500        0.075
+         6 CD1    C514       -0.115
+         7 HD1    H146        0.115
+         8 NE1    N503       -0.570
+         9 HE1    H504        0.420
+        10 CE2    C502        0.130
+        11 CZ2    C145       -0.115
+        12 HZ2    H146        0.115
+        13 CH2    C145       -0.115
+        14 HH2    H146        0.115
+        15 CZ3    C145       -0.115
+        16 HZ3    H146        0.115
+        17 CE3    C145       -0.115
+        18 HE3    H146        0.115
+        19 CD2    C501       -0.055
+    [bonds]
+       CG     CB    
+       CD2    CG    
+       NE1    CD1   
+       CZ2    CE2   
+       CZ3    CH2   
+       CD2    CE3   
+       NE1    CE2  
+       CB     HB1 
+       CB     HB2   
+       CB     HB3   
+       CD1    HD1   
+       NE1    HE1   
+       CE3    HE3   
+       CZ2    HZ2   
+       CZ3    HZ3   
+       CH2    HH2   
+       CD1    CG    
+       CE2    CD2   
+       CZ3    CE3   
+       CH2    CZ2   
+   
+    [impropers]
+         CB     CG     CD1    CD2   
+         HD1    CD1    CG     NE1   
+         HE1    NE1    CD1    CE2   
+         HZ2    CZ2    CE2    CH2   
+         HH2    CH2    CZ2    CZ3   
+         HZ3    CZ3    CH2    CE3   
+         HE3    CE3    CZ3    CD2   
+         CE2    CD2    CE3    CG    
+         CZ2    CE2    CD2    NE1   
+         
+    [charge_groups]
+        CB    HB1   HB2   HB3   
+        CG    CD1   HD1   NE1   HE1   CE2   CD2   
+        CE3   HE3   
+        CZ3   HZ3   
+        CZ2   HZ2   
+        CH2   HH2   
+*------------------------------------------------------------------
+{TYR}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C149       -0.065
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 HB3    H140        0.060
+         5 CG     C145       -0.115
+         6 CD1    C145       -0.115
+         7 HD1    H146        0.115
+         8 CE1    C145       -0.115
+         9 HE1    H146        0.115
+        10 CZ     C166        0.150
+        11 OH     O167       -0.585
+        12 HH     H168        0.435
+        13 CD2    C145       -0.115
+        14 HD2    H146        0.115
+        15 CE2    C145       -0.115
+        16 HE2    H146        0.115
+        
+    [bonds]
+       CG     CB    
+       CD2    CG    
+       CE1    CD1   
+       CZ     CE2   
+       OH     CZ    
+       CB     HB1   
+       CB     HB2   
+       CB     HB3   
+       CD1    HD1   
+       CD2    HD2   
+       CE1    HE1   
+       CE2    HE2   
+       OH     HH    
+       CD1    CG    
+       CE1    CZ    
+       CE2    CD2   
+
+    [impropers]
+         HD1    CD1    CG     CE1   
+         HE1    CE1    CD1    CZ    
+         OH     CZ     CE1    CE2   
+         CB     CG     CD1    CD2   
+         HD2    CD2    CE2    CG    
+         HE2    CE2    CZ     CD2   
+         
+    [charge_groups]
+        CB    HB1   HB2   HB3   CG    
+        CD1   HD1   
+        CE1   HE1   
+        CZ    OH    HH    
+        CD2   HD2   
+        CE2   HE2   
+*------------------------------------------------------------------
+{VAL}            !charge: 0.00 ||  
+    [atoms]
+         1 CB     C137       -0.120
+         2 HB1    H140        0.060
+         3 HB2    H140        0.060
+         4 CG1    C135       -0.180
+         5 HG11   H140        0.060
+         6 HG12   H140        0.060
+         7 HG13   H140        0.060
+         8 CG2    C135       -0.180
+         9 HG21   H140        0.060
+        10 HG22   H140        0.060
+        11 HG23   H140        0.060
+        
+    [bonds]
+       CG1    CB    
+       CG2    CB    
+       CB     HB1    
+       CB     HB2   
+       CG1    HG11  
+       CG1    HG12  
+       CG1    HG13  
+       CG2    HG21  
+       CG2    HG22  
+       CG2    HG23  
+   
+    [impropers]
+  
+    [charge_groups]
+        CB    HB1   HB2    
+        CG1   HG11  HG12  HG13  
+        CG2   HG21  HG22  HG23  
+*------------------------------------------------------------------
+{SOD}            !charge: 1.00 ||  Sodium Ion, adm jr.
+    [atoms]
+         1 SOD    SOD          1.00
+    [charge_groups]
+        SOD   
+*------------------------------------------------------------------

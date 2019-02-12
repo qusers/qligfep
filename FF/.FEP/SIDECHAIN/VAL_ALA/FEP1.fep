@@ -1,0 +1,30 @@
+!Val-->Ala
+
+[FEP]
+states 2
+
+[atoms]				 
+1  1  ! CB    			 
+2  2  ! HB1   			 
+3  3  ! HB2   			 
+4  4  ! CG1   	blir HC			 
+5  5  ! HG11    blir HC	 
+6  6  ! HG12  	bort		 
+7  7  ! HG13 	bort		 
+8  8  ! CG2		bort		 
+9  9  ! HG21	bort		 
+10 10 ! HG22	bort		 
+11 11 ! HG23 	bort		 
+
+[change_charges]		
+1	-0.06	-0.12
+2	0.06	0.06
+3	0.06	0.06
+4	-0.18	0
+5	0.06	0
+6	0.06	0
+7	0.06	0
+8	-0.18	0
+9	0.06	0
+10	0.06	0
+11	0.06	0

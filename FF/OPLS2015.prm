@@ -118,6 +118,15 @@ TO2Z   626.39   626.39    23.67   442.92    16.74    16.00 ! high   O=   in OP
 TOS    401.02   401.02    17.32   283.56    12.25    16.00 ! high   OR in P=O or P=S
 THO      0.01     0.01     0.04     0.00     0.03     1.01 ! high   H(O): alcohols
 
+!ACE-NMA capping
+ C    1802.24  1802.24    34.18  1274.38    24.17    12.01 ! high   C: C=O in amide or unsaturated amide.    
+ O     616.44   616.44    23.77   435.89    16.81    16.00 ! high   O: C=O in amide.
+ CT    944.52   944.52    22.03   667.88    15.58    12.01 ! high   C: alkanes
+ HC     84.57    84.57     5.41    59.80     3.83     1.01 ! high   H on C-alpha in amide
+ N     971.75   971.75    28.31   687.13    20.02    14.01 ! high   N: secondary amide
+ CT1G   944.52  944.52    22.03   667.88    15.58    12.01 ! high   C alpha glycin  
+ H       0.01     0.01     0.04     0.00     0.03     1.01 ! high   H on neutral N
+
 ! Ligand vdW parameters
 ! End ligand vdW parameters
 
@@ -309,6 +318,20 @@ LP2     LP3     800.0   1.53
  TP3  TO2Z  1050.00     1.52 !high         0  => 0     P3-O2Z     ==> P3-O2Z
  TP3   TOS   460.00     1.63 !high         0  => 0     P3-OS      ==> P3-OS
  TOS   THO  1106.00     0.94 !high         0  => 0     OS-HO      ==> OS-HO
+
+!ACE-NMA capping
+! Ligand bond parameters for TER
+   C     O  1140.00     1.23 !high         0  => 0     C-O        ==> O-C
+   C    CT   634.00     1.52 !high         0  => 0     C-CT       ==> CT-C
+   C     N   980.00     1.33 !high         0  => 0     C-N        ==> N-C
+   C   N238  980.00     1.33 !high         0  => 0     C-N        ==> N-C
+  CT    HC   680.00     1.09 !high         0  => 0     CT-HC      ==> HC-CT
+   N   CT1G   674.00     1.45 !high         0  => 0     N-CT1G     ==> CT1G-N
+ C235    N   980.00     1.33 !high         0  => 0     N-C       ==> C-N
+   N     H   868.00     1.01 !high         0  => 0     N-H        ==> N-H
+ CT1G     C   634.00     1.52 !high         0  => 0     CT1G-C     ==> C-CT1G
+ CT1G    HC   680.00     1.09 !high         0  => 0     CT1G-HC    ==> HC-CT1G
+   N    CT   674.00     1.45 !high         0  => 0     N-CT       ==> N-CT
 
 ! Ligand bond parameters
 ! End ligand bond parameters
@@ -791,6 +814,42 @@ TO2Z   TP3   TOS   200.00   107.00  !high     0   O2Z-P3-OS         ==> OS-P3-O2
 TO2Z   TP3  TO2Z   280.00   114.00  !high     0   O2Z-P3-O2Z        ==> O2Z-P3-O2Z
  TP3   TOS   THO   130.00    92.75  !high     0   P3-OS-HO          ==> P3-OS-HO
 
+!ACE-NMA Ter cards
+   O     C    CT   160.00   120.40  !high     0   O-C-CT            ==> O-C-CT
+   O     C     N   160.00   122.90  !high     0   O-C-N             ==> O-C-N
+   O     C   N238  160.00   122.90  !high     0   O-C-N             ==> O-C-N
+ O236  C235    N   160.00   122.90  !high     0   O-C-N             ==> O-C-N
+  CT     C     N   140.00   116.60  !high     0   CT-C-N            ==> N-C-CT
+  CT     C   N238   140.00   116.60  !high     0   CT-C-N            ==> N-C-CT
+  C224  C235  N   140.00   116.60  !high     0   CT-C-N            ==> N-C-CT 
+  C    CT    HC    70.00   109.50  !high     0   C-CT-HC           ==> HC-CT-C
+  HC    CT    HC    66.00   107.80  !high     0   HC-CT-HC          ==> HC-CT-HC
+   C     N   CT1G   100.00   121.90  !high     0   C-N-CT1G          ==> CT1G-N-C
+   C     N     H    70.00   119.80  !high     0   C-N-H             ==> H-N-C
+ C235    N     H    70.00   119.80  !high     0   C-N-H             ==> H-N-C
+ C     N238   H241  70.00   119.80  !high     0   C-N-H             ==> H-N-C
+ CT1G     N     H    76.00   118.40  !high     0   CT1G-N-H          ==> H-N-CT1G
+   N   CT1G     C   126.00   110.10  !high     0   N-CT1G-C          ==> C-CT1G-N
+   N   CT1G    HC    70.00   109.50  !high     0   N-CT1G-HC         ==> HC-CT1G-N
+   C   CT1G    HC    70.00   109.50  !high     0   C-CT1G-HC         ==> HC-CT1G-C
+  HC   CT1G    HC    66.00   107.80  !high     0   HC-CT1G-HC        ==> HC-CT1G-HC
+ CT1G     C     O   160.00   120.40  !high     0   CT1G-C-O          ==> O-C-CT1G
+ CT1G     C     N   140.00   116.60  !high     0   CT1G-C-N          ==> N-C-CT1G
+   C     N    CT   100.00   121.90  !high     0   C-N-CT            ==> CT-N-C
+  C     N238  C224 100.00   121.90  !high     0   C-N-CT            ==> CT-N-C
+  CT     N     H    76.00   118.40  !high     0   CT-N-H            ==> H-N-CT
+   N    CT    HC    70.00   109.50  !high     0   N-CT-HC           ==> N-CT-HC
+ C235   N    CT   100.00   121.90  !high     0   C-N-CT            ==> CT-N-C
+ C223   C235  N   140.00    116.6  !    0.00      0.00 
+ C223   N238   C      100.00    121.9      ! 0.00      0.00
+ C246   C235   N      140.00    116.6      0.00      0.00 
+ N239   C      O      160.00    122.9      0.00      0.00 
+ CT     C      N239      140.00    116.6      0.00      0.00 
+ C      N239   C245      100.00    121.9      0.00      0.00  
+ C      N239   C246      100.00    121.9      0.00      0.00 
+
+! Dual topology zero forceK angles
+C158   C224   C157      0.00    118.0      0.00      0.00
 
 ! Ligand angle parameters
 ! End ligand angle parameters
@@ -2324,7 +2383,154 @@ LOS      LP       LOS      LC2        0.375   1.000   0.000 3.00 !
 !PO4
 TO2Z   TP3    TOS    THO      0.000     1    0.000   1 !high   0   O2Z-P3-OS-HO         ==> O2Z-P2-OS-HO
 
+!ACE-NMA Ter 
+O      C      CT     HC      0.000     1    0.000   1 !high   0   O-C-CT-HC            ==> HC-CT-C-O
+ N      C      CT     HC      0.000     1    0.000   1 !high   0   N-C-CT-HC            ==> HC-CT-C-N
+ N238   C      CT     HC      0.000     1    0.000   1 !high   0   N-C-CT-HC            ==> HC-CT-C-N
+ O      C      N      CT1G     3.045     2  180.000   1 !high   0   O-C-N-CT1G           ==> O-C-N-CT1G
+ O      C      N      H       2.450     2  180.000   1 !high   0   O-C-N-H              ==> H-N-C-O
+ O      C      N238   H241    2.450     2  180.000   1 !high   0   O-C-N-H              ==> H-N-C-O
+ CT     C      N      CT1G     1.150    -1    0.000   1 !high   0   CT-C-N-CT1G          ==> CT-C-N-CT1G
+ CT     C      N      CT1G     3.045     2  180.000   1 !high   0   CT-C-N-CT1G          ==> CT-C-N-CT1G
+ CT     C      N      H       2.450     2  180.000   1 !high   0   CT-C-N-H             ==> H-N-C-CT
+ CT     C      N238    H241   2.450     2  180.000   1 !high   0   CT-C-N-H             ==> H-N-C-CT
+ C      N      CT1G    C      -1.558    -1    0.000   1 !high   0   C-N-CT1G-C           ==> C-N-CT1G-C
+ C      N      CT1G    C      -0.124    -2  180.000   1 !high   0   C-N-CT1G-C           ==> C-N-CT1G-C
+ C      N      CT1G    C      -0.144     3    0.000   1 !high   0   C-N-CT1G-C           ==> C-N-CT1G-C
+ C      N238   C224    C157   -1.183     2    0.231   1
+ C      N238   C224    C235   -1.183    -1    0.000   1
+ C      N238   C224    C235    0.456    -2  180.000   1
+ C      N238   C224    C235   -0.425     3    0.000   1
+ C      N      CT1G    HC      0.000     1    0.000   1 !high   0   C-N-CT1G-HC          ==> C-N-CT1G-HC
+ H      N      CT1G    C       0.000     1    0.000   1 !high   0   H-N-CT1G-C           ==> H-N-CT1G-C
+ H      N      CT1G    HC      0.000     1    0.000   1 !high   0   H-N-CT1G-HC          ==> H-N-CT1-HC
+ N      CT1G    C      O       0.000     1    0.000   1 !high   0   N-CT1G-C-O           ==> N-CT1G-C-O
+ N      CT1G    C      N       0.447    -1    0.000   1 !high   0   N-CT1G-C-N           ==> N-CT1G-C-N
+ N      CT1G    C      N       1.538    -2  180.000   1 !high   0   N-CT1G-C-N           ==> N-CT1G-C-N
+ N      CT1G    C      N      -0.474     3    0.000   1 !high   0   N-CT1G-C-N           ==> N-CT1G-C-N
+ HC     CT1G    C      O       0.000     1    0.000   1 !high   0   HC-CT1G-C-O          ==> HC-CT1G-C-O
+ HC     CT1G    C      N       0.000     1    0.000   1 !high   0   HC-CT1G-C-N          ==> HC-CT1G-C-N
+ CT1G    C      N      CT      1.150    -1    0.000   1 !high   0   CT1G-C-N-CT          ==> CT1G-C-N-CT
+ CT1G    C      N      CT      3.045     2  180.000   1 !high   0   CT1G-C-N-CT          ==> CT1G-C-N-CT
+ CT      C      N238   C224    3.045     2  180.000   1 
+ C       N238   C224   C157    0.231     2  180.000   1 !0 * - Phi' peptides AA 
+ CT1G    C      N      H       2.450     2  180.000   1 !high   0   CT1G-C-N-H           ==> CT1G-C-N-H
+ O      C      N      CT      3.045     2  180.000   1 !high   0   O-C-N-CT             ==> CT-N-C-O
+ O      C      N238   C224    3.045     2  180.000   1 !high   0   O-C-N-CT             ==> CT-N-C-O
+ C      N      CT     HC      0.000     1    0.000   1 !high   0   C-N-CT-HC            ==> C-N-CT-HC
+ H      N      CT     HC      0.000     1    0.000   1 !high   0   H-N-CT-HC            ==> H-N-CT-HC
+ C      N238   C224   H140    0.000     1    0.000    1
+ C158   C224   C235   N       0.587     -1    0.000     1 !0 * - Psi' peptides AA
+ C158   C224   C235   N       0.095     -2  180.000     1 !0 * - Psi' peptides AA
+ C158   C224   C235   N       -0.600     3    0.000     1 !0 * - Psi' peptides AA
+ N238   C224   C235   N        0.905    -1     0.000     1 
+ N238   C224   C235   N       1.077    -2    180.000     1 
+ N238   C224   C235   N      -0.235     3     0.000     1  
+ H140   C224   C235   N       0.000     1     0.000     1 
+ C224   C235   N      H       2.450     2  180.000     1 !0 * - peptide H or C C(O) N H rzhou
+ C224   C235   N      CT       1.150    -1.000     0.000     1 
+ C224   C235   N      CT       3.045     2.000   180.000     1  
+ H      N      C235   O236     2.450     2.000   180.000     1
+ CT     N      C235   O236       3.045     2.000   180.000     1  
+ C235   N      CT     HC      0.000     1    0.000   1 !high   0   C-N-CT-HC            ==> C-N-CT-HC
+ C135   C224   N238   C      -0.341    -1.000     0.000     1   
+ C135   C224   N238   C       0.065    -2.000   180.000     1   
+ C135   C224   N238   C        0.169     3.000     0.000     1  
+ C136   C224   N238   C      -0.341    -1.000     0.000     1
+ C136   C224   N238   C       0.065    -2.000   180.000     1
+ C136   C224   N238   C        0.169     3.000     0.000     1
+ C137   C224   C235   N       0.889    -1.000     0.000     1 
+ C137   C224   C235   N       0.209    -2.000   180.000     1 
+ C137   C224   C235   N      -0.055     3.000     0.000     1 
+ C136   C224   C235   N       0.889    -1.000     0.000     1
+ C136   C224   C235   N       0.209    -2.000   180.000     1
+ C136   C224   C235   N      -0.055     3.000     0.000     1 
+ C206   C224   N238   C      -0.341    -1.000     0.000     1 
+ C206   C224   N238   C       0.065    -2.000   180.000     1 
+ C206   C224   N238   C       0.169     3.000     0.000     1  
+ C135   C224   C235   N       0.889    -1.000     0.000     1 
+ C135   C224   C235   N       0.209    -2.000   180.000     1 
+ C135   C224   C235   N      -0.055     3.000     0.000     1
+ C137   C224   N238   C      -0.341    -1.000     0.000     1 
+ C137   C224   N238   C       0.065    -2.000   180.000     1 
+ C137   C224   N238   C       0.169     3.000     0.000     1  
+ N238   C223   C235   N       0.905    -1.000     0.000     1 
+ N238   C223   C235   N       1.077    -2.000   180.000     1 
+ N238   C223   C235   N      -0.235     3.000     0.000     1 
+ H140   C223   C235   N       0.000     1.000     0.000     1 
+ C223   C235   N      H       2.450     2.000   180.000     1
+ C223   C235   N      CT      1.150    -1.000     0.000     1 
+ C223   C235   N      CT      3.045     2.000   180.000     1
+ C157   C224   C235   N       0.889    -1.000     0.000     1 
+ C157   C224   C235   N       0.209    -2.000   180.000     1 
+ C157   C224   C235   N      -0.055     3.000     0.000     1 
+ C223   N238   C      O       3.045     2.000   180.000     1 
+ C223   N238   C      CT       1.150    -1.000     0.000     1 
+ C223   N238   C      CT       3.045     2.000   180.000     1  
+ C235   C223   N238   C      -1.256    -1.000     0.000     1 
+ C235   C223   N238   C       0.105    -2.000   180.000     1 
+ C235   C223   N238   C      -0.100     3.000     0.000     1 
+ C      N238   C223   H140    0.000     1.000     0.000     1
+ C274   C224   C235   N       0.889    -1.000     0.000     1 
+ C274   C224   C235   N       0.209    -2.000   180.000     1 
+ C274   C224   C235   N      -0.055     3.000     0.000     1 
+ C149   C224   C235   N       0.889    -1.000     0.000     1 
+ C149   C224   C235   N       0.209    -2.000   180.000     1 
+ C149   C224   C235   N      -0.055     3.000     0.000     1 
+ C      N238   C224   C274   -0.341    -1.000     0.000     1 
+ C      N238   C224   C274    0.065    -2.000   180.000     1 
+ C      N238   C224   C274    0.169     3.000     0.000     1
+ C149   C224   N238   C      -0.341    -1.000     0.000     1 
+ C149   C224   N238   C       0.065    -2.000   180.000     1 
+ C149   C224   N238   C       0.169     3.000     0.000     1  
+ N      C235   C246   N239   -0.470    -1.000     0.000     1 
+ N      C235   C246   N239    1.377    -2.000   180.000     1 
+ N      C235   C246   N239   -1.335     3.000     0.000     1   
+ C136   C246   C235   N       2.514    -1.000     0.000     1 
+ C136   C246   C235   N       0.359    -2.000   180.000     1 
+ C136   C246   C235   N       1.120     3.000     0.000     1 
+ H140   C246   C235   N       0.000     1.000     0.000     1
+ C246   C235   N      H       2.450     2.000   180.000     1 
+ C246   C235   N      CT       1.150    -1.000     0.000     1 
+ C246   C235   N      CT       3.045     2.000   180.000     1   
+ C158   C224   N238   C      -0.341    -1.000     0.000     1 
+ C158   C224   N238   C       0.065    -2.000   180.000     1 
+ C158   C224   N238   C       0.169     3.000     0.000     1  
+ HC   CT   C   N239       0.000     1.000     0.000     1   
+ C246   N239   C   O       3.045     2.000   180.000     1   
+ C245   N239   C   O       3.045     2.000   180.000     1
+ CT   C   N239   C246       1.150    -1.000     0.000     1 
+ CT   C   N239   C246       3.045     2.000   180.000     1 
+ CT   C   N239   C245       1.150    -1.000     0.000     1 
+ CT   C   N239   C245       3.045     2.000   180.000     1   
+ C235   C246   N239   C      -1.256    -1.000     0.000     1 
+ C235   C246   N239   C       0.105    -2.000   180.000     1 
+ C235   C246   N239   C      -0.100     3.000     0.000     1
+ CT   C   N239   C245       1.150    -1.000     0.000     1 
+ CT   C   N239   C245       3.045     2.000   180.000     1
+ C136   C246   N239   C      -0.341    -1.000     0.000     1 
+ C136   C246   N239   C       0.065    -2.000   180.000     1 
+ C136   C246   N239   C       0.169     3.000     0.000     1  
+ C   N239   C246   H140       0.000     1.000     0.000     1  
+ C136   C245   N239   C      -0.341    -1.000     0.000     1 
+ C136   C245   N239   C       0.065    -2.000   180.000     1 
+ C136   C245   N239   C       0.169     3.000     0.000     1 
+ C      N239   C245   H140       0.000     1.000     0.000     1
+ C      N238   C224   C505      -0.341    -1.000     0.000     1 
+ C      N238   C224   C505       0.065    -2.000   180.000     1 
+ C      N238   C224   C505       0.169     3.000     0.000     1  
+
+! Dual topology zero forceK torsions
+
+
 ! Ligand torsion parameters
+O154     C158     C224     C157       0.000     1.000     0.000     1  
+C135     C158     C224     C157       0.000     1.000     0.000     1  
+H140     C158     C224     C157       0.000     1.000     0.000     1  
+O154     C157     C224     C158       0.000     1.000     0.000     1  
+H140     C157     C224     C158       0.000     1.000     0.000     1  
+H140     C157     C224     C158       0.000     1.000     0.000     1  
+
 
 
 [impropers]
@@ -2442,6 +2648,21 @@ C245   N239   C235   C283       2.500   180.000
 !N2     CAr     N2      N2      10.5    180.000 !160
 LOS     LC      LP2     LO      20.005  180.000  !!! Tieleman models as a harmonic improper
 LOS     LH1     LC2     LC2     39.998   35.264  !!! Tieleman models as a harmonic improper
+
+!ACE-NMA Ter
+ O      CT     C      N      10.500  180.000 !high   carbonyl and analogs
+ H      C      N      CT1G     1.000  180.000 !high   amide, amidine-,guanidinium
+ O      CT1G    C      N      10.500  180.000 !high   carbonyl and analogs
+ H      C      N      CT      1.000  180.000 !high   amide, amidine-,guanidinium
+ O      C      CT   N238      10.500   180.000 
+ H241   N238   C    C224       2.500   180.000
+ O236   C235   C224   N      10.500   180.000
+ H      N      C235   CT       2.500   180.000 
+ O236   C235   C223   N      10.500   180.000
+ H241   N238   C    C223       2.500   180.000
+ O236   C235   C246   N      10.500   180.000 
+ O      C      CT   N239      10.500   180.000
+ C245   N239   C    C246       2.500   180.000 
 
 ! Ligand improper parameters
 ! End ligand improper parameters

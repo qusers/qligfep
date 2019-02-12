@@ -1,0 +1,30 @@
+!HIE-->ALA (opls-aa)
+
+[FEP]
+states 2
+
+[atoms]
+1  1  ! CB    
+2  2  ! HB2   
+3  3  ! HB3   
+4  4  ! ND1 	bort
+5  5  ! CG      blir HC
+6  6  ! CE1 	bort
+7  7  ! HE1 	bort
+8  8  ! NE2 	bort
+9  9  ! HE2 	bort
+10 10 ! CD2 	bort
+11 11 ! HD2     bort
+
+[change_charges]
+1       -0.0050 0
+2       0.0600  0
+3       0.0600  0
+4       -0.4900 0
+5       -0.0150 0
+6       0.2950  0
+7       0.1150  0
+8       -0.5700 0
+9       0.4200  0
+10      0.0150  0
+11      0.1150  0
