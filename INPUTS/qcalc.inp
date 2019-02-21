@@ -2,7 +2,7 @@ dualtop.top
 8
 PROT_START
 PROT_END
-Q_ATOMS
+residue Q_ATOMS
 end
 go
 TRAJECTORIES

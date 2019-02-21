@@ -15,7 +15,7 @@ class Run(object):
     """
     def __init__(self, cofactor, mutation, include, forcefield, windows,
                  sampling, system, cluster, temperature, replicates, dual, 
-                 preplocation, *args, **kwargs):
+                 preplocation, start, *args, **kwargs):
         
         self.cofactor = [cofactor]
         # Check whether all required files are there:
@@ -68,15 +68,21 @@ class Run(object):
         self.cluster = cluster
         self.FEPlist = []
         self.dual = dual
+        self.start = start
         self.dualMUT = {'0':[], '1':[]}
         
-        self.replacements = {'EQ_LAMBDA': '1.000 0.000',
-                             'ATOM_START_LIG1':'1',
+        self.replacements = {'ATOM_START_LIG1':'1',
                              'WATER_RESTRAINT':'',
                              'TEMP_VAR':self.temperature,
                              'RUN_VAR':self.replicates,
                              'RUNFILE':'run' + self.cluster + '.sh'  
                             }
+        
+        if self.start == '1':
+            self.replacements['EQ_LAMBDA'] = '1.000 0.000'
+            
+        if self.start == '0.5':
+            self.replacements['EQ_LAMBDA'] = '0.500 0.500'
     
     def checkFEP(self):
         if len(self.mutation[0]) == 1:
@@ -156,14 +162,14 @@ class Run(object):
     def readpdb(self):
         atnr = 0
         self.MUTresn = '{}2{}'.format(self.mutation[0],self.mutation[2])
-        backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
+        self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
         # Read in the mutant residue
         if self.dual == True:
             MUT = []
             with open(self.mutation[2] + '.pdb') as infile:
                 for line in infile:
                     line = IO.pdb_parse_in(line)
-                    if line[2] in backbone:
+                    if line[2] in self.backbone:
                         continue
                         
                     else:
@@ -204,8 +210,16 @@ class Run(object):
                                 if line[2] == 'O':
                                     for MUTat in MUT:
                                         atnr += 1
-                                        if MUTat[2] not in backbone:
-                                            MUTat[2] = MUTat[2] + 'x'
+                                        if MUTat[2] not in self.backbone:
+                                            # Atom name cannot be longer than 4 characters
+                                            #if len(MUTat[2]) <= 3: 
+                                            #    MUTat[2] = MUTat[2] + 'x'
+                                                
+                                            #elif len(MUTat[2]) == 4:
+                                            #    MUTat[2] = MUTat[2][0:1] + 'x'
+                                            MUTat[2] = MUTat[2].lower()
+                                            
+                                                
                                             MUTat[1] = atnr
                                             MUTat[4] = self.MUTresn
 
@@ -264,7 +278,7 @@ class Run(object):
                 self.merged_lib[header].append(line)
         
         # Add CA CBx bond
-        self.merged_lib['[bonds]'].append('       CA     CBx\n')
+        self.merged_lib['[bonds]'].append('       CA     cb\n')
         
         ## Read the mutant residue
         # Construct atom name replacements
@@ -274,7 +288,7 @@ class Run(object):
             if line != headers[0]:
                 if len(line) > 2:
                     atom = line[1]
-                    replacements[atom] = atom + 'x' 
+                    replacements[atom] = atom.lower()
                 
                 if line == header[1]:
                     break
@@ -350,7 +364,9 @@ class Run(object):
         self.PDBout = 'complex.pdb'
         with open(PDBout, 'w') as outfile:
             for key in self.PDB:
+                #print key
                 for line in self.PDB[key]:
+                    #print line
                     outline = IO.pdb_parse_out(line) + '\n'
                     outfile.write(outline)
                     
@@ -440,7 +456,7 @@ class Run(object):
                     
     def get_lambdas(self):
         self.lambdas = IO.get_lambdas(self.windows, self.sampling)
-        
+
     def write_EQ(self):
         for line in self.PDB[int(self.mutation[1])]:
             if line[2] == 'CA' and              \
@@ -460,44 +476,113 @@ class Run(object):
                     outfile.write(outline)
                     
     def write_MD(self):
-        for line in self.PDB[int(self.mutation[1])]:
-            if line[2] == 'CA' and              \
-            self.system == 'water'              \
-            or self.system == 'vacuum':
-                self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
-                                                                              line[1])        
-        for i in range(0, int(self.windows) + 1):
-            j = int(self.windows) - i
-            lambda1 = self.lambdas[i].replace(".", "")
-            lambda2 = self.lambdas[j].replace(".", "")
+        if self.start == '1.0':
+            for line in self.PDB[int(self.mutation[1])]:
+                if line[2] == 'CA' and self.system == 'water' or self.system == 'vacuum':
+                    self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
+                                                                                  line[1])
+
+            for i in range(0, int(self.windows) + 1):
+                j = int(self.windows) - i
+                lambda1 = self.lambdas[i].replace(".", "")
+                lambda2 = self.lambdas[j].replace(".", "")
+
+                if self.lambdas[i] == '1.000':
+                    src = s.INPUT_DIR + '/md_1000_0000.inp'
+                    
+                else:
+                    src = s.INPUT_DIR + '/md_XXXX_XXXX.inp'
+                    self.replacements['FLOAT_LAMBDA1'] = self.lambdas[i]
+                    self.replacements['FLOAT_LAMBDA2'] = self.lambdas[j]
+
+                tgt = self.directory + '/inputfiles/md_{}_{}.inp'.format(lambda1,
+                                                                         lambda2)
+                self.replacements['FILE'] = 'md_{}_{}'.format(lambda1,
+                                                              lambda2)
+
+                with open(src) as infile, open(tgt, 'w') as outfile:
+                    for line in infile:
+                        outline = IO.replace(line, self.replacements)
+                        outfile.write(outline)
+
+                ## Store previous file
+                self.replacements['FILE_N'] = 'md_{}_{}'.format(lambda1,
+                                                                lambda2)
+        # This needs to be a function at one point      
+        if self.start == '0.5':
+            self.mdfiles = ['md_0500_0500']
+            half = (len(self.lambdas)-1)/2
+            lambda1 = self.lambdas[0:half]
+            lambda2 = self.lambdas[half+1:]
             
-            if self.lambdas[i] == '1.000':
-                src = s.INPUT_DIR + '/md_1000_0000.inp'
-            else:
-                src = s.INPUT_DIR + '/md_XXXX_XXXX.inp'
-                self.replacements['FLOAT_LAMBDA1'] = self.lambdas[i]
-                self.replacements['FLOAT_LAMBDA2'] = self.lambdas[j]
-                
-            tgt = self.directory + '/inputfiles/md_{}_{}.inp'.format(lambda1,
-                                                                     lambda2)
-            self.replacements['FILE'] = 'md_{}_{}'.format(lambda1,
-                                                          lambda2)
-            
+            # Write out the middle file
+            self.replacements['FILE_N'] = 'md_0500_0500'
+            src = s.INPUT_DIR + '/md_0500_0500.inp'
+            tgt = self.directory + '/inputfiles/md_0500_0500.inp'
             with open(src) as infile, open(tgt, 'w') as outfile:
                 for line in infile:
                     outline = IO.replace(line, self.replacements)
                     outfile.write(outline)
             
-            ## Store previous file
-            self.replacements['FILE_N'] = 'md_{}_{}'.format(lambda1,
-                                                            lambda2)
+            # Write out part 1 of the out files
+            src = s.INPUT_DIR + '/md_XXXX_XXXX.inp'
+            for i in range(0, len(lambda1)):
+                l1 = lambda1[(half - i) - 1].replace(".", "")
+                l2 = lambda2[i].replace(".", "")
+                self.replacements['FLOAT_LAMBDA1'] = lambda1[(half - i) - 1]
+                self.replacements['FLOAT_LAMBDA2'] = lambda2[i]
+                tgt = self.directory + '/inputfiles/md_{}_{}.inp'.format(l1,
+                                                                         l2)
+                self.replacements['FILE'] = 'md_{}_{}'.format(l1,
+                                                              l2)
+                
+                with open(src) as infile, open(tgt, 'w') as outfile:
+                    for line in infile:
+                        outline = IO.replace(line, self.replacements)
+                        outfile.write(outline)
+                        
+                ## Store previous file
+                self.replacements['FILE_N'] = 'md_{}_{}'.format(l1,
+                                                                l2)
+                
+                self.mdfiles.append('md_{}_{}'.format(l1,l2))
             
+            # And part 2
+            self.replacements['FILE_N'] = 'md_0500_0500'
+            for i in range(0, len(lambda1)):
+                l1 = lambda2[i].replace(".", "")
+                l2 = lambda1[(half - i) - 1].replace(".", "")
+                self.replacements['FLOAT_LAMBDA1'] = lambda2[i]
+                self.replacements['FLOAT_LAMBDA2'] = lambda1[(half - i) - 1]
+                tgt = self.directory + '/inputfiles/md_{}_{}.inp'.format(l1,
+                                                                         l2)
+                self.replacements['FILE'] = 'md_{}_{}'.format(l1,
+                                                              l2)
+                
+                with open(src) as infile, open(tgt, 'w') as outfile:
+                    for line in infile:
+                        outline = IO.replace(line, self.replacements)
+                        outfile.write(outline)
+                        
+                ## Store previous file
+                self.replacements['FILE_N'] = 'md_{}_{}'.format(l1,
+                                                                l2)
+                
+                self.mdfiles.append('md_{}_{}'.format(l1,l2))
+
+
     def write_runfile(self):
         ntasks = getattr(s, self.cluster)['NTASKS']
         src = s.INPUT_DIR + '/run.sh'
         tgt = self.directory + '/inputfiles/run' + self.cluster + '.sh'
         EQ_files = sorted(glob.glob(self.directory + '/inputfiles/eq*.inp'))
-        MD_files = reversed(sorted(glob.glob(self.directory + '/inputfiles/md*.inp')))
+        
+        if self.start == '1':
+            MD_files = reversed(sorted(glob.glob(self.directory + '/inputfiles/md*.inp')))
+            
+        elif self.start == '0.5':
+            MD_files = self.mdfiles
+
         replacements = IO.merge_two_dicts(self.replacements, getattr(s, self.cluster))
         replacements['FEPS'] = ' '.join(self.FEPlist)
             
@@ -523,9 +608,14 @@ class Run(object):
                         
                 if line.strip() == '#RUN_FILES':
                     for line in MD_files:
-                        file_base = line.split('/')[-1][:-4]
+                        if self.start == '1':
+                            file_base = line.split('/')[-1][:-4]
+                            
+                        elif self.start == '0.5':
+                            file_base=line
+                            
                         outline = 'time mpirun -np {} $qdyn {}.inp'  \
-                                  '> {}.log\n'.format(ntasks,
+                                  ' > {}.log\n'.format(ntasks,
                                                       file_base,
                                                       file_base)
                         outfile.write(outline)
@@ -639,10 +729,16 @@ class Run(object):
             for line in self.merged_lib['[atoms]']:
                 cnt += 1
                 line = line.split()
-                if line[1][-1] != 'x':
-                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                 line[3], 
-                                                                 '0.0000'))
+                if line[1][0].islower()  == False:
+                    if line[1] in self.backbone:
+                        outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                     line[3], 
+                                                                     line[3]))
+                        
+                    else:
+                        outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                     line[3], 
+                                                                     '0.0000'))
                     
                 else:
                     outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
@@ -685,11 +781,16 @@ class Run(object):
             for line in self.merged_lib['[atoms]']:
                 cnt += 1
                 line = line.split()
-                if line[1][-1] != 'x':
-                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                 line[2], 
-                                                                 'DUM'))
-                    
+                if line[1][0].islower()  == False:
+                    if line[1] in self.backbone:
+                        outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                     line[2], 
+                                                                     line[2]))
+                    else:
+                        outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                     line[2], 
+                                                                     'DUM'))
+                        
                 else:
                     outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
                                                                  'DUM', 
@@ -702,10 +803,15 @@ class Run(object):
             for line in self.merged_lib['[atoms]']:
                 cnt += 1
                 line = line.split()
-                if line[1][-1] != 'x':
-                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                 '0', 
-                                                                 '20'))
+                if line[1][0].islower()  == False:
+                    if line[1] in self.backbone:
+                         outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                     '0', 
+                                                                     '0'))                       
+                    else:
+                        outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                     '0', 
+                                                                     '20'))
                     
                 else:
                     outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
@@ -812,6 +918,14 @@ if __name__ == "__main__":
                         default = False,
                         action = 'store_true',
                         help = "Turn on if you want QresFEP to generate a dual topology hybrid")
+    
+    parser.add_argument('-l', '--start',
+                        dest = "start",
+                        default = '1',
+                        choices = ['1', '0.5'],
+                        help = "Starting FEP in the middle or endpoint, 0.5 recommended for dual"
+                       )
+    
 
     args = parser.parse_args()
     run = Run(mutation = args.mutation,
@@ -825,6 +939,7 @@ if __name__ == "__main__":
               replicates = args.replicates,
               preplocation = args.preplocation,
               dual = args.dual,
+              start = args.start,
               include = ('ATOM','HETATM')
              )
     

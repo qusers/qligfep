@@ -413,6 +413,7 @@ class Run(object):
                     line[4] = 'LIG'
                     index += 1
                     line[2] = atomnames[index][0]
+                    line[6] = 1
                     outline = IO.pdb_parse_out(line)
                     outfile.write(outline + '\n')
                     
