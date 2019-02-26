@@ -37,9 +37,10 @@ KEBNE = {'NODES'      : '1',
          'NTASKS'     : '28',
          'TIME'       : '0-04:00:00',  # d-hh:mm:ss
          'MODULES'    : 'module load gompi/2017b\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/home/w/wije/pfs/software/Q5/bin/qdyn5p', #fix qdyn= !!!!!
+         'QDYN'       : 'qdyn=/home/w/wije/pfs/software/q/bin/qdynp', #fix qdyn= !!!!!
          'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'QFEP'         : '/home/w/wije/pfs/software/q_BAR/bin/qfep5',
+         'QFEP'       : '/home/w/wije/pfs/software/q/bin/qfep',
+         'QCALC'      : '/home/w/wije/pfs/software/q/bin/qcalc',
          'ACCOUNT'    : 'SNIC2017-1-549'
         }
 
