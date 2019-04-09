@@ -37,7 +37,7 @@ class Run(object):
                 if FEP == 'FEP2':
                     energies = [0.00,0.00,0.00,0.00,0.00]
                 else:
-                    print "Could not retrieve energies for: " + filename
+                    print("Could not retrieve energies for: " + filename)
                     energies = [np.nan, np.nan, np.nan, np.nan, np.nan]
             #try:
             #    energies = IO.read_qfep(filename)
@@ -64,12 +64,11 @@ class Run(object):
         for method in methods_list:
             out.append(results[method])
 
-        print self.FEP, '{} {} {} {} {}'.format(*out)
+        print(self.FEP, '{} {} {} {} {}'.format(*out))
                 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='protPREP',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Analyse FEP == ')
 

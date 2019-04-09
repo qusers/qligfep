@@ -30,13 +30,13 @@ class Run(object):
         if output in programs:
             self.output = output
         else:
-            print 'Conversion to ' + ','.join(programs) + ' currently supported'
+            print('Conversion to ' + ','.join(programs)) + ' currently supported'
             sys.exit()
             
         if self.FF in supported_FFs:
             self.FF = FF
         else:
-            print 'Forcefields ' + ','.join(supported_FFs) + ' currently supported'
+            print('Forcefields ' + ','.join(supported_FFs)) + ' currently supported'
             sys.exit()
         
     def vdw_calc(self, sig, eps):
@@ -172,7 +172,7 @@ class Run(object):
             out = check_output(args)
 
         elif v[0] == 'amber':
-            print 'not supported yet'
+            print('not supported yet')
             sys.exit()
 
         with open(self.lig+'.log', 'w') as outfile:
@@ -226,7 +226,7 @@ class Run(object):
             # Create lists 
             if len(line[0]) <= 4 and line[0] != 'atom':
                 if block == 1:
-                    print line
+                    print(line)
                     charge = [line[0], float(line[4])]
                     charge_dic[line[0]] = line[4]
                     charge_sum = charge_sum + float(line[4])
@@ -417,14 +417,13 @@ class Run(object):
                     outline = IO.pdb_parse_out(line)
                     outfile.write(outline + '\n')
                     
-                print len(line)
+                print(len(line))
                     
         os.rename(pdb_out, pdb_in)
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='lig_prep',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Generate parameter files for ligands. == ')
 

@@ -28,7 +28,7 @@ class Run(object):
         for filename in required:
             if os.path.exists(filename) == False:
                 required = ' '.join(required)
-                print "ERROR: {} are required files, exiting now.".format(required)
+                print("ERROR: {} are required files, exiting now.".format(required))
                 sys.exit()
         
         if windows == None:
@@ -102,9 +102,9 @@ class Run(object):
                 self.FEPdir = None
                 
             else:    
-                print 'FATAL: no FEP files found for the {} mutation' \
+                print('FATAL: no FEP files found for the {} mutation' \
                       'in {} exiting now.'.format(mutation,
-                                                  FEPdir)
+                                                  FEPdir))
                 sys.exit()
         
         else:
@@ -852,7 +852,6 @@ class Run(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='QresPREP',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Generate FEP files for resFEP, takes output from protPREP.py == ')
 

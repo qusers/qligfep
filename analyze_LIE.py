@@ -47,14 +47,13 @@ class Run(object):
         el_sem = np.nanstd(avg_el, ddof =1)/np.sqrt(len(avg_el))
         el = np.nanmean(avg_el)
         
-        print vdW, vdW_sem, el, el_sem 
+        print(vdW, vdW_sem, el, el_sem)
         dG_LIE = self.a * vdW + self.b * el * self.g
-        print dG_LIE
+        print(dG_LIE)
                 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='analyzeLIE',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Analyse LIE == ')
 

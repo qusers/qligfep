@@ -649,7 +649,7 @@ class Run(object):
             os.chmod(submit_out, st.st_mode | stat.S_IEXEC)
         
         except:
-            print "WARNING: Could not change permission for " + submit_out
+            print("WARNING: Could not change permission for " + submit_out)
 
         
     def write_runfile(self, writedir, file_list):
@@ -791,7 +791,6 @@ class Run(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='QligFEP',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Generate FEP files for dual topology ligand FEP == ')
 

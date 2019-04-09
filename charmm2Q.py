@@ -41,7 +41,7 @@ class Run(object):
                         '[atom_types]': 1}
 
         section = 'SECTION_'
-        print filename
+        print(filename)
         with open(filename, 'r') as prm:
 
             for line in prm:
@@ -213,25 +213,25 @@ class Run(object):
 
                 if not line.startswith('!'):
                     if 'BOND' in line:
-                        print 'Found BONDS'
+                        print('Found BONDS')
                         for section in selector.keys():
                             selector[section] = False
                         selector['found_bonds'] = True
 
                     if 'ANGLE' in line:
-                        print 'Found ANGLES'
+                        print('Found ANGLES')
                         for section in selector.keys():
                             selector[section] = False
                         selector['found_angles'] = True
 
                     if 'DIHEDRAL' in line:
-                        print 'Found DIHEDRALS'
+                        print('Found DIHEDRALS')
                         for section in selector.keys():
                             selector[section] = False
                         selector['found_torsions'] = True
 
                     if 'IMPROPER' in line:
-                        print 'Found IMPROPER'
+                        print('Found IMPROPER')
                         for section in selector.keys():
                             selector[section] = False
                         selector['found_impropers'] = True
@@ -241,7 +241,7 @@ class Run(object):
                             selector[section] = False
 
                     if 'NONBONDED' in line:
-                        print 'Found NONBONDED'
+                        print('Found NONBONDED')
                         for section in selector.keys():
                             selector[section] = False
                         selector['found_atoms'] = True
@@ -479,7 +479,7 @@ class Run(object):
                             pair = list()
                             for atom in line.split('!')[0].split()[1:]:
                                 if '+' in atom:
-                                    print atom
+                                    print(atom)
                                 atom = atom.translate(None, '+-')
                                 pair.append(atom)
                                 if len(pair) == 2:
@@ -635,7 +635,7 @@ class Run(object):
 
         #Fix DISU so that it is possible to create CYX from the patch:
         if 'DISU' in patches.keys():
-            print patches['DISU']
+            print(patches['DISU'])
             patches['CYX'] = deepcopy(patches['DISU'])
             del patches['DISU']
 
@@ -667,13 +667,13 @@ class Run(object):
         for pres in patches.keys():
             if pres in patch_res.keys():
                 residues[pres] = deepcopy(residues[patch_res[pres]])
-                print '\n--> Creating %s from %s' % (pres, patch_res[pres])
+                print('\n--> Creating %s from %s' % (pres, patch_res[pres]))
 
                 #Delete atoms from original residue that is not present in the patch
                 if len(patches[pres]['delete']) > 0:
 
                     for delete_atom in patches[pres]['delete']:
-                        print ' - Deleting atom %s from %s to create %s' % (delete_atom, patch_res[pres], pres)
+                        print(' - Deleting atom %s from %s to create %s' % (delete_atom, patch_res[pres], pres))
                         #delete from atoms:
                         for nr in residues[pres]['atoms'].keys():
                             if residues[pres]['atoms'][nr]['name'] == delete_atom:
@@ -687,9 +687,9 @@ class Run(object):
                                 delete_indexes.append(i)
 
                         for i in delete_indexes:
-                            print ' - Deleting bond %s-%s from %s to create %s' % (residues[pres]['bonds'][i][0],
+                            print(' - Deleting bond %s-%s from %s to create %s' % (residues[pres]['bonds'][i][0],
                                                                                residues[pres]['bonds'][i][1],
-                                                                               patch_res[pres], pres)
+                                                                               patch_res[pres], pres))
 
                             del residues[pres]['bonds'][i]
 
@@ -698,7 +698,7 @@ class Run(object):
                             charge_group = residues[pres]['charge_groups'][i]
 
                             if delete_atom in charge_group:
-                                print ' - Deleting %s from charge_group: ' % delete_atom + ' '.join(charge_group)
+                                print(' - Deleting %s from charge_group: ' % delete_atom + ' '.join(charge_group))
                                 del charge_group[charge_group.index(delete_atom)]
 
                                 residues[pres]['charge_groups'][i] = charge_group
@@ -706,8 +706,8 @@ class Run(object):
                         #Delete impropers containing atom
                         for i in range(len(residues[pres]['impropers'])):
                             if delete_atom in residues[pres]['impropers'][i]:
-                                print 'Deleting improper with atom %s: ' % delete_atom + \
-                                      ' '.join(residues[pres]['impropers'][i])
+                                print('Deleting improper with atom %s: ' % delete_atom + \
+                                      ' '.join(residues[pres]['impropers'][i]))
 
                 #Modify atomtype, charges and comments:
                 patch_atoms = list()
@@ -722,9 +722,9 @@ class Run(object):
                     if atomname in patch_atoms:
                         pnr = name_number[atomname]
 
-                        print ' * Atomtype %s with charge %s changed to atomtype %s with charge %s' % \
+                        print(' * Atomtype %s with charge %s changed to atomtype %s with charge %s' % \
                               (residues[pres]['atoms'][nr]['type'], residues[pres]['atoms'][nr]['charge'],
-                               patches[pres]['atoms'][pnr]['type'], patches[pres]['atoms'][pnr]['charge'])
+                               patches[pres]['atoms'][pnr]['type'], patches[pres]['atoms'][pnr]['charge']))
 
                         residues[pres]['atoms'][nr]['type'] = patches[pres]['atoms'][pnr]['type']
                         residues[pres]['atoms'][nr]['charge'] = patches[pres]['atoms'][pnr]['charge']
@@ -738,8 +738,8 @@ class Run(object):
                         pnr = name_number[atom]
                         nr = max(residues[pres]['atoms']) + 1
                         residues[pres]['atoms'][nr] = dict()
-                        print ' + Adding atom %s to %s to create %s' % (patches[pres]['atoms'][pnr]['name'],
-                                                                       patch_res[pres], pres)
+                        print(' + Adding atom %s to %s to create %s' % (patches[pres]['atoms'][pnr]['name'],
+                                                                       patch_res[pres], pres))
                         residues[pres]['atoms'][nr]['name'] = patches[pres]['atoms'][pnr]['name']
                         residues[pres]['atoms'][nr]['type'] = patches[pres]['atoms'][pnr]['type']
                         residues[pres]['atoms'][nr]['charge'] = patches[pres]['atoms'][pnr]['charge']
@@ -748,21 +748,21 @@ class Run(object):
                 #Add new bonds from patch
                 for bond in patches[pres]['bonds']:
                     if bond not in residues[pres]['bonds']:
-                        print ' + Adding bond %s-%s to %s to create %s' % (bond[0], bond[1], patch_res[pres], pres)
+                        print(' + Adding bond %s-%s to %s to create %s' % (bond[0], bond[1], patch_res[pres], pres))
                         residues[pres]['bonds'].append(bond)
 
                 #add new impropers
                 for improper in patches[pres]['impropers']:
                     if improper not in residues[pres]['impropers']:
                         a1, a2, a3, a4 = improper[0:]
-                        print ' + Adding improper %s %s %s %s to %s to create %s' % (a1, a2, a3, a4, patch_res[pres], pres)
+                        print(' + Adding improper %s %s %s %s to %s to create %s' % (a1, a2, a3, a4, patch_res[pres], pres))
                         residues[pres]['impropers'].append(improper)
 
                 #add new charge_groups
                 for new_group in patches[pres]['charge_groups']:
                     for old_group in residues[pres]['charge_groups']:
                         if len(set(new_group) & set(old_group)) > 0:
-                            print ' * Charge group modified from [%s] to [%s]' % ( ' '.join(old_group),' '.join(new_group))
+                            print(' * Charge group modified from [%s] to [%s]' % ( ' '.join(old_group),' '.join(new_group)))
                             residues[pres]['charge_groups'][residues[pres]['charge_groups'].index(old_group)] = new_group
 
                 #Remove head connection  and improper if N-terminal GLY or PRO patch
@@ -839,13 +839,13 @@ class Run(object):
                         for i in del_imp:
                             del residues[tres]['impropers'][i]
 
-                        print '\n--> Creating %s from %s' % (tres, res)
+                        print('\n--> Creating %s from %s' % (tres, res))
 
                         #Delete atoms from original residue that is not tresent in the patch
                         if len(patches[pres]['delete']) > 0:
 
                             for delete_atom in patches[pres]['delete']:
-                                print ' - Deleting atom %s from %s to create %s' % (delete_atom, res, tres)
+                                print( ' - Deleting atom %s from %s to create %s' % (delete_atom, res, tres))
                                 #delete from atoms:
                                 for nr in residues[tres]['atoms'].keys():
                                     if residues[tres]['atoms'][nr]['name'] == delete_atom:
@@ -859,9 +859,9 @@ class Run(object):
                                         delete_indexes.append(i)
 
                                 for i in delete_indexes:
-                                    print ' - Deleting bond %s-%s from %s to create %s' % (residues[tres]['bonds'][i][0],
+                                    print( ' - Deleting bond %s-%s from %s to create %s' % (residues[tres]['bonds'][i][0],
                                                                                        residues[tres]['bonds'][i][1],
-                                                                                       res, tres)
+                                                                                       res, tres))
 
                                     del residues[tres]['bonds'][i]
 
@@ -870,7 +870,7 @@ class Run(object):
                                     charge_group = residues[tres]['charge_groups'][i]
 
                                     if delete_atom in charge_group:
-                                        print ' - Deleting %s from charge_group: ' % delete_atom + ' '.join(charge_group)
+                                        print( ' - Deleting %s from charge_group: ' % delete_atom + ' '.join(charge_group))
                                         del charge_group[charge_group.index(delete_atom)]
 
                                         residues[tres]['charge_groups'][i] = charge_group
@@ -878,8 +878,8 @@ class Run(object):
                                 #Delete impropers containing atom
                                 for i in range(len(residues[tres]['impropers'])):
                                     if delete_atom in residues[tres]['impropers'][i]:
-                                        print 'Deleting improper with atom %s: ' % delete_atom + \
-                                              ' '.join(residues[tres]['impropers'][i])
+                                        print( 'Deleting improper with atom %s: ' % delete_atom + \
+                                              ' '.join(residues[tres]['impropers'][i]))
 
                         #Modify atomtype, charges and comments:
                         patch_atoms = list()
@@ -894,9 +894,9 @@ class Run(object):
                             if atomname in patch_atoms:
                                 pnr = name_number[atomname]
 
-                                print ' * Atomtype %s with charge %s changed to atomtype %s with charge %s' % \
+                                print( ' * Atomtype %s with charge %s changed to atomtype %s with charge %s' % \
                                       (residues[tres]['atoms'][nr]['type'], residues[tres]['atoms'][nr]['charge'],
-                                       patches[pres]['atoms'][pnr]['type'], patches[pres]['atoms'][pnr]['charge'])
+                                       patches[pres]['atoms'][pnr]['type'], patches[pres]['atoms'][pnr]['charge']))
 
                                 residues[tres]['atoms'][nr]['type'] = patches[pres]['atoms'][pnr]['type']
                                 residues[tres]['atoms'][nr]['charge'] = patches[pres]['atoms'][pnr]['charge']
@@ -910,8 +910,8 @@ class Run(object):
                                 pnr = name_number[atom]
                                 nr = max(residues[tres]['atoms']) + 1
                                 residues[tres]['atoms'][nr] = dict()
-                                print ' + Adding atom %s to %s to create %s' % (patches[pres]['atoms'][pnr]['name'],
-                                                                               res, tres)
+                                print( ' + Adding atom %s to %s to create %s' % (patches[pres]['atoms'][pnr]['name'],
+                                                                               res, tres))
                                 residues[tres]['atoms'][nr]['name'] = patches[pres]['atoms'][pnr]['name']
                                 residues[tres]['atoms'][nr]['type'] = patches[pres]['atoms'][pnr]['type']
                                 residues[tres]['atoms'][nr]['charge'] = patches[pres]['atoms'][pnr]['charge']
@@ -920,21 +920,21 @@ class Run(object):
                         #Add new bonds from patch
                         for bond in patches[pres]['bonds']:
                             if bond not in residues[tres]['bonds']:
-                                print ' + Adding bond %s-%s to %s to create %s' % (bond[0], bond[1], res, tres)
+                                print( ' + Adding bond %s-%s to %s to create %s' % (bond[0], bond[1], res, tres))
                                 residues[tres]['bonds'].append(bond)
 
                         #add new impropers
                         for improper in patches[pres]['impropers']:
                             if improper not in residues[tres]['impropers']:
                                 a1, a2, a3, a4 = improper[0:]
-                                print ' + Adding improper %s %s %s %s to %s to create %s' % (a1, a2, a3, a4, res, tres)
+                                print( ' + Adding improper %s %s %s %s to %s to create %s' % (a1, a2, a3, a4, res, tres))
                                 residues[tres]['impropers'].append(improper)
 
                         #add new charge_groups
                         for new_group in patches[pres]['charge_groups']:
                             for old_group in residues[tres]['charge_groups']:
                                 if len(set(new_group) & set(old_group)) > 0:
-                                    print ' * Charge group modified from [%s] to [%s]' % ( ' '.join(old_group),' '.join(new_group))
+                                    print( ' * Charge group modified from [%s] to [%s]' % ( ' '.join(old_group),' '.join(new_group)))
                                     residues[tres]['charge_groups'][residues[tres]['charge_groups'].index(old_group)] = new_group
 
                         #Total charge of new residue:
@@ -964,7 +964,7 @@ class Run(object):
         new_prm, scale_14 = run.read_charmm_par(self.charmm_prm, atom_mass, qprm, convert_to_opls)
 
         if self.merge == True:
-            print 'NOT WORKING YET'
+            print('NOT WORKING YET')
             old_q_prm = s.FF_DIR + self.FF + '.prm'
             
         else:
@@ -972,21 +972,21 @@ class Run(object):
         
         run.write_file_header(old_q_prm, ff_name, scale_14, convert_to_opls)
 
-        print ''
+        print('')
 
-        print '%6d NEW ATOM TYPES PARAMETERS FOUND' % len(new_prm['[atom_types]'])
-        print '%6d NEW BOND PARAMETERS FOUND' % len(new_prm['[bonds]'])
-        print '%6d NEW ANGLE PARAMETERS FOUND' % len(new_prm['[angles]'])
-        print '%6d NEW TORSION PARAMETERS FOUND' % len(new_prm['[torsions]'])
-        print '%6d NEW IMPROPER PARAMETERS FOUND' % len(new_prm['[impropers]'])
+        print('%6d NEW ATOM TYPES PARAMETERS FOUND' % len(new_prm['[atom_types]']))
+        print('%6d NEW BOND PARAMETERS FOUND' % len(new_prm['[bonds]']))
+        print('%6d NEW ANGLE PARAMETERS FOUND' % len(new_prm['[angles]']))
+        print('%6d NEW TORSION PARAMETERS FOUND' % len(new_prm['[torsions]']))
+        print('%6d NEW IMPROPER PARAMETERS FOUND' % len(new_prm['[impropers]']))
 
         #Write new parameters to Q .prm file
         run.write_Q_prm(old_q_prm, new_prm)
 
         residues, patches = run.read_charmm_top(self.charmm_top)
 
-        print '\n%6d RESIDUES FOUND' % len(residues.keys())
-        print '%6d PATCHES FOUND' % len(patches.keys())
+        print('\n%6d RESIDUES FOUND' % len(residues.keys()))
+        print('%6d PATCHES FOUND' % len(patches.keys()))
 
         #Use relevant patches and generate suitable residues for Q lib:
         residues = run.patch_to_residue(residues, patches)
@@ -1003,7 +1003,6 @@ class Run(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='charmm2Q',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Convert CHARMM ligand parameters to Q files == ')
 
