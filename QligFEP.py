@@ -392,7 +392,7 @@ class Run(object):
     def get_lambdas(self, windows, sampling):
         # Constructing the lambda partition scheme
         windows = int(windows)
-        step = windows/2
+        step = int(windows/2)
         lambdas = []
         lmbda_1 = []
         lmbda_2 = []

@@ -18,10 +18,11 @@ SCHROD_DIR = '/home/apps/schrodinger2017/'
 CSB = {'NODES'        : '1',
        'NTASKS'       : '16',
        'TIME'         : '0-06:00:00',  # d-hh:mm:ss
-       'MODULES'      : 'module load openmpi-x86_64\n module load gcc/6.2.0', 
+       'MODULES'      : 'module load openmpi-x86_64\n module load gcc/6.2.0',
        'QDYN'         : 'qdyn=/home/apps/q-5.06/qdynp',
-       'QPREP'        : '/home/jespers/software/Q_test/bin/qprep',
-       'QFEP'         : '/home/jespers/software/q_510/bin/qfep'
+       'QPREP'        : '/home/jespers/software/q6/bin/qprep',
+       'QFEP'         : '/home/jespers/software/q6/bin/qfep',
+       'QCALC'        : '/home/jespers/software/q6/bin/qcalc'
       }
 
 HEBBE = {'NODES'      : '1',

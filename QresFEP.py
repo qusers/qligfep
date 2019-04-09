@@ -511,7 +511,7 @@ class Run(object):
         # This needs to be a function at one point      
         if self.start == '0.5':
             self.mdfiles = ['md_0500_0500']
-            half = (len(self.lambdas)-1)/2
+            half = int((len(self.lambdas)-1)/2)
             lambda1 = self.lambdas[0:half]
             lambda2 = self.lambdas[half+1:]
             

@@ -78,7 +78,7 @@ def overlapping_pairs(pdbfile, reslist, include=('ATOM', 'HETATM')):
                         overlapping_atoms.append([at1[0], at2[0]])
                         
     total = len(overlapping_atoms)
-    for i in range (0, (total/2)):
+    for i in range (0, (int(total/2))):
         atomlist.append(overlapping_atoms[i])
                         
     return atomlist
