@@ -169,8 +169,8 @@ class Run(object):
             ffld_serv = s.SCHROD_DIR + '/utilities/ffld_server'
             options = ' -ipdb '+ self.lig + '.pdb -print_parameters -version ' + v[1]
             args = shlex.split(ffld_serv + options)
-            out = check_output(args)
-
+            out = check_output(args,universal_newlines=True)
+        
         elif v[0] == 'amber':
             print('not supported yet')
             sys.exit()
@@ -226,7 +226,6 @@ class Run(object):
             # Create lists 
             if len(line[0]) <= 4 and line[0] != 'atom':
                 if block == 1:
-                    print(line)
                     charge = [line[0], float(line[4])]
                     charge_dic[line[0]] = line[4]
                     charge_sum = charge_sum + float(line[4])
@@ -261,8 +260,6 @@ class Run(object):
                     torsion_list, 
                     improper_list,
                     charge_group_list]
-
-        # Now write out lib
 
     def write_lib_Q(self):
         # this is just for readability, not necessary
