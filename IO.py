@@ -10,12 +10,10 @@ import settings as s
 
 ## Some useful objects TO DO add GLH etc.
 charged_res = {'HIS': {'HD1' : 'HID',
-                                  'HE2' : 'HIE'},
-               
-                          'GLU': {'HE2' : 'GLH'},
-               
-                          'ASP': {'HD2' : 'ASH'}
-                         }    
+                       'HE2' : 'HIE'},
+               'GLU': {'HE2' : 'GLH'},
+               'ASP': {'HD2' : 'ASH'}
+              }    
 
 def pdb_parse_in(line, include=('ATOM','HETATM')):
     """
