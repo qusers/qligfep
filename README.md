@@ -6,7 +6,8 @@ software package **Q**. It includes modules which are described in further
 detail below:  
 
 - setupFEP.py: module to generate ligand FEP calculations using a
-dual topology approach, see Jespers et al. (doi:/MS_SUBMITTED).  
+dual topology approach, see Jespers et al. 
+(https://doi.org/10.1186/s13321-019-0348-5).  
 
 - opls2Q and charmm2Q.py: tools to translate from OPLS (ffld_server) 
 and CHARMM (cgenff) to Q readable file formats.  
