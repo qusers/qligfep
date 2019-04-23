@@ -47,7 +47,7 @@ class Run(object):
     
     def openff(self):
         # Load the molecule (for now mol2, until charges are saved on sdf)
-        molecule = Molecule.from_file(self.lig + '.sdf')
+        molecule = Molecule.from_file(self.lig + '.mol2')
         topology = Topology.from_molecules([molecule])
 
         # Label using the smirnoff99Frosst force field
@@ -90,10 +90,10 @@ class Run(object):
             #atom and charge block:
             outfile.write("[atoms] \n")
             for i, at in enumerate(self.mapping):
-                outfile.write('{:>4s}   {:10}X{:11}{:>10s}\n'.format(self.mapping[at][0], 
-                                                                     self.mapping[at][1], 
-                                                                     self.mapping[at][1], 
-                                                                     self.mapping[at][3]
+                outfile.write('{:>4s}   {:10}{:11}{:>10s}\n'.format(self.mapping[at][0], 
+                                                                    self.mapping[at][1], 
+                                                                    self.mapping[at][1].lower(), 
+                                                                    self.mapping[at][3]
                                                                     )
                              )
                 
@@ -117,14 +117,14 @@ class Run(object):
                                                            ak, 
                                                            al))
 
-            outfile.write("\n[charge_groups]")
-            for i, atom in enumerate(self.mapping):
-                if self.mapping[atom][2] != 'H':
-                    outfile.write('\n{}'.format(self.mapping[atom][1]))
-                for j, bond in enumerate(self.parameters['Bonds']):
-                    if bond[0] == i:
-                        if self.mapping[bond[1]][2] == 'H':
-                            outfile.write(' {}'.format(self.mapping[bond[1]][1]))
+            #outfile.write("\n[charge_groups]")
+            #for i, atom in enumerate(self.mapping):
+            #    if self.mapping[atom][2] != 'H':
+            #        outfile.write('\n{}'.format(self.mapping[atom][1]))
+            #    for j, bond in enumerate(self.parameters['Bonds']):
+            #        if bond[0] == i:
+            #            if self.mapping[bond[1]][2] == 'H':
+            #                outfile.write(' {}'.format(self.mapping[bond[1]][1]))
             
     def write_prm_Q(self):
         if self.FF == 'AMBER14sb' and self.merge == True:
@@ -154,14 +154,14 @@ class Run(object):
                 if block == 1:
                     for (atom_indices, parameter) in self.parameters['vdW'].items():
                         ai = atom_indices[0]
-                        ai_name = self.mapping[ai][1]
+                        ai_name = self.mapping[ai][1].lower()
                         # This is a bit hacky, check how to get the float out directly
                         epsilon = float('{}'.format(parameter.epsilon).split()[0])
                         epsilon23 = epsilon/2
                         # TO DO: CHECK IF THIS IS CORRECT!!
                         Rmin = float('{}'.format(parameter.sigma).split()[0])/2
                         mass = self.masses[self.mapping[ai][2]]
-                        outfile.write("""X{:6}{: 8.3f}{: 10.3f}{: 10.3f}{: 10.3f}{: 10.3f}{:>10s}\n""".format(ai_name, 
+                        outfile.write("""{:6}{: 8.3f}{: 10.3f}{: 10.3f}{: 10.3f}{: 10.3f}{:>10s}\n""".format(ai_name, 
                                                                           Rmin,
                                                                           0.00,
                                                                           epsilon,
@@ -172,12 +172,12 @@ class Run(object):
                 if block == 2:
                     for (atom_indices, parameter) in self.parameters['Bonds'].items():
                         ai      = atom_indices[0]
-                        ai_name = self.mapping[ai][1]
+                        ai_name = self.mapping[ai][1].lower()
                         aj      = atom_indices[1]
-                        aj_name = self.mapping[aj][1]
+                        aj_name = self.mapping[aj][1].lower()
                         fc      = float('{}'.format(parameter.k).split()[0])
                         l       = float('{}'.format(parameter.length).split()[0])
-                        outfile.write('X{:10}X{:10}{:10.1f}{:>10.3f}\n'.format(ai_name, 
+                        outfile.write('{:10}{:10}{:10.1f}{:>10.3f}\n'.format(ai_name, 
                                                                                aj_name,
                                                                                fc,
                                                                                l))
@@ -185,15 +185,15 @@ class Run(object):
                 if block == 3:
                     for (atom_indices, parameter) in self.parameters['Angles'].items():
                         ai      = atom_indices[0]
-                        ai_name = self.mapping[ai][1]
+                        ai_name = self.mapping[ai][1].lower()
                         aj      = atom_indices[1]
-                        aj_name = self.mapping[aj][1]
+                        aj_name = self.mapping[aj][1].lower()
                         ak      = atom_indices[2]
-                        ak_name = self.mapping[ak][1]
+                        ak_name = self.mapping[ak][1].lower()
                         fc      = float('{}'.format(parameter.k).split()[0])
                         angle   = float('{}'.format(parameter.angle).split()[0])
                         
-                        outfile.write("""X{:10}X{:10}X{:10}{: 8.2f}{:>12.3f}\n""".format(ai_name,
+                        outfile.write("""{:10}{:10}{:10}{: 8.2f}{:>12.3f}\n""".format(ai_name,
                                                                                          aj_name,
                                                                                          ak_name,
                                                                                          fc,
@@ -203,13 +203,13 @@ class Run(object):
                     for (atom_indices, parameter) in self.parameters['ProperTorsions'].items():
                         forces = []
                         ai      = atom_indices[0]
-                        ai_name = self.mapping[ai][1]
+                        ai_name = self.mapping[ai][1].lower()
                         aj      = atom_indices[1]
-                        aj_name = self.mapping[aj][1]
+                        aj_name = self.mapping[aj][1].lower()
                         ak      = atom_indices[2]
-                        ak_name = self.mapping[ak][1]
+                        ak_name = self.mapping[ak][1].lower()
                         al      = atom_indices[3]
-                        al_name = self.mapping[al][1]
+                        al_name = self.mapping[al][1].lower()
                         max_phase = len(parameter.phase)
                         
                         # Now check if there are multiple minima
@@ -228,7 +228,7 @@ class Run(object):
                             forces.append(force)
 
                         for force in forces:
-                            outfile.write("""X{:10}X{:10}X{:10}X{:10}{:>10.3f}{:>10.3f}{:>10.3f}{:>5d}\n""".format(ai_name,
+                            outfile.write("""{:10}{:10}{:10}{:10}{:>10.3f}{:>10.3f}{:>10.3f}{:>5d}\n""".format(ai_name,
                                                                                                                    aj_name,
                                                                                                                    ak_name,
                                                                                                                    al_name,
@@ -240,16 +240,16 @@ class Run(object):
                 if block == 5:
                     for (atom_indices, parameter) in self.parameters['ImproperTorsions'].items():
                         ai      = atom_indices[0]
-                        ai_name = self.mapping[ai][1]
+                        ai_name = self.mapping[ai][1].lower()
                         aj      = atom_indices[1]
-                        aj_name = self.mapping[aj][1]
+                        aj_name = self.mapping[aj][1].lower()
                         ak      = atom_indices[2]
-                        ak_name = self.mapping[ak][1]
+                        ak_name = self.mapping[ak][1].lower()
                         al      = atom_indices[3]
-                        al_name = self.mapping[al][1]                        
+                        al_name = self.mapping[al][1].lower()                      
                         fc      = float('{}'.format(parameter.k[0]).split()[0])
                         phase   = float('{}'.format(parameter.phase[0]).split()[0])
-                        outfile.write("""X{:10}X{:10}X{:10}X{:10}{:10.3f}{:10.3f}\n""".format(ai_name,
+                        outfile.write("""{:10}{:10}{:10}{:10}{:10.3f}{:10.3f}\n""".format(ai_name,
                                                                                               aj_name,
                                                                                               ak_name,
                                                                                               al_name,

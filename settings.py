@@ -18,8 +18,8 @@ SCHROD_DIR = '/home/jespers/software/schrodinger/'
 CSB = {'NODES'        : '1',
        'NTASKS'       : '16',
        'TIME'         : '0-06:00:00',  # d-hh:mm:ss
-       'MODULES'      : 'module load openmpi-x86_64\n module load gcc/6.2.0',
-       'QDYN'         : 'qdyn=/home/apps/q-5.06/qdynp',
+       'MODULES'      : 'module gcc/6.2.0\n module load openmpi/2.1.0',
+       'QDYN'         : 'qdyn=//home/jespers/software/q6/bin/qdynp',
        'QPREP'        : '/home/jespers/software/q6/bin/qprep',
        'QFEP'         : '/home/jespers/software/q6/bin/qfep',
        'QCALC'        : '/home/jespers/software/q6/bin/qcalc'
@@ -42,7 +42,7 @@ KEBNE = {'NODES'      : '1',
          'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
          'QFEP'       : '/home/w/wije/pfs/software/q/bin/qfep',
          'QCALC'      : '/home/w/wije/pfs/software/q/bin/qcalc',
-         'ACCOUNT'    : 'SNIC2017-1-549'
+         'ACCOUNT'    : 'SNIC2018-2-3'
         }
 
 STALLO = {'NODES'      : '1',

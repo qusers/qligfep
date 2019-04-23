@@ -250,8 +250,10 @@ class Run(object):
                   '[bonds]',
                   '[connections]',
                   '[impropers]',
-                  '[charge_groups]',
-                 ]   
+                  '[info]'
+                 ]
+        if self.forcefield[0:4] == 'OPLS':
+            headers.append('[charge_groups]')   
         
         with open(s.FF_DIR + '/' + self.forcefield + '.lib') as infile:
             for line in infile:
@@ -279,7 +281,6 @@ class Run(object):
         
         # Add CA CBx bond
         self.merged_lib['[bonds]'].append('       CA     cb\n')
-        
         ## Read the mutant residue
         # Construct atom name replacements
         for line in FFlib[IO.AA(self.mutation[2])]:
@@ -303,12 +304,29 @@ class Run(object):
                     continue
                 
                 # Remove overlapping backbone definitions
-                if 'O ' in line     \
-                or 'C ' in line     \
-                or 'CA ' in line     \
-                or 'N ' in line     \
-                or 'H ' in line     \
-                or 'HA ' in line :
+                #if 'O ' in line     \
+                #or 'C ' in line     \
+                #or 'CA ' in line     \
+                #or 'N ' in line     \
+                #or 'H ' in line     \
+                #or 'HA ' in line :
+                #    continue\
+                
+                ## ATTEMPT 2
+                if line.split()[0] == 'O' \
+                or line.split()[0] == 'C' \
+                or line.split()[0] == 'CA'     \
+                or line.split()[0] == 'N'   \
+                or line.split()[0] == 'H'     \
+                or line.split()[0] == 'HA':
+                    continue
+                    
+                if line.split()[1] == 'O' \
+                or line.split()[1] == 'C' \
+                or line.split()[1] == 'CA'     \
+                or line.split()[1] == 'N'   \
+                or line.split()[1] == 'H'     \
+                or line.split()[1] == 'HA':
                     continue
                 
                 # Merge the library on the reference
@@ -322,6 +340,8 @@ class Run(object):
             outfile.write('{' + self.MUTresn + '}\n\n')
             for header in headers:
                 outfile.write('\n    ' + header + '\n')
+                if not header in self.merged_lib:
+                    continue
                 for line in self.merged_lib[header]:
                     if header == '[atoms]':
                         cnt += 1
@@ -751,7 +771,7 @@ class Run(object):
             outfile.write('[atom_types]\n')
             for line in vdw_prms:
                 line = line.split()
-                if len(line) == 8:
+                if len(line) >= 7:
                     outfile.write('{:<8s}{:>10s}{:>10s}{:>10s}'\
                                   '{:>10s}{:>10s}{:>10s}{:>10s}\n'.format(line[0],
                                                                     line[1],
@@ -869,7 +889,7 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--forcefield',
                         dest = "forcefield",
                         required = True,
-                        choices = ['OPLS2015', 'OPLS2005', 'SIDECHAIN'],
+                        choices = ['OPLS2015', 'OPLS2005', 'SIDECHAIN', 'AMBER14sb'],
                         help = "Forcefield to use.")
     
     parser.add_argument('-s', '--sampling',
