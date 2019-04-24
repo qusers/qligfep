@@ -295,9 +295,15 @@ class Run(object):
                     break
                 
         for line in FFlib[IO.AA(self.mutation[2])]:
+            print(line)
             if line.strip() in headers:
                 header = line.strip()
-                
+
+            if line[0] == '!':
+                continue
+            if len(line.split()) < 2:
+                continue
+ 
             else:
                 # connection flag only needs to be there once
                 if header == headers[2]:
@@ -889,7 +895,7 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--forcefield',
                         dest = "forcefield",
                         required = True,
-                        choices = ['OPLS2015', 'OPLS2005', 'SIDECHAIN', 'AMBER14sb'],
+                        choices = ['OPLS2015', 'OPLS2005', 'SIDECHAIN', 'AMBER14sb','CHARMM36'],
                         help = "Forcefield to use.")
     
     parser.add_argument('-s', '--sampling',

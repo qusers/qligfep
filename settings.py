@@ -7,7 +7,7 @@ FF_DIR = os.path.join(ROOT_DIR, "FF")
 INPUT_DIR = os.path.join(ROOT_DIR, "INPUTS")
 # Dicionary of locations of Q executables
 Q_DIR = {'CSB':'/home/jespers/software/q6/bin/',
-         'LOCAL':'/home/jespers/software/q6/bin/'
+         'LOCAL':'/Users/willemjespers/Software/Q6/bin/'
         }
 BIN = os.path.join(ROOT_DIR, "bin")
 #SCHROD_DIR = '/opt/schrodinger/suites2017-3/'
@@ -62,4 +62,14 @@ TETRA = {'NODES'      : '1',
          'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
          'QFEP'       : '/home/x_wilje/Software/q6/bin/qfep',
          'ACCOUNT'    : 'snic2018-2-3'
+        }
+
+LOCAL = {'NODES'      : '',
+         'NTASKS'     : '',
+         'TIME'       : '',  # d-hh:mm:ss
+         'MODULES'    : '\n', # Add a \n for every added module
+         'QDYN'       : 'qdyn=/Users/willemjespers/Software/Q6/bin/qdyn', #fix qdyn= !!!!!
+         'QPREP'      : '/Users/willemjespers/Software/Q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
+         'QFEP'       : '/Users/willemjespers/Software/Q6/bin/qfep',
+         'ACCOUNT'    : ''
         }
