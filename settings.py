@@ -7,7 +7,8 @@ FF_DIR = os.path.join(ROOT_DIR, "FF")
 INPUT_DIR = os.path.join(ROOT_DIR, "INPUTS")
 # Dicionary of locations of Q executables
 Q_DIR = {'CSB':'/home/jespers/software/q6/bin/',
-         'LOCAL':'/Users/willemjespers/Software/Q6/bin/'
+         'LOCAL':'/home/jespers/software/q6/bin/'
+         #'LOCAL':'/Users/willemjespers/Software/Q6/bin/'
         }
 BIN = os.path.join(ROOT_DIR, "bin")
 #SCHROD_DIR = '/opt/schrodinger/suites2017-3/'
@@ -39,7 +40,7 @@ KEBNE = {'NODES'      : '1',
          'TIME'       : '0-04:00:00',  # d-hh:mm:ss
          'MODULES'    : 'module load gompi/2017b\n', # Add a \n for every added module
          'QDYN'       : 'qdyn=/home/w/wije/pfs/software/q/bin/qdynp', #fix qdyn= !!!!!
-         'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
+         'QPREP'      : '/home/jespers/software/q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
          'QFEP'       : '/home/w/wije/pfs/software/q/bin/qfep',
          'QCALC'      : '/home/w/wije/pfs/software/q/bin/qcalc',
          'ACCOUNT'    : 'SNIC2018-2-3'

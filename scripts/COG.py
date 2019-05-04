@@ -41,7 +41,6 @@ class Run(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='calcCOG',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Calculate Centre of Geometry (COG) for a given .pdb == ')
 
@@ -53,4 +52,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     run = Run(ipdb = args.ipdb)
-    print run.COG()
+    print(run.COG())

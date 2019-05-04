@@ -36,7 +36,7 @@
 {ALA}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47 !     |
-         2 HN     H            0.31 !  HN-N
+         2 H     H            0.31 !  HN-N
          3 CA     CT1          0.07 !     |     HB1
          4 HA     HB1          0.09 !     |    /
          5 CB     CT3         -0.27 !  HA-CA--CB-HB2
@@ -47,7 +47,7 @@
         10 O      O           -0.51 !
     [bonds]
        CB     CA    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -60,10 +60,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   HB3   
         C     O     
 *------------------------------------------------------------------
@@ -129,7 +129,7 @@
 {ARG}            !charge: 1.00 ||  
     [atoms]
          1 N      NH1         -0.47 !     |                      HH11
-         2 HN     H            0.31 !  HN-N                       |
+         2 H     H            0.31 !  HN-N                       |
          3 CA     CT1          0.07 !     |   HB1 HG1 HD1 HE     NH1-HH12
          4 HA     HB1          0.09 !     |   |   |   |   |    //(+)  
          5 CB     CT2         -0.18 !  HA-CA--CB--CG--CD--NE--CZ
@@ -159,7 +159,7 @@
        NE     CD    
        CZ     NE    
        NH2    CZ    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -181,13 +181,13 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
          CZ     NH1    NH2    NE    
          NH1    HH11   HH12   CZ    
          NH2    HH21   HH22   CZ    
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    HD1   HD2   NE    HE    CZ    NH1   HH11  HH12  NH2   HH21  HH22  
@@ -196,7 +196,7 @@
 {ARN}            !charge: 1.00 ||  deprotonated ARG
     [atoms]
          1 N      NH1         -0.47 !     |                      HH11
-         2 HN     H            0.31 !  HN-N                       |
+         2 H     H            0.31 !  HN-N                       |
          3 CA     CT1          0.07 !     |   HB1 HG1 HD1 HE     NH1-
          4 HA     HB1          0.09 !     |   |   |   |   |    //
          5 CB     CT2         -0.18 !  HA-CA--CB--CG--CD--NE--CZ
@@ -225,7 +225,7 @@
        NE     CD    
        CZ     NE    
        NH2    CZ    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -247,13 +247,13 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
          CZ     NH1    NH2    NE    
 !         NH1    HH11   HH12   CZ    
          NH2    HH21   HH22   CZ    
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    HD1   HD2   NE    HE    CZ    NH1   HH11  NH2   HH21  HH22
@@ -263,7 +263,7 @@
 {ASH}            !charge: 0.0 ||   protonated aspartic acid, proton on od2
     [atoms]
          1 N      NH1         -0.47 !     |       
-         2 HN     H            0.31 !  HN-N       
+         2 H     H            0.31 !  HN-N       
          3 CA     CT1          0.07 !     |   HB1   OD1
          4 HA     HB1          0.09 !     |   |    //
          5 CB     CT2         -0.21 !  HA-CA--CB--CG
@@ -279,7 +279,7 @@
        CB     CA    
        CG     CB    
        OD2    CG    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -293,18 +293,18 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
          CG     CB     OD2    OD1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   CG    OD1   OD2   HD2   
         C     O     
 *------------------------------------------------------------------
 {ASN}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1 OD1    HD21 (cis to OD1)
          4 HA     HB1          0.09  !     |   |   ||    /
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--ND2
@@ -321,7 +321,7 @@
        CB     CA    
        CG     CB    
        ND2    CG    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -336,14 +336,14 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
          CG     ND2    CB     OD1   
          CG     CB     ND2    OD1   
          ND2    CG     HD21   HD22  
          ND2    CG     HD22   HD21  
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    OD1   
         ND2   HD21  HD22  
@@ -352,7 +352,7 @@
 {ASP}            !charge: -1.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1   OD1
          4 HA     HB1          0.09  !     |   |    //
          5 CB     CT2         -0.28  !  HA-CA--CB--CG
@@ -367,7 +367,7 @@
        CB     CA    
        CG     CB    
        OD2    CG    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -380,18 +380,18 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
          CG     CB     OD2    OD1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   CG    OD1   OD2   
         C     O     
 *------------------------------------------------------------------
 {CALA}            !charge: -1.0 || ALA C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |
-         2 HN     H            0.31  !  HN-N
+         2 H     H            0.31  !  HN-N
          3 CA     CT1          0.07  !     |     HB1
          4 HA     HB1          0.09  !     |    /
          5 CB     CT3         -0.27  !  HA-CA--CB-HB2
@@ -403,7 +403,7 @@
         11 OT2    OC          -0.67
     [bonds]
        CB     CA    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -416,17 +416,17 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   HB3   
         C     OT1   OT2   
 *------------------------------------------------------------------
 {CARG}            !charge: 0.0 || ARG C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |                      HH11
-         2 HN     H            0.31  !  HN-N                       |
+         2 H     H            0.31  !  HN-N                       |
          3 CA     CT1          0.07  !     |   HB1 HG1 HD1 HE     NH1-HH12
          4 HA     HB1          0.09  !     |   |   |   |   |    //(+)  
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--CD--NE--CZ
@@ -457,7 +457,7 @@
        NE     CD    
        CZ     NE    
        NH2    CZ    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -479,13 +479,13 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          CZ     NH1    NH2    NE    
          NH1    HH11   HH12   CZ    
          NH2    HH21   HH22   CZ    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    HD1   HD2   NE    HE    CZ    NH1   HH11  HH12  NH2   HH21  HH22  
@@ -494,7 +494,7 @@
 {CASH}            !charge: -1.0 || ASH C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47 !     |                
-         2 HN     H            0.31 !  HN-N                
+         2 H     H            0.31 !  HN-N                
          3 CA     CT1          0.07 !     |   HB1   OD1    
          4 HA     HB1          0.09 !     |   |    //      
          5 CB     CT2         -0.21 !  HA-CA--CB--CG       
@@ -511,7 +511,7 @@
        CB     CA    
        CG     CB    
        OD2    CG    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -525,18 +525,18 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          CG     CB     OD2    OD1   
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   CG    OD1   OD2   HD2   
         C     OT1   OT2   
 *------------------------------------------------------------------
 {CASN}            !charge: -1.0 || ASN C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1 OD1    HD21 (cis to OD1)
          4 HA     HB1          0.09  !     |   |   ||    /
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--ND2
@@ -554,7 +554,7 @@
        CB     CA    
        CG     CB    
        ND2    CG    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -569,14 +569,14 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          CG     ND2    CB     OD1   
          CG     CB     ND2    OD1   
          ND2    CG     HD21   HD22  
          ND2    CG     HD22   HD21  
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    OD1   
         ND2   HD21  HD22  
@@ -585,7 +585,7 @@
 {CASP}            !charge: -2.0 || ASP C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1   OD1
          4 HA     HB1          0.09  !     |   |    //
          5 CB     CT2         -0.28  !  HA-CA--CB--CG
@@ -601,7 +601,7 @@
        CB     CA    
        CG     CB    
        OD2    CG    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -614,18 +614,18 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          CG     CB     OD2    OD1   
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   CG    OD1   OD2   
         C     OT1   OT2   
 *------------------------------------------------------------------
 {CCYS}            !charge: -1.0 || CYS C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1
          4 HA     HB1          0.09  !     |   |  
          5 CB     CT2         -0.11  !  HA-CA--CB--SG
@@ -639,7 +639,7 @@
     [bonds]
        CB     CA    
        SG     CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -652,17 +652,17 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   SG    HG1   
         C     OT1   OT2   
 *------------------------------------------------------------------
 {CCYX}            !charge: -1.0 || CYX C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1
          4 HA     HB1          0.09  !     |   |  
          5 CB     CT2         -0.10  !  HA-CA--CB--SG
@@ -675,7 +675,7 @@
     [bonds]
        CB     CA    
        SG     CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -687,17 +687,17 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   SG    
         C     OT1   OT2   
 *------------------------------------------------------------------
 {CGLH}            !charge: -1.0 || Protonated GLU, GLUP in charmm, GLH C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |          
-         2 HN     H            0.31  !  HN-N          
+         2 H     H            0.31  !  HN-N          
          3 CA     CT1          0.07  !     |   HB1 HG1   OE1
          4 HA     HB1          0.09  !     |   |   |    //
          5 CB     CT2A        -0.18  !  HA-CA--CB--CG--CD
@@ -718,7 +718,7 @@
        CG     CB    
        CD     CG    
        OE2    CD    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -734,11 +734,11 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          CD     CG     OE2    OE1   
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   CD    OE1   OE2   HE2   
         C     OT1   OT2   
@@ -746,7 +746,7 @@
 {CGLN}            !charge: -1.0 || GLN C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |          
-         2 HN     H            0.31  !  HN-N          
+         2 H     H            0.31  !  HN-N          
          3 CA     CT1          0.07  !     |   HB1 HG1 OE1   HE21 (cis to OE1)
          4 HA     HB1          0.09  !     |   |   |   ||    /
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--CD--NE2
@@ -768,7 +768,7 @@
        CG     CB    
        CD     CG    
        NE2    CD    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -785,14 +785,14 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          CD     NE2    CG     OE1   
          CD     CG     NE2    OE1   
          NE2    CD     HE21   HE22  
          NE2    CD     HE22   HE21  
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    OE1   
@@ -802,7 +802,7 @@
 {CGLU}            !charge: -2.0 || GLU C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |          
-         2 HN     H            0.31  !  HN-N          
+         2 H     H            0.31  !  HN-N          
          3 CA     CT1          0.07  !     |   HB1 HG1   OE1
          4 HA     HB1          0.09  !     |   |   |    //
          5 CB     CT2A        -0.18  !  HA-CA--CB--CG--CD
@@ -822,7 +822,7 @@
        CG     CB    
        CD     CG    
        OE2    CD    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -837,11 +837,11 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          CD     CG     OE2    OE1   
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   CD    OE1   OE2   
         C     OT1   OT2   
@@ -849,7 +849,7 @@
 {CGLY}            !charge: -1.0 || GLY C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |
-         2 HN     H            0.31  !     N-H
+         2 H     H            0.31  !     N-H
          3 CA     CT2         -0.02  !     |  
          4 HA1    HB2          0.09  !     |  
          5 HA2    HB2          0.09  ! HA1-CA-HA2
@@ -857,7 +857,7 @@
          7 OT1    OC          -0.67  !     |  
          8 OT2    OC          -0.67  !     C=OT1
     [bonds]                          !     |
-       N      HN                     !     OT2(-)
+       N      H                     !     OT2(-)
        N      CA    
        C      CA    
 !       C      N     
@@ -868,16 +868,16 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA1   HA2   
+        N     H    CA    HA1   HA2   
         C     OT1   OT2   
 *-------------------------------------------------------------------------------
 {CHID}            !charge: -1.0 || HID (HSD in charmm) C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |          HD1    HE1
-         2 HN     H            0.31  !  HN-N           |     /
+         2 H     H            0.31  !  HN-N           |     /
          3 CA     CT1          0.07  !     |   HB1    ND1--CE1
          4 HA     HB1          0.09  !     |   |     /      ||
          5 CB     CT2         -0.09  !  HA-CA--CB--CG       ||
@@ -900,7 +900,7 @@
        ND1    CG    
        CE1    ND1   
        NE2    CD2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -923,10 +923,10 @@
          ND1    CE1    CG     HD1   
          CD2    NE2    CG     HD2   
          CE1    NE2    ND1    HE1   
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   ND1   HD1   CG    
         CE1   HE1   NE2   CD2   HD2   
         C     OT1   OT2   
@@ -934,7 +934,7 @@
 {CHIE}            !charge: -1.0 || HIE (HSE in charmm) C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |                 HE1
-         2 HN     H            0.31  !  HN-N             __  /
+         2 H     H            0.31  !  HN-N             __  /
          3 CA     CT1          0.07  !     |   HB1    ND1--CE1
          4 HA     HB1          0.09  !     |   |     /      |
          5 CB     CT2         -0.08  !  HA-CA--CB--CG       |
@@ -956,7 +956,7 @@
        CG     CB    
        ND1    CG    
        NE2    CD2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -980,10 +980,10 @@
          NE2    CE1    CD2    HE2   
          CD2    NE2    CG     HD2   
          CE1    NE2    ND1    HE1   
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   ND1   CG    CE1   HE1   
         NE2   HE2   CD2   HD2   
         C     OT1   OT2   
@@ -991,7 +991,7 @@
 {CHIP}            !charge: 0.0 || HIP (HSP in charmm) C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |          HD1    HE1
-         2 HN     H            0.31  !  HN-N           |     /
+         2 H     H            0.31  !  HN-N           |     /
          3 CA     CT1          0.07  !     |   HB1    ND1--CE1
          4 HA     HB1          0.09  !     |   |     /      ||
          5 CB     CT2A        -0.05  !  HA-CA--CB--CG       ||
@@ -1015,7 +1015,7 @@
        ND1    CG    
        CE1    ND1   
        NE2    CD2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1037,10 +1037,10 @@
          ND1    CE1    CG     HD1   
          NE2    CD2    CE1    HE2   
          NE2    CE1    CD2    HE2   
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   CD2   HD2   CG    
         NE2   HE2   ND1   HD1   CE1   HE1   
         C     OT1   OT2   
@@ -1048,7 +1048,7 @@
 {CILE}            !charge: -1.0 || ILE C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |    HG21 HG22
-         2 HN     H            0.31  !  HN-N      | / 
+         2 H     H            0.31  !  HN-N      | / 
          3 CA     CT1          0.07  !     |     CG2--HG23
          4 HA     HB1          0.09  !     |    /
          5 CB     CT1         -0.09  !  HA-CA--CB-HB    HD1
@@ -1072,7 +1072,7 @@
        CG1    CB    
        CG2    CB    
        CD     CG1   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1091,10 +1091,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB    
         CG2   HG21  HG22  HG23  
         CG1   HG11  HG12  
@@ -1104,7 +1104,7 @@
 {CLEU}            !charge: -1.0 || LEU C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |        HD11 HD12
-         2 HN     H            0.31  !  HN-N          | /
+         2 H     H            0.31  !  HN-N          | /
          3 CA     CT1          0.07  !     |   HB1   CD1--HD13
          4 HA     HB1          0.09  !     |   |    /
          5 CB     CT2         -0.18  !  HA-CA--CB--CG-HG
@@ -1128,7 +1128,7 @@
        CG     CB    
        CD1    CG    
        CD2    CG    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1147,10 +1147,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG    
         CD1   HD11  HD12  HD13  
@@ -1160,7 +1160,7 @@
 {CLYN}            !charge: -1.0 || LYN (deprot LYS, LSN in charmm) C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |                   
-         2 HN     H            0.31  !  HN-N                   
+         2 H     H            0.31  !  HN-N                   
          3 CA     CT1          0.07  !     |   HB1 HG1 HD1 HE1    HZ1
          4 HA     HB1          0.09  !     |   |   |   |   |     /   
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--CD--CE--NZ--HZ2
@@ -1187,7 +1187,7 @@
        CD     CG    
        CE     CD    
        NZ     CE    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1207,10 +1207,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    HD1   HD2   
@@ -1220,7 +1220,7 @@
 {CLYS}            !charge: 0.0 || LYS C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |                   
-         2 HN     H            0.31  !  HN-N                   
+         2 H     H            0.31  !  HN-N                   
          3 CA     CT1          0.07  !     |   HB1 HG1 HD1 HE1    HZ1
          4 HA     HB1          0.09  !     |   |   |   |   |     /   
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--CD--CE--NZ--HZ2
@@ -1248,7 +1248,7 @@
        CD     CG    
        CE     CD    
        NZ     CE    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1269,10 +1269,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    HD1   HD2   
@@ -1282,7 +1282,7 @@
 {CMET}            !charge: -1.0 || MET C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |                   
-         2 HN     H            0.31  !  HN-N                   
+         2 H     H            0.31  !  HN-N                   
          3 CA     CT1          0.07  !     |   HB1 HG1     HE1 
          4 HA     HB1          0.09  !     |   |   |       |   
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--SD--CE--HE3
@@ -1304,7 +1304,7 @@
        CG     CB    
        SD     CG    
        CE     SD    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1321,10 +1321,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   SD    CE    HE1   HE2   HE3   
         C     OT1   OT2   
@@ -1332,7 +1332,7 @@
 {CPHE}            !charge: -1.0 || PHE C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |        HD1  HE1    
-         2 HN     H            0.31  !  HN-N         |    |   
+         2 H     H            0.31  !  HN-N         |    |   
          3 CA     CT1          0.07  !     |   HB1  CD1--CE1
          4 HA     HB1          0.09  !     |   |    //     \\
          5 CB     CT2         -0.18  !  HA-CA--CB--CG      CZ--HZ
@@ -1358,7 +1358,7 @@
        CD2    CG    
        CE1    CD1   
        CZ     CE2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1378,10 +1378,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    
         CD1   HD1   
@@ -1439,7 +1439,7 @@
 {CSER}            !charge: -1.0 || SER C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1
          4 HA     HB1          0.09  !     |   |  
          5 CB     CT2          0.05  !  HA-CA--CB--OG
@@ -1453,7 +1453,7 @@
     [bonds]
        CB     CA    
        OG     CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1466,17 +1466,17 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   OG    HG1   
         C     OT1   OT2   
 *------------------------------------------------------------------
 {CTHR}            !charge: -1.0 || THR C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |  
-         2 HN     H            0.31  !  HN-N  
+         2 H     H            0.31  !  HN-N  
          3 CA     CT1          0.07  !     |     OG1--HG1
          4 HA     HB1          0.09  !     |    /
          5 CB     CT1          0.14  !  HA-CA--CB-HB  
@@ -1494,7 +1494,7 @@
        CB     CA    
        OG1    CB    
        CG2    CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1509,10 +1509,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB    OG1   HG1   
         CG2   HG21  HG22  HG23  
         C     OT1   OT2   
@@ -1520,7 +1520,7 @@
 {CTRP}            !charge: -1.0 || TRP C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |                  HE3
-         2 HN     H            0.31  !  HN-N                   |
+         2 H     H            0.31  !  HN-N                   |
          3 CA     CT1          0.07  !     |   HB1            CE3
          4 HA     HB1          0.09  !     |   |             /  \\
          5 CB     CT2         -0.18  !  HA-CA--CB---CG-----CD2   CZ3-HZ3
@@ -1550,7 +1550,7 @@
        CD2    CG    
        NE1    CD1   
        CZ2    CE2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1575,10 +1575,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    CD1   HD1   NE1   HE1   CE2   CD2   CE3   HE3   CZ3   HZ3   CZ2   HZ2   CH2   HH2   
         C     OT1   OT2   
@@ -1586,7 +1586,7 @@
 {CTYR}            !charge: -1.0 || TYR C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |        HD1  HE1    
-         2 HN     H            0.31  !  HN-N         |    |   
+         2 H     H            0.31  !  HN-N         |    |   
          3 CA     CT1          0.07  !     |   HB1  CD1--CE1
          4 HA     HB1          0.09  !     |   |   //      \\
          5 CB     CT2         -0.18  !  HA-CA--CB--CG      CZ--OH
@@ -1614,7 +1614,7 @@
        CE1    CD1   
        CZ     CE2   
        OH     CZ    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1634,10 +1634,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    
         CD1   HD1   
@@ -1650,7 +1650,7 @@
 {CVAL}            !charge: -1.0 || VAL C-terminal (standard)
     [atoms]
          1 N      NH1         -0.47  !     |    HG11 HG12
-         2 HN     H            0.31  !  HN-N      | / 
+         2 H     H            0.31  !  HN-N      | / 
          3 CA     CT1          0.07  !     |     CG1--HG13
          4 HA     HB1          0.09  !     |    /
          5 CB     CT1         -0.09  !  HA-CA--CB-HB  
@@ -1670,7 +1670,7 @@
        CB     CA    
        CG1    CB    
        CG2    CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1687,10 +1687,10 @@
     [connections]
         head N     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     OT2    OT1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB    
         CG1   HG11  HG12  HG13  
         CG2   HG21  HG22  HG23  
@@ -1699,7 +1699,7 @@
 {CYS}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1
          4 HA     HB1          0.09  !     |   |  
          5 CB     CT2         -0.11  !  HA-CA--CB--SG
@@ -1712,7 +1712,7 @@
     [bonds]
        CB     CA    
        SG     CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1725,17 +1725,17 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   SG    HG1   
         C     O     
 *------------------------------------------------------------------
 {CYX}            !charge: 0.0 ||  Cysteine with S-S bond. (DISU in charmm)
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
+         2 H     H            0.31  !  HN-N       
          3 CA     CT1          0.07  !     |   HB1
          4 HA     HB1          0.09  !     |   |  
          5 CB     CT2         -0.10  !  HA-CA--CB--SG
@@ -1747,7 +1747,7 @@
     [bonds]
        CB     CA    
        SG     CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1759,17 +1759,17 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   SG    
         C     O     
 *------------------------------------------------------------------
 {GLH}            !charge: -0.0 ||  Protonated GLU, GLUP in CHARMM
     [atoms]
          1 N      NH1         -0.47  !     |          
-         2 HN     H            0.31  !  HN-N          
+         2 H     H            0.31  !  HN-N          
          3 CA     CT1          0.07  !     |   HB1 HG1   OE1
          4 HA     HB1          0.09  !     |   |   |    //
          5 CB     CT2A        -0.18  !  HA-CA--CB--CG--CD
@@ -1789,7 +1789,7 @@
        CG     CB    
        CD     CG    
        OE2    CD    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1805,11 +1805,11 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
          CD     CG     OE2    OE1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   CD    OE1   OE2   HE2   
         C     O     
@@ -1817,7 +1817,7 @@
 {GLN}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |          
-         2 HN     H            0.31  !  HN-N          
+         2 H     H            0.31  !  HN-N          
          3 CA     CT1          0.07  !     |   HB1 HG1 OE1   HE21 (cis to OE1)
          4 HA     HB1          0.09  !     |   |   |   ||    /
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--CD--NE2
@@ -1838,7 +1838,7 @@
        CG     CB    
        CD     CG    
        NE2    CD    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1855,14 +1855,14 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
          CD     NE2    CG     OE1   
          CD     CG     NE2    OE1   
          NE2    CD     HE21   HE22  
          NE2    CD     HE22   HE21  
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    OE1   
@@ -1872,7 +1872,7 @@
 {GLU}            !charge: -1.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |          
-         2 HN     H            0.31  !  HN-N          
+         2 H     H            0.31  !  HN-N          
          3 CA     CT1          0.07  !     |   HB1 HG1   OE1
          4 HA     HB1          0.09  !     |   |   |    //
          5 CB     CT2A        -0.18  !  HA-CA--CB--CG--CD
@@ -1891,7 +1891,7 @@
        CG     CB    
        CD     CG    
        OE2    CD    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1906,11 +1906,11 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
          CD     CG     OE2    OE1   
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   CD    OE1   OE2   
         C     O     
@@ -1918,14 +1918,14 @@
 {GLY}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |
-         2 HN     H            0.31  !     N-H
+         2 H     H            0.31  !     N-H
          3 CA     CT2         -0.02  !     |  
          4 HA1    HB2          0.09  !     |  
          5 HA2    HB2          0.09  ! HA1-CA-HA2
          6 C      C            0.51  !     |  
          7 O      O           -0.51  !     |  
     [bonds]                          !     C=O
-       N      HN                     !     |
+       N      H                     !     |
        N      CA    
        C      CA    
 !       C      N     
@@ -1936,16 +1936,16 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA1   HA2   
+        N     H    CA    HA1   HA2   
         C     O     
 *------------------------------------------------------------------
 {HID}            !charge: 0.00 ||  neutral HIS (HSD in charmm), proton on ND1
     [atoms]
          1 N      NH1         -0.47  !     |          HD1    HE1
-         2 HN     H            0.31  !  HN-N           |     /
+         2 H     H            0.31  !  HN-N           |     /
          3 CA     CT1          0.07  !     |   HB1    ND1--CE1
          4 HA     HB1          0.09  !     |   |     /      ||
          5 CB     CT2         -0.09  !  HA-CA--CB--CG       ||
@@ -1967,7 +1967,7 @@
        ND1    CG    
        CE1    ND1   
        NE2    CD2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -1990,10 +1990,10 @@
          ND1    CE1    CG     HD1   
          CD2    NE2    CG     HD2   
          CE1    NE2    ND1    HE1   
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   ND1   HD1   CG    
         CE1   HE1   NE2   CD2   HD2   
         C     O     
@@ -2001,7 +2001,7 @@
 {HIE}            !charge: 0.00 ||  neutral His (HSE in charmm), proton on NE2
     [atoms]
          1 N      NH1         -0.47  !     |                 HE1
-         2 HN     H            0.31  !  HN-N             __  /
+         2 H     H            0.31  !  HN-N             __  /
          3 CA     CT1          0.07  !     |   HB1    ND1--CE1
          4 HA     HB1          0.09  !     |   |     /      |
          5 CB     CT2         -0.08  !  HA-CA--CB--CG       |
@@ -2022,7 +2022,7 @@
        CG     CB    
        ND1    CG    
        NE2    CD2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -2046,10 +2046,10 @@
          NE2    CE1    CD2    HE2   
          CD2    NE2    CG     HD2   
          CE1    NE2    ND1    HE1   
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   ND1   CG    CE1   HE1   
         NE2   HE2   CD2   HD2   
         C     O     
@@ -2057,7 +2057,7 @@
 {HIP}            !charge: 1.00 ||  Protonated His (HSP in charmm)
     [atoms]
          1 N      NH1         -0.47  !     |          HD1    HE1
-         2 HN     H            0.31  !  HN-N           |     /
+         2 H     H            0.31  !  HN-N           |     /
          3 CA     CT1          0.07  !     |   HB1    ND1--CE1
          4 HA     HB1          0.09  !     |   |     /      ||
          5 CB     CT2A        -0.05  !  HA-CA--CB--CG       ||
@@ -2080,7 +2080,7 @@
        ND1    CG    
        CE1    ND1   
        NE2    CD2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -2102,10 +2102,10 @@
          ND1    CE1    CG     HD1   
          NE2    CD2    CE1    HE2   
          NE2    CE1    CD2    HE2   
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   CD2   HD2   CG    
         NE2   HE2   ND1   HD1   CE1   HE1   
         C     O     
@@ -2113,7 +2113,7 @@
 {ILE}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |    HG21 HG22
-         2 HN     H            0.31  !  HN-N      | / 
+         2 H     H            0.31  !  HN-N      | / 
          3 CA     CT1          0.07  !     |     CG2--HG23
          4 HA     HB1          0.09  !     |    /
          5 CB     CT1         -0.09  !  HA-CA--CB-HB    HD1
@@ -2136,7 +2136,7 @@
        CG1    CB    
        CG2    CB    
        CD1    CG1   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -2155,10 +2155,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB    
         CG2   HG21  HG22  HG23  
         CG1   HG11  HG12  
@@ -2168,7 +2168,7 @@
 {LEU}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |        HD11 HD12
-         2 HN     H            0.31  !  HN-N          | /
+         2 H     H            0.31  !  HN-N          | /
          3 CA     CT1          0.07  !     |   HB1   CD1--HD13
          4 HA     HB1          0.09  !     |   |    /
          5 CB     CT2         -0.18  !  HA-CA--CB--CG-HG
@@ -2191,7 +2191,7 @@
        CG     CB    
        CD1    CG    
        CD2    CG    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -2210,10 +2210,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG    
         CD1   HD11  HD12  HD13  
@@ -2223,7 +2223,7 @@
 {LYN}            !charge: 0.0 ||  
     [atoms]
          1 N      NH1         -0.47  !     |                   
-         2 HN     H            0.31  !  HN-N                   
+         2 H     H            0.31  !  HN-N                   
          3 CA     CT1          0.07  !     |   HB1 HG1 HD1 HE1    HZ1
          4 HA     HB1          0.09  !     |   |   |   |   |     /   
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--CD--CE--NZ--HZ2
@@ -2249,7 +2249,7 @@
        CD     CG    
        CE     CD    
        NZ     CE    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -2269,10 +2269,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    HD1   HD2   
@@ -2282,7 +2282,7 @@
 {LYS}            !charge: 1.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |                   
-         2 HN     H            0.31  !  HN-N                   
+         2 H     H            0.31  !  HN-N                   
          3 CA     CT1          0.07  !     |   HB1 HG1 HD1 HE1    HZ1
          4 HA     HB1          0.09  !     |   |   |   |   |     /   
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--CD--CE--NZ--HZ2
@@ -2309,7 +2309,7 @@
        CD     CG    
        CE     CD    
        NZ     CE    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -2330,10 +2330,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         CD    HD1   HD2   
@@ -2343,7 +2343,7 @@
 {MET}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |                   
-         2 HN     H            0.31  !  HN-N                   
+         2 H     H            0.31  !  HN-N                   
          3 CA     CT1          0.07  !     |   HB1 HG1     HE1 
          4 HA     HB1          0.09  !     |   |   |       |   
          5 CB     CT2         -0.18  !  HA-CA--CB--CG--SD--CE--HE3
@@ -2364,7 +2364,7 @@
        CG     CB    
        SD     CG    
        CE     SD    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -2381,10 +2381,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    HG1   HG2   SD    CE    HE1   HE2   HE3   
         C     O     
@@ -3418,7 +3418,7 @@
          2 CD     CP3          0.16  !       HD1 HD2
          3 HD1    HA2          0.09  !         \ / 
          4 HD2    HA2          0.09  !          |
-         5 CA     CP1          0.16  ! HN1   HN2|
+         5 CA     CP1          0.16  ! H1   HN2|
          6 HA     HB1          0.09  !    \ /   |
          7 CB     CP2         -0.18  !  (+)N----CD   HG1
          8 HB1    HA2          0.09  !     |      \  /
@@ -3428,8 +3428,8 @@
         12 HG2    HA2          0.09  !     |   / \
         13 C      C            0.51  !     | HB1 HB2
         14 O      O           -0.51  !   O=C
-        15 HN1    HC           0.24  !     |
-        16 HN2    HC           0.24
+        15 H1    HC           0.24  !     |
+        16 H2    HC           0.24
     [bonds]
        C      CA    
 !       C      N    
@@ -3446,14 +3446,14 @@
        HB1    CB    
        HB2    CB    
        O      C     
-       HN1    N     
-       HN2    N     
+       H1    N     
+       H2    N     
     [connections]
         tail C     
     [impropers]
          C      CA     +N     O     
     [charge_groups]
-        N     HN1   HN2  CD  HD1  HD2  CA  HA    
+        N     H1   HN2  CD  HD1  HD2  CA  HA    
         CB    HB1   HB2   
         CG    HG1   HG2   
         C     O     
@@ -3726,7 +3726,7 @@
 {PHE}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |        HD1  HE1    
-         2 HN     H            0.31  !  HN-N         |    |   
+         2 H     H            0.31  !  HN-N         |    |   
          3 CA     CT1          0.07  !     |   HB1  CD1--CE1
          4 HA     HB1          0.09  !     |   |    //     \\
          5 CB     CT2         -0.18  !  HA-CA--CB--CG      CZ--HZ
@@ -3751,7 +3751,7 @@
        CD2    CG    
        CE1    CD1   
        CZ     CE2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -3771,10 +3771,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    
         CD1   HD1   
@@ -3831,49 +3831,49 @@
 {SER}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |       
-         2 HN     H            0.31  !  HN-N       
-         3 CA     CT1          0.07  !     |   HB1
+         2 H     H            0.31  !  HN-N       
+         3 CA     CT1          0.07  !     |   HB2
          4 HA     HB1          0.09  !     |   |  
          5 CB     CT2          0.05  !  HA-CA--CB--OG
-         6 HB1    HA2          0.09  !     |   |     \
-         7 HB2    HA2          0.09  !     |   HB2    HG1
+         6 HB2    HA2          0.09  !     |   |     \
+         7 HB3    HA2          0.09  !     |   HB3    HG1
          8 OG     OH1         -0.66  !   O=C           
-         9 HG1    H            0.43  !     |           
+         9 HG     H            0.43  !     |           
         10 C      C            0.51
         11 O      O           -0.51
     [bonds]
        CB     CA    
        OG     CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
        CA     HA    
-       CB     HB1   
        CB     HB2   
-       OG     HG1   
+       CB     HB3   
+       OG     HG 
        O      C     
     [connections]
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
-        CB    HB1   HB2   OG    HG1   
+        N     H    CA    HA    
+        CB    HB2   HB3   OG    HG   
         C     O     
 *------------------------------------------------------------------
 {THR}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |  
-         2 HN     H            0.31  !  HN-N  
+         2 H     H            0.31  !  HN-N  
          3 CA     CT1          0.07  !     |     OG1--HG1
          4 HA     HB1          0.09  !     |    /
          5 CB     CT1          0.14  !  HA-CA--CB-HB  
          6 HB     HA1          0.09  !     |    \     
          7 OG1    OH1         -0.66  !     |     CG2--HG21
-         8 HG1    H            0.43  !   O=C    / \    
+         8 HG     H            0.43  !   O=C    / \    
          9 CG2    CT3         -0.27  !     | HG21 HG22 
         10 HG21   HA3          0.09
         11 HG22   HA3          0.09
@@ -3884,13 +3884,13 @@
        CB     CA    
        OG1    CB    
        CG2    CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
        CA     HA    
        CB     HB    
-       OG1    HG1   
+       OG1    HG   
        CG2    HG21  
        CG2    HG22  
        CG2    HG23  
@@ -3899,18 +3899,18 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
-        CB    HB    OG1   HG1   
+        N     H    CA    HA    
+        CB    HB    OG1   HG   
         CG2   HG21  HG22  HG23  
         C     O     
 *------------------------------------------------------------------
 {TRP}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |                  HE3
-         2 HN     H            0.31  !  HN-N                   |
+         2 H     H            0.31  !  HN-N                   |
          3 CA     CT1          0.07  !     |   HB1            CE3
          4 HA     HB1          0.09  !     |   |             /  \\
          5 CB     CT2         -0.18  !  HA-CA--CB---CG-----CD2   CZ3-HZ3
@@ -3939,7 +3939,7 @@
        CD2    CG    
        NE1    CD1   
        CZ2    CE2   
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -3964,10 +3964,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    CD1   HD1   NE1   HE1   CE2   CD2   CE3   HE3   CZ3   HZ3   CZ2   HZ2   CH2   HH2   
         C     O     
@@ -3975,7 +3975,7 @@
 {TYR}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |        HD1  HE1    
-         2 HN     H            0.31  !  HN-N         |    |   
+         2 H     H            0.31  !  HN-N         |    |   
          3 CA     CT1          0.07  !     |   HB1  CD1--CE1
          4 HA     HB1          0.09  !     |   |   //      \\
          5 CB     CT2         -0.18  !  HA-CA--CB--CG      CZ--OH
@@ -4002,7 +4002,7 @@
        CE1    CD1   
        CZ     CE2   
        OH     CZ    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -4022,10 +4022,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB1   HB2   
         CG    
         CD1   HD1   
@@ -4038,7 +4038,7 @@
 {VAL}            !charge: 0.00 ||  
     [atoms]
          1 N      NH1         -0.47  !     |    HG11 HG12
-         2 HN     H            0.31  !  HN-N      | / 
+         2 H     H            0.31  !  HN-N      | / 
          3 CA     CT1          0.07  !     |     CG1--HG13
          4 HA     HB1          0.09  !     |    /
          5 CB     CT1         -0.09  !  HA-CA--CB-HB  
@@ -4057,7 +4057,7 @@
        CB     CA    
        CG1    CB    
        CG2    CB    
-       N      HN    
+       N      H    
        N      CA    
        C      CA    
 !       C      N     
@@ -4074,10 +4074,10 @@
         head N     
         tail C     
     [impropers]
-         N      -C     CA     HN    
+         N      -C     CA     H    
          C      CA     +N     O     
     [charge_groups]
-        N     HN    CA    HA    
+        N     H    CA    HA    
         CB    HB    
         CG1   HG11  HG12  HG13  
         CG2   HG21  HG22  HG23  

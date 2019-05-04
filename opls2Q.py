@@ -14,7 +14,7 @@ class Run(object):
     Create FEP files from a common substructure for a given set of
     ligands
     """
-    def __init__(self, lig, FF, output, merge, *args, **kwargs):
+    def __init__(self, lig, FF, output, merge, vs, *args, **kwargs):
         """
         The init method is a kind of constructor, called when an instance
         of the class is created. The method serves to initialize what you
@@ -25,7 +25,32 @@ class Run(object):
         self.lig = lig
         self.FF = FF
         self.merge = merge
+        self.vs = vs
         self.ff_list = []
+        
+        # This is a test part, should be generalized for lone pairs and different
+        # halogen bonds. Now, it works for Bn-X, where X is a halogen
+        # The parameters below are extracted from:
+        # J. Chem. Theory Comput. 2012,  8, 10, 3895-3901
+        # Note: I find it quite unlikely that bond length for Cl and Br for vs 
+        # are the same
+        self.virtual_site = {'Cl'   :[ 1.600, # [0] X-vs bond length       
+                                      -0.250, # [1] X charge
+                                       0.075, # [2] vs charge
+                                       0.175  # [3] CA charge
+                                     ],
+                             
+                             'Br'   :[ 1.600, # [0] X-vs bond length       
+                                      -0.270, # [1] X charge
+                                       0.100, # [2] vs charge
+                                       0.170  # [3] CA charge
+                                     ],
+                             'I'    :[ 1.800, # [0] X-vs bond length       
+                                      -0.260, # [1] X charge
+                                       0.110, # [2] vs charge
+                                       0.150  # [3] CA charge
+                                     ]
+                            }
         
         if output in programs:
             self.output = output
@@ -107,8 +132,6 @@ class Run(object):
         imp_V2 = float(imp_V2)/2
 
         return[imp_V2]
-
-
 
     # This here should later input the prefererd forcefield 
     # defined by user and generate outputfile
@@ -251,7 +274,7 @@ class Run(object):
                     improper_list.append(improper)
         
         charge_group_list = run.get_charge_groups(charge_dic, bonded)
-
+        
         self.Q_FF =[charge_list, 
                     charge_sum, 
                     vdw_list, 
@@ -260,7 +283,37 @@ class Run(object):
                     torsion_list, 
                     improper_list,
                     charge_group_list]
+        
+    def add_virtualsite(self):    
+        halogens = {}
+        CXbond = []
+        CXangle = []
+        CXtorsion = []
+        # First we find the C-X bonds, to adjust parameters accordingly
+        for at in self.Q_FF[0]:
+            element = re.findall('\d+|\D+', at[0])[0]
+            if element not in self.virtual_site:
+                continue
 
+            # Construct dictionary to look up vs parameters
+            halogens[at[0]]=element
+
+        # Construct the bonded list for halogens
+        i = 0
+        for bond in self.Q_FF[3]:
+            for halogen in halogens:
+                element = re.findall('\d+|\D+', halogen)[0]
+                if halogen in bond[0]:
+                    i+=1
+                    CXbond.append(bond[0])
+                    #CXbond.append([halogen, ])
+
+        # Find the angles for the torsion constructs
+        for angle in self.Q_FF[4]:
+            for bond in CXbond:
+                if bond[0] in angle[0] and bond[1] in angle[0]:
+                    CXtorsion.append(angle[0]) 
+                    
     def write_lib_Q(self):
         # this is just for readability, not necessary
         parm = self.Q_FF
@@ -414,8 +467,6 @@ class Run(object):
                     outline = IO.pdb_parse_out(line)
                     outfile.write(outline + '\n')
                     
-                print(len(line))
-                    
         os.rename(pdb_out, pdb_in)
     
 if __name__ == "__main__":
@@ -446,16 +497,28 @@ if __name__ == "__main__":
                         default = True,        
                         help = "Use this flag if you do not want the ligand prms to be merged")
     
+    parser.add_argument('-vs', '--virtual_site',
+                        dest = "vs",
+                        action = 'store_true',
+                        default = False,        
+                        help = "Toggle to add virtual site Note: only Bn-X, where X is a halogen" \
+                        " currently inlcuded. The parameters are extracted from:"             \
+                        "J. Chem. Theory Comput. 2012,  8, 10, 3895-3901"
+                       )
+    
     args = parser.parse_args()
     run = Run(lig = args.lig,
               FF = args.FF,
               output = args.output,
-              merge = args.merge
+              merge = args.merge,
+              vs = args.vs
              )
 
     run.get_parameters()
     run.read_log()
     run.convert_toQ()
+    if args.vs == True:
+        run.add_virtualsite()
     run.write_lib_Q()
     run.write_prm_Q()
     run.rename_pdb()

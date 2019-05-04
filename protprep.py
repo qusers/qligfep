@@ -75,7 +75,7 @@ class Run(object):
                                       ]
                         
                     else:
-                        print 'Could not get center'
+                        print('Could not get center')
                         
         self.log['CENTER'] = '{} {} {}'.format(*self.center)
     
@@ -452,7 +452,6 @@ class Run(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='protPREP',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Generate FEP files for dual topology ligFEP == ')
 

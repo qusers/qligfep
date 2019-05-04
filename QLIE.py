@@ -377,7 +377,6 @@ class Run(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='QLIE',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = ' == Generate LIE inputfiles for simulation and analysis == ')
 

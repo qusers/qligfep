@@ -169,6 +169,9 @@ class Run(object):
             with open(self.mutation[2] + '.pdb') as infile:
                 for line in infile:
                     line = IO.pdb_parse_in(line)
+                    # The residue name should match the mutant residue number
+                    # relative to Q numbering from protPREP.log
+                    line[6] = int(self.PDB2Q[self.mutation[1]])
                     if line[2] in self.backbone:
                         continue
                         
@@ -195,7 +198,7 @@ class Run(object):
                         # Change to hybrid residue name
                         if self.dual == True:
                             if str(line[6]) == self.PDB2Q[self.mutation[1]]:
-                                line[4] = self.MUTresn                        
+                                line[4] = self.MUTresn  
                         
                         # Generate the dual topology residue in the PDB dictionary
                         # Construct the PDB dictionary            
@@ -289,13 +292,13 @@ class Run(object):
             if line != headers[0]:
                 if len(line) > 2:
                     atom = line[1]
-                    replacements[atom] = atom.lower()
+                    if atom != 'H':
+                        replacements[atom] = atom.lower()
                 
                 if line == header[1]:
                     break
                 
         for line in FFlib[IO.AA(self.mutation[2])]:
-            print(line)
             if line.strip() in headers:
                 header = line.strip()
 
@@ -390,9 +393,7 @@ class Run(object):
         self.PDBout = 'complex.pdb'
         with open(PDBout, 'w') as outfile:
             for key in self.PDB:
-                #print key
                 for line in self.PDB[key]:
-                    #print line
                     outline = IO.pdb_parse_out(line) + '\n'
                     outfile.write(outline)
                     
@@ -743,7 +744,8 @@ class Run(object):
             # Write out [atoms] section
             outfile.write('[atoms]\n')
             cnt = 0
-            for line in self.PDB[int(self.mutation[1])]:
+            res_ID = int(self.PDB2Q[self.mutation[1]])
+            for line in self.PDB[res_ID]:
                 cnt += 1
                 outfile.write('{:4d} {:4d} ! {:<4s}\n'.format(cnt, line[1], line[2]))
             
