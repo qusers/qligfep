@@ -34,23 +34,44 @@ class Run(object):
         # J. Chem. Theory Comput. 2012,  8, 10, 3895-3901
         # Note: I find it quite unlikely that bond length for Cl and Br for vs 
         # are the same
-        self.virtual_site = {'Cl'   :[ 1.600, # [0] X-vs bond length       
+        self.virtual_site = {'Cl'   :[ '1.600', # [0] X-vs bond length       
                                       -0.250, # [1] X charge
                                        0.075, # [2] vs charge
                                        0.175  # [3] CA charge
                                      ],
                              
-                             'Br'   :[ 1.600, # [0] X-vs bond length       
+                             'Br'   :[ '1.700', # [0] X-vs bond length       
                                       -0.270, # [1] X charge
                                        0.100, # [2] vs charge
                                        0.170  # [3] CA charge
                                      ],
-                             'I'    :[ 1.800, # [0] X-vs bond length       
+                             'I'    :[ '1.800', # [0] X-vs bond length       
                                       -0.260, # [1] X charge
                                        0.110, # [2] vs charge
                                        0.150  # [3] CA charge
                                      ]
                             }
+        
+        # Below are potential AMBER parameter for later
+        # those from AMBER paper:
+        # DOI 10.1002/jcc.21836
+        #self.virtual_site = {'Cl'   :[ '1.950', # [0] X-vs bond length       
+        #                              -0.2679, # [1] X charge
+        #                               0.0382, # [2] vs charge
+        #                               0.2297  # [3] CA charge
+        #                             ],
+        #                     
+        #                     'Br'   :[ '2.220', # [0] X-vs bond length       
+        #                              -0.2512, # [1] X charge
+        #                               0.0506, # [2] vs charge
+        #                               0.2006  # [3] CA charge
+        #                             ],
+        #                     'I'    :[ '2.350', # [0] X-vs bond length       
+        #                              -0.1966, # [1] X charge
+        #                               0.0574, # [2] vs charge
+        #                               0.1392  # [3] CA charge
+        #                             ]
+        #                    }
         
         if output in programs:
             self.output = output
@@ -181,7 +202,8 @@ class Run(object):
                     charge_group = []
                     charge = 0
 
-        return charge_group_list                        
+        #return charge_group_list                        
+        return []
 
     def get_parameters(self):
         # Add other parameter generators later
@@ -285,35 +307,60 @@ class Run(object):
                     charge_group_list]
         
     def add_virtualsite(self):    
-        halogens = {}
-        CXbond = []
-        CXangle = []
-        CXtorsion = []
+        self.halogens = {}
+        
         # First we find the C-X bonds, to adjust parameters accordingly
         for at in self.Q_FF[0]:
             element = re.findall('\d+|\D+', at[0])[0]
+            at_id = re.findall('\d+|\D+', at[0])[1]
             if element not in self.virtual_site:
                 continue
 
             # Construct dictionary to look up vs parameters
-            halogens[at[0]]=element
-
-        # Construct the bonded list for halogens
-        i = 0
-        for bond in self.Q_FF[3]:
-            for halogen in halogens:
+            self.halogens[at[0]]=[element]
+            
+            # Add the virtual site
+            VS = 'X' + at_id
+            
+            # Add the virtual site to the atom types
+            VS_at = [VS, [0.0, 0.0,0.0, 0.0, 0.0, '1.0080']]
+            self.Q_FF[2].append(VS_at)
+            
+            # Look up bond length and force, add to Q bonds
+            self.Q_FF[3].append([[at[0],VS],
+                                 [600.0,self.virtual_site[element][0]]])
+            
+            # Store the added attomtypes
+            self.halogens[at[0]].append(VS)
+            
+            # Add the charges of the virtual site
+            self.Q_FF[0].append([VS,self.virtual_site[element][2]])
+        
+        for halogen in self.halogens:
+            # Construct the bonded list for halogens
+            for bond in self.Q_FF[3]:
                 element = re.findall('\d+|\D+', halogen)[0]
-                if halogen in bond[0]:
-                    i+=1
-                    CXbond.append(bond[0])
-                    #CXbond.append([halogen, ])
-
-        # Find the angles for the torsion constructs
-        for angle in self.Q_FF[4]:
-            for bond in CXbond:
-                if bond[0] in angle[0] and bond[1] in angle[0]:
-                    CXtorsion.append(angle[0]) 
+                if halogen in bond[0] and self.halogens[halogen][1] not in bond[0]:
+                    # Create the angle and store it in Q angles
+                    at_types = [bond[0][0],bond[0][1],self.halogens[halogen][1]]
+                    self.Q_FF[4].append([at_types,[200.0,'180.000']])
                     
+                    # change de charges
+                    for at_ref in bond[0]:
+                        for i, at in enumerate(self.Q_FF[0]):
+                            ele = re.findall('\d+|\D+', at_ref)[0]
+                            if at[0] == at_ref:
+                                if ele in self.virtual_site:
+                                    self.Q_FF[0][i][1] = self.virtual_site[element][1]
+                                else:
+                                    self.Q_FF[0][i][1] = self.virtual_site[element][3]
+
+            # Loop through angles for the atom types in torsion constructs
+            for angle in self.Q_FF[4]:
+                if halogen in angle[0] and self.halogens[halogen][1] not in angle[0]:
+                    at_types = [angle[0][0], angle[0][1], angle[0][2], self.halogens[halogen][1]]
+                    self.Q_FF[5].append([at_types,[[0.0, 1, '0.000', '1.000']]])
+                
     def write_lib_Q(self):
         # this is just for readability, not necessary
         parm = self.Q_FF
@@ -355,15 +402,16 @@ class Run(object):
                                                            line[0][3]))
 
             outfile.write("\n[charge_groups]\n")
-            for i in charges:
-                if i[0][0] != 'H':
-                    outfile.write('{}'.format(i[0]))
-                    for j in bonds:
-                        if j[0][0]==i[0] and j[0][1][0] == 'H':
-                            outfile.write(' {} '.format(j[0][1]))
-                        if j[0][1][0] == i[0] and j[0][1][0] =='H':
-                            outfile.write(" H%i" % j[0])
-                    outfile.write("\n")
+            # This charge group definition is WRONG anyway
+            #for i in charges:
+            #    if i[0][0] != 'H':
+            #        outfile.write('{}'.format(i[0]))
+            #        for j in bonds:
+            #            if j[0][0]==i[0] and j[0][1][0] == 'H':
+            #                outfile.write(' {} '.format(j[0][1]))
+            #            if j[0][1][0] == i[0] and j[0][1][0] =='H':
+            #                outfile.write(" H%i" % j[0])
+            #        outfile.write("\n")
 
     def write_prm_Q(self):
         parm = self.Q_FF
@@ -456,6 +504,8 @@ class Run(object):
         pdb_out = self.lig + '_out.pdb'
         index = -1
         atomnames = self.Q_FF[0]
+        if self.vs == True:
+            lig_size = len(self.Q_FF[0]) - len(self.halogens)
         with open(pdb_in) as infile, open(pdb_out, 'w') as outfile:
             for line in infile:
                 line = IO.pdb_parse_in(line)
@@ -465,6 +515,23 @@ class Run(object):
                     line[2] = atomnames[index][0]
                     line[6] = 1
                     outline = IO.pdb_parse_out(line)
+                    outfile.write(outline + '\n')
+                    
+                    # Define virtual site coordinates
+                    if self.vs == True and line[2] in self.halogens:
+                        self.halogens[line[2]].append(line)
+
+            if self.vs == True:
+                for halogen in self.halogens:
+                    lig_size += 1
+                    at_entry = self.halogens[halogen][2]
+                    at_entry[1] = lig_size
+                    at_entry[2] = self.halogens[halogen][1]
+                    at_entry[8] = at_entry[8] + 0.001
+                    at_entry[9] = at_entry[9] + 0.001
+                    at_entry[10] = at_entry[10] + 0.001
+                    at_entry[13] = ' H'
+                    outline = IO.pdb_parse_out(at_entry)
                     outfile.write(outline + '\n')
                     
         os.rename(pdb_out, pdb_in)
