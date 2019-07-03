@@ -128,13 +128,16 @@ def AA(AA):
     
     if len(AA) == 4:
         AA = fourAA[AA]
-    
+        return AA
+
     if len(AA) == 3:
         AA = threeAA[AA]
+        return AA
         
     if len(AA) == 1:
         AA = oneAA[AA]
-    return(AA)
+        return AA
+
 
 def read_prm(prmfiles):
     """

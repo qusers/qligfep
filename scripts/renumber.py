@@ -6,7 +6,7 @@ sys.path.append(installdir)
 import IO
 import functions
 
-pdbfile = '6MEO_full.pdb'
+pdbfile = 'OX2.pdb'
 resn_ref = 1
 resn_out = 1
 

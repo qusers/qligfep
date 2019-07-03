@@ -1,0 +1,66 @@
+!ALA-->GLY
+
+[FEP]
+states 2
+softcore_use_max_potential on
+
+[atoms]
+1 1     ! N
+2 2     ! H
+3 3     ! CA    
+4 4     ! HA    
+5 5  ! CB  becomes HC 
+6 6  ! HB1  disappear
+7 7  ! HB2  disappear    
+8 8  ! HB3  disappear                
+         
+[change_charges]
+1     0  -0.5000
+2    0    0.3000
+3    0    0.0800
+4     0    0.0600
+5     0    0.0600
+6      0     0
+7   0   0
+8   0   0
+
+[atom_types]
+!Type    Ai    Bi    Ci    ai    A1(1-4)    Bi(1-4)    Mass
+N   971.75    28.31    0    0    687.13    20.02    14.01
+CT     944.52    22.03    0    0    667.88    15.58    12.01
+HC    84.57    5.41    0    0    59.80    3.83    1.008
+C2    1802.24    34.18    0    0    1274.37    24.17    12.01
+O2    616.44    23.77    0    0    435.89    16.81    16.00
+OH    601.15    22.26    0    0    425.08    15.74    16.00
+H    0    0    0    0    0    0    1.008
+CDUM    0    0    0    0    0    0    12.01
+ODUM    0    0    0    0    0    0    16.00
+HDUM    0    0    0    0    0    0    1.008
+C    1802.24    34.18    0    0    1274.38    24.17    12.01
+                
+[change_atoms]
+1   N   N 
+2   H   H
+3   CT  CT
+4   HC  HC 
+5   HC  HC
+6   HDUM  HDUM
+7   HDUM  HDUM
+8   HDUM  HDUM
+
+[softcore]
+1     0    0 
+2   0    0
+3      0    0
+4      0    0
+5   0   0
+6   0   0
+7   0   0
+8   0   0
+
+[bond_types]
+1    536.0    1.529    !C224 C135        
+2    680.0    1.090    !HC    CT    
+
+[change_bonds]
+1    4    2    2

@@ -503,7 +503,7 @@ class Run(object):
                     outfile.write(outline)
                     
     def write_MD(self):
-        if self.start == '1.0':
+        if self.start == '1':
             for line in self.PDB[int(self.mutation[1])]:
                 if line[2] == 'CA' and self.system == 'water' or self.system == 'vacuum':
                     self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
