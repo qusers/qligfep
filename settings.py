@@ -48,11 +48,11 @@ KEBNE = {'NODES'      : '1',
 
 STALLO = {'NODES'      : '1',
          'NTASKS'     : '20',
-         'TIME'       : '0-04:00:00',  # d-hh:mm:ss
+         'TIME'       : '0-12:00:00',  # d-hh:mm:ss
          'MODULES'    : 'module load impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28\n', # Add a \n for every added module
          'QDYN'       : 'qdyn=/home/jespersw/software/Q6/bin/qdynp', #fix qdyn= !!!!!
          'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'ACCOUNT'    : 'nn2948k'
+         'ACCOUNT'    : 'nn4654K'
         }
 
 TETRA = {'NODES'      : '1',

@@ -321,3 +321,70 @@ def read_qfep(qfep):
                         BAR = float(line[2])
     
     return [Zwanzig, Zwanzig_f, Zwanzig_r, OS, BAR]
+
+def read_qfep_verbose(qfep):
+    """
+    Reads a given qfep.out file.
+
+    returns [[Zwanzig, dGfr, dGr, OS, BAR]   lambda 1
+                          ....               lambda ..
+             [Zwanzig, dGfr, dGr, OS, BAR]]  lambda n
+    """
+    # Merge this and the above function?
+    # Zwanzig, frwd, rv, OS, BAR
+    array = [[],[],[],[],[]]
+    with open(qfep) as infile:
+        block = 0
+        for line in infile:
+            line = line.split()
+            if len(line) > 3:
+                if line[0] == 'ERROR:' or line[1] == 'ERROR:':
+                    ERROR = True
+
+                if line[3] == 'Free':
+                    block = 1
+
+                if line[3] == 'Termodynamic':
+                    #continue
+                    block = 2
+
+                if line[3] == 'Overlap':
+                    block = 3
+
+                if line[3] == 'BAR':
+                    block = 4
+
+                if line[3] == 'Reaction':
+                    block = 0
+                    
+            if len(line) > 1:
+                if line[0] == '#':
+                    continue
+                
+                if block == 1:
+                    try:
+                        array[0].append(np.float(line[5]))
+                    except:
+                        array[0].append(np.nan)
+                    try:
+                        array[1].append(np.float(line[4]))
+                    except:
+                        array[1].append(np.nan)
+                    try:
+                        array[2].append(np.float(line[2]))
+                    except:
+                        array[2].append(np.nan)
+
+                if block == 3:
+                    try:
+                        array[3].append(np.float(line[2]))
+                    except:
+                        array[3].append(np.nan)
+
+                if block == 4:
+                    try:
+                        array[4].append(np.float(line[2]))
+                    except:
+                        array[4].append(np.nan)
+    
+    return array   
