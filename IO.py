@@ -319,7 +319,7 @@ def read_qfep(qfep):
                         BAR = np.nan
                     else:
                         BAR = float(line[2])
-    
+                        
     return [Zwanzig, Zwanzig_f, Zwanzig_r, OS, BAR]
 
 def read_qfep_verbose(qfep):

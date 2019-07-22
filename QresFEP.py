@@ -485,7 +485,7 @@ class Run(object):
         self.lambdas = IO.get_lambdas(self.windows, self.sampling)
 
     def write_EQ(self):
-        for line in self.PDB[int(self.mutation[1])]:
+        for line in self.PDB[int(self.PDB2Q[self.mutation[1]])]:
             if line[2] == 'CA' and              \
             self.system == 'water'              \
             or self.system == 'vacuum':
@@ -504,7 +504,7 @@ class Run(object):
                     
     def write_MD(self):
         if self.start == '1':
-            for line in self.PDB[int(self.mutation[1])]:
+            for line in self.PDB[int(self.PDB2Q[self.mutation[1]])]:
                 if line[2] == 'CA' and self.system == 'water' or self.system == 'vacuum':
                     self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
                                                                                   line[1])

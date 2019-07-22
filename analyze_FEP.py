@@ -174,7 +174,7 @@ if __name__ == "__main__":
                         required = False,
                         default = 'blue',
                         choices = ['blue', 'red'],
-                        help = "name of FEP directory (FEP_$)")
+                        help = "color for the plot")
     
     
     args = parser.parse_args()
