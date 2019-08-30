@@ -27,7 +27,7 @@ https://github.com/esguerra/Q6
 
 - Clone this repository:  
 
-    git clone https://github.com/jesperswillem/setupFEP.git
+    git clone https://github.com/qusers/qligfep.git
 
 
 In settings.py:  
