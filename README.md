@@ -1,4 +1,4 @@
-# QligFEP and QresFEP 
+# QligFEP v2.0 and QresFEP v1.0
 
 This collection of python command line functions is designed with the
 aim to faciliate a robust and fast setup of FEP calculations for the
