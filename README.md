@@ -7,7 +7,6 @@ longer supported, and an old version of the code using python 2
 is now only available in the python2 branch.
 
 This pacakge includes at the moment two main modules:  
-
 - QligFEP.py: module to generate ligand FEP calculations using a
 dual topology approach, 
 see Jespers et al. (https://doi.org/10.1186/s13321-019-0348-5).  
