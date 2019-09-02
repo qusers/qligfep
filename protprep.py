@@ -14,7 +14,7 @@ class Run(object):
     Prepare a protein for usage in spherical boundary conditions.
     """
     def __init__(self, prot, sphereradius, spherecenter, include, water, 
-                 preplocation, maestro, verbose, *args, **kwargs):
+                 preplocation, origin, verbose, *args, **kwargs):
         self.prot = prot
         self.radius = float(sphereradius)
         self.center = spherecenter
@@ -23,11 +23,8 @@ class Run(object):
         self.verbose = verbose
         self.PDB = {}
         self.preplocation = preplocation
-        self.maestro = maestro
-        
-        if self.maestro == True:
-            # create dictionary to store the maestro charges
-            self.maestro_charges = {}
+        self.origin = origin
+        self.original_charges = {}
             
         self.log = {'INPUT':'protPREP.py -p {} -r {} -c {} -w={} -V={}'.format(prot, 
                                                                                sphereradius, 
@@ -78,15 +75,53 @@ class Run(object):
                                       ]
                         
                     else:
-                        print 'Could not get center'
+                        print('Could not get center')
                         
         self.log['CENTER'] = '{} {} {}'.format(*self.center)
     
+    # The name of this function should be more general when the various inputs are there
     def prepwizard_parse(self):
-        if self.maestro == False:
-            return None
-        
-        elif self.maestro == True:
+        if self.origin == 'gromacs':
+            with open(self.prot) as infile, \
+                 open(self.prot[:-4] + '_noH.pdb', 'w') as outfile:
+                for line in infile:
+                    if line.startswith(self.include):
+                        if line[13] != 'H':
+                            line = IO.pdb_parse_in(line)
+                            # Change residue name of waters
+                            if line[4] == 'SOL':
+                                line[4] = 'HOH'
+                                line[2] = 'O'
+                                if self.water != False:
+                                    line_out = IO.pdb_parse_out(line)
+                                    
+                                else:
+                                    continue
+                                
+                            elif line[4] == 'ILE' and line[2] == 'CD':
+                                line[2] = 'CD1'
+                                line_out = IO.pdb_parse_out(line)
+                                
+                            elif line[4] == 'CL-':
+                                continue
+                                
+                            line_out = IO.pdb_parse_out(line)
+                            outfile.write(line_out + '\n')
+
+                        else:
+                            line = IO.pdb_parse_in(line)
+                        
+                        # Get the charges from the hydrogen connections
+                        # NOTE: this might be more common and thus less lines of code might be
+                        # needed, check when implementing MolProbity!!
+                        if line[4] in IO.charged_res:
+                            if line[2] in IO.charged_res[line[4]]:
+                                if line[6] in self.original_charges:
+                                    self.original_charges[line[6]] = 'HIP'
+                                else:
+                                    self.original_charges[line[6]] = IO.charged_res[line[4]][line[2]]
+                            
+        elif self.origin == 'maestro':
             with open(self.prot) as infile, \
                  open(self.prot[:-4] + '_noH.pdb', 'w') as outfile:
                 for line in infile:
@@ -99,19 +134,20 @@ class Run(object):
                         # Get the charges from the hydrogen connections
                         if line[4] in IO.charged_res:
                             if line[2] in IO.charged_res[line[4]]:
-                                if line[6] in self.maestro_charges:
-                                    self.maestro_charges[line[6]] = 'HIP'
+                                if line[6] in self.original_charges:
+                                    self.original_charges[line[6]] = 'HIP'
                                 else:
-                                    self.maestro_charges[line[6]] = IO.charged_res[line[4]][line[2]]
+                                    self.original_charges[line[6]] = IO.charged_res[line[4]][line[2]]
 
     
     def readpdb(self):
         i = 0
-        if self.maestro != True:
-            pdbfile = self.prot
-            
-        else:
+        if self.origin == 'gromacs':
             pdbfile = self.prot[:-4] + '_noH.pdb'
+            
+        elif self.origin == 'maestro':
+            pdbfile = self.prot[:-4] + '_noH.pdb'
+            
         with open(pdbfile) as infile:
             for line in infile:
                 if line.startswith(self.include):
@@ -124,9 +160,16 @@ class Run(object):
                 if line.startswith(self.include):
                     line = IO.pdb_parse_in(line)
                     RES = line[6]
-                    if line[6] in self.maestro_charges:
-                        line[4] = self.maestro_charges[line[6]]
-                    self.PDB[line[1]] = line
+                    if line[6] in self.original_charges:
+                        line[4] = self.original_charges[line[6]]
+                    
+                    if self.water == True:
+                        self.PDB[line[1]] = line
+                        
+                    elif self.water == False:
+                        if line[4] != 'HOH':
+                            self.PDB[line[1]] = line
+
                     if RES != RES_ref:
                         RES_ref = RES
                         i += 1
@@ -205,6 +248,8 @@ class Run(object):
                         self.log['TOTAL_CHARGE'] += charged_res[at[4]][2]
             
     def set_OXT(self):
+        ## NOTE WARNING, ETC: Q AA codes are sometimes 3, sometimes 4, they MUST be updated to pdb
+        ## standards ASAP!!!
         CTERM = []
         for key in self.PDB:
             at = self.PDB[key]
@@ -212,10 +257,23 @@ class Run(object):
                 CTERM.append(at[6])
                 self.log['CTERM'].append('{} {}'.format(at[6], at[4]))
                 
+            if self.origin == 'gromacs':
+                if at[2].strip() == 'O1':
+                    CTERM.append(at[6])
+                    self.log['CTERM'].append('{} {}'.format(at[6], at[4]))
+                
         for key in self.PDB:
             at = self.PDB[key]
             if at[6] in CTERM:
                 self.PDB[key][4] = 'C' + at[4]
+                
+            if self.origin == 'gromacs':
+                if at[2] == 'O1':
+                    self.PDB[key][2] = 'O'
+                    
+                if at[2] == 'O2':
+                    self.PDB[key][2] = 'OXT'
+
                 
     def get_CYX(self):
         cys = []
@@ -228,7 +286,7 @@ class Run(object):
         # Reduce coordinate array
         for key in self.PDB:
             at = self.PDB[key]
-            if at[4] == 'CYS' and at[2].strip() == 'SG':
+            if at[4] == 'CYS' or at[4] == 'CYX' and at[2].strip() == 'SG':
                 cys.append([at[6], (at[8], at[9], at[10])])
         
         # Construct S-S bond matrix
@@ -394,7 +452,6 @@ class Run(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='protPREP',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Generate FEP files for dual topology ligFEP == ')
 
@@ -433,11 +490,11 @@ if __name__ == "__main__":
                         default = 'LOCAL',
                         help = "define this variable if you are setting up your system elsewhere")
     
-    parser.add_argument('-m', '--Maestro',
-                        dest = "maestro",
-                        default = True,
-                        action = 'store_false',
-                        help = "Use this flag if the input .pdb is not coming from maestro")
+    parser.add_argument('-O', '--origin',
+                        dest = "origin",
+                        default = 'maestro',
+                        choices = ['maestro', 'gromacs'],
+                        help = "Use this flag to specficy with which program the .pdb file was written")
     
     args = parser.parse_args()
     run = Run(prot = args.prot,
@@ -446,7 +503,7 @@ if __name__ == "__main__":
               water = args.water,
               verbose = args.verbose,
               preplocation = args.preplocation,
-              maestro = args.maestro,
+              origin = args.origin,
               include = ('ATOM','HETATM')
              )
     

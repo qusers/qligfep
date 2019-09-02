@@ -7,7 +7,7 @@
 * Parameters translated for Q with charmm2q.py (Geir V. Isaksen, 2016)
 * with small changes by Mauricio Esguerra and Christoffer Lind.
 *-------------------------------------------------------------------------------
-[options] force-field options
+[options]
 name                Q  CHARMM36 All-Hydrogen Parameter File for Proteins 
 vdw_rule            arithmetic   ! vdW combination rule (geometric or arithmetic )
 scale_14            1.0          ! electrostatic 1-4 scaling factor

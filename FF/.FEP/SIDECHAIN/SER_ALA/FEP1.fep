@@ -1,0 +1,21 @@
+!info
+!SER--ALA
+
+[FEP]
+states 2      
+
+[atoms]
+1      1       ! CB
+2      2       ! HB1
+3      3       ! HB2   
+4      4       ! HB3   
+5      5       ! OG     blir    HC     
+6      6       ! HG     bort   
+
+[change_charges]
+1      0.0850  0
+2      0.06    0
+3      0.06    0      
+4      0.06    0      
+5      -0.683  0      
+6      0.418   0      

@@ -35,12 +35,12 @@ class Run(object):
                   for i in range(len(coordinates))]) for j in range(3)]
             center = [str(round(center[i], 3)) for i in range(3)]
             center = ':'.join(center)
+            center = '[' + center + ']'
         return center
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='calcCOG',
-        version='1.0',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '       == Calculate Centre of Geometry (COG) for a given .pdb == ')
 
@@ -52,4 +52,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     run = Run(ipdb = args.ipdb)
-    print run.COG()
+    print(run.COG())

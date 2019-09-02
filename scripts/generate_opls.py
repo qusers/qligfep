@@ -5,8 +5,8 @@ import os
 
 curdir = os.getcwd()
 os.chdir(curdir)
-opls2Q = '/home/jespers/software/setupFEP/opls2Q.py'
-generate = 'python ' + opls2Q
+opls2Q = '/home/1kb431/software/qligfep/opls2Q.py'
+generate = 'python3 ' + opls2Q
 
 
 for pdb in glob.glob('*.pdb'):

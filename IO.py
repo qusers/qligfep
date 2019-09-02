@@ -11,9 +11,7 @@ import settings as s
 ## Some useful objects TO DO add GLH etc.
 charged_res = {'HIS': {'HD1' : 'HID',
                        'HE2' : 'HIE'},
-               
                'GLU': {'HE2' : 'GLH'},
-               
                'ASP': {'HD2' : 'ASH'}
               }    
 
@@ -70,8 +68,13 @@ def pdb_parse_out(line):
     """
     Takes a list and parses it into a pdb writeable line
     """
-    line = '{:6s}{:5d}  {:3s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
-           '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
+    if len(line[2]) <= 3: 
+        line = '{:6s}{:5d}  {:3s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
+               '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
+            
+    elif len(line[2]) == 4: 
+        line = '{:6s}{:5d} {:4s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
+               '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
     return line
 
 def replace(string, replacements):
@@ -125,13 +128,16 @@ def AA(AA):
     
     if len(AA) == 4:
         AA = fourAA[AA]
-    
+        return AA
+
     if len(AA) == 3:
         AA = threeAA[AA]
+        return AA
         
     if len(AA) == 1:
         AA = oneAA[AA]
-    return(AA)
+        return AA
+
 
 def read_prm(prmfiles):
     """
@@ -237,7 +243,7 @@ def write_submitfile(writedir, replacements):
         os.chmod(submit_out, st.st_mode | stat.S_IEXEC)
 
     except:
-        print "WARNING: Could not change permission for " + submit_out
+        print("WARNING: Could not change permission for " + submit_out)
 
 def merge_two_dicts(x, y):
     """Given two dicts, merge them into a new dict as a shallow copy."""
@@ -313,5 +319,72 @@ def read_qfep(qfep):
                         BAR = np.nan
                     else:
                         BAR = float(line[2])
-    
+                        
     return [Zwanzig, Zwanzig_f, Zwanzig_r, OS, BAR]
+
+def read_qfep_verbose(qfep):
+    """
+    Reads a given qfep.out file.
+
+    returns [[Zwanzig, dGfr, dGr, OS, BAR]   lambda 1
+                          ....               lambda ..
+             [Zwanzig, dGfr, dGr, OS, BAR]]  lambda n
+    """
+    # Merge this and the above function?
+    # Zwanzig, frwd, rv, OS, BAR
+    array = [[],[],[],[],[]]
+    with open(qfep) as infile:
+        block = 0
+        for line in infile:
+            line = line.split()
+            if len(line) > 3:
+                if line[0] == 'ERROR:' or line[1] == 'ERROR:':
+                    ERROR = True
+
+                if line[3] == 'Free':
+                    block = 1
+
+                if line[3] == 'Termodynamic':
+                    #continue
+                    block = 2
+
+                if line[3] == 'Overlap':
+                    block = 3
+
+                if line[3] == 'BAR':
+                    block = 4
+
+                if line[3] == 'Reaction':
+                    block = 0
+                    
+            if len(line) > 1:
+                if line[0] == '#':
+                    continue
+                
+                if block == 1:
+                    try:
+                        array[0].append(np.float(line[5]))
+                    except:
+                        array[0].append(np.nan)
+                    try:
+                        array[1].append(np.float(line[4]))
+                    except:
+                        array[1].append(np.nan)
+                    try:
+                        array[2].append(np.float(line[2]))
+                    except:
+                        array[2].append(np.nan)
+
+                if block == 3:
+                    try:
+                        array[3].append(np.float(line[2]))
+                    except:
+                        array[3].append(np.nan)
+
+                if block == 4:
+                    try:
+                        array[4].append(np.float(line[2]))
+                    except:
+                        array[4].append(np.nan)
+    
+    return array   

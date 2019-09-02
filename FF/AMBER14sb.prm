@@ -764,6 +764,9 @@ OS           CT           OS                320.0      101.0
 OS           P            OS                 90.0      102.6
 P            OS           P                 200.0      120.5
 
+! Zero fc dual topology angles
+3C           CX           2C                  0.0      120.0
+
 ! Ligand angle parameters
 ! End ligand angle parameters
 

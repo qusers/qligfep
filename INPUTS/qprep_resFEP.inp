@@ -3,7 +3,7 @@ rprm PRM
 rp PDB 
 ! set solute_density 0.05794 
 ! Solvent_pack is turned off 
-set solvent_pack 0.0
+! set solvent_pack 0.0
 boundary 1 CENTER SPHERE
 solvate CENTER SPHERE SOLVENT
 !addbond at1 at2 y

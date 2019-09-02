@@ -762,7 +762,7 @@
     [impropers]
          H      N      -C     CA    
          OE1    CD     CG     NE2   
-         HE22   NE2    CD1    HE21  
+         HE22   NE2    CD    HE21  
          O      C      CA     OXT   
     [charge_groups]
         N       H    CA   HA     C     O     OXT
@@ -4234,3 +4234,73 @@ O2    HO2
 
 [charge_groups]
 P1 O1 O2 O3 O4 HO2
+
+*----------------------------------------------------------------------
+{ACE}                 ! acetylated N-terminus: atoms 6 charge 0.0000
+
+[info]
+SYBYLtype RESIDUE
+
+[atoms]
+  1      C       C        0.5000
+  2      O       O       -0.5000
+  3      CH3     CT      -0.1800
+  4      HH31    HC       0.0600
+  5      HH32    HC       0.0600
+  6      HH33    HC       0.0600
+
+[bonds]
+C     O   
+C     CH3  
+CH3   HH31  
+CH3   HH32  
+CH3   HH33  
+
+[connections]
+    tail C
+
+[impropers]
+O     C    CH3    +N  
+
+[charge_groups]
+    CH3  HH31 HH32 HH33
+    C   O
+*----------------------------------------------------------------------
+{NMA}                 ! C-term N-methyl amide: atoms 6 charge 0.0000
+
+[info]
+SYBYLtype RESIDUE
+
+[atoms]
+ 1      N       N       -0.5000
+ 2      CA      CT       0.0200
+ 3      H       H        0.3000
+ 4      HA1     HC       0.0600
+ 5      HA2     HC       0.0600
+ 6      HA3     HC       0.0600
+
+[bonds]
+N   H
+N   CA
+CA  HA1
+CA  HA2
+CA  HA3
+
+[connections]
+    head N
+
+[impropers]
+     H   N   -C   CA  
+
+[charge_groups]
+   N  H  CA  HA1  HA2  HA3
+
+*----------------------------------------------------------------------
+{ZN} !zinc   ion
+    [info]
+            SYBYLtype  GROUP
+                [atoms]
+                !      # name     type     charge
+                         1 ZN      ZN          2.000
+                         
+*----------------------------------------------------------------------

@@ -1,0 +1,97 @@
+!TYR-->ALA (opls-aa)
+
+[FEP]
+states 2
+softcore_use_max_potential on
+
+[atoms]
+1  1  ! CB    
+2  2  ! HB2   
+3  3  ! HB3   
+4  4  ! CG    blir HC
+5  5  ! CD1 	bort
+6  6  ! HD1 	bort
+7  7  ! CE1 	bort
+8  8  ! HE1 	bort
+9  9  ! CZ  	bort
+10 10 ! OH  	bort
+11 11 ! HH  	bort
+12 12 ! CE2 	bort
+13 13 ! HE2 	bort
+14 14 ! CD2	bort
+15 15 ! HD2	bort
+
+[change_charges]
+1	0	0
+2	0	0
+3	0	0
+4	0	0
+5	0	0
+6	0	0
+7	0	0
+8	0	0
+9	0	0
+10	0	0
+11	0	0
+12	0	0
+13	0	0
+14	0	0
+15	0	0
+
+[atom_types]
+!Type	Ai	Bi	Ci	ai	A1(1-4)	Bi(1-4)	Mass
+CT 	944.52	22.03	0	0	667.88	15.58	12.01
+HC	84.57	5.41	0	0	59.80	3.83	1.008
+C2	1802.24	34.18	0	0	1274.38	24.17	12.01
+O	616.44	23.77	0	0	435.89	16.81	16.00
+N	971.75	28.31	0	0	687.13	20.02	14.01
+H	0	0	0	0	0	0	1.008
+CDUM	0	0	0	0	0	0	12.01
+HDUM	0	0	0	0	0	0	1.008
+ODUM	0	0	0	0	0	0	16.00
+C	1802.24	34.18	0	0	1274.38	24.17	12.01
+CA	1059.13	23.67	0	0	748.92	16.74	12.01
+HA	69.58	4.91	0	0	49.20	3.47	1.008
+OTY	690.37	23.86	0	0	488.17	16.87	16.00
+HO	0	0	0	0	0	0	1.008
+
+[change_atoms]
+1  	CT	CT
+2  	HC	HC
+3  	HC	HC
+4  	CA	HC
+5  	CDUM	CDUM
+6   HDUM	HDUM
+7   CDUM	CDUM
+8   HDUM	HDUM
+9   CDUM	CDUM
+10 	ODUM	ODUM
+11 	HO 	HO 
+12  CDUM	CDUM
+13  HDUM	HDUM
+14  CDUM	CDUM
+15  HDUM	HDUM
+
+[softcore]
+1 	0 	0 
+2 	0	0
+3 	0	0
+4 	20	0
+5 	0	0
+6 	0	0
+7 	0	0
+8 	0	0
+9 	0	0
+10	0	0
+11	0	0
+12	0	0
+13	0	0
+14	0	0
+15	0	0
+
+[bond_types]
+1	634.0	1.510	!CA CT
+2	680.0	1.090	!HC	CT	
+
+[change_bonds]
+1	4	1	2
