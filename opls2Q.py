@@ -403,15 +403,15 @@ class Run(object):
 
             outfile.write("\n[charge_groups]\n")
             # This charge group definition is WRONG anyway
-            for i in charges:
-                if i[0][0] != 'H':
-                    outfile.write('{}'.format(i[0]))
-                    for j in bonds:
-                        if j[0][0]==i[0] and j[0][1][0] == 'H':
-                            outfile.write(' {} '.format(j[0][1]))
-                        if j[0][1][0] == i[0] and j[0][1][0] =='H':
-                            outfile.write(" H%i" % j[0])
-                    outfile.write("\n")
+            #for i in charges:
+            #    if i[0][0] != 'H':
+            #        outfile.write('{}'.format(i[0]))
+            #        for j in bonds:
+            #            if j[0][0]==i[0] and j[0][1][0] == 'H':
+            #                outfile.write(' {} '.format(j[0][1]))
+            #            if j[0][1][0] == i[0] and j[0][1][0] =='H':
+            #                outfile.write(" H%i" % j[0])
+            #        outfile.write("\n")
 
     def write_prm_Q(self):
         parm = self.Q_FF

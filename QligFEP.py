@@ -172,8 +172,8 @@ class Run(object):
             
     def change_prm(self, replacements, writedir):
         pattern = re.compile(r'\b(' + '|'.join(replacements.keys()) + r')\b')
-        file1 = glob.glob(self.lig1 + '*.prm')[0]
-        file2 = glob.glob(self.lig2 + '*.prm')[0]
+        file1 = glob.glob(self.lig1 + '.prm')[0]
+        file2 = glob.glob(self.lig2 + '.prm')[0]
         prm_file = s.FF_DIR + '/' + self.FF + '.prm'
         prm_merged = {'vdw':[],
                        'bonds':[],
@@ -218,7 +218,7 @@ class Run(object):
 
                     elif block == 5:
                         prm_merged['improper'].append(line)
-
+                        
         with open(prm_file) as infile, open(writedir + 
                                             '/' + 
                                             self.FF + 
@@ -241,7 +241,6 @@ class Run(object):
                         block = 4
                     if line == "! Ligand improper parameters\n":
                         block = 5
-
                 # Read the parameters in from file and store them
                 if block == 1: 
                     for line in prm_merged['vdw']:
@@ -653,19 +652,23 @@ class Run(object):
 
         
     def write_runfile(self, writedir, file_list):
-        cluster = self.cluster
-        run_file_in = s.ROOT_DIR + '/INPUTS/run.sh' 
-        run_file_out = writedir + '/run' + cluster + '.sh'
-        #run1_in = s.ROOT_DIR + '/INPUTS/run_0500-1000.sh'
-        #run1_out = writedir + '/run_0500-1000.sh'
-        #run2_in = s.ROOT_DIR + '/INPUTS/run_0500-0000.sh'
-        #run2_out = writedir + '/run_0500-0000.sh'
-        replacements = getattr(s, cluster)
+        ntasks = getattr(s, self.cluster)['NTASKS']
+        src = s.INPUT_DIR + '/run.sh'
+        tgt = writedir + '/run' + self.cluster + '.sh'
+        EQ_files = sorted(glob.glob(writedir + '/eq*.inp'))
+        
+        if self.start == '1':
+            MD_files = reversed(sorted(glob.glob(writedir + '/md*.inp')))
+            
+        elif self.start == '0.5':
+            md_1 = file_list[1]
+            md_2 = file_list[2]
+        
+        replacements = getattr(s, self.cluster)
         replacements['FEPS']='FEP1.fep'
         run_threads = '{}'.format(int(replacements['NTASKS']))
         
-        with open(run_file_in) as infile, open(run_file_out, 'w') as outfile:
-            block = 0
+        with open(src) as infile, open(tgt, 'w') as outfile:
             for line in infile:
                 if line.strip() == '#SBATCH -A ACCOUNT':
                     try:
@@ -673,47 +676,48 @@ class Run(object):
                         
                     except:
                         line = ''
-                line = run.replace(line, replacements)
-                outfile.write(line)
-
-                if line == '#EQ_FILES\n':
-                    for line in file_list[0]:
-                        outfile.write('time mpirun -np ' + 
-                                      replacements['NTASKS'] + 
-                                      ' $qdyn ' +
-                                      line + 
-                                      ' > ' + 
-                                      line[:-4] +
-                                      '.log\n')
+                outline = IO.replace(line, replacements)
+                outfile.write(outline)
                 
-                i = -1
-                if line == '#RUN_FILES\n':
-                #    for line in file_list[1]:
-                #        i += 1
-                #        
-                #        runline1 = 'time mpirun -np {} $qdyn {} > {}.log &\n'.format(run_threads,
-                #                                                                    line,
-                #                                                                    line[:-4],)
-                #        
-                #        runline2 = 'time mpirun -np {} $qdyn {} > {}.log &\n'.format(run_threads,
-                #                                                                     file_list[2][i],
-                #                                                                     file_list[2][i][:-4])
-                #                   
-                #        outfile.write(runline1)    
-                #        outfile.write(runline2)
-                #        outfile.write('wait \n')
-                
-                    for line in file_list[1]:
-                        runline = 'time mpirun -np {} $qdyn {} > {}.log \n'.format(run_threads,
-                                                                                     line,
-                                                                                     line[:-4],)
-                        outfile.write(runline)
+                if line.strip() == '#EQ_FILES':
+                    for line in EQ_files:
+                        file_base = line.split('/')[-1][:-4]
+                        outline = 'time mpirun -np {} $qdyn {}.inp' \
+                                   ' > {}.log\n'.format(ntasks,
+                                                       file_base,
+                                                       file_base)
+                        outfile.write(outline)
+                        
+                if line.strip() == '#RUN_FILES':
+                    if self.start == '1':
+                        for line in MD_files:
+                            file_base = line.split('/')[-1][:-4]
+                            outline = 'time mpirun -np {} $qdyn {}.inp'  \
+                                      ' > {}.log\n'.format(ntasks,
+                                                           file_base,
+                                                           file_base)
+                            outfile.write(outline)
+                            
+                    elif self.start == '0.5':
+                        outline = 'time mpirun -np {} $qdyn {}.inp' \
+                                   ' > {}.log\n\n'.format(ntasks,
+                                                       'md_0500_0500',
+                                                       'md_0500_0500')
+                        outfile.write(outline)
+                        for i, md in enumerate(md_1):
+                            outline1 = 'time mpirun -np {:d} $qdyn {}.inp'  \
+                                      ' > {}.log &\n'.format(int(int(ntasks)/2),
+                                                           md_1[i],
+                                                           md_1[i])
 
-                    for line in file_list[2]:
-                        runline = 'time mpirun -np {} $qdyn {} > {}.log \n'.format(run_threads,
-                                                                                     line,
-                                                                                     line[:-4],)
-                        outfile.write(runline)
+                            outline2 = 'time mpirun -np {:d} $qdyn {}.inp'  \
+                                      ' > {}.log\n'.format(int(int(ntasks)/2),
+                                                           md_2[i],
+                                                           md_2[i])
+
+                            outfile.write(outline1)
+                            outfile.write(outline2)
+                            outfile.write('\n')
     
     def write_qfep(self, inputdir, windows, lambdas):
         qfep_in = s.ROOT_DIR + '/INPUTS/qfep.inp' 

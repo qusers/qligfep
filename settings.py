@@ -6,8 +6,8 @@ ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 FF_DIR = os.path.join(ROOT_DIR, "FF")
 INPUT_DIR = os.path.join(ROOT_DIR, "INPUTS")
 # Dicionary of locations of Q executables
-Q_DIR = {'CSB':'/home/jespers/software/q6/bin/',
-         'LOCAL':'/home/jespers/software/q6/bin/'
+Q_DIR = {'CSB':'/home/1kb431/software/q6/bin/',
+         'LOCAL':'/home/1kb431/software/q6/bin/'
          #'LOCAL':'/Users/willemjespers/Software/Q6/bin/'
         }
 BIN = os.path.join(ROOT_DIR, "bin")
@@ -19,11 +19,11 @@ SCHROD_DIR = '/home/jespers/software/schrodinger/'
 CSB = {'NODES'        : '1',
        'NTASKS'       : '16',
        'TIME'         : '0-06:00:00',  # d-hh:mm:ss
-       'MODULES'      : 'module gcc/6.2.0\n module load openmpi/2.1.0',
-       'QDYN'         : 'qdyn=//home/jespers/software/q6/bin/qdynp',
-       'QPREP'        : '/home/jespers/software/q6/bin/qprep',
-       'QFEP'         : '/home/jespers/software/q6/bin/qfep',
-       'QCALC'        : '/home/jespers/software/q6/bin/qcalc'
+       'MODULES'      : 'module load gcc/6.2.0\n module load openmpi/2.1.0',
+       'QDYN'         : 'qdyn=/home/1kb431/software/q6/bin/qdynp',
+       'QPREP'        : '/home/1kb431/software/q6/bin/qprep',
+       'QFEP'         : '/home/1kb431/software/q6/bin/qfep',
+       'QCALC'        : '/home/1kb431/software/q6/bin/qcalc'
       }
 
 HEBBE = {'NODES'      : '1',
