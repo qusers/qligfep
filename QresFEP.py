@@ -608,7 +608,10 @@ class Run(object):
             MD_files = reversed(sorted(glob.glob(self.directory + '/inputfiles/md*.inp')))
             
         elif self.start == '0.5':
-            MD_files = self.mdfiles
+            MD_files = self.mdfiles[1:]
+            half = int((len(MD_files)/2))
+            md_1 = MD_files[0:half]
+            md_2 = MD_files[half:]
 
         replacements = IO.merge_two_dicts(self.replacements, getattr(s, self.cluster))
         replacements['FEPS'] = ' '.join(self.FEPlist)
@@ -634,18 +637,35 @@ class Run(object):
                         outfile.write(outline)
                         
                 if line.strip() == '#RUN_FILES':
-                    for line in MD_files:
-                        if self.start == '1':
+                    if self.start == '1':
+                        for line in MD_files:
                             file_base = line.split('/')[-1][:-4]
+                            outline = 'time mpirun -np {} $qdyn {}.inp'  \
+                                      ' > {}.log\n'.format(ntasks,
+                                                           file_base,
+                                                           file_base)
+                            outfile.write(outline)
                             
-                        elif self.start == '0.5':
-                            file_base=line
-                            
-                        outline = 'time mpirun -np {} $qdyn {}.inp'  \
-                                  ' > {}.log\n'.format(ntasks,
-                                                      file_base,
-                                                      file_base)
+                    elif self.start == '0.5':
+                        outline = 'time mpirun -np {} $qdyn {}.inp' \
+                                   ' > {}.log\n\n'.format(ntasks,
+                                                       'md_0500_0500',
+                                                       'md_0500_0500')
                         outfile.write(outline)
+                        for i, md in enumerate(md_1):
+                            outline1 = 'time mpirun -np {:d} $qdyn {}.inp'  \
+                                      ' > {}.log &\n'.format(int(int(ntasks)/2),
+                                                           md_1[i],
+                                                           md_1[i])
+
+                            outline2 = 'time mpirun -np {:d} $qdyn {}.inp'  \
+                                      ' > {}.log\n'.format(int(int(ntasks)/2),
+                                                           md_2[i],
+                                                           md_2[i])
+
+                            outfile.write(outline1)
+                            outfile.write(outline2)
+                            outfile.write('\n')
                         
     def write_submitfile(self):
         IO.write_submitfile(self.directory, self.replacements)

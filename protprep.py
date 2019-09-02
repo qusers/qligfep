@@ -286,7 +286,7 @@ class Run(object):
         # Reduce coordinate array
         for key in self.PDB:
             at = self.PDB[key]
-            if at[4] == 'CYS' and at[2].strip() == 'SG':
+            if at[4] == 'CYS' or at[4] == 'CYX' and at[2].strip() == 'SG':
                 cys.append([at[6], (at[8], at[9], at[10])])
         
         # Construct S-S bond matrix
