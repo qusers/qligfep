@@ -19,7 +19,8 @@ except:
 class Run(object):
     """
     """
-    def __init__(self, FEP, color, *args, **kwargs):
+    def __init__(self, FEP, color, PDB, cluster, *args, **kwargs):
+        self.cluster=cluster
         self.FEP = FEP.strip('/')
         self.energies = {}
         self.FEPstages = []
@@ -156,6 +157,53 @@ class Run(object):
         plt.xlabel(r'cumulative $\lambda$', fontsize=18)
         plt.ylabel(r'$\Delta$G (kcal/mol)', fontsize=16)        
         plt.savefig(self.analysisdir+'/dG.png',dpi=300,transparent=True)
+        
+    def write_re2pdb(self):
+        curdir = os.getcwd()
+        os.chdir(self.FEP + '/analysis')
+        if not os.path.exists('pdbs'):
+            os.mkdir('pdbs')
+
+        libfiles = glob.glob('../inputfiles/*.lib')
+        re_files = glob.glob('../FEP*/*/*/*.re')
+        topology = glob.glob('../inputfiles/*.top')[0]
+        
+        with open('../inputfiles/qprep.inp') as f:
+            protlib = f.readline()
+
+        with open('re2pdb.inp', 'w') as outfile:
+            outfile.write('{}'.format(protlib))
+            
+            for libfile in libfiles:
+                outfile.write('rl {}\n'.format(libfile))
+
+            outfile.write('rt {}\n'.format(topology))
+
+            for re_file in re_files:
+                pdb_out = re_file.split('/')[-1][:-3]
+                repeat = '{:02d}'.format(int(re_file.split('/')[3]))
+                pdb_out = 'pdbs/{}_{}'.format(repeat, pdb_out)
+                outfile.write('rx {}\n'.format(re_file))
+                outfile.write('wp {}.pdb\n'.format(pdb_out))
+                outfile.write('y\n')
+            
+            outfile.write('mask none\n')
+            outfile.write('mask not excluded\n')
+            outfile.write('wp pdbs/complexnotexcluded.pdb\n')
+            outfile.write('y\n')
+            
+            outfile.write('q\n')
+            
+        cluster_options = getattr(s, self.cluster)
+        qprep = cluster_options['QPREP']
+        options = ' < re2pdb.inp > re2pdb.out'
+        # Somehow Q is very annoying with this < > input style so had to implement
+        # another function that just calls os.system instead of using the preferred
+        # subprocess module....
+        IO.run_command(qprep, options, string = True)
+            
+        os.chdir(curdir)
+        
             
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -169,6 +217,13 @@ if __name__ == "__main__":
                         required = True,
                         help = "name of FEP directory (FEP_$)")
     
+    parser.add_argument('-pdb', '--PDB',
+                        dest = "PDB",
+                        required = False,
+                        default = False,
+                        action = 'store_true',
+                        help = "Add this argument if you want .pdb files of the trajectory")
+    
     parser.add_argument('-c', '--color',
                         dest = "color",
                         required = False,
@@ -176,14 +231,25 @@ if __name__ == "__main__":
                         choices = ['blue', 'red'],
                         help = "color for the plot")
     
+    parser.add_argument('-C', '--cluster',
+                        dest = "cluster",
+                        required = True,
+                        help = "cluster information")
+    
     
     args = parser.parse_args()
     run = Run(FEP = args.FEP,
-              color = args.color
+              color = args.color,
+              cluster = args.cluster,
+              PDB = args.PDB
              )
     
     run.create_environment()
     run.read_FEPs()
     run.read_mdlog()
+    
     if plot == True:
         run.plot_data()
+        
+    if args.PDB == True:
+        run.write_re2pdb()
