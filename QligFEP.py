@@ -707,13 +707,13 @@ class Run(object):
                         for i, md in enumerate(md_1):
                             outline1 = 'time mpirun -np {:d} $qdyn {}.inp'  \
                                       ' > {}.log &\n'.format(int(int(ntasks)/2),
-                                                           md_1[i],
-                                                           md_1[i])
+                                                           md_1[i][:-4],
+                                                           md_1[i][:-4])
 
                             outline2 = 'time mpirun -np {:d} $qdyn {}.inp'  \
                                       ' > {}.log\n'.format(int(int(ntasks)/2),
-                                                           md_2[i],
-                                                           md_2[i])
+                                                           md_2[i][:-4],
+                                                           md_2[i][:-4])
 
                             outfile.write(outline1)
                             outfile.write(outline2)
