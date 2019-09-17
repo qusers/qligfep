@@ -14,19 +14,21 @@ class Run(object):
     Create FEP files from a common substructure for a given set of
     ligands
     """
-    def __init__(self, lig, FF, output, merge, vs, *args, **kwargs):
+    def __init__(self, lig, FF, merge, vs, AA, *args, **kwargs):
         """
         The init method is a kind of constructor, called when an instance
         of the class is created. The method serves to initialize what you
         want to do with the object.
         """
         supported_FFs = ['OPLS2005', 'OPLS2015']
-        programs = ['Q']#, 'GROMACS']
         self.lig = lig
         self.FF = FF
         self.merge = merge
         self.vs = vs
+        self.AA = AA
         self.ff_list = []
+        self.backbone = ['C', 'O','CA', 'N', 'H', 'HA']
+        self.pdbfiles=[self.lig + '.pdb']
         
         # This is a test part, should be generalized for lone pairs and different
         # halogen bonds. Now, it works for Bn-X, where X is a halogen
@@ -72,12 +74,6 @@ class Run(object):
         #                               0.1392  # [3] CA charge
         #                             ]
         #                    }
-        
-        if output in programs:
-            self.output = output
-        else:
-            print('Conversion to ' + ','.join(programs)) + ' currently supported'
-            sys.exit()
             
         if self.FF in supported_FFs:
             self.FF = FF
@@ -157,6 +153,18 @@ class Run(object):
     # This here should later input the prefererd forcefield 
     # defined by user and generate outputfile
 
+    def split_PDB(self):
+        if self.AA == False:
+            return None
+        
+        with open(self.lig + '.pdb') as infile, \
+             open('tmp.pdb', 'w') as outfile:
+            for line in infile:
+                if IO.pdb_parse_in(line)[2] not in self.backbone:
+                    outfile.write(line)
+                    
+        self.pdbfiles.append('tmp.pdb')
+        
     def get_charge_groups(self, charges, bonds):
         dic = {}
         charge_group = []
@@ -204,27 +212,29 @@ class Run(object):
 
         #return charge_group_list                        
         return []
-
-    def get_parameters(self):
-        # Add other parameter generators later
-        v = 'OPLS 14'
-        v = v.split(' ')
-        # Running command line tool has been moved to IO, change function!
-        if v[0] == 'OPLS':
-            ffld_serv = s.SCHROD_DIR + '/utilities/ffld_server'
-            options = ' -ipdb '+ self.lig + '.pdb -print_parameters -version ' + v[1]
-            args = shlex.split(ffld_serv + options)
-            out = check_output(args,universal_newlines=True)
         
-        elif v[0] == 'amber':
-            print('not supported yet')
-            sys.exit()
+    def get_parameters(self):
+        for pdb in self.pdbfiles:
+            print(pdb)
+            # Add other parameter generators later
+            v = 'OPLS 14'
+            v = v.split(' ')
+            # Running command line tool has been moved to IO, change function!
+            if v[0] == 'OPLS':
+                ffld_serv = s.SCHROD_DIR + '/utilities/ffld_server'
+                options = ' -ipdb '+ pdb + ' -print_parameters -version ' + v[1]
+                args = shlex.split(ffld_serv + options)
+                out = check_output(args,universal_newlines=True)
 
-        with open(self.lig+'.log', 'w') as outfile:
-            # added tag??
-            outfile.write('Forcefield: ' + v[0] + ' ' + v[1] + '\n')
-            for line in out:
-                outfile.write(line)
+            elif v[0] == 'amber':
+                print('not supported yet')
+                sys.exit()
+
+            with open(pdb[:-4]+'.log', 'w') as outfile:
+                # added tag??
+                outfile.write('Forcefield: ' + v[0] + ' ' + v[1] + '\n')
+                for line in out:
+                    outfile.write(line)
 
     def read_log(self):
         opls_list = []    
@@ -496,9 +506,6 @@ class Run(object):
                                                       line[1][0],
                                                       line[1][1]))
 
-    def write_itp_GROMACS(self):
-        return True
-
     def rename_pdb(self, include = ('ATOM', 'HETATM')):
         pdb_in = self.lig + '.pdb'
         pdb_out = self.lig + '_out.pdb'
@@ -534,7 +541,7 @@ class Run(object):
                     outline = IO.pdb_parse_out(at_entry)
                     outfile.write(outline + '\n')
                     
-        os.rename(pdb_out, pdb_in)
+        #os.rename(pdb_out, pdb_in)
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -552,11 +559,6 @@ if __name__ == "__main__":
                     dest = "FF",
                     required = True,
                     help = "forcefield to use, OPLS2005 or OPLS2015")
-    
-    parser.add_argument('-o', '--output',
-                    dest = "output",
-                    required = True,
-                    help = "generate parameter files for Q or GROMACS")
 
     parser.add_argument('-m', '--merge',
                         dest = "merge",
@@ -573,14 +575,20 @@ if __name__ == "__main__":
                         "J. Chem. Theory Comput. 2012,  8, 10, 3895-3901"
                        )
     
+    parser.add_argument('-AA', '--aminoacid',
+                    dest = "AA",
+                    action = 'store_true',
+                    default = False,        
+                    help = "When toggled, this module will treat the input .pdb as an AA")
+    
     args = parser.parse_args()
     run = Run(lig = args.lig,
               FF = args.FF,
-              output = args.output,
               merge = args.merge,
-              vs = args.vs
+              vs = args.vs,
+              AA = args.AA
              )
-
+    run.split_PDB()
     run.get_parameters()
     run.read_log()
     run.convert_toQ()

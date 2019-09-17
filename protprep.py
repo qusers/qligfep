@@ -14,23 +14,24 @@ class Run(object):
     Prepare a protein for usage in spherical boundary conditions.
     """
     def __init__(self, prot, sphereradius, spherecenter, include, water, 
-                 preplocation, origin, verbose, *args, **kwargs):
+                 preplocation, origin, noclean, *args, **kwargs):
         self.prot = prot
         self.radius = float(sphereradius)
         self.center = spherecenter
         self.include = include
         self.water = water
-        self.verbose = verbose
+        self.noclean = noclean
         self.PDB = {}
         self.preplocation = preplocation
         self.origin = origin
         self.original_charges = {}
+        self.chains = []
             
         self.log = {'INPUT':'protPREP.py -p {} -r {} -c {} -w={} -V={}'.format(prot, 
                                                                                sphereradius, 
                                                                                spherecenter, 
                                                                                water,
-                                                                               verbose
+                                                                               noclean
                                                                               ),
                     'CENTER':None,
                     'DECHARGE':[],
@@ -117,9 +118,12 @@ class Run(object):
                         if line[4] in IO.charged_res:
                             if line[2] in IO.charged_res[line[4]]:
                                 if line[6] in self.original_charges:
-                                    self.original_charges[line[6]] = 'HIP'
+                                    self.original_charges[line[6]] = ['HIP',line[5]]
                                 else:
-                                    self.original_charges[line[6]] = IO.charged_res[line[4]][line[2]]
+                                    self.original_charges[line[6]] = [IO.charged_res[line[4]][line[2]],
+                                                                     line[5]
+                                                                     ]
+                                    
                             
         elif self.origin == 'maestro':
             with open(self.prot) as infile, \
@@ -135,9 +139,11 @@ class Run(object):
                         if line[4] in IO.charged_res:
                             if line[2] in IO.charged_res[line[4]]:
                                 if line[6] in self.original_charges:
-                                    self.original_charges[line[6]] = 'HIP'
+                                    self.original_charges[line[6]] = ['HIP',line[5]]
                                 else:
-                                    self.original_charges[line[6]] = IO.charged_res[line[4]][line[2]]
+                                    self.original_charges[line[6]] = [IO.charged_res[line[4]][line[2]],
+                                                                      line[5]
+                                                                     ]
 
     
     def readpdb(self):
@@ -154,21 +160,29 @@ class Run(object):
                     header = IO.pdb_parse_in(line)
                     RES_ref = header[6] - 1
                     break
-            
+                    
+            for line in infile:
+                line = IO.pdb_parse_in(line)
+                if not line[5] in self.chains:
+                    self.chains.append(line[5])
+                # construct chain based container
+                self.PDB[line[5]] = {}
+
         with open(pdbfile) as infile:
             for line in infile:
                 if line.startswith(self.include):
                     line = IO.pdb_parse_in(line)
                     RES = line[6]
                     if line[6] in self.original_charges:
-                        line[4] = self.original_charges[line[6]]
+                        if self.original_charges[line[6]][1] == line[5]:
+                            line[4] = self.original_charges[line[6]][0]
                     
                     if self.water == True:
-                        self.PDB[line[1]] = line
+                        self.PDB[line[5]][line[1]] = line
                         
                     elif self.water == False:
                         if line[4] != 'HOH':
-                            self.PDB[line[1]] = line
+                            self.PDB[line[5]][line[1]] = line
 
                     if RES != RES_ref:
                         RES_ref = RES
@@ -180,7 +194,6 @@ class Run(object):
                                                                                   int([line[6]][0]),
                                                                                   line[4]
                                                                                  ))
-    
     def decharge(self):
         charged_res = {'GLU':['GLH', 'CD', -1], 
                        'ASP':['ASH', 'CG', -1], 
@@ -190,89 +203,98 @@ class Run(object):
                       }
         
         coord1 = self.center
-        decharge = []
+        decharge = {}
         # Distance for decharging residues in boundary
         rest_bound = float(self.radius) - 3.0
-        for key in self.PDB:
-            at = self.PDB[key]
-            if at[4] in charged_res:
-                if at[2].strip() == charged_res[at[4]][1]:
-                    coord2 = [float(at[8]), 
+        for chain in self.PDB:
+            for key in self.PDB[chain]:
+                at = self.PDB[chain][key]
+                if at[4] in charged_res:
+                    if at[2].strip() == charged_res[at[4]][1]:
+                        coord2 = [float(at[8]), 
+                                  float(at[9]), 
+                                  float(at[10])
+                                 ]
+                        if f.euclidian_overlap(coord1, coord2, rest_bound) == False:
+                            if not at[5] in decharge:
+                                decharge[at[5]] = [at[6]]
+                            else:
+                                decharge[at[5]].append(at[6])
+                            outline = '{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at[6]],
+                                                                                    at[6], 
+                                                                                    at[4])
+                            self.log['DECHARGE'].append(outline)
+        # Check if the decharged residue is part of a salt bridge and
+        # neutralize this residue as well
+        for chain in self.PDB:
+            for key in self.PDB[chain]:
+                at = self.PDB[chain][key]
+                if chain not in decharge:
+                    continue
+                if at[6] in decharge[chain] and at[2].strip() == charged_res[at[4]][1]:
+                    coord1 = [float(at[8]), 
                               float(at[9]), 
                               float(at[10])
                              ]
-                    if f.euclidian_overlap(coord1, coord2, rest_bound) == False:
-                        decharge.append(at[6])
-                        outline = '{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at[6]],
-                                                                                at[6], 
-                                                                                at[4])
-                        self.log['DECHARGE'].append(outline)
-                        
-        # Check if the decharged residue is part of a salt bridge and
-        # neutralize this residue as well
-        for key in self.PDB:
-            at = self.PDB[key]
-            if at[6] in decharge and at[2].strip() == charged_res[at[4]][1]:
-                coord1 = [float(at[8]), 
-                          float(at[9]), 
-                          float(at[10])
-                         ]
-                for key in self.PDB:
-                    at_2 = self.PDB[key]
-                    if at_2[4] in charged_res:
-                        if at_2[2].strip() == charged_res[at_2[4]][1]:
-                            coord2 = [float(at_2[8]), 
-                                      float(at_2[9]), 
-                                      float(at_2[10])
-                                     ]
-                            if at != at_2 and at_2[6] not in decharge:
-                                if f.euclidian_overlap(coord1, coord2, 4.0) == True:
-                                    decharge.append(at_2[6])
-                                    outline = '{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at_2[6]],
-                                                                                            at_2[6], 
-                                                                                            at_2[4])
-                                    self.log['DECHARGE'].append(outline)
-
+                    for chain2 in self.PDB:
+                        for key2 in self.PDB[chain2]:
+                            at_2 = self.PDB[chain2][key2]
+                            if at_2[4] in charged_res:
+                                if at_2[2].strip() == charged_res[at_2[4]][1]:
+                                    coord2 = [float(at_2[8]), 
+                                              float(at_2[9]), 
+                                              float(at_2[10])
+                                             ]
+                                    if at != at_2 and at_2[6] not in decharge:
+                                        if f.euclidian_overlap(coord1, coord2, 4.0) == True:
+                                            decharge[chain].append(at_2[6])
+                                            outline = '{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at_2[6]],
+                                                                                                    at_2[6], 
+                                                                                                    at_2[4])
+                                            self.log['DECHARGE'].append(outline)
+                                            
         # Get the charged residues in the sphere and the total charge of these residues in the sphere
-        for key in self.PDB:
-            at = self.PDB[key]
-            if at[6] in decharge:
-                at[4] = charged_res[at[4]][0]
-                
-            else:
-                if at[4] in charged_res:
-                    if at[2].strip() == charged_res[at[4]][1]:
-                        self.log['CHARGE'].append('{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at[6]],
-                                                                              at[6], 
-                                                                              at[4]))
-                        self.log['TOTAL_CHARGE'] += charged_res[at[4]][2]
+        for chain in self.PDB:
+            for key in self.PDB[chain]:
+                at = self.PDB[chain][key]
+                if at[6] in decharge:
+                    at[4] = charged_res[at[4]][0]
+
+                else:
+                    if at[4] in charged_res:
+                        if at[2].strip() == charged_res[at[4]][1]:
+                            self.log['CHARGE'].append('{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at[6]],
+                                                                                  at[6], 
+                                                                                  at[4]))
+                            self.log['TOTAL_CHARGE'] += charged_res[at[4]][2]
             
     def set_OXT(self):
         ## NOTE WARNING, ETC: Q AA codes are sometimes 3, sometimes 4, they MUST be updated to pdb
         ## standards ASAP!!!
         CTERM = []
-        for key in self.PDB:
-            at = self.PDB[key]
-            if at[2].strip() == 'OXT':
-                CTERM.append(at[6])
-                self.log['CTERM'].append('{} {}'.format(at[6], at[4]))
-                
-            if self.origin == 'gromacs':
-                if at[2].strip() == 'O1':
+        for chain in self.PDB:
+            for key in self.PDB[chain]:
+                at = self.PDB[chain][key]
+                if at[2].strip() == 'OXT':
                     CTERM.append(at[6])
                     self.log['CTERM'].append('{} {}'.format(at[6], at[4]))
-                
-        for key in self.PDB:
-            at = self.PDB[key]
-            if at[6] in CTERM:
-                self.PDB[key][4] = 'C' + at[4]
-                
-            if self.origin == 'gromacs':
-                if at[2] == 'O1':
-                    self.PDB[key][2] = 'O'
-                    
-                if at[2] == 'O2':
-                    self.PDB[key][2] = 'OXT'
+
+                if self.origin == 'gromacs':
+                    if at[2].strip() == 'O1':
+                        CTERM.append(at[6])
+                        self.log['CTERM'].append('{} {}'.format(at[6], at[4]))
+            
+            for key in self.PDB[chain]:
+                at = self.PDB[chain][key]
+                if at[6] in CTERM:
+                    self.PDB[chain][key][4] = 'C' + at[4]
+
+                if self.origin == 'gromacs':
+                    if at[2] == 'O1':
+                        self.PDB[chain][key][2] = 'O'
+
+                    if at[2] == 'O2':
+                        self.PDB[chain][key][2] = 'OXT'
 
                 
     def get_CYX(self):
@@ -284,50 +306,53 @@ class Run(object):
         k = -1
         
         # Reduce coordinate array
-        for key in self.PDB:
-            at = self.PDB[key]
-            if at[4] == 'CYS' or at[4] == 'CYX' and at[2].strip() == 'SG':
-                cys.append([at[6], (at[8], at[9], at[10])])
-        
-        # Construct S-S bond matrix
-        for SG_1 in cys:
-            cys_list = [SG_1[0]]
-            for SG_2 in cys:
-                cys_list.append(f.euclidian_overlap(SG_1[1], SG_2[1], cys_bond))
-            cys_mat.append(cys_list)
-        
-        # Fix to better handling
-        try:
-            total = len(cys_mat[0]) -1
+        for chain in self.PDB:
+            for key in self.PDB[chain]:
+                at = self.PDB[chain][key]
+                if at[4] == 'CYS' or at[4] == 'CYX' and at[2].strip() == 'SG':
+                    cys.append([at[6], (at[8], at[9], at[10])])
 
-            for line in cys_mat:
-                k += 1
-                for j in range(i, total):
-                    if cys_mat[i][j+1] == True and cys_mat[k][0] != cys_mat[j][0]:
-                        cyx.append(cys_mat[k][0])
-                        cyx.append(cys_mat[j][0])
-                        outline = '{:<10}{:<10}{:<10}{:<10}'.format(self.log['QRESN'][cys_mat[k][0]], 
-                                                                    self.log['QRESN'][cys_mat[j][0]],
-                                                                    cys_mat[k][0],
-                                                                    cys_mat[j][0])
-                        self.log['CYX'].append(outline)
+            # Construct S-S bond matrix
+            for SG_1 in cys:
+                cys_list = [SG_1[0]]
+                for SG_2 in cys:
+                    cys_list.append(f.euclidian_overlap(SG_1[1], SG_2[1], cys_bond))
+                cys_mat.append(cys_list)
 
-                i += 1
+            # Fix to better handling
+            try:
+                total = len(cys_mat[0]) -1
 
-            for key in self.PDB:
-                at = self.PDB[key]
-                if at[6] in cyx:
-                    self.PDB[key][4] = 'CYX'
-                    
-        except:
-            return None
+                for line in cys_mat:
+                    k += 1
+                    for j in range(i, total):
+                        if cys_mat[i][j+1] == True and cys_mat[k][0] != cys_mat[j][0]:
+                            cyx.append(cys_mat[k][0])
+                            cyx.append(cys_mat[j][0])
+                            outline = '{:<10}{:<10}{:<10}{:<10}'.format(self.log['QRESN'][cys_mat[k][0]], 
+                                                                        self.log['QRESN'][cys_mat[j][0]],
+                                                                        cys_mat[k][0],
+                                                                        cys_mat[j][0])
+                            self.log['CYX'].append(outline)
+
+                    i += 1
+                for chain in self.PDB:
+                    for key in self.PDB:
+                        at = self.PDB[chain][key]
+                        if at[6] in cyx:
+                            self.PDB[key][4] = 'CYX'
+
+            except:
+                return None
                 
     def write_tmpPDB(self):
         with open(self.prot[:-4] + '_tmp.pdb', 'w') as outfile:
-            atom_numbers = sorted(list(self.PDB.keys()))
-            for atom in atom_numbers:
-                outline = IO.pdb_parse_out(self.PDB[atom]) + '\n'
-                outfile.write(outline)
+            for chain in self.PDB:
+                atom_numbers = sorted(list(self.PDB[chain].keys()))
+                for atom in atom_numbers:
+                    outline = IO.pdb_parse_out(self.PDB[chain][atom]) + '\n'
+                    outfile.write(outline)
+            outfile.write('GAP\n')
         
     def write_qprep(self):
         replacements = {'FF_LIB'    :   s.FF_DIR + '/OPLS2015.lib',
@@ -391,7 +416,9 @@ class Run(object):
                         
                     if line[4] not in waters:
                         outline = IO.pdb_parse_out(line) + '\n'
-                        protout.write(outline)                        
+                        protout.write(outline)
+                if line[0:3] == 'TER' or line == 'GAP':
+                    protout.write(line)
                 
     def write_log(self):
         with open('protPREP.log', 'w') as outfile:
@@ -440,7 +467,7 @@ class Run(object):
                 outfile.write(line + '\n')
                     
     def cleanup(self):
-        if self.verbose == False:
+        if self.noclean == False:
             os.remove(self.prot[:-4] + '_tmp.pdb')
             os.remove(self.prot[:-4] + '_noH.pdb')
             os.remove('qprep.inp')
@@ -479,11 +506,11 @@ if __name__ == "__main__":
                         help = "center of the sphere, can be residue number (RESN:$)," \
                         "atomnumber (ATN:$) or explicit coordinates (X:Y:Z)")
     
-    parser.add_argument('-V', '--verbose',
-                        dest = "verbose",
+    parser.add_argument('--noclean',
+                        dest = "noclean",
                         default = False,
                         action = 'store_true',
-                        help = "turn on if a more verbose output is wanted (for now mostly Q output)")
+                        help = "If turned on, intermediate Q files will not be deleted")
     
     parser.add_argument('-P', '--preplocation',
                         dest = "preplocation",
@@ -501,7 +528,7 @@ if __name__ == "__main__":
               sphereradius = args.sphereradius,
               spherecenter = args.spherecenter,
               water = args.water,
-              verbose = args.verbose,
+              noclean = args.noclean,
               preplocation = args.preplocation,
               origin = args.origin,
               include = ('ATOM','HETATM')

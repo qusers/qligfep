@@ -42,7 +42,6 @@ def write_waters(waters, outfile, radius):
     resid = 0
     atid = 0
     with open(outfile, 'w') as outfile:
-        outfile.write('{}.0 SPHERE\n'.format(radius))
         for water in waters:
             resid += 1
             for atom in water:
@@ -60,9 +59,9 @@ def write_waters(waters, outfile, radius):
 #center  = [20.312,47.776,37.917] # list of coordinates 5g53-GPCR
 
 #5g53-GPCR-GS
-infile  = '6MEO_2500ps.pdb'         # Change filename to gromacs .pdb file
+infile  = '4EIY-GPCR_gromacs-out.pdb'         # Change filename to gromacs .pdb file
 outfile = 'water.pdb'     # Name of the outputfile for the water sphere used for Q
-center  = [18.389,26.713,62.594] # list of coordinates 5g53-GPCR-GSalpha
+center  = [25.734,30.710,39.767] # list of coordinates 5g53-GPCR-GSalpha
 
 radius  = 25                     # Spheresize for Q
 

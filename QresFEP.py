@@ -241,7 +241,6 @@ class Run(object):
                 resoffset = len(self.PDB)
     
     def create_dual_lib(self):
-        # Perhaps we should create json .lib/.prm files at one point
         FFlib = {}
         self.merged_lib = {}
         replacements = {}
@@ -364,6 +363,98 @@ class Run(object):
                         outfile.write(line)
 
             
+    def get_zeroforcebonded(self):
+        if self.dual == False:
+            return None    
+        
+        self.zerofk = {'[angles]':[],
+                       '[torsions]':[]
+                      }
+        prmfile = s.FF_DIR + '/' + self.forcefield + '.prm'
+        libfile = self.directory + '/inputfiles/' + self.MUTresn + '.lib'
+        headers =['[options]', 
+                  '[atom_types]',
+                  '[bonds]',
+                  '[angles]',
+                  '[torsions]',
+                  '[impropers]'
+                 ]
+        
+        # Write tmp qprep.inp and prm file
+        prms = IO.read_prm([prmfile])
+        prm_tmp = self.directory + '/inputfiles/tmp.prm'
+        qprep_tmp = self.directory + '/inputfiles/tmp.inp'
+        pdb_tmp = self.directory + '/inputfiles/tmp.pdb'
+        
+        # Write out PDB file
+        with open(pdb_tmp, 'w') as outfile:
+            mutPDB = self.PDB[int(self.PDB2Q[self.mutation[1]])]
+            for atom in mutPDB:            
+                outfile.write(IO.pdb_parse_out(atom) + '\n')
+
+        
+        with open(prm_tmp, 'w') as outfile:
+            for key in headers:
+                outfile.write(key + '\n')
+                for line in prms[key]:
+                    outfile.write(line)
+                    
+        with open(qprep_tmp, 'w') as outfile:
+            outfile.write('rl {}\n'.format(libfile.split('/')[-1]))
+            outfile.write('rprm {}\n'.format(prm_tmp.split('/')[-1]))
+            outfile.write('rp {}\n'.format(pdb_tmp.split('/')[-1]))
+            outfile.write('boundary 1 {} {} {} {}\n'.format(self.sphere[0],
+                                                            self.sphere[1],
+                                                            self.sphere[2],
+                                                            self.radius))
+            outfile.write('maketop tmp.top\n'.format(pdb_tmp))
+            outfile.write('q')
+            
+        # run qprep to get bonded parameters to be set to zero
+        os.chdir(self.directory + '/inputfiles/')
+        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        options = ' < tmp.inp > tmp.out'
+        # Somehow Q is very annoying with this < > input style so had to implement
+        # another function that just calls os.system instead of using the preferred
+        # subprocess module....
+        IO.run_command(qprep, options, string = True)
+        
+        with open('tmp.out') as infile:
+            for line in infile:
+                line = line.split()
+                if len(line) < 3:
+                    continue
+                    
+                if line[1] != 'Missing':
+                    continue
+                
+                # Create zero fk angles
+                if line[2] == 'angle':
+                    angle_prm = '{:11}{:11}{:11}{: 8.2f}{:>12.7}\n'.format(line[-3],
+                                                                           line[-2],
+                                                                           line[-1],
+                                                                           0.0,
+                                                                           110.0)
+                    self.zerofk['[angles]'].append(angle_prm)
+                    
+                # Create zero fk torsions
+                if line[2] == 'torsion':
+                    torsion_prm='{:11}{:11}{:11}{:11}{:<10.3f}{: d}.000{:>10s}{:>10s}\n'.format(line[-4],
+                                                                          line[-3],
+                                                                          line[-2],
+                                                                          line[-1],
+                                                                          0.0,
+                                                                          1,
+                                                                          '0.000',
+                                                                          '1')
+                    
+                    self.zerofk['[torsions]'].append(torsion_prm)
+
+        # ADD REMOVE FUNCTIONS FOR TMP FILES HERE
+        for tmp in glob.glob('tmp*'):
+            os.remove(tmp)
+        os.chdir('../../')
+        
     def merge_prm(self):
         headers =['[options]', 
                   '[atom_types]',
@@ -387,6 +478,12 @@ class Run(object):
                 outfile.write(key + '\n')
                 for line in prms[key]:
                     outfile.write(line)
+                if self.dual == True:
+                    if key in self.zerofk:
+                        outfile.write('! Zero order bonds dual topology\n')
+                        for line in self.zerofk[key]:
+                            outfile.write(line)
+                        outfile.write('\n')
                     
     def write_pdb(self):
         PDBout = self.directory + '/inputfiles/complex.pdb'
@@ -994,16 +1091,17 @@ if __name__ == "__main__":
     run.create_environment()            # 01
     run.read_input()                    # 02    
     run.readpdb()                       # 03
-    run.create_dual_lib()               # 04  
-    run.merge_prm()                     # 05
-    run.write_pdb()                     # 06
-    run.select_waters()                 # 07
-    run.write_qprep()                   # 08
-    run.run_qprep()                     # 09
-    run.get_lambdas()                   # 10
-    run.write_EQ()                      # 11
-    run.write_MD()                      # 12
-    run.write_submitfile()              # 13
-    run.write_runfile()                 # 14
-    run.write_FEPfile()                 # 15
-    run.write_qfep()                    # 16
+    run.create_dual_lib()               # 04
+    run.get_zeroforcebonded()           # 05
+    run.merge_prm()                     # 06
+    run.write_pdb()                     # 07
+    run.select_waters()                 # 08
+    run.write_qprep()                   # 09
+    run.run_qprep()                     # 10
+    run.get_lambdas()                   # 11
+    run.write_EQ()                      # 12
+    run.write_MD()                      # 13
+    run.write_submitfile()              # 14
+    run.write_runfile()                 # 15
+    run.write_FEPfile()                 # 16
+    run.write_qfep()                    # 17

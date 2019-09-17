@@ -20,10 +20,10 @@ CSB = {'NODES'        : '1',
        'NTASKS'       : '16',
        'TIME'         : '0-06:00:00',  # d-hh:mm:ss
        'MODULES'      : 'module load gcc/6.2.0\n module load openmpi/2.1.0',
-       'QDYN'         : 'qdyn=/home/1kb431/software/q6/bin/qdynp',
-       'QPREP'        : '/home/1kb431/software/q6/bin/qprep',
-       'QFEP'         : '/home/1kb431/software/q6/bin/qfep',
-       'QCALC'        : '/home/1kb431/software/q6/bin/qcalc'
+       'QDYN'         : 'qdyn=' + Q_DIR['CSB'] + 'qdynp',
+       'QPREP'        : Q_DIR['CSB'] + 'qprep',
+       'QFEP'         : Q_DIR['CSB'] + 'qfep',
+       'QCALC'        : Q_DIR['CSB'] + 'qcalc'
       }
 
 HEBBE = {'NODES'      : '1',
