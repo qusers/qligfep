@@ -337,10 +337,10 @@ class Run(object):
 
                     i += 1
                 for chain in self.PDB:
-                    for key in self.PDB:
+                    for key in self.PDB[chain]:
                         at = self.PDB[chain][key]
                         if at[6] in cyx:
-                            self.PDB[key][4] = 'CYX'
+                            self.PDB[chain][key][4] = 'CYX'
 
             except:
                 return None
