@@ -8,13 +8,14 @@ import os
 import argparse
 
 import IO
+import functions as f
 
 class Run(object):
     """
     Create FEP files from a common substructure for a given set of
     ligands
     """
-    def __init__(self, lig, FF, merge, vs, AA, *args, **kwargs):
+    def __init__(self, lig, FF, merge, vs, AA, include = ('ATOM','HETATM'), *args, **kwargs):
         """
         The init method is a kind of constructor, called when an instance
         of the class is created. The method serves to initialize what you
@@ -29,6 +30,7 @@ class Run(object):
         self.ff_list = []
         self.backbone = ['C', 'O','CA', 'N', 'H', 'HA']
         self.pdbfiles=[self.lig + '.pdb']
+        self.include = include
         
         # This is a test part, should be generalized for lone pairs and different
         # halogen bonds. Now, it works for Bn-X, where X is a halogen
@@ -149,22 +151,7 @@ class Run(object):
         imp_V2 = float(imp_V2)/2
 
         return[imp_V2]
-
-    # This here should later input the prefererd forcefield 
-    # defined by user and generate outputfile
-
-    def split_PDB(self):
-        if self.AA == False:
-            return None
-        
-        with open(self.lig + '.pdb') as infile, \
-             open('tmp.pdb', 'w') as outfile:
-            for line in infile:
-                if IO.pdb_parse_in(line)[2] not in self.backbone:
-                    outfile.write(line)
-                    
-        self.pdbfiles.append('tmp.pdb')
-        
+    
     def get_charge_groups(self, charges, bonds):
         dic = {}
         charge_group = []
@@ -215,7 +202,6 @@ class Run(object):
         
     def get_parameters(self):
         for pdb in self.pdbfiles:
-            print(pdb)
             # Add other parameter generators later
             v = 'OPLS 14'
             v = v.split(' ')
@@ -315,6 +301,38 @@ class Run(object):
                     torsion_list, 
                     improper_list,
                     charge_group_list]
+        
+    def mapping(self):
+        if self.AA == False:
+            return None
+        
+        self.mapping = {}
+        
+        pdb_in = self.lig + '.pdb'
+        pdb_out = self.lig + '_out.pdb'
+        
+        # Making mapping to rename the atomnames to standard residue logic
+        # Also need to remove extra hydrogens on residue end and add backbone definitions
+        # From standard library
+        with open(pdb_in) as infile:
+            coord1 = {}
+            for line in infile:
+                if line.startswith(self.include):
+                    line = IO.pdb_parse_in(line)
+                    coord1[line[2]] = (line[8],line[9],line[10])
+        
+        with open(pdb_out) as infile:
+            coord2 = {}
+            for line in infile:
+                if line.startswith(self.include):
+                    line = IO.pdb_parse_in(line)
+                    coord2[line[2]] = (line[8],line[9],line[10])
+                    
+        for key in coord1:
+            for key2 in coord2:
+                if f.euclidian_overlap(coord1[key], coord2[key2],0.01) == True:
+                    self.mapping[key2] = key
+        print(self.mapping)
         
     def add_virtualsite(self):    
         self.halogens = {}
@@ -588,10 +606,10 @@ if __name__ == "__main__":
               vs = args.vs,
               AA = args.AA
              )
-    run.split_PDB()
     run.get_parameters()
     run.read_log()
     run.convert_toQ()
+    run.mapping()
     if args.vs == True:
         run.add_virtualsite()
     run.write_lib_Q()
