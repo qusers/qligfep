@@ -70,6 +70,7 @@ class Run(object):
         self.dual = dual
         self.start = start
         self.dualMUT = {'0':[], '1':[]}
+        self.nonAA = False
         
         self.replacements = {'ATOM_START_LIG1':'1',
                              'WATER_RESTRAINT':'',
@@ -90,14 +91,21 @@ class Run(object):
             
         else:
             AA_from = self.mutation[0]
+        
+        try:
+            AA_to = IO.AA(self.mutation[2])
+        except:
+            print("residue not found in library, assuming non-natural AA")
+            AA_to = 'X'
+            self.nonAA = True
             
-        AA_to = IO.AA(self.mutation[2])
+        
         mutation = '{}{}{}'.format(*self.mutation)
         FEPdir = s.FF_DIR + '/.FEP/' + self.forcefield +  '/' + AA_from + '_' + AA_to
             
         if not os.path.exists(FEPdir):
             if self.dual == True:
-                'Generating dual topology inputfiles'
+                print('Generating dual topology inputfiles')
                 self.FEPlist = ['FEP1.fep']
                 self.FEPdir = None
                 
@@ -161,8 +169,16 @@ class Run(object):
 
     def readpdb(self):
         atnr = 0
-        self.MUTresn = '{}2{}'.format(self.mutation[0],self.mutation[2])
-        self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
+        if len(self.mutation[2]) == 1:
+            if self.nonAA != True:
+                self.MUTresn = '{}2{}'.format(self.mutation[0],self.mutation[2])
+            else:
+                self.MUTresn = '{}2{}'.format(self.mutation[0],'X')
+        
+        elif len(self.mutation[2]) == 3:
+            self.MUTresn = '{}2{}'.format(self.mutation[0],self.mutation[2][0])
+        self.backbone = []
+        #self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
         # Read in the mutant residue
         if self.dual == True:
             MUT = []
@@ -257,21 +273,26 @@ class Run(object):
         if self.forcefield[0:4] == 'OPLS':
             headers.append('[charge_groups]')   
         
-        with open(s.FF_DIR + '/' + self.forcefield + '.lib') as infile:
-            for line in infile:
-                if line[0] == '*':
-                    continue
-                    
-                if line[0] == '{':
-                    RESname = line.split('}')[0][1:]
-                    continue
-                    
-                try:
-                    FFlib[RESname].append(line)
-                    
-                except:
-                    FFlib[RESname] = [line]
-        
+        libfiles = [s.FF_DIR + '/' + self.forcefield + '.lib']
+        if self.nonAA == True:
+            libfiles.append(self.mutation[2] + '.lib')
+        for libfile in libfiles:
+            with open(libfile) as infile:
+                for line in infile:
+                    if line[0] == '*':
+                        continue
+
+                    if line[0] == '{':
+                        RESname = line.split('}')[0][1:]
+                        continue
+
+                    try:
+                        FFlib[RESname].append(line)
+
+                    except:
+                        FFlib[RESname] = [line]
+
+
         # Read the WT residue
         for line in FFlib[IO.AA(self.mutation[0])]:
             if line.strip() in headers:
@@ -282,22 +303,28 @@ class Run(object):
                 self.merged_lib[header].append(line)
         
         # Add CA CBx bond
-        self.merged_lib['[bonds]'].append('       CA     cb\n')
+        #self.merged_lib['[bonds]'].append('       CA     cb\n')
+        
         ## Read the mutant residue
         # Construct atom name replacements
-        for line in FFlib[IO.AA(self.mutation[2])]:
+        if len(self.mutation[2]) == 1:
+            AA = IO.AA(self.mutation[2])
+            
+        else:
+            AA = self.mutation[2]
+        for line in FFlib[AA]:
             line = line.strip()
             line = line.split()
             if line != headers[0]:
                 if len(line) > 2:
                     atom = line[1]
-                    if atom != 'H':
-                        replacements[atom] = atom.lower()
+                    #if atom != 'H':
+                    replacements[atom] = atom.lower()
                 
                 if line == header[1]:
                     break
                 
-        for line in FFlib[IO.AA(self.mutation[2])]:
+        for line in FFlib[AA]:
             if line.strip() in headers:
                 header = line.strip()
 
@@ -321,21 +348,21 @@ class Run(object):
                 #    continue\
                 
                 ## ATTEMPT 2
-                if line.split()[0] == 'O' \
-                or line.split()[0] == 'C' \
-                or line.split()[0] == 'CA'     \
-                or line.split()[0] == 'N'   \
-                or line.split()[0] == 'H'     \
-                or line.split()[0] == 'HA':
-                    continue
+                #if line.split()[0] == 'O' \
+                #or line.split()[0] == 'C' \
+                #or line.split()[0] == 'CA'     \
+                #or line.split()[0] == 'N'   \
+                #or line.split()[0] == 'H'     \
+                #or line.split()[0] == 'HA':
+                #    continue
                     
-                if line.split()[1] == 'O' \
-                or line.split()[1] == 'C' \
-                or line.split()[1] == 'CA'     \
-                or line.split()[1] == 'N'   \
-                or line.split()[1] == 'H'     \
-                or line.split()[1] == 'HA':
-                    continue
+                #if line.split()[1] == 'O' \
+                #or line.split()[1] == 'C' \
+                #or line.split()[1] == 'CA'     \
+                #or line.split()[1] == 'N'   \
+                #or line.split()[1] == 'H'     \
+                #or line.split()[1] == 'HA':
+                #    continue
                 
                 # Merge the library on the reference
                 line = IO.replace(line, replacements)
@@ -344,6 +371,7 @@ class Run(object):
         # Write out the merged library file
         out = self.directory + '/inputfiles/' + self.MUTresn + '.lib'
         with open(out, 'w') as outfile:
+            self.merged_lib['[charge_groups]'] = []
             cnt = 0
             outfile.write('{' + self.MUTresn + '}\n\n')
             for header in headers:
@@ -358,7 +386,6 @@ class Run(object):
                                                                         line[1], 
                                                                         line[2], 
                                                                         line[3]))
-                        
                     else:
                         outfile.write(line)
 
@@ -368,9 +395,11 @@ class Run(object):
             return None    
         
         self.zerofk = {'[angles]':[],
+                       '[bonds]':[],
+                       '[impropers]':[],
                        '[torsions]':[]
                       }
-        prmfile = s.FF_DIR + '/' + self.forcefield + '.prm'
+        prmfile = [s.FF_DIR + '/' + self.forcefield + '.prm']
         libfile = self.directory + '/inputfiles/' + self.MUTresn + '.lib'
         headers =['[options]', 
                   '[atom_types]',
@@ -381,7 +410,9 @@ class Run(object):
                  ]
         
         # Write tmp qprep.inp and prm file
-        prms = IO.read_prm([prmfile])
+        if self.nonAA == True:
+            prmfile.append(self.mutation[2] + '.prm')
+        prms = IO.read_prm(prmfile)
         prm_tmp = self.directory + '/inputfiles/tmp.prm'
         qprep_tmp = self.directory + '/inputfiles/tmp.inp'
         pdb_tmp = self.directory + '/inputfiles/tmp.pdb'
@@ -451,8 +482,8 @@ class Run(object):
                     self.zerofk['[torsions]'].append(torsion_prm)
 
         # ADD REMOVE FUNCTIONS FOR TMP FILES HERE
-        for tmp in glob.glob('tmp*'):
-            os.remove(tmp)
+       # for tmp in glob.glob('tmp*'):
+        #    os.remove(tmp)
         os.chdir('../../')
         
     def merge_prm(self):
@@ -468,6 +499,9 @@ class Run(object):
         if self.cofactor[0] != None:
             for filename in self.cofactor:
                 prmfiles.append(filename + '.prm')
+                
+        if self.nonAA == True:
+            prmfiles.append(self.mutation[2] + '.prm')
             
         prms = IO.read_prm(prmfiles)
         prm_merged = self.directory + '/inputfiles/' + self.forcefield + '_merged.prm'
@@ -847,8 +881,10 @@ class Run(object):
 
     def write_dualFEPfile(self):
         # The vdW paramers need to be extracted from the reference .prm file
-        parameterfile = s.FF_DIR + '/' + self.forcefield + '.prm'
-        vdw_prms = IO.read_prm([parameterfile])['[atom_types]']
+        prmfiles = [s.FF_DIR + '/' + self.forcefield + '.prm']
+        if self.nonAA == True:
+            prmfiles.append(self.mutation[2] + '.prm')
+        vdw_prms = IO.read_prm(prmfiles)['[atom_types]']
         
         ## Next, we start to construct the FEP file
         with open(self.directory + '/inputfiles/FEP1.fep', 'w') as outfile:

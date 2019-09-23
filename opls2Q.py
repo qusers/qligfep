@@ -15,7 +15,7 @@ class Run(object):
     Create FEP files from a common substructure for a given set of
     ligands
     """
-    def __init__(self, lig, FF, merge, vs, AA, include = ('ATOM','HETATM'), *args, **kwargs):
+    def __init__(self, lig, FF, merge, vs, AA, resname,include = ('ATOM','HETATM'), *args, **kwargs):
         """
         The init method is a kind of constructor, called when an instance
         of the class is created. The method serves to initialize what you
@@ -28,9 +28,19 @@ class Run(object):
         self.vs = vs
         self.AA = AA
         self.ff_list = []
-        self.backbone = ['C', 'O','CA', 'N', 'H', 'HA']
+        self.backbone = {'C':'0.500', 
+                         'O':'-0.500',
+                         'CA':'0.140',
+                         'N':'-0.500',
+                         'H':'0.300',
+                         'HA':'0.060'
+                        }
         self.pdbfiles=[self.lig + '.pdb']
         self.include = include
+        self.resname = resname
+        if len(self.resname) != 3:
+            print('Error, resname must be three letters')
+            sys.exit()
         
         # This is a test part, should be generalized for lone pairs and different
         # halogen bonds. Now, it works for Bn-X, where X is a halogen
@@ -110,7 +120,7 @@ class Run(object):
                     "DUM": "0.00"
                    }
         at = re.findall('\d+|\D+', atom)
-        mass = mass_dic[at[0]]
+        mass = mass_dic[at[0][0]]
         return mass
 
     def bond_calc(self, k):
@@ -206,33 +216,107 @@ class Run(object):
             v = 'OPLS 14'
             v = v.split(' ')
             # Running command line tool has been moved to IO, change function!
-            if v[0] == 'OPLS':
-                ffld_serv = s.SCHROD_DIR + '/utilities/ffld_server'
-                options = ' -ipdb '+ pdb + ' -print_parameters -version ' + v[1]
-                args = shlex.split(ffld_serv + options)
+            if self.AA == True:
+                ffld_serv = s.SCHROD_DIR + 'utilities/ffld_server'
+                struct_conv = s.SCHROD_DIR + 'utilities/structconvert'
+
+                # First convert to .mae file to avoid reading errors
+                options = ' -ipdb ' + pdb + ' -omae ' + pdb[:-4] + '.mae'
+                args = shlex.split(struct_conv + options)
                 out = check_output(args,universal_newlines=True)
 
-            elif v[0] == 'amber':
-                print('not supported yet')
-                sys.exit()
+                # Run structconvert on .mae file, write out .mae
+                options = ' -imae ' + pdb[:-4] + '.mae -omae ' + pdb[:-4] + '_out.mae  -print_parameters -version ' + v[1]
+                args = shlex.split(ffld_serv + options)
+                out_prms = check_output(args,universal_newlines=True)
 
-            with open(pdb[:-4]+'.log', 'w') as outfile:
-                # added tag??
-                outfile.write('Forcefield: ' + v[0] + ' ' + v[1] + '\n')
-                for line in out:
-                    outfile.write(line)
+                # Then move the .mae file to .pdb
+                options = ' -imae ' + pdb[:-4] + '_out.mae -opdb ' + pdb[:-4] + '_out.pdb'
+                args = shlex.split(struct_conv + options)
+                out = check_output(args,universal_newlines=True)
+                
+            else:
+                options = ' -pdb ' + pdb + ' -print_parameters -version ' + v[1]
+                args = shlex.split(ffld_serv + options)
+                out_prms = check_output(args,universal_newlines=True)
+                
+        with open(pdb[:-4]+'.log', 'w') as outfile:
+            block = 0
+            cnt = 0
+            at_names = []
+            self.at_replace = {}
+            bonds = []
+            outfile.write('Forcefield: ' + v[0] + ' ' + v[1] + '\n')
+            out_prms = out_prms.split('\n')
+            for line in out_prms:
+                if len(line) < 2:
+                    continue
+                outfile.write(line +'\n')
+                if self.AA == True:
+                    # Construct for renaming atom names
+                    line = line.split()
+                    if line[0] == 'OPLSAA':
+                        block = 1
+                        continue
+                        
+                    elif line[0] == "Stretch":
+                        block = 2
+                        continue
+                        
+                    elif line[0] == "Bending":
+                        block = 0
+                        
+                    if block == 1:
+                        if line[0][0] == '-':
+                            continue
+                        if line[0] == 'atom':
+                            continue
+                        else:
+                            at_names.append(line[0])
+                            
+                    # Find the 'fake' hydrogens that need to be removed
+                    if block == 2:
+                        bonds.append([line[0],line[1]])
+                            
+        if self.AA == True:
+            self.h_ignore = []
+            with open(pdb) as infile:
+                for line in infile:
+                    if line.startswith(self.include) == False:
+                        continue
+                    line = IO.pdb_parse_in(line)
+                    at_id = int(line[1]) - 1
+                    self.at_replace[at_names[at_id]] = line[2]
+        
+        for bond in bonds:
+            ref = ['N','C']
+            if self.at_replace[bond[0]] in ref              \
+            or self.at_replace[bond[1]] in ref:
+                for at in bond:
+                    if self.at_replace[at] not in self.backbone:
+                        self.h_ignore.append(self.at_replace[at])
 
+                            
     def read_log(self):
         opls_list = []    
-        # Read output from ffld_server ## FIX FOR AMBER
+        # Read output from ffld_server
         with open(self.lig + '.log', 'r') as infile:
             for line in infile:
+                ignore_line = False
+                if self.AA == True:
+                    line = IO.replace(line, self.at_replace)
+
                 if len(line) > 2:
-                    opls_list.append(line.split())
-
+                    line = line.split()
+                    for entry in line:
+                        if entry in self.h_ignore:
+                            ignore_line = True
+                            
+                    if ignore_line != True:
+                        opls_list.append(line)
+                    
         self.ff_list = opls_list
-
-
+        
     def convert_toQ(self):
         ff_list = self.ff_list
         halogen_cnt = 0
@@ -267,10 +351,17 @@ class Run(object):
             # Create lists 
             if len(line[0]) <= 4 and line[0] != 'atom':
                 if block == 1:
-                    charge = [line[0], float(line[4])]
+                    if line[0] in self.backbone and self.AA == True:
+                        charge = [line[0], float(self.backbone[line[0]])]
+                        charge_sum = charge_sum + float(self.backbone[line[0]])
+                    else:
+                        charge = [line[0], float(line[4])]
+                        charge_sum = charge_sum + float(line[4])
                     charge_dic[line[0]] = line[4]
-                    charge_sum = charge_sum + float(line[4])
-                    vdw = [line[0], run.vdw_calc(line[5], line[6]) + [run.get_mass(line[0])]]
+                    vdw = [line[0], 
+                           run.vdw_calc(line[5], 
+                           line[6]) + [run.get_mass(line[0])]
+                          ]
                     charge_list.append(charge)
                     vdw_list.append(vdw)
 
@@ -301,38 +392,6 @@ class Run(object):
                     torsion_list, 
                     improper_list,
                     charge_group_list]
-        
-    def mapping(self):
-        if self.AA == False:
-            return None
-        
-        self.mapping = {}
-        
-        pdb_in = self.lig + '.pdb'
-        pdb_out = self.lig + '_out.pdb'
-        
-        # Making mapping to rename the atomnames to standard residue logic
-        # Also need to remove extra hydrogens on residue end and add backbone definitions
-        # From standard library
-        with open(pdb_in) as infile:
-            coord1 = {}
-            for line in infile:
-                if line.startswith(self.include):
-                    line = IO.pdb_parse_in(line)
-                    coord1[line[2]] = (line[8],line[9],line[10])
-        
-        with open(pdb_out) as infile:
-            coord2 = {}
-            for line in infile:
-                if line.startswith(self.include):
-                    line = IO.pdb_parse_in(line)
-                    coord2[line[2]] = (line[8],line[9],line[10])
-                    
-        for key in coord1:
-            for key2 in coord2:
-                if f.euclidian_overlap(coord1[key], coord2[key2],0.01) == True:
-                    self.mapping[key2] = key
-        print(self.mapping)
         
     def add_virtualsite(self):    
         self.halogens = {}
@@ -400,11 +459,12 @@ class Run(object):
         charge_groups = parm[7]
 
         with open(self.lig + '.lib', 'w') as outfile:
-            outfile.write("{LIG}     ! atoms no %4d   total charge %.3f \n\n" % (at_len,
+            outfile.write("{%s}     ! atoms no %4d   total charge %.3f \n\n" % (self.resname,
+                at_len,
                                                                                charge
                                                                               )
                          )
-            outfile.write("[info] \n SYBYLtype RESIDUE \n\n")
+            #outfile.write("[info] \n SYBYLtype RESIDUE \n\n")
 
             # atom and charge block:
             outfile.write("[atoms] \n")
@@ -421,7 +481,12 @@ class Run(object):
             outfile.write("\n[bonds]\n")
             for line in bonds:
                 outfile.write('{:10}{}\n'.format(line[0][0], line[0][1]))
-
+            
+            if self.AA == True:
+                    outfile.write('\n[connections]\n')
+                    outfile.write('head N\n')
+                    outfile.write('tail C\n')
+            
             outfile.write("\n[impropers]\n")
             for line in improper:
                 outfile.write('{:10}{:10}{:10}{}\n'.format(line[0][0], 
@@ -534,8 +599,11 @@ class Run(object):
         with open(pdb_in) as infile, open(pdb_out, 'w') as outfile:
             for line in infile:
                 line = IO.pdb_parse_in(line)
+                if self.AA == True and line[2] in self.h_ignore:
+                    continue
+                
                 if line[0].strip() in include:
-                    line[4] = 'LIG'
+                    line[4] = self.resname
                     index += 1
                     line[2] = atomnames[index][0]
                     line[6] = 1
@@ -559,7 +627,7 @@ class Run(object):
                     outline = IO.pdb_parse_out(at_entry)
                     outfile.write(outline + '\n')
                     
-        #os.rename(pdb_out, pdb_in)
+        os.rename(pdb_out, pdb_in)
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -599,17 +667,22 @@ if __name__ == "__main__":
                     default = False,        
                     help = "When toggled, this module will treat the input .pdb as an AA")
     
+    parser.add_argument('-R', '--resname',
+                    dest = "resname",
+                    default = 'LIG',        
+                    help = "Change residue name (three letters)")
+    
     args = parser.parse_args()
     run = Run(lig = args.lig,
               FF = args.FF,
               merge = args.merge,
               vs = args.vs,
-              AA = args.AA
+              AA = args.AA,
+              resname = args.resname
              )
     run.get_parameters()
     run.read_log()
     run.convert_toQ()
-    run.mapping()
     if args.vs == True:
         run.add_virtualsite()
     run.write_lib_Q()
