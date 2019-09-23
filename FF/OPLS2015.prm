@@ -337,6 +337,9 @@ LP2     LP3     800.0   1.53
 ! Ligand bond parameters
 ! End ligand bond parameters
 
+! non ALA_test
+XCB    C224     536.000     1.529 
+
 [angles]
 *iaci  iacj   iack      forceK   angle0     forceUB    Stheta
 *------------------------------------------------------------
@@ -856,6 +859,11 @@ TO2Z   TP3  TO2Z   280.00   114.00  !high     0   O2Z-P3-O2Z        ==> O2Z-P3-O
 
 ! Ligand angle parameters
 ! End ligand angle parameters
+
+! test
+C158   XCB    H140       75.00    110.7      0.00      0.00  
+XCB    C224   N238      160.00    109.7      0.00      0.00  
+XCB    C224   H140       75.00    110.7      0.00      0.00  
 
 [torsions]
 *iaci  iacj   iack   iacl      forceK   #minima     phase   #paths
@@ -2544,7 +2552,15 @@ O      C      CT     HC      0.000     1    0.000   1 !high   0   O-C-CT-HC     
 ! Ligand torsion parameters
 
 
-
+! non-Ala test
+XCB    C235   N238   C224       1.150    -1.000     0.000     1 
+XCB    C235   N238   C224       3.045     2.000   180.000     1  
+XCB    C224   N238   C235      -0.341    -1.000     0.000     1 
+XCB    C224   N238   C235       0.065    -2.000   180.000     1 
+XCB    C224   N238   C235       0.169     3.000     0.000     1 
+XCB    C224   C235   N238       0.889    -1.000     0.000     1 
+XCB    C224   C235   N238       0.209    -2.000   180.000     1 
+XCB    C224   C235   N238      -0.055     3.000     0.000     1  
 
 [impropers]
 *iaci  iacj   iack   iacl      forceK     imp0

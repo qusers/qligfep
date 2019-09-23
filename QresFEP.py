@@ -177,8 +177,8 @@ class Run(object):
         
         elif len(self.mutation[2]) == 3:
             self.MUTresn = '{}2{}'.format(self.mutation[0],self.mutation[2][0])
-        self.backbone = []
-        #self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
+        #self.backbone = []
+        self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
         # Read in the mutant residue
         if self.dual == True:
             MUT = []
@@ -303,7 +303,7 @@ class Run(object):
                 self.merged_lib[header].append(line)
         
         # Add CA CBx bond
-        #self.merged_lib['[bonds]'].append('       CA     cb\n')
+        self.merged_lib['[bonds]'].append('       CA     cb\n')
         
         ## Read the mutant residue
         # Construct atom name replacements
@@ -339,30 +339,21 @@ class Run(object):
                     continue
                 
                 # Remove overlapping backbone definitions
-                #if 'O ' in line     \
-                #or 'C ' in line     \
-                #or 'CA ' in line     \
-                #or 'N ' in line     \
-                #or 'H ' in line     \
-                #or 'HA ' in line :
-                #    continue\
-                
-                ## ATTEMPT 2
-                #if line.split()[0] == 'O' \
-                #or line.split()[0] == 'C' \
-                #or line.split()[0] == 'CA'     \
-                #or line.split()[0] == 'N'   \
-                #or line.split()[0] == 'H'     \
-                #or line.split()[0] == 'HA':
-                #    continue
+                if line.split()[0] == 'O' \
+                or line.split()[0] == 'C' \
+                or line.split()[0] == 'CA'     \
+                or line.split()[0] == 'N'   \
+                or line.split()[0] == 'H'     \
+                or line.split()[0] == 'HA':
+                    continue
                     
-                #if line.split()[1] == 'O' \
-                #or line.split()[1] == 'C' \
-                #or line.split()[1] == 'CA'     \
-                #or line.split()[1] == 'N'   \
-                #or line.split()[1] == 'H'     \
-                #or line.split()[1] == 'HA':
-                #    continue
+                if line.split()[1] == 'O' \
+                or line.split()[1] == 'C' \
+                or line.split()[1] == 'CA'     \
+                or line.split()[1] == 'N'   \
+                or line.split()[1] == 'H'     \
+                or line.split()[1] == 'HA':
+                    continue
                 
                 # Merge the library on the reference
                 line = IO.replace(line, replacements)
@@ -393,7 +384,7 @@ class Run(object):
     def get_zeroforcebonded(self):
         if self.dual == False:
             return None    
-        
+
         self.zerofk = {'[angles]':[],
                        '[bonds]':[],
                        '[impropers]':[],
@@ -506,7 +497,7 @@ class Run(object):
         prms = IO.read_prm(prmfiles)
         prm_merged = self.directory + '/inputfiles/' + self.forcefield + '_merged.prm'
         self.prm_merged = self.forcefield + '_merged.prm'
-        
+
         with open (prm_merged, 'w') as outfile:
             for key in headers:
                 outfile.write(key + '\n')

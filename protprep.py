@@ -352,7 +352,8 @@ class Run(object):
                 for atom in atom_numbers:
                     outline = IO.pdb_parse_out(self.PDB[chain][atom]) + '\n'
                     outfile.write(outline)
-            outfile.write('GAP\n')
+                if len(self.PDB) != 1:
+                    outfile.write('GAP\n')
         
     def write_qprep(self):
         replacements = {'FF_LIB'    :   s.FF_DIR + '/OPLS2015.lib',
