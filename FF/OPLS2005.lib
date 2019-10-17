@@ -68,7 +68,7 @@
         CB   HB1  HB2   HB3
         C    O
 *----------------------------------------------------------------------
-{AR+}                 ! Arginine
+{ARG}                 ! Arginine
     [info]
         SYBYLtype  RESIDUE
     [atoms]
@@ -139,7 +139,7 @@
         CZ   CG   HG2  HG3  CD   HD2  HD3  NE   HE   NH1  HH11  HH12  NH2  HH21  HH22
         C    O
 *----------------------------------------------------------------------
-{ARG} !Deprotonated!!
+{ARN} !Deprotonated!!
     [info]
         SYBYLtype  RESIDUE
     [atoms]

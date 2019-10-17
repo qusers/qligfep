@@ -93,7 +93,12 @@ class Run(object):
             AA_from = self.mutation[0]
         
         try:
-            AA_to = IO.AA(self.mutation[2])
+            if len(self.mutation[2]) == 1:
+                AA_to = IO.AA(self.mutation[2])
+            
+            else:
+                AA_to = self.mutation[2]
+                
         except:
             print("residue not found in library, assuming non-natural AA")
             AA_to = 'X'
@@ -103,17 +108,16 @@ class Run(object):
         mutation = '{}{}{}'.format(*self.mutation)
         FEPdir = s.FF_DIR + '/.FEP/' + self.forcefield +  '/' + AA_from + '_' + AA_to
             
-        if not os.path.exists(FEPdir):
-            if self.dual == True:
-                print('Generating dual topology inputfiles')
-                self.FEPlist = ['FEP1.fep']
-                self.FEPdir = None
-                
-            else:    
-                print('FATAL: no FEP files found for the {} mutation' \
+        if self.dual == True:
+            print('Generating dual topology inputfiles')
+            self.FEPlist = ['FEP1.fep']
+            self.FEPdir = None
+        
+        elif not os.path.exists(FEPdir):
+            print('FATAL: no FEP files found for the {} mutation' \
                       'in {} exiting now.'.format(mutation,
                                                   FEPdir))
-                sys.exit()
+            sys.exit()
         
         else:
             for line in sorted(glob.glob(FEPdir + '/FEP*.fep')):
@@ -176,7 +180,7 @@ class Run(object):
                 self.MUTresn = '{}2{}'.format(self.mutation[0],'X')
         
         elif len(self.mutation[2]) == 3:
-            self.MUTresn = '{}2{}'.format(self.mutation[0],self.mutation[2][0])
+            self.MUTresn = '{}2{}'.format(IO.AA(self.mutation[0]),IO.AA(self.mutation[2]))
         #self.backbone = []
         self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
         # Read in the mutant residue
@@ -294,7 +298,11 @@ class Run(object):
 
 
         # Read the WT residue
-        for line in FFlib[IO.AA(self.mutation[0])]:
+        if len(self.mutation[0]) == 1:
+            AA = AA(self.mutation[0])
+        else:
+            AA = self.mutation[0]        
+        for line in FFlib[AA]:
             if line.strip() in headers:
                 header = line.strip()
                 self.merged_lib[header] = []
@@ -318,8 +326,8 @@ class Run(object):
             if line != headers[0]:
                 if len(line) > 2:
                     atom = line[1]
-                    #if atom != 'H':
-                    replacements[atom] = atom.lower()
+                    if atom != 'H':
+                        replacements[atom] = atom.lower()
                 
                 if line == header[1]:
                     break
@@ -608,9 +616,8 @@ class Run(object):
 
     def write_EQ(self):
         for line in self.PDB[int(self.PDB2Q[self.mutation[1]])]:
-            if line[2] == 'CA' and              \
-            self.system == 'water'              \
-            or self.system == 'vacuum':
+            if line[2] == 'CA' and self.system == 'water'              \
+            or line[2] == 'CA' and self.system == 'vacuum':             \
                 self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
                                                                               line[1])
         self.replacements['ATOM_END'] = '{}'.format(self.systemsize)
@@ -625,12 +632,13 @@ class Run(object):
                     outfile.write(outline)
                     
     def write_MD(self):
+        # Get restraint for water and vacuum systems
+        #for line in self.PDB[int(self.PDB2Q[self.mutation[1]])]:
+        #    if line[2] == 'CA' and self.system == 'water'              \
+        #    or line[2] == 'CA' and self.system == 'vacuum':             \                self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1],
+        #                                                                      line[1])
+        
         if self.start == '1':
-            for line in self.PDB[int(self.PDB2Q[self.mutation[1]])]:
-                if line[2] == 'CA' and self.system == 'water' or self.system == 'vacuum':
-                    self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
-                                                                                  line[1])
-
             for i in range(0, int(self.windows) + 1):
                 j = int(self.windows) - i
                 lambda1 = self.lambdas[i].replace(".", "")

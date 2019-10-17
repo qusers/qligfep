@@ -6,6 +6,9 @@ import re
 import sys
 import os
 import argparse
+from copy import deepcopy
+import numpy as np
+from simtk import unit
 
 # QligFEP modules
 import IO
@@ -13,7 +16,7 @@ import IO
 # openFF modules
 from openforcefield.topology import Molecule, Topology
 from openforcefield.typing.engines.smirnoff import ForceField
-from openforcefield.utils import get_data_filename
+#from openforcefield.utils import get_data_filename
 
 class Run(object):
     """
@@ -47,11 +50,13 @@ class Run(object):
     
     def openff(self):
         # Load the molecule (for now mol2, until charges are saved on sdf)
-        molecule = Molecule.from_file(self.lig + '.mol2')
+        molecule = Molecule.from_file(self.lig + '.sdf')
         topology = Topology.from_molecules([molecule])
-
+        
+        self.molecule = molecule
+        self.topology = topology
         # Label using the smirnoff99Frosst force field
-        self.forcefield = ForceField('smirnoff99Frosst.offxml')
+        self.forcefield = ForceField('openff-1.0.0.offxml')
         self.parameters = self.forcefield.label_molecules(topology)[0]
     
     def read_mol2(self):
@@ -158,8 +163,10 @@ class Run(object):
                         # This is a bit hacky, check how to get the float out directly
                         epsilon = float('{}'.format(parameter.epsilon).split()[0])
                         epsilon23 = epsilon/2
-                        # TO DO: CHECK IF THIS IS CORRECT!!
-                        Rmin = float('{}'.format(parameter.sigma).split()[0])/2
+                        # TO DO: CHECK IF THIS IS CORRECT!
+                        Rmin = '{}'.format(parameter.rmin_half)
+                        Rmin = Rmin.split()[0]
+                        Rmin = float(Rmin)
                         mass = self.masses[self.mapping[ai][2]]
                         outfile.write("""{:6}{: 8.3f}{: 10.3f}{: 10.3f}{: 10.3f}{: 10.3f}{:>10s}\n""".format(ai_name, 
                                                                           Rmin,
@@ -282,6 +289,150 @@ class Run(object):
                             ''          # 14 Charge on atom
                            ]
                 outfile.write(IO.pdb_parse_out(at_entry) + '\n')
+
+    def report_missing_parameters(self):
+        """
+        Analyze a molecule using a provided ForceField, generating a report of any
+        chemical groups in the molecule that are lacking parameters.
+
+        Parameters
+        ----------
+        molecule : an openforcefield.topology.FrozenMolecule
+            The molecule to analyze
+        forcefield : an openforcefield.typing.engine.smirnoff.ForceField
+            The ForceField object to use
+
+        Returns
+        -------
+        missing_parameters : dict[tagname: list[dict[tagged_smiles:string, image:PIL.Image, atom indices:list[int]]]]
+            A hierarchical dictionary, with first level keys indicating ForceField tag 
+            names (eg. "Bonds"), and first-level values which are lists of dictionaries. 
+            Each dictionary in this list reflects one missing parameter, and contains the 
+            following key:value pairs :
+            * "image": PIL.Image 
+                * shows a 2D drawing, highlighting the feature that could not be parametrized
+            * "tagged_smiles": string
+                * SMILES of the whole molecule, tagging the atom indices which could not be
+                  parametrized
+            * "atom_indices": tuple(int)
+                * The indices of atoms which could not be parametrized
+
+        """
+        highlight_color = (0.75, 0.75, 0.75)
+
+        # Make deepcopies of both inputs, since we may modify them in this function
+        forcefield = deepcopy(self.forcefield)
+        molecule = deepcopy(self.molecule)
+
+        # Set partial charges to placeholder values so that we can skip AM1-BCC 
+        # during parameterization
+        molecule.partial_charges = (np.zeros(molecule.n_atoms) + 0.1) * unit.elementary_charge
+
+        # Prepare dictionary to catch parameterization failure info
+        success = False
+        missing_params = {}
+
+        while not success:
+            # Try to parameterize the system, catching the exception if there is one.
+            try:
+                forcefield.create_openmm_system(molecule.to_topology(), 
+                                        charge_from_molecules=[molecule])
+                success = True
+            except UnassignedValenceParameterException as e:      
+                success = False
+
+                # Ensure that there is a list initialized for missing parameters 
+                # under this tagname
+                handler_tagname = e.handler_class._TAGNAME
+                if handler_tagname not in missing_params:
+                    missing_params[handler_tagname] = []
+
+                # Create a shortcut to the topology atom tuples attached to 
+                # the parametrization error
+                top_atom_tuples =  e.unassigned_topology_atom_tuples
+
+                # Make a summary of the missing parameters from this attempt and add it to 
+                # the missing_params dict
+                rdmol = molecule.to_rdkit()
+                for top_atom_tuple in top_atom_tuples:
+                    orig_atom_indices = [i.topology_atom_index for i in top_atom_tuple]
+                    # Make a copy of the input RDMol so that we don't modify the original
+                    this_rdmol = deepcopy(rdmol)
+
+                    # Attach tags to relevant atoms so that a tagged SMILES can be written
+                    orig_rdatoms = []
+                    for tag_idx, atom_idx in enumerate(orig_atom_indices):
+                        rdatom = this_rdmol.GetAtomWithIdx(atom_idx)
+                        rdatom.SetAtomMapNum(tag_idx + 1)
+                        orig_rdatoms.append(rdatom)    
+
+                    tagged_smiles = Chem.MolToSmiles(this_rdmol)
+
+                    # Make tagged hydrogens into deuteriums so that RemoveHs doesn't get rid of them
+                    for rdatom in orig_rdatoms:
+                        if rdatom.GetAtomicNum() == 1:
+                            rdatom.SetIsotope(2)
+
+                    # Remove hydrogens, since they clutter up the 2D drawing 
+                    # (tagged Hs are not removed, since they were converted to deuterium)
+                    h_less_rdmol = Chem.RemoveHs(this_rdmol)
+
+                    # Generate 2D coords, since drawing from 3D can look really weird
+                    Draw.rdDepictor.Compute2DCoords(h_less_rdmol)
+
+                    # Search over the molecule to find the indices of the tagged atoms
+                    # after hydrogen removal
+                    h_less_atom_indices = [None for i in orig_atom_indices]
+                    for rdatom in h_less_rdmol.GetAtoms():
+                        # Convert deuteriums back into hydrogens
+                        if rdatom.GetAtomicNum() == 1:
+                            rdatom.SetIsotope(1)
+
+                        atom_map_num = rdatom.GetAtomMapNum()
+                        if atom_map_num == 0:
+                            continue
+                        h_less_atom_indices[atom_map_num-1] = rdatom.GetIdx()
+
+                    # Once the new atom indices are found, use them to find the H-less
+                    # bond indices
+                    h_less_rdbonds = []
+                    for i in range(len(h_less_atom_indices)-1):
+                        rdbond = h_less_rdmol.GetBondBetweenAtoms( 
+                                                h_less_atom_indices[i], 
+                                                h_less_atom_indices[i+1])
+                        h_less_rdbonds.append(rdbond)
+                    h_less_bond_indices = [bd.GetIdx() for bd in h_less_rdbonds]
+
+                    # Create a 2D drawing of the molecule, highlighting the 
+                    # parameterization failure
+                    highlight_atom_colors = {idx:highlight_color for idx in h_less_atom_indices}
+                    highlight_bond_colors = {idx:highlight_color for idx in h_less_bond_indices}
+                    image = Draw.MolsToGridImage([h_less_rdmol],
+                                                 highlightAtomLists=[h_less_atom_indices],
+                                                 highlightBondLists=[h_less_bond_indices],
+                                                 molsPerRow=1,
+                                                 highlightAtomColors=[highlight_atom_colors],
+                                                 highlightBondColors=[highlight_bond_colors],
+                                                 subImgSize=(600,600)
+                                                )
+
+                    # Structure and append the relevant info to the missing_params dictionary
+                    param_description = {'atom_indices': orig_atom_indices,
+                                         'image': image, 
+                                         'tagged_smiles': tagged_smiles
+                                        }
+                    missing_params[handler_tagname].append(param_description)
+
+                # Add a "super generic" parameter to the top of this handler's ParameterList, 
+                # which will make it always find parameters for each term. This will prevent the same
+                # parameterization exception from being raised in the next attempt.
+                param_list = forcefield.get_parameter_handler(handler_tagname).parameters
+                param_list.insert(0, super_generics[handler_tagname])
+
+        if success != True:
+            print(missing_params)
+        else:
+            print('Parameters succesfully assigned')
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -314,6 +465,7 @@ if __name__ == "__main__":
              )
 
     run.openff()
+    run.report_missing_parameters()
     run.read_mol2()
     run.write_lib_Q()
     run.write_prm_Q()

@@ -90,11 +90,10 @@ class Run(object):
                 self.energies[replicate] = {}
                 
             self.energies[replicate][FEP] = IO.read_qfep_verbose(filename)
-            
         for method in methods:
             dG_array = []
             for key in methods[method]:
-                #print method, key, methods[method][key]
+                print(method, key, methods[method][key])
                 dG_array.append(methods[method][key])
             dG_array = np.array(dG_array)
             dG_array = dG_array.astype(np.float)

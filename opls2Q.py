@@ -215,11 +215,10 @@ class Run(object):
             # Add other parameter generators later
             v = 'OPLS 14'
             v = v.split(' ')
+            ffld_serv = s.SCHROD_DIR + 'utilities/ffld_server'
+            struct_conv = s.SCHROD_DIR + 'utilities/structconvert'
             # Running command line tool has been moved to IO, change function!
             if self.AA == True:
-                ffld_serv = s.SCHROD_DIR + 'utilities/ffld_server'
-                struct_conv = s.SCHROD_DIR + 'utilities/structconvert'
-
                 # First convert to .mae file to avoid reading errors
                 options = ' -ipdb ' + pdb + ' -omae ' + pdb[:-4] + '.mae'
                 args = shlex.split(struct_conv + options)
@@ -236,7 +235,7 @@ class Run(object):
                 out = check_output(args,universal_newlines=True)
                 
             else:
-                options = ' -pdb ' + pdb + ' -print_parameters -version ' + v[1]
+                options = ' -ipdb ' + pdb + ' -print_parameters -version ' + v[1]
                 args = shlex.split(ffld_serv + options)
                 out_prms = check_output(args,universal_newlines=True)
                 
@@ -277,9 +276,9 @@ class Run(object):
                     # Find the 'fake' hydrogens that need to be removed
                     if block == 2:
                         bonds.append([line[0],line[1]])
-                            
+
+        self.h_ignore = []           
         if self.AA == True:
-            self.h_ignore = []
             with open(pdb) as infile:
                 for line in infile:
                     if line.startswith(self.include) == False:

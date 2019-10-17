@@ -5,16 +5,17 @@
 *Use CAREFULLY!!
 *Only natural amino acid parameters have been adopted.
 *-------------------------------------------------------------
-[options] force-field options
+[options]
 name	Q-OPLSAA
-type	AMBER
-vdw_rule	geometric !vdW combination rule
-scale_14	0.5	!electrostatic 1-4 scaling factor 
-switch_atoms	on
-improper_potential	periodic
-improper_definition	explicit
+vdw_rule    geometric   ! vdW combination rule (geometric or arithmetic )
+scale_14         0.5         ! electrostatic 1-4 scaling factor
+switch_atoms  on       ! on = use switch atom; off = use charge group
+improper_definition explicit ! improper representation by 2 or four atoms
+improper_potential      periodic
+coulomb_constant 332.0716    ! Constant in electrostatic energy calculation; default = 332.
+force_field AMBER           ! Force Field Type (GROMOS (default), AMBER or CHARMM)
 
-[atom_types] atom type definitions
+[atom_types]
 *tac-----------Avdw1---Avdw2---Bvdw1----Avdw3---Bvdw2&3---mass----SYBYL-name-old-comment
 H	0.00	0.00	0.00	0.00	0.00	1.008	! Peptide
 H2	0.00	0.00	0.00	0.00	0.00	1.008	!
@@ -83,10 +84,10 @@ LP2     2326.69 2326.69 37.47 1645.22   26.49   14.03
 LP3     2844.35 2844.35 45.80 2011.26   32.39   15.04
 
 ! Ligand vdW parameters
-
+! End ligand vdW parameters
 
 *-----------------------------------------------------------------------
-[bonds] bond type definitions
+[bonds]
 *iaci iacj	force.c.	dist.	SYBYL
 *-----------------------------------------------------------------------
 CA	NT	962.0	1.34	!anilines
@@ -195,7 +196,7 @@ LP2     LP3     800.0   1.53
 ! Ligand bond parameters
 
 *-----------------------------------------------------------------------
-[angles] angle type definitions
+[angles]
 * iaci iacj iack	forceK angle0
 *-----------------------------------------------------------------------
 OS	C2	O2	120.000	120.000 0.000	0.000
@@ -412,7 +413,7 @@ LOM      LP       LOM   140.01  120.0   0.000   0.000 !Hugo
 
 
 *-----------------------------------------------------------------------
-[torsions] torsion type definitions
+[torsions]
 *iaci	iacj	iack	iacl	forceK	minima	phase	paths	comment
 *-----------------------------------------------------------------
 OS	CT	CT	N3	0.000	2.000	0.000 1.000
@@ -914,7 +915,7 @@ LOS      LP       LOS      LC2        0.375   1.000   0.000 3.00 !
 ! Ligand torsion parameters
 
 *-----------------------------------------------------------------------
-[impropers] improper type definitions
+[impropers]
 *taci	tacj	tack	tacl	forceK	phase
 *-----------------------------------------------------------------
 N2	CAr	N2	N2	10.5	180.000	!160

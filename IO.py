@@ -91,7 +91,7 @@ def run_command(executable, options, string = False):
     if string == False:
         args = shlex.split(executable + options)
         out = check_output(args)
-
+        print(' '.join(args))
     else:
         os.system(executable + options)
         out = None
@@ -196,7 +196,7 @@ def read_prm(prmfiles):
 
 def get_lambdas(windows, sampling):
     windows = int(windows)
-    step = windows/2
+    step = int(windows/2)
     lambdas = []
     lmbda_1 = []
     lmbda_2 = []
