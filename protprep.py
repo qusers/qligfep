@@ -252,12 +252,13 @@ class Run(object):
                                                                                                     at_2[6], 
                                                                                                     at_2[4])
                                             self.log['DECHARGE'].append(outline)
-                                            
+        
         # Get the charged residues in the sphere and the total charge of these residues in the sphere
         for chain in self.PDB:
             for key in self.PDB[chain]:
                 at = self.PDB[chain][key]
-                if at[6] in decharge:
+                #print(type(decharge[1]))
+                if at[6] in decharge[chain]:
                     at[4] = charged_res[at[4]][0]
 
                 else:
