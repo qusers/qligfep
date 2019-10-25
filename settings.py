@@ -30,9 +30,10 @@ HEBBE = {'NODES'      : '1',
          'NTASKS'     : '20',
          'TIME'       : '0-02:00:00',  # d-hh:mm:ss
          'MODULES'    : 'module load GCC/5.4.0-2.26\nmodule load OpenMPI/1.10.3\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/c3se/users/jwillem/Hebbe/software/qsource/bin/qdyn5p', #fix qdyn= !!!!!
-         'QPREP'      : '/home/jespers/software/q_510/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'ACCOUNT'    : 'SNIC2017-1-549'
+         'QDYN'       : 'qdyn=/c3se/users/jwillem/Hebbe/software/qsource/bin/qdyn5p', #fix qdyn= !!!!
+         'QFEP'       : 'qdyn=/c3se/users/jwillem/Hebbe/software/qsource/bin/qfep5', #fix qdyn= !!!!!!
+         'QPREP'      : '/home/jespers/software/q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
+         'ACCOUNT'    : 'SNIC2018-2-3'
         }
 
 KEBNE = {'NODES'      : '1',

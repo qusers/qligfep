@@ -116,11 +116,13 @@ class Run(object):
                     "S":"32.0600",
                     "Cl":"35.0000",
                     "Br":"79.90",
+                    "CL":"35.0000",
+                    "BR":"79.90",
                     "I":"126.90", 
                     "DUM": "0.00"
                    }
         at = re.findall('\d+|\D+', atom)
-        mass = mass_dic[at[0][0]]
+        mass = mass_dic[at[0][0:len(at[0])]]
         return mass
 
     def bond_calc(self, k):
