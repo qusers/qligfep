@@ -70,6 +70,8 @@ class Run(object):
             
             
     def read_input(self):
+        if self.system != 'protein':
+            return None
         block = 0
         with open('protPREP.log') as infile:
             for line in infile:
@@ -165,6 +167,8 @@ class Run(object):
                     outline = IO.pdb_parse_out(line) + '\n'
                     outfile.write(outline)                
     def select_waters(self):
+        if self.system != 'protein':
+            return None
         src = 'water.pdb'
         tgt = self.directory + '/inputfiles/water.pdb'
         cofactor_coordinates = []

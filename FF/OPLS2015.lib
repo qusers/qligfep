@@ -783,7 +783,7 @@
          8 CG     C274       -0.220
          9 HG2    H140        0.060
         10 HG3    H140        0.060
-        11 CD1    C271        0.700
+        11 CD     C271        0.700
         12 OE1    O272       -0.800
         13 OE2    O272       -0.800
         14 C      C271        0.700
@@ -792,8 +792,8 @@
     [bonds]
        CB     CA    
        CG     CB    
-       CD1    CG    
-       OE2    CD1    
+       CD     CG    
+       OE2    CD     
        N      H     
        N      CA    
        C      CA    
@@ -802,19 +802,19 @@
        CB     HB3   
        CG     HG2   
        CG     HG3   
-       CD1    OE1   
+       CD     OE1   
        C      OXT   
        C      O     
     [connections]
         head N     
     [impropers]
          H      N      -C     CA    
-         OE2    CD1    CG     OE1   
+         OE2    CD     CG     OE1   
          O      C      CA     OXT   
     [charge_groups]
         N       H    CA   HA     C     O     OXT
         CB    HB2   HB3   
-        CG    HG2   HG3   CD1    OE1   OE2   
+        CG    HG2   HG3   CD     OE1   OE2   
 *------------------------------------------------------------------
 {CGLY}            !charge: -1.0 || GLY C-terminal (standard)
     [atoms]

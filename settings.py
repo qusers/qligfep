@@ -56,14 +56,24 @@ STALLO = {'NODES'      : '1',
          'ACCOUNT'    : 'nn4654K'
         }
 
-TETRA = {'NODES'      : '1',
-         'NTASKS'     : '32',
+UPPMAX = {'NODES'      : '1',
+         'NTASKS'     : '20',
          'TIME'       : '0-24:00:00',  # d-hh:mm:ss
-         'MODULES'    : '\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/home/x_wilje/Software/q6/bin/qdynp', #fix qdyn= !!!!!
+         'MODULES'    : 'gcc/9.2.0\nopenmpi/4.0.2\n', # Add a \n for every added module
+         'QDYN'       : 'qdyn=/domus/h1/willem/software/q6/bin/qdynp', #fix qdyn= !!!!!
          'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'QFEP'       : '/home/x_wilje/Software/q6/bin/qfep',
-         'ACCOUNT'    : 'snic2018-2-3'
+         'QFEP'       : '/domus/h1/willem/software/q6/bin/qfep',
+          'ACCOUNT'    : 'snic2018-2-3'
+        }
+
+TETRA  = {'NODES'      : '1',
+          'NTASKS'     : '32',
+          'TIME'       : '0-24:00:00',  # d-hh:mm:ss
+          'MODULES'    : '\n', # Add a \n for every added module
+          'QDYN'       : 'qdyn=/home/x_wilje/Software/q6/bin/qdynp', #fix qdyn= !!!!!
+          'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
+          'QFEP'       : '/home/x_wilje/Software/q6/bin/qfep',
+          'ACCOUNT'    : 'snic2018-2-3'
         }
 
 LOCAL = {'NODES'      : '',

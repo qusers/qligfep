@@ -257,7 +257,8 @@ class Run(object):
         for chain in self.PDB:
             for key in self.PDB[chain]:
                 at = self.PDB[chain][key]
-                #print(type(decharge[1]))
+                if chain not in decharge:
+                    continue
                 if at[6] in decharge[chain]:
                     at[4] = charged_res[at[4]][0]
 
