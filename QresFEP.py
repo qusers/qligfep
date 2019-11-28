@@ -55,7 +55,13 @@ class Run(object):
         else:
             self.replicates = replicates
         
-        self.mutation = re.split('(\d+)', mutation)
+        tmp = mutation.split(':')
+        if len(tmp) == 2:
+            self.chain = tmp[0]
+            self.mutation = re.split('(\d+)', tmp[1])
+        else:
+            self.chain = ' '
+            self.mutation = re.split('(\d+)', tmp[0])
         self.include = include
         self.forcefield = forcefield
         self.preplocation = preplocation
@@ -84,6 +90,8 @@ class Run(object):
             
         if self.start == '0.5':
             self.replacements['EQ_LAMBDA'] = '0.500 0.500'
+    
+        print(self.chain)
     
     def checkFEP(self):
         if len(self.mutation[0]) == 1:
@@ -168,9 +176,12 @@ class Run(object):
                         if line[0].isdigit():
                             self.CYX.append([line[0], line[1]])
                         
-                    if block == 2:
-                        self.PDB2Q[line[1]] = line[0]
-
+                    if block == 2 and len(line) > 2:
+                        chain = line[2]
+                        if chain not in self.PDB2Q:
+                            self.PDB2Q[chain] = {}
+                        self.PDB2Q[chain][line[1]] = line[0]
+                        
     def readpdb(self):
         atnr = 0
         if len(self.mutation[2]) == 1:
@@ -615,7 +626,7 @@ class Run(object):
         self.lambdas = IO.get_lambdas(self.windows, self.sampling)
 
     def write_EQ(self):
-        for line in self.PDB[int(self.PDB2Q[self.mutation[1]])]:
+        for line in self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]:
             if line[2] == 'CA' and self.system == 'water'              \
             or line[2] == 'CA' and self.system == 'vacuum':             \
                 self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
@@ -808,7 +819,7 @@ class Run(object):
             run.write_singleFEPfile()
         
     def write_singleFEPfile(self):
-        RES_list = self.PDB[int(self.PDB2Q[self.mutation[1]])]
+        RES_list = self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]
         RES_dic = {}
         block = 0
         empty = ['[change_charges]', 
@@ -819,10 +830,12 @@ class Run(object):
                  '[bond_types]'                
                 ]
         atom_map = {}
+        
+        print(RES_list)
+        
         for line in RES_list:
             RES_dic[line[2].strip()] = line
 
-        
         for src in sorted(glob.glob(self.FEPdir + '/FEP*.fep')):
             tgt = self.directory + '/inputfiles/' + src.split('/')[-1]
             with open (src) as infile, open (tgt, 'w') as outfile:
