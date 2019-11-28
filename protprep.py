@@ -55,12 +55,13 @@ class Run(object):
                 if line.startswith(self.include):
                     line = IO.pdb_parse_in(line)
                     if center[0] == 'RESN':
-                        if line[6] == int(center[1]) \
-                        and line[2].strip() == 'CA':
-                            self.center = [float(line[8]),
-                                           float(line[9]), 
-                                           float(line[10])
-                                          ]
+                        if line[5] == center[2]:
+                            if line[6] == int(center[1]) \
+                            and line[2].strip() == 'CA':
+                                self.center = [float(line[8]),
+                                               float(line[9]), 
+                                               float(line[10])
+                                              ]
 
                     elif center[0] == 'ATN':
                         if line[1] == int(center[1]):
@@ -86,45 +87,63 @@ class Run(object):
             with open(self.prot) as infile, \
                  open(self.prot[:-4] + '_noH.pdb', 'w') as outfile:
                 for line in infile:
-                    if line.startswith(self.include):
-                        if line[13] != 'H':
-                            line = IO.pdb_parse_in(line)
-                            # Change residue name of waters
-                            if line[4] == 'SOL':
-                                line[4] = 'HOH'
-                                line[2] = 'O'
-                                if self.water != False:
-                                    line_out = IO.pdb_parse_out(line)
-                                    
-                                else:
-                                    continue
-                                
-                            elif line[4] == 'ILE' and line[2] == 'CD':
-                                line[2] = 'CD1'
-                                line_out = IO.pdb_parse_out(line)
-                                
-                            elif line[4] == 'CL-':
-                                continue
-                                
+                    tmp = line
+                    if line.startswith(self.include) == False:
+                        continue
+                    
+                    line = IO.pdb_parse_in(line)
+                        
+                    if tmp[13] == 'H':# and line[4] != 'SOL':
+                        write = False
+                        
+                    else:
+                        write = True
+
+                    # Change residue name of waters
+                    if line[4] == 'SOL':
+                        line[4] = 'HOH'
+                        if line[2] == 'OW':
+                            line[2] = 'O'
+                            coord1 = self.center
+                            coord2 = [float(line[8]), 
+                                      float(line[9]), 
+                                      float(line[10])
+                                     ]
+                            write = f.euclidian_overlap(coord1, coord2, self.radius + 5)
+                            
+                        if self.water != False:
                             line_out = IO.pdb_parse_out(line)
-                            outfile.write(line_out + '\n')
 
                         else:
-                            line = IO.pdb_parse_in(line)
-                        
-                        # Get the charges from the hydrogen connections
-                        # NOTE: this might be more common and thus less lines of code might be
-                        # needed, check when implementing MolProbity!!
-                        if line[4] in IO.charged_res:
-                            if line[2] in IO.charged_res[line[4]]:
-                                if line[6] in self.original_charges:
-                                    self.original_charges[line[6]] = ['HIP',line[5]]
-                                else:
-                                    self.original_charges[line[6]] = [IO.charged_res[line[4]][line[2]],
-                                                                     line[5]
-                                                                     ]
-                                    
+                            continue
+
+                    elif line[4] == 'ILE' and line[2] == 'CD':
+                        line[2] = 'CD1'
+                        line_out = IO.pdb_parse_out(line)
+
+                    elif line[4] == 'CL-':
+                        continue
+
+                    line_out = IO.pdb_parse_out(line)
+                    
+                    # Get the charges from the hydrogen connections
+                    # NOTE: this might be more common and thus less lines of code might be
+                    # needed, check when implementing MolProbity!!
+                    if line[4] in IO.charged_res:
+                        if line[2] in IO.charged_res[line[4]]:
+                            if line[5] not in self.original_charges:
+                                self.original_charges[line[5]] = {}
                             
+                            if line[2] not in IO.charged_res[line[4]]:
+                                self.original_charges[line[5]][line[6]] = 'HIP'
+                                
+                            else:
+                                self.original_charges[line[5]][line[6]] = \
+                                IO.charged_res[line[4]][line[2]]
+                
+                    if write == True:
+                        outfile.write(line_out + '\n')
+            
         elif self.origin == 'maestro':
             with open(self.prot) as infile, \
                  open(self.prot[:-4] + '_noH.pdb', 'w') as outfile:
@@ -138,16 +157,20 @@ class Run(object):
                         # Get the charges from the hydrogen connections
                         if line[4] in IO.charged_res:
                             if line[2] in IO.charged_res[line[4]]:
-                                if line[6] in self.original_charges:
-                                    self.original_charges[line[6]] = ['HIP',line[5]]
+                                if line[5] not in self.original_charges:
+                                    self.original_charges[line[5]] = {}
+
+                                if line[2] not in IO.charged_res[line[4]]:
+                                    self.original_charges[line[5]][line[6]] = 'HIP'
+
                                 else:
-                                    self.original_charges[line[6]] = [IO.charged_res[line[4]][line[2]],
-                                                                      line[5]
-                                                                     ]
+                                    self.original_charges[line[5]][line[6]] = IO.charged_res[line[4]][line[2]]
+
 
     
     def readpdb(self):
         i = 0
+        chain_ref = None
         if self.origin == 'gromacs':
             pdbfile = self.prot[:-4] + '_noH.pdb'
             
@@ -167,18 +190,24 @@ class Run(object):
                     self.chains.append(line[5])
                 # construct chain based container
                 self.PDB[line[5]] = {}
-
+                
         with open(pdbfile) as infile:
+            if self.water == True:
+                self.PDB['w'] = {}
             for line in infile:
                 if line.startswith(self.include):
                     line = IO.pdb_parse_in(line)
+                    chain = line[5]
                     RES = line[6]
-                    if line[6] in self.original_charges:
-                        if self.original_charges[line[6]][1] == line[5]:
-                            line[4] = self.original_charges[line[6]][0]
+                    if chain in self.original_charges:
+                        if line[6] in self.original_charges[chain]:
+                            line[4] = self.original_charges[chain][line[6]]
                     
                     if self.water == True:
-                        self.PDB[line[5]][line[1]] = line
+                        if line[4] == 'HOH':
+                            self.PDB['w'][line[1]] = line
+                        else:
+                            self.PDB[line[5]][line[1]] = line
                         
                     elif self.water == False:
                         if line[4] != 'HOH':
@@ -186,14 +215,23 @@ class Run(object):
 
                     if RES != RES_ref:
                         RES_ref = RES
-                        i += 1
-                        self.log['QRESN'][line[6]] = i
-                        self.log['PDB2Q'][i] = [line[6]]
-                        if line[4].strip() != 'HOH':
-                            self.log['QRES_LIST'].append('{:<10d}{:<10d}{:<10}'.format(i, 
-                                                                                  int([line[6]][0]),
-                                                                                  line[4]
-                                                                                 ))
+                        #if line[4].strip() == 'HOH':
+                        #    continue
+                        if line[4].strip() == 'SOL':
+                            continue
+                            
+                        else:
+                            # check chain ID
+                            if line[5] not in self.log['PDB2Q']:
+                                self.log['PDB2Q'][line[5]] = {}
+                            
+                            if line[5] not in self.log['QRESN']:
+                                self.log['QRESN'][line[5]] = {}
+                                
+                            i += 1
+                            self.log['PDB2Q'][line[5]][i] = line[6]
+                            self.log['QRESN'][line[5]][line[6]] = i
+        
     def decharge(self):
         charged_res = {'GLU':['GLH', 'CD', -1], 
                        'ASP':['ASH', 'CG', -1], 
@@ -220,10 +258,13 @@ class Run(object):
                                 decharge[at[5]] = [at[6]]
                             else:
                                 decharge[at[5]].append(at[6])
-                            outline = '{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at[6]],
-                                                                                    at[6], 
-                                                                                    at[4])
+                            outline = '{:<10}{:<10}{:<10}{:<10}'.format(
+                                                                        self.log['QRESN'][chain][at[6]],
+                                                                                                 at[6],
+                                                                                                 chain,
+                                                                                                 at[4])
                             self.log['DECHARGE'].append(outline)
+                            
         # Check if the decharged residue is part of a salt bridge and
         # neutralize this residue as well
         for chain in self.PDB:
@@ -245,13 +286,22 @@ class Run(object):
                                               float(at_2[9]), 
                                               float(at_2[10])
                                              ]
-                                    if at != at_2 and at_2[6] not in decharge:
-                                        if f.euclidian_overlap(coord1, coord2, 4.0) == True:
-                                            decharge[chain].append(at_2[6])
-                                            outline = '{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at_2[6]],
-                                                                                                    at_2[6], 
-                                                                                                    at_2[4])
-                                            self.log['DECHARGE'].append(outline)
+                                    if at == at_2:
+                                        continue
+                                    if at_2[6] in decharge[chain]:
+                                        continue
+                                    
+                                    if at_2[6] in decharge[chain2]:
+                                        continue
+                                        
+                                    if f.euclidian_overlap(coord1, coord2, 4.0) == True:
+                                        decharge[chain2].append(at_2[6])
+                                        outline = '{:<10}{:<10}{:<10}{:<10}'.format(
+                                                      self.log['QRESN'][chain2][at_2[6]],
+                                                                                at_2[6],
+                                                                                chain2,
+                                                                                at_2[4])
+                                        self.log['DECHARGE'].append(outline)
         
         # Get the charged residues in the sphere and the total charge of these residues in the sphere
         for chain in self.PDB:
@@ -259,45 +309,65 @@ class Run(object):
                 at = self.PDB[chain][key]
                 if chain not in decharge:
                     continue
+        
                 if at[6] in decharge[chain]:
                     at[4] = charged_res[at[4]][0]
+                    continue
 
-                else:
+                else: # at[4] in charged_res:
                     if at[4] in charged_res:
                         if at[2].strip() == charged_res[at[4]][1]:
-                            self.log['CHARGE'].append('{:<10}{:<10}{:<10}'.format(self.log['QRESN'][at[6]],
-                                                                                  at[6], 
-                                                                                  at[4]))
+                            self.log['CHARGE'].append('{:<10}{:<10}{:<10}{:<10}'.format(
+                                                              self.log['QRESN'][chain][at[6]],
+                                                                                        at[6],
+                                                                                        chain,
+                                                                                        at[4]))
                             self.log['TOTAL_CHARGE'] += charged_res[at[4]][2]
-            
+
     def set_OXT(self):
         ## NOTE WARNING, ETC: Q AA codes are sometimes 3, sometimes 4, they MUST be updated to pdb
         ## standards ASAP!!!
+        decharged = ['LYN','ARN','GLH','ASH']
         CTERM = []
+        remove = []
         for chain in self.PDB:
             for key in self.PDB[chain]:
                 at = self.PDB[chain][key]
                 if at[2].strip() == 'OXT':
-                    CTERM.append(at[6])
+                    CTERM.append((at[6],at[5]))
                     self.log['CTERM'].append('{} {}'.format(at[6], at[4]))
 
                 if self.origin == 'gromacs':
                     if at[2].strip() == 'O1':
-                        CTERM.append(at[6])
+                        CTERM.append((at[6],at[5]))
                         self.log['CTERM'].append('{} {}'.format(at[6], at[4]))
             
-            for key in self.PDB[chain]:
-                at = self.PDB[chain][key]
-                if at[6] in CTERM:
-                    self.PDB[chain][key][4] = 'C' + at[4]
+            for cterm in CTERM:
+                for key in self.PDB[chain]:
+                    at = self.PDB[chain][key]
+                    
+                    #HOTFIX, check if this is ok
+                    if at[4] in decharged:
+                        if at[2] == 'O1':
+                            self.PDB[chain][key][2] = 'O'
 
-                if self.origin == 'gromacs':
-                    if at[2] == 'O1':
-                        self.PDB[chain][key][2] = 'O'
+                        if at[2] == 'O2':
+                            remove.append([chain,key])
+                                
+                    else:
+                        if at[6] == cterm[0] and at[5] == cterm[1]:
+                            self.PDB[chain][key][4] = 'C' + at[4]
 
-                    if at[2] == 'O2':
-                        self.PDB[chain][key][2] = 'OXT'
+                        if self.origin == 'gromacs':
+                            if at[2] == 'O1':
+                                self.PDB[chain][key][2] = 'O'
 
+                            if at[2] == 'O2':
+                                self.PDB[chain][key][2] = 'OXT'
+        
+        # Remove atoms from c or n terminal decharged residues
+        for at in remove:
+            del self.PDB[at[0]][at[1]]
                 
     def get_CYX(self):
         cys = []
@@ -306,7 +376,6 @@ class Run(object):
         cys_mat = []
         i = 0
         k = -1
-        
         # Reduce coordinate array
         for chain in self.PDB:
             for key in self.PDB[chain]:
@@ -331,17 +400,21 @@ class Run(object):
                         if cys_mat[i][j+1] == True and cys_mat[k][0] != cys_mat[j][0]:
                             cyx.append(cys_mat[k][0])
                             cyx.append(cys_mat[j][0])
-                            outline = '{:<10}{:<10}{:<10}{:<10}'.format(self.log['QRESN'][cys_mat[k][0]], 
-                                                                        self.log['QRESN'][cys_mat[j][0]],
+                            outline = '{:<10}{:<10}{:<10}{:<10}{:<10}{:<10}'.format(self.log['QRESN'][chain][cys_mat[k][0]], 
+                                                                        self.log['QRESN'][chain][cys_mat[j][0]],
                                                                         cys_mat[k][0],
-                                                                        cys_mat[j][0])
+                                                                                    chain,
+                                                                        cys_mat[j][0],
+                                                                                   chain)
                             self.log['CYX'].append(outline)
 
                     i += 1
+                    
+                
                 for chain in self.PDB:
                     for key in self.PDB[chain]:
                         at = self.PDB[chain][key]
-                        if at[6] in cyx:
+                        if at[6] in cyx and at[4] == 'CYS':
                             self.PDB[chain][key][4] = 'CYX'
 
             except:
@@ -416,7 +489,7 @@ class Run(object):
                     if line[6] in waters_tokeep:
                         outline = IO.pdb_parse_out(line) + '\n'
                         watout.write(outline)
-                        
+
                     if line[4] not in waters:
                         outline = IO.pdb_parse_out(line) + '\n'
                         protout.write(outline)
@@ -444,20 +517,21 @@ class Run(object):
                                                   self.log['TOTAL_CHARGE']))
             outfile.write('--------------------------------------------------------------------')  
             outfile.write('\nThe following residues have been decharged:\n')
-            outfile.write('{:10}{:10}{:10}\n'.format('Q_RESN', 'PDB_IN', 'RESNAME'))
+            outfile.write('{:10}{:10}{:10}{:10}\n'.format('Q_RESN', 'PDB_IN', 'CHAIN','RESNAME'))
             for line in self.log['DECHARGE']:
                 outfile.write(line + '\n')
                 
             outfile.write('--------------------------------------------------------------------')
             outfile.write('\nThe following charged residues are in the sphere:\n')
-            outfile.write('{:10}{:10}{:10}\n'.format('Q_RESN', 'PDB_IN', 'RESNAME'))
+            outfile.write('{:10}{:10}{:10}{:10}\n'.format('Q_RESN', 'PDB_IN', 'CHAIN','RESNAME'))
             for line in self.log['CHARGE']:
                 outfile.write(line + '\n')
             
             outfile.write('--------------------------------------------------------------------')  
             outfile.write('\n')
             outfile.write('The following S-S bonds have been found:\n')
-            outfile.write('{:10}{:10}{:10}{:10}\n'.format('Q_CYS1', 'Q_CYS2', 'PDB_CYS1', 'PDB_CYS2'))
+            outfile.write('{:10}{:10}{:10}{:10}{:10}{:10}\n'.format(
+                'Q_CYS1', 'Q_CYS2', 'PDB_CYS1', 'CHAIN','PDB_CYS2','CHAIN'))
             for line in self.log['CYX']:
                 outfile.write(line + '\n')
             
@@ -465,9 +539,14 @@ class Run(object):
             outfile.write('\n')
             outfile.write('The following is a mapping of residue numbers in Q and the input \n')
             outfile.write('pdbfile "{}":\n'.format(self.prot))
-            outfile.write('{:10}{:10}{:10}\n'.format('Q_RESN', 'PDB_IN', 'RESNAME'))
-            for line in self.log['QRES_LIST']:
-                outfile.write(line + '\n')
+            outfile.write('{:10}{:10}{:10}{:10}\n'.format('Q_RESN', 'PDB_IN', 'CHAIN','RESNAME'))
+            for chain in self.PDB:
+                for key in self.PDB[chain]:
+                    if self.PDB[chain][key][2].strip() == 'CB':
+                        PDB_resi = self.PDB[chain][key][6]
+                        Q_resi = self.log['QRESN'][chain][PDB_resi]
+                        resn = self.PDB[chain][key][4]
+                        outfile.write('{:<10}{:<10}{:10}{:10}\n'.format(Q_resi,PDB_resi,chain,resn))
                     
     def cleanup(self):
         if self.noclean == False:
@@ -537,9 +616,9 @@ if __name__ == "__main__":
               include = ('ATOM','HETATM')
              )
     
-    run.prepwizard_parse()              # 00
-    run.readpdb()                       # 01
-    run.get_center_coordinates()        # 02
+    run.get_center_coordinates()        # 00
+    run.prepwizard_parse()              # 01
+    run.readpdb()                       # 02
     run.decharge()                      # 03
     run.set_OXT()                       # 04
     run.get_CYX()                       # 05
