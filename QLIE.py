@@ -15,6 +15,7 @@ class Run(object):
     """
     def __init__(self, ligand, cofactor, forcefield, include, system,
                  preplocation, cluster, temperature, replicates,
+                 radius,
                  *args, **kwargs):
         # Argparse arguments
         self.ligand         = ligand
@@ -50,6 +51,10 @@ class Run(object):
         # Add cofactors to list for further pdb/prm parsing
         if cofactor != None:
             self.cofactor.append(cofactor)
+            
+        if self.system == 'water' or self.system == 'vacuum':
+            self.sphere = f.COG(self.ligand +'.pdb')
+            self.radius = radius
     
     def create_environment(self):
         self.directory = 'LIE_{}'.format(self.ligand)
@@ -424,7 +429,12 @@ if __name__ == "__main__":
     parser.add_argument('-r', '--replicates',
                         dest = "replicates",
                         required = False,
-                        help = "Amount of replicates, default taken from settings.py")     
+                        help = "Amount of replicates, default taken from settings.py")
+    
+    parser.add_argument('-R', '--radius',
+                        dest = "radius",
+                        default = '25',
+                        help = "Desired radius of the system") # Add something to do this automatically?     
     
     args = parser.parse_args()
     run = Run(ligand        = args.ligand,
@@ -435,6 +445,7 @@ if __name__ == "__main__":
               cluster       = args.cluster,
               temperature   = args.temperature,
               replicates    = args.replicates,
+              radius        = args.radius,
               include       = ('ATOM', 'HETATM')
              )
     

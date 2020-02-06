@@ -43,6 +43,9 @@ class Run(object):
         self.temperature = temperature
         self.replicates = replicates
         self.sampling = sampling
+        #Temporary until flag is here
+        self.ABS = False #True
+        self.ABS_waters = []
         
         if self.system == 'protein':
             # Get last atom and residue from complexfile!
@@ -348,7 +351,7 @@ class Run(object):
                     #line2 = pattern.sub(lambda x: replacements[x.group()], line)
                     line = IO.pdb_parse_out(atom1) + '\n'
                     file_replaced.append(line)
-                    
+                                            
         with open(self.lig1 + '.pdb') as infile,                                            \
              open(writedir + '/' + self.lig1 + '_' + self.lig2 + '.pdb', 'w') as outfile:
 
@@ -429,6 +432,14 @@ class Run(object):
         pdbfile = writedir + '/inputfiles/' + self.lig1 + '_' + self.lig2 + '.pdb'
         reslist = ['LIG', 'LID']
         overlap_list = f.overlapping_pairs(pdbfile, reslist)
+        
+        if self.ABS == True:
+            with open(pdbfile) as infile:
+                for line in infile:
+                    if line[13].strip() == 'O': 
+                        line = IO.pdb_parse_in(line)
+                        self.ABS_waters.append(int(line[1])+self.atomoffset)
+                            
         return overlap_list
         
     def write_MD_05(self, lambdas, writedir, lig_size1, lig_size2):
@@ -442,6 +453,8 @@ class Run(object):
         lambda_2 = []
         block = 0
         index = 0
+        cnt = -1
+        restlist = []
         
         for line in lambdas:
             if line == '0.500':
@@ -464,15 +477,31 @@ class Run(object):
         replacements['EQ_LAMBDA']       =   '0.500 0.500'
         
         if self.system == 'water' or self.system == 'vacuum':
-            replacements['WATER_RESTRAINT'] = '{:<7}{:<7} 1.0 0 1   '.format(self.atomoffset + 1, 
-                                                                          self.atomoffset + lig_size1 + 
-                                                                          lig_size2
-                                                                         )
+            if self.ABS == False:
+                replacements['WATER_RESTRAINT'] = '{:<7}{:<7} 1.0 0 1   \n'.format(self.atomoffset + 1, 
+                                                                              self.atomoffset + lig_size1 + 
+                                                                              lig_size2
+                                                                             )
             
-            
+            else:
+                replacements['WATER_RESTRAINT'] = '{:<7}{:<7} 1.0 0 1   \n'.format(self.atomoffset + 1, 
+                                                                              self.atomoffset + lig_size1
+                                                                             )
+                
+
+                for i in range(self.atomoffset + 1+ lig_size1,
+                               self.atomoffset + 2+ lig_size1 + lig_size2):
+                    cnt += 1
+                    if cnt == 0:
+                        rest = '{:<7}{:<7} 1.0 0 1   \n'.format(i,i)
+                        restlist.append(rest)
+                        
+                    if cnt == 2:
+                        cnt = -1
+
         elif self.system == 'protein':
             replacements['WATER_RESTRAINT'] = ''
-        
+                    
         for eq_file_in in sorted(glob.glob(s.ROOT_DIR + '/INPUTS/eq*.inp')):
             eq_file = eq_file_in.split('/')[-1:][0]
             eq_file_out = writedir + '/' + eq_file
@@ -483,8 +512,12 @@ class Run(object):
                     outfile.write(line)
                     if line == '[distance_restraints]\n':
                         for line in overlapping_atoms:
-                            outfile.write('{:d} {:d} 0.0 0.1 1.5 0\n'.format(line[0], line[1]))                    
-
+                            outfile.write('{:d} {:d} 0.0 0.1 1.5 0\n'.format(line[0], line[1]))  
+                            
+                    if line == '[sequence_restraints]\n':
+                        for line in restlist:
+                            outfile.write(line)
+                        
                 file_list1.append(eq_file)
                 
         file_in = s.INPUT_DIR + '/md_0500_0500.inp'
@@ -495,7 +528,13 @@ class Run(object):
                 outfile.write(line)
                 if line == '[distance_restraints]\n':
                     for line in overlapping_atoms:
-                        outfile.write('{:d} {:d} 0.0 0.1 1.5 0\n'.format(line[0], line[1]))                
+                        outfile.write('{:d} {:d} 0.0 0.1 1.5 0\n'.format(line[0], line[1]))
+
+                if line == '[sequence_restraints]\n':
+                    for line in restlist:
+                        outfile.write(line)                        
+                        
+                        
         file_list1.append('md_0500_0500.inp')
         
         for lambdas in [lambda_1, lambda_2]:
@@ -531,6 +570,11 @@ class Run(object):
                         if line == '[distance_restraints]\n':
                             for line in overlapping_atoms:
                                 outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(line[0], line[1]))
+                                
+                                
+                        if line == '[sequence_restraints]\n':
+                            for line in restlist:
+                                outfile.write(line)                
 
                 filename_N = filename
                 
@@ -718,6 +762,11 @@ class Run(object):
                             outfile.write(outline1)
                             outfile.write(outline2)
                             outfile.write('\n')
+                            
+            if self.cluster == 'ALICE':
+                outfile.write('rm *.dcd\n')
+                outfile.write('rm *.en\n')
+                outfile.write('rm *.re\n')
     
     def write_qfep(self, inputdir, windows, lambdas):
         qfep_in = s.ROOT_DIR + '/INPUTS/qfep.inp' 

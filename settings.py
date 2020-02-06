@@ -26,6 +26,18 @@ CSB = {'NODES'        : '1',
        'QCALC'        : Q_DIR['CSB'] + 'qcalc'
       }
 
+ALICE = {'MAINDIR'      : '/home/jespersw/software/q6/',
+         'NODES'        : '1',
+         'NTASKS'       : '24',
+         'TIME'         : '0-3:00:00',  # d-hh:mm:ss
+         'MODULES'      : 'module load OpenMPI/3.1.3-GCC-8.2.0-2.31.1',
+         'QDYN'         : 'qdyn=/home/jespersw/software/q6/bin/qdynp',
+         'QPREP'        : Q_DIR['CSB'] + 'qprep',
+         'QFEP'         : '/home/jespersw/software/q6/bin/qfep',
+         'QCALC'        : '/home/jespersw/software/q6/bin/qcalc'
+        }
+
+
 HEBBE = {'NODES'      : '1',
          'NTASKS'     : '20',
          'TIME'       : '0-02:00:00',  # d-hh:mm:ss
@@ -71,9 +83,9 @@ TETRA  = {'NODES'      : '1',
           'TIME'       : '0-24:00:00',  # d-hh:mm:ss
           'MODULES'    : '\n', # Add a \n for every added module
           'QDYN'       : 'qdyn=/home/x_wilje/Software/q6/bin/qdynp', #fix qdyn= !!!!!
-          'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
+          'QPREP'      : '/home/jespers/software/q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
           'QFEP'       : '/home/x_wilje/Software/q6/bin/qfep',
-          'ACCOUNT'    : 'snic2018-2-3'
+          'ACCOUNT'    : 'snic2019-2-1'
         }
 
 LOCAL = {'NODES'      : '',
