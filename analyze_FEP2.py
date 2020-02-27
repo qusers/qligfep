@@ -5,7 +5,7 @@ import os
 
 import functions as f
 import settings as s
-import IO
+import IO2 as IO
 
 try:
     import matplotlib
@@ -48,12 +48,8 @@ class Run(object):
         #    os.mkdir(self.analysisdir)
     
     def read_FEPs(self):
-        methods_list = ['dG', 'dGf', 'dGr', 'dGos', 'dGbar']
+        methods_list = ['dG'] #, 'dGf', 'dGr', 'dGos', 'dGbar']
         methods = {'dG'     : {},
-                   'dGf'    : {},
-                   'dGr'    : {},
-                   'dGos'   : {},
-                   'dGbar' :  {}
                   }
         results = {}
         out = []
@@ -103,7 +99,7 @@ class Run(object):
         for method in methods_list:
             out.append(results[method])
 
-        print(self.FEP, '{} {} {} {} {}'.format(*out))
+        print(self.FEP, '{} '.format(*out))
         
     def read_mdlog(self):
         mapping = {}
