@@ -37,6 +37,15 @@ ALICE = {'MAINDIR'      : '/home/jespersw/software/q6/',
          'QCALC'        : '/home/jespersw/software/q6/bin/qcalc'
         }
 
+CSC   = {'NODES'      : '1',
+         'NTASKS'     : '40',
+         'TIME'       : '0-06:00:00',  # d-hh:mm:ss
+         'MODULES'    : 'module load intel/18.0.5 intel-mpi/18.0.5\n', # Add a \n for every added module
+         'QDYN'       : 'qdyn=/projappl/jgynther/software/q6/bin/qdynp', #fix qdyn= !!!!
+         'QFEP'       : '/projappl/jgynther/software/q6/bin/qfep', #fix qdyn= !!!!!!
+         'QPREP'      : '/home/alejand/software/q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
+         'ACCOUNT'    : 'jgynther'
+        }
 
 HEBBE = {'NODES'      : '1',
          'NTASKS'     : '20',

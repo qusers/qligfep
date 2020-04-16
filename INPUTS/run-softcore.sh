@@ -23,9 +23,9 @@ workdir=/home/jespers/adenosine/1.A1-A2A_selectivity/A1/5.FEP/holo
 inputfiles=/home/jespers/adenosine/1.A1-A2A_selectivity/A1/5.FEP/holo/inputfiles
 length=${#fepfiles[@]}
 length=$((length-1))
-for index in $(seq 0 $length);do
-fepfile=${fepfiles[$index]}
-fepdir=$workdir/FEP$((index+1))
+for fepfile in "${fepfiles[@]}";do
+fep="${fepfile:0:4}"
+fepdir=$workdir/$fep
 mkdir -p $fepdir
 cd $fepdir
 tempdir=$fepdir/$temperature
@@ -36,25 +36,28 @@ rundir=$tempdir/$run
 mkdir -p $rundir
 cd $rundir
 
-cp $inputfiles/md*.inp .
 cp $inputfiles/*.top .
-cp $inputfiles/qfep.inp .
 cp $inputfiles/$fepfile .
 
-if [ $index -lt 1 ]; then
+cp $inputfiles/md*.inp .
+cp $inputfiles/qfep.inp .
+
+
+
+if [ $fepfile == "${fepfiles[0]}" ]; then
 cp $inputfiles/eq*.inp .
 sed -i s/SEED_VAR/"$[1 + $[RANDOM % 9999]]"/ eq1.inp
 else
-lastfep=FEP$index
 cp $workdir/$lastfep/$temperature/$run/$finalMDrestart $rundir/eq5.re
 fi
 
 sed -i s/T_VAR/"$temperature"/ *.inp
 sed -i s/FEP_VAR/"$fepfile"/ *.inp
-if [ $index -lt 1 ]; then
+if [ "$fepfile" == "${fepfiles[0]}" ]; then
 #time mpirun -np 16 $qdyn eq1.inp > eq1.log
 #EQ_FILES
 fi
 #RUN_FILES
 timeout 30s QFEP < qfep.inp > qfep.out
+lastfep=$fep
 done

@@ -27,9 +27,14 @@ class Run(object):
                  temperature, 
                  replicates,
                  sampling,
+                 timestep,
+                 softcore,
                  *args, 
                  **kwargs):
         
+        self.softcore = softcore
+        self.replacements = {}
+        self.timestep = timestep
         self.lig1 = lig1
         self.lig2 = lig2
         self.FF = FF
@@ -64,7 +69,19 @@ class Run(object):
         else:
             self.atomoffset = 0
             self.residueoffset = 0
-        
+    def settimestep(self):
+        if self.timestep == '1fs':
+            self.replacements['NSTEPS1'] = '100000'
+            self.replacements['NSTEPS2'] = '10000'
+            self.replacements['STEPSIZE'] = '1.0'
+            self.replacements['STEPTOGGLE'] = 'off'
+            
+        if self.timestep == '2fs':
+            self.replacements['NSTEPS1'] = '50000'
+            self.replacements['NSTEPS2'] = '5000'
+            self.replacements['STEPSIZE'] = '2.0'
+            self.replacements['STEPTOGGLE'] = 'on'
+            
     def makedir(self):
         lignames = self.lig1 + '-' +self.lig2
         directory = self.rootdir + '/FEP_' + lignames
@@ -335,6 +352,104 @@ class Run(object):
                 outfile.write('{:<5}{:>10}{:>10}\n'.format(line[0],
                                                         line[1],
                                                         line[2]))
+                
+    def write_newFEP_file(self, change_charges, change_vdw, FEP_vdw, writedir, lig_size1, lig_size2):
+        fepfiles = ['FEP1.fep','FEP2.fep','FEP3.fep']
+        lig_size1 = int(lig_size1)
+        lig_size2 = int(lig_size2)
+        lig_tot = lig_size1 + lig_size2
+        
+        for fepfile in fepfiles:
+        
+            with open(writedir + '/' + fepfile, 'w') as outfile:
+                total_atoms = len(change_charges)
+                outfile.write('!info: ' + self.lig1 + ' --> ' + self.lig2 + '\n')
+                outfile.write('[FEP]\n')
+                outfile.write('states 2\n')
+                outfile.write('use_softcore_max_potential on\n\n')
+
+                # defining the atom order taken user given offset into account
+                outfile.write('[atoms]\n')
+                for i in range(1, total_atoms + 1):
+                    outfile.write("{:5}{:5}\n".format(str(i),
+                                                      str(i + self.atomoffset)))
+                outfile.write('\n\n')
+
+                # changing charges
+                outfile.write('[change_charges]\n')
+                
+                # Now do the charge changes but for the new softcore implementation
+                # define softcore for the different lambdas
+                # bit of a stupid construct, can be properly fixed
+                if fepfile == 'FEP1.fep':
+                    charge1 = 1
+                    charge2 = 1
+                    
+                if fepfile == 'FEP2.fep':
+                    charge1 = 1
+                    charge2 = 2                
+                    
+                if fepfile == 'FEP3.fep':
+                    charge1 = 2
+                    charge2 = 2
+ 
+                for i in range(0, lig_tot):
+                    outfile.write("{:<5}{:>10}{:>10}\n".format(change_charges[i][0],
+                                                               change_charges[i][charge1],
+                                                               change_charges[i][charge2]
+                                                              ))
+                outfile.write('\n\n')
+
+                #add the Q atomtypes
+                outfile.write('[atom_types]\n')
+                for line in FEP_vdw:
+                    outfile.write(line + '\n')
+
+                outfile.write('DUM       0.0000    0.0000    0         0         0.0000    0.0000    1.0080')
+                outfile.write('\n\n')
+
+                outfile.write('[softcore]\n')
+                # ADD softcore
+                # define softcore for the different lambdas
+                if fepfile == 'FEP1.fep':
+                    soft1 = '0'
+                    soft2 = '20'
+                    
+                if fepfile == 'FEP2.fep':
+                    soft1 = '20'
+                    soft2 = '20'                
+                    
+                if fepfile == 'FEP3.fep':
+                    soft1 = '20'
+                    soft2 = '0'
+                    
+                for i in range(1, lig_tot + 1):
+                    outfile.write("{:<5}{:>10}{:>10}\n".format(str(i),soft1, soft2))
+
+                outfile.write('\n\n')
+
+                # changing atom types
+                outfile.write('[change_atoms]\n')
+                # Now do the vdw changes but for the new softcore implementation
+                # define softcore for the different lambdas
+                # bit of a stupid construct, can be properly fixed
+                if fepfile == 'FEP1.fep':
+                    vdw1 = 1
+                    vdw2 = 1
+                    
+                if fepfile == 'FEP2.fep':
+                    vdw1 = 1
+                    vdw2 = 2                
+                    
+                if fepfile == 'FEP3.fep':
+                    vdw1 = 2
+                    vdw2 = 2
+ 
+                for i in range(0, lig_tot):
+                    outfile.write("{:<5}{:>10}{:>10}\n".format(change_vdw[i][0],
+                                                               change_vdw[i][vdw1],
+                                                               change_vdw[i][vdw2]
+                                                              ))
             
             
     def merge_pdbs(self, writedir):
@@ -444,7 +559,7 @@ class Run(object):
         
     def write_MD_05(self, lambdas, writedir, lig_size1, lig_size2):
         lambda_tot = len(lambdas)
-        replacements = {}
+        replacements = self.replacements
         file_list1 = []
         file_list2 = []
         file_list3 = []
@@ -583,15 +698,28 @@ class Run(object):
                     
                 elif index == 2:
                     file_list3.append(filename + '.inp')
+                    
+            # Add endpoint softcore files
+            for md_softcore in ['md_softcore_1.inp','md_softcore_0.inp']:
+                file_in = s.INPUT_DIR + '/' + md_softcore
+                file_out = writedir + '/' + md_softcore
+                with open(file_in) as infile, open(file_out, 'w') as outfile:
+                    for line in infile:
+                        line = run.replace(line, replacements)
+                        outfile.write(line)
+                        if line == '[distance_restraints]\n':
+                            for line in overlapping_atoms:
+                                outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(line[0], line[1]))                    
+                    
         return [file_list1, file_list2, file_list3]
     
     
     def write_MD_1(self, lambdas, writedir, lig_size1, lig_size2, overlapping_atoms):
+        replacements = self.replacements
         totallambda = len(lambdas)
         file_list_1 = []
         file_list_2 = []
         file_list_3 = []
-        replacements = {}
         lig_total = lig_size1 + lig_size2
         lambda_1 = []
         lambda_2 = []
@@ -672,6 +800,18 @@ class Run(object):
                 filename_N = filename
                 filenr += 1
                 file_list_2.append(filename + '.inp')
+        
+            # Add endpoint softcore files
+            for md_softcore in ['md_softcore_1.inp','md_softcore_0.inp']:
+                file_in = s.INPUT_DIR + '/' + md_softcore
+                file_out = writedir + '/' + md_softcore
+                with open(file_in) as infile, open(file_out, 'w') as outfile:
+                    for line in infile:
+                        line = run.replace(line, replacements)
+                        outfile.write(line)
+                        if line == '[distance_restraints]\n':
+                            for line in overlapping_atoms:
+                                outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(line[0], line[1]))
 
         return [file_list_1, file_list_2, file_list_3]
     
@@ -697,7 +837,7 @@ class Run(object):
         
     def write_runfile(self, writedir, file_list):
         ntasks = getattr(s, self.cluster)['NTASKS']
-        src = s.INPUT_DIR + '/run.sh'
+        src = s.INPUT_DIR + '/run-softcore.sh'
         tgt = writedir + '/run' + self.cluster + '.sh'
         EQ_files = sorted(glob.glob(writedir + '/eq*.inp'))
         
@@ -709,7 +849,15 @@ class Run(object):
             md_2 = file_list[2]
         
         replacements = getattr(s, self.cluster)
-        replacements['FEPS']='FEP1.fep'
+        if self.start =='0.5' and self.softcore == True:
+            replacements['FEPS']='FEP2.fep FEP1.fep FEP3.fep'
+            
+        if self.start =='1' and self.softcore == True:
+            replacements['FEPS']='FEP1.fep FEP2.fep FEP3.fep'
+            
+        else:
+             replacements['FEPS']='FEP1.fep'
+            
         run_threads = '{}'.format(int(replacements['NTASKS']))
         
         with open(src) as infile, open(tgt, 'w') as outfile:
@@ -797,6 +945,23 @@ class Run(object):
                                 '.en\n'
                                 
                     outfile.write(filename)
+                    
+    def write_qfep_softcore(self, inputdir, windows, lambdas):
+        qfep_in = s.ROOT_DIR + '/INPUTS/qfep_soft.inp' 
+        qfep_out = writedir + '/inputfiles/qfep_soft.inp'
+        i = 0
+        total_l = len(lambdas)
+        
+        # TO DO: multiple files will need to be written out for temperature range
+        kT = f.kT(float(self.temperature))
+        replacements = {}
+        replacements['kT']=kT
+        replacements['WINDOWS']=windows
+        replacements['TOTAL_L']=str(total_l)
+        with open(qfep_in) as infile, open(qfep_out, 'w') as outfile:
+            for line in infile:
+                line = run.replace(line, replacements)
+                outfile.write(line)
 
     def write_qprep(self, writedir):
         replacements = {}
@@ -921,6 +1086,20 @@ if __name__ == "__main__":
                         help = "Total number of windows that will be run"
                        )
     
+    parser.add_argument('-sc', '--softcore',
+                        dest = "softcore",
+                        default = False,
+                        action="store_true",
+                        help = "Turn on if you want to use softcore"
+                       )
+    
+    parser.add_argument('-ts', '--timestep',
+                        dest = "timestep",
+                        choices = ['1fs','2fs'],
+                        default = "2fs",
+                        help = "Simulation timestep, default 2fs"
+                       )
+    
     args = parser.parse_args()
     run = Run(lig1 = args.lig1,
               lig2 = args.lig2,
@@ -932,9 +1111,11 @@ if __name__ == "__main__":
               start = args.start,
               temperature = args.temperature,
               replicates = args.replicates,
-              sampling = args.sampling
+              sampling = args.sampling,
+              timestep = args.timestep,
+              softcore = args.softcore
              )
-
+    run.settimestep()
     writedir = run.makedir()
     inputdir = writedir + '/inputfiles'
     a = run.read_files()
@@ -948,7 +1129,12 @@ if __name__ == "__main__":
     # Write the merged files
     run.change_lib(changes_for_libfiles, inputdir)
     FEP_vdw = run.change_prm(changes_for_prmfiles, inputdir)
-    run.write_FEP_file(change_charges, change_vdw, FEP_vdw, inputdir, lig_size1, lig_size2)
+    if args.softcore == True:
+        run.write_newFEP_file(change_charges, change_vdw, FEP_vdw, inputdir, lig_size1, lig_size2)
+    
+    else:
+        run.write_FEP_file(change_charges, change_vdw, FEP_vdw, inputdir, lig_size1, lig_size2)
+    
     run.merge_pdbs(inputdir)
     if args.system == 'protein':
         run.write_water_pdb(inputdir)
@@ -966,6 +1152,7 @@ if __name__ == "__main__":
     
     run.write_submitfile(writedir)
     run.write_qfep(inputdir, args.windows, lambdas)
+    run.write_qfep_softcore(inputdir, args.windows, lambdas)
     run.write_qprep(inputdir)
     run.qprep(inputdir)
     

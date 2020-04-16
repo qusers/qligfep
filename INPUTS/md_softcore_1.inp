@@ -1,10 +1,10 @@
 [MD]
-steps                     NSTEPS2
-stepsize                  STEPSIZE
+steps                     5000
+stepsize                  2.0
 temperature               T_VAR
 bath_coupling             10
-shake_hydrogens           STEPTOGGLE
-shake_solute              STEPTOGGLE
+shake_hydrogens           on
+shake_solute              on
 shake_solvent             on
 lrf                       on
 
@@ -32,10 +32,10 @@ non_bond                  25
 
 [files]
 topology                  dualtop.top
-trajectory                md_1000_0000.dcd
+trajectory                md_softcore_1.dcd
 restart                   eq5.re
-energy                    md_1000_0000.en
-final                     md_1000_0000.re
+energy                    md_softcore_1.en
+final                     md_softcore_1.re
 fep                       FEP_VAR
 
 [trajectory_atoms]

@@ -11,6 +11,6 @@ generate = 'python3 ' + opls2Q
 
 for pdb in glob.glob('*.pdb'):
     name = pdb.split('.')[0]
-    options = ' -l ' + name + ' -FF OPLS2015 -o Q -m'
+    options = ' -l ' + name + ' -FF OPLS2015 -o Q -m -vs'
     args = shlex.split(generate + options)
     out = check_output(args)
