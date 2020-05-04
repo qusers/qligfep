@@ -293,7 +293,7 @@ class Run(object):
             outfile.write('!info: ' + self.lig1 + ' --> ' + self.lig2 + '\n')
             outfile.write('[FEP]\n')
             outfile.write('states 2\n')
-            outfile.write('use_softcore_max_potential on\n\n')
+            outfile.write('softcore_use_max_potential on\n\n')
 
             # defining the atom order taken user given offset into account
             outfile.write('[atoms]\n')
