@@ -231,6 +231,9 @@ class Run(object):
                             i += 1
                             self.log['PDB2Q'][line[5]][i] = line[6]
                             self.log['QRESN'][line[5]][line[6]] = i
+
+        if len(self.PDB['w']) == 0:
+            del(self.PDB['w'])
         
     def decharge(self):
         charged_res = {'GLU':['GLH', 'CD', -1], 

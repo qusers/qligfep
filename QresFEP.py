@@ -15,7 +15,7 @@ class Run(object):
     """
     def __init__(self, cofactor, mutation, include, forcefield, windows,
                  sampling, system, cluster, temperature, replicates, dual, 
-                 preplocation, start, *args, **kwargs):
+                 preplocation, start, timestep, *args, **kwargs):
         
         self.cofactor = [cofactor]
         # Check whether all required files are there:
@@ -77,6 +77,7 @@ class Run(object):
         self.start = start
         self.dualMUT = {'0':[], '1':[]}
         self.nonAA = False
+        self.timestep = timestep
         
         self.replacements = {'ATOM_START_LIG1':'1',
                              'WATER_RESTRAINT':'',
@@ -90,8 +91,6 @@ class Run(object):
             
         if self.start == '0.5':
             self.replacements['EQ_LAMBDA'] = '0.500 0.500'
-    
-        print(self.chain)
     
     def checkFEP(self):
         if len(self.mutation[0]) == 1:
@@ -177,7 +176,11 @@ class Run(object):
                             self.CYX.append([line[0], line[1]])
                         
                     if block == 2 and len(line) > 2:
-                        chain = line[2]
+                        #dirty fix for wrong chain_ID
+                        if len(line) == 3:
+                            chain = ' '
+                        else:
+                            chain = line[2]
                         if chain not in self.PDB2Q:
                             self.PDB2Q[chain] = {}
                         self.PDB2Q[chain][line[1]] = line[0]
@@ -202,7 +205,7 @@ class Run(object):
                     line = IO.pdb_parse_in(line)
                     # The residue name should match the mutant residue number
                     # relative to Q numbering from protPREP.log
-                    line[6] = int(self.PDB2Q[self.mutation[1]])
+                    line[6] = int(self.PDB2Q[self.chain][self.mutation[1]])
                     if line[2] in self.backbone:
                         continue
                         
@@ -228,7 +231,7 @@ class Run(object):
                         
                         # Change to hybrid residue name
                         if self.dual == True:
-                            if str(line[6]) == self.PDB2Q[self.mutation[1]]:
+                            if str(line[6]) == self.PDB2Q[self.chain][self.mutation[1]]:
                                 line[4] = self.MUTresn  
                         
                         # Generate the dual topology residue in the PDB dictionary
@@ -240,7 +243,7 @@ class Run(object):
                             self.PDB[line[6]] = [line]                        
                         
                         if self.dual == True:
-                            if str(line[6]) == self.PDB2Q[self.mutation[1]]:
+                            if str(line[6]) == self.PDB2Q[self.chain][self.mutation[1]]:
                                 if line[2] == 'O':
                                     for MUTat in MUT:
                                         atnr += 1
@@ -310,7 +313,7 @@ class Run(object):
 
         # Read the WT residue
         if len(self.mutation[0]) == 1:
-            AA = AA(self.mutation[0])
+            AA = IO.AA(self.mutation[0])
         else:
             AA = self.mutation[0]        
         for line in FFlib[AA]:
@@ -429,7 +432,7 @@ class Run(object):
         
         # Write out PDB file
         with open(pdb_tmp, 'w') as outfile:
-            mutPDB = self.PDB[int(self.PDB2Q[self.mutation[1]])]
+            mutPDB = self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]
             for atom in mutPDB:            
                 outfile.write(IO.pdb_parse_out(atom) + '\n')
 
@@ -891,6 +894,19 @@ class Run(object):
                             else:
                                 outfile.write('\n')
 
+    def settimestep(self):
+        if self.timestep == '1fs':
+            self.replacements['NSTEPS1'] = '100000'
+            self.replacements['NSTEPS2'] = '10000'
+            self.replacements['STEPSIZE'] = '1.0'
+            self.replacements['STEPTOGGLE'] = 'off'
+            
+        if self.timestep == '2fs':
+            self.replacements['NSTEPS1'] = '50000'
+            self.replacements['NSTEPS2'] = '5000'
+            self.replacements['STEPSIZE'] = '2.0'
+            self.replacements['STEPTOGGLE'] = 'on'                            
+                            
     def write_dualFEPfile(self):
         # The vdW paramers need to be extracted from the reference .prm file
         prmfiles = [s.FF_DIR + '/' + self.forcefield + '.prm']
@@ -909,7 +925,7 @@ class Run(object):
             # Write out [atoms] section
             outfile.write('[atoms]\n')
             cnt = 0
-            res_ID = int(self.PDB2Q[self.mutation[1]])
+            res_ID = int(self.PDB2Q[self.chain][self.mutation[1]])
             for line in self.PDB[res_ID]:
                 cnt += 1
                 outfile.write('{:4d} {:4d} ! {:<4s}\n'.format(cnt, line[1], line[2]))
@@ -1118,6 +1134,12 @@ if __name__ == "__main__":
                         help = "Starting FEP in the middle or endpoint, 0.5 recommended for dual"
                        )
     
+    parser.add_argument('-ts', '--timestep',
+                        dest = "timestep",
+                        choices = ['1fs','2fs'],
+                        default = "2fs",
+                        help = "Simulation timestep, default 2fs"
+                       )
 
     args = parser.parse_args()
     run = Run(mutation = args.mutation,
@@ -1132,6 +1154,7 @@ if __name__ == "__main__":
               preplocation = args.preplocation,
               dual = args.dual,
               start = args.start,
+              timestep = args.timestep,              
               include = ('ATOM','HETATM')
              )
     
@@ -1147,9 +1170,10 @@ if __name__ == "__main__":
     run.write_qprep()                   # 09
     run.run_qprep()                     # 10
     run.get_lambdas()                   # 11
-    run.write_EQ()                      # 12
-    run.write_MD()                      # 13
-    run.write_submitfile()              # 14
-    run.write_runfile()                 # 15
-    run.write_FEPfile()                 # 16
-    run.write_qfep()                    # 17
+    run.settimestep()                   # 12
+    run.write_EQ()                      # 13
+    run.write_MD()                      # 14
+    run.write_submitfile()              # 15
+    run.write_runfile()                 # 16
+    run.write_FEPfile()                 # 17
+    run.write_qfep()                    # 18
