@@ -55,7 +55,7 @@ according to the given example.
 - ffld_server  
 - cgenff  
 - Protein Preparation Wizard  
-- Python2.7.XX  
+- Python3.XX  
 - Q  
 
 contact:willem.jespers@icm.uu.se
