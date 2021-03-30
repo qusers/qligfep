@@ -976,8 +976,8 @@
         N     H
         N     CA
         CA   HA1
-        CA   HA1
-        CA   HA1
+        CA   HA2
+        CA   HA3
     [impropers]
         -C    N     CA   H
     [connections]
