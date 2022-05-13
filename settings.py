@@ -11,9 +11,9 @@ Q_DIR = {'CSB':'/home/jespers/software/q6/bin/',
          #'LOCAL':'/Users/willemjespers/Software/Q6/bin/'
         }
 BIN = os.path.join(ROOT_DIR, "bin")
+
+# some example schrodinger directory
 #SCHROD_DIR = '/opt/schrodinger/suites2017-3/'
-#SCHROD_DIR = '/home/apps/schrodinger2017/'
-SCHROD_DIR = '/rmvw9010_software_home/schrodinger/latest/'
 
 # CLUSTER INPUTS. To add your own cluster, use the same input as below
 CSB = {'NODES'        : '1',
