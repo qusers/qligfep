@@ -38,6 +38,9 @@ based on ligand binding of CDk2 inhibitors.
 
     git clone https://github.com/qusers/qligfep.git
 
+- Create the shipped conda environment
+
+    conda env create -f environment.yml
 
 In settings.py:  
 
@@ -56,7 +59,7 @@ according to the given example.
 - ffld_server  
 - cgenff  
 - Protein Preparation Wizard  
-- Python3.XX  
+- Python3.10  
 - Q  
 
 contact: [Willem Jespers (PhD)](mailto:willem.jespers@icm.uu.se?subject=[QLigFEP]%20[QResFEP])
