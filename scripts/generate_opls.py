@@ -5,7 +5,7 @@ import os
 
 curdir = os.getcwd()
 os.chdir(curdir)
-opls2Q = '/home/wjespers/software/qligfep/opls2Q.py'
+opls2Q = '../opls2Q.py'
 generate = 'python3 ' + opls2Q
 
 
