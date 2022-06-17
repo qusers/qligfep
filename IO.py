@@ -6,7 +6,7 @@ import stat
 import numpy as np
 
 import functions as f
-import settings as s
+import src.settings as s
 
 ## Some useful objects TO DO add GLH etc.
 charged_res = {'HIS': {'HD1' : 'HID',
