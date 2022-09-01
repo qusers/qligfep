@@ -1,0 +1,474 @@
+Forcefield: OPLS 14
+WARNING mmlewis warning: Wrong Lewis structure in structure input file
+mmlewis warning: Problems were identified with the following atoms:
+mmlewis warning:  1 2 10 11 12 13 14 15 17 18 20 21 23 24 25 26 
+mmlewis warning: Now attempting to fix the lewis structure.
+WARNING mmlewis warning: A valid lewis structure was successfully generated.
+================================================================================
+  ATOMTYPES and PARAMETERS for molecule: 
+================================================================================
+ Total charge of the system =  0.0000
+Formal charge of the system =  0.0000
+Charges
+atom  formal fractional formal 
+1       0     0.000  
+2       0     0.000  
+3       0     0.000  
+4       0     0.000  
+5       0     0.000  
+6       0     0.000  
+7       0     0.000  
+8       0     0.000  
+9       0     0.000  
+10      0     0.000  
+11      0     0.000  
+12      0     0.000  
+13      0     0.000  
+14      0     0.000  
+15      0     0.000  
+16      0     0.000  
+17      0     0.000  
+18      0     0.000  
+19      0     0.000  
+20      0     0.000  
+21      0     0.000  
+22      0     0.000  
+23      0     0.000  
+24      0     0.000  
+25      0     0.000  
+26      0     0.000  
+27      0     0.000  
+28      0     0.000  
+29      0     0.000  
+30      0     0.000  
+31      0     0.000  
+32      0     0.000  
+33      0     0.000  
+34      0     0.000  
+35      0     0.000  
+36      0     0.000  
+37      0     0.000  
+38      0     0.000  
+39      0     0.000  
+40      0     0.000  
+41      0     0.000  
+42      0     0.000  
+43      0     0.000  
+44      0     0.000  
+45      0     0.000  
+46      0     0.000  
+47      0     0.000  
+48      0     0.000  
+49      0     0.000  
+50      0     0.000  
+BCI's             index  type   type    bci        assignement info
+ C1      N14         0   621    620    -0.3506   exact type       CQ-NB
+ C1      N21         0   621    622    -0.3142   exact type       CQ-NB
+ C1      N22         0   621   6004    -0.2000   score  150    CQ-NE ==> CA-NE
+ C2      N18         0   627    626    -0.3857   exact type       CRA-N5B
+ C2      N19         0   627    628    -0.1350   exact type       CRA-NA
+ C2      H28         0   627    146     0.1197   exact type       CRA-HA
+ C3      C4          0   181    135    -0.0000   exact type       CT-CT
+ C3      O16         0   181    180    -0.2000   exact type       CT-OS
+ C3      H29         0   181    140     0.0300   exact type       CT-HC
+ C3      H30         0   181    140     0.0300   exact type       CT-HC
+ C4      C5          0   135    135     0.0000   exact type       CT-CT
+ C4      C9          0   135    135     0.0000   exact type       CT-CT
+ C4      H31         0   135    140     0.0600   exact type       CT-HC
+ C5      C6          0   135    135     0.0000   exact type       CT-CT
+ C5      H32         0   135    140     0.0600   exact type       CT-HC
+ C5      H33         0   135    140     0.0600   exact type       CT-HC
+ C6      C7          0   135    135     0.0000   exact type       CT-CT
+ C6      H34         0   135    140     0.0600   exact type       CT-HC
+ C6      H35         0   135    140     0.0600   exact type       CT-HC
+ C7      C8          0   135    135     0.0000   exact type       CT-CT
+ C7      H36         0   135    140     0.0600   exact type       CT-HC
+ C7      H37         0   135    140     0.0600   exact type       CT-HC
+ C8      C9          0   135    135     0.0000   exact type       CT-CT
+ C8      H38         0   135    140     0.0600   exact type       CT-HC
+ C8      H39         0   135    140     0.0600   exact type       CT-HC
+ C9      H40         0   135    140     0.0600   exact type       CT-HC
+ C9      H41         0   135    140     0.0600   exact type       CT-HC
+ C10     C11         0   145    145     0.0000   exact type       CA-CA
+ C10     C24         0   145    145     0.0000   exact type       CA-CA
+ C10     H42         0   145    146     0.1150   exact type       CA-HA
+ C11     C12         0   145    145     0.0000   exact type       CA-CA
+ C11     S25         0   145    496    -0.0075   empirical rule   CA-SZ
+ C12     C13         0   145    145     0.0000   exact type       CA-CA
+ C12     H43         0   145    146     0.1150   exact type       CA-HA
+ C13     C23         0   145    145     0.0000   exact type       CA-CA
+ C13     H44         0   145    146     0.1150   exact type       CA-HA
+ N14     C15         0   620    625     0.3819   exact type       NB-CA
+ C15     O16         0   625    180    -0.1000   exact symbol     CA-OS
+ C15     C17         0   625    624    -0.0456   exact type       CA-C56B
+ C17     N18         0   624    626    -0.2395   exact type       C56B-N5B
+ C17     C20         0   624    623     0.1559   exact type       C56B-C56A
+ N19     C20         0   628    623     0.1447   exact type       NA-C56A
+ N19     H45         0   628    240     0.4360   exact type       NA-H
+ C20     N21         0   623    622    -0.4559   exact type       C56A-NB
+ N22     C23         0  6004    145     0.2000   exact type       NE-CA
+ N22     H46         0  6004    240     0.3800   exact type       NE-H
+ C23     C24         0   145    145     0.0000   exact type       CA-CA
+ C24     H47         0   145    146     0.1150   exact type       CA-HA
+ S25     O26         0   496    497    -0.4600   exact type       SZ-OZ
+ S25     C27         0   496    135     0.1450   exact type       SZ-CT
+ C27     H48         0   135    140     0.0600   exact type       CT-HC
+ C27     H49         0   135    140     0.0600   exact type       CT-HC
+ C27     H50         0   135    140     0.0600   exact type       CT-HC
+OPLSAA FORCE FIELD TYPE ASSIGNED
+-------------------------------------------------------------------------------
+ atom   type  vdw  symbol    charge   sigma    epsilon  quality   comment 
+-------------------------------------------------------------------------------
+ C1       621  C4   CQ       0.8648   3.5500   0.0700 high   C2  in purine
+ C2       627  C4   CRA      0.4010   3.5500   0.0700 high   C8  in purine
+ C3       181  C1   CT       0.1400   3.5000   0.0660 high   C: ether
+ C4       135  C1   CT      -0.0600   3.5000   0.0660 high   C: alkanes
+ C5       135  C1   CT      -0.1200   3.5000   0.0660 high   C: alkanes
+ C6       135  C1   CT      -0.1200   3.5000   0.0660 high   C: alkanes
+ C7       135  C1   CT      -0.1200   3.5000   0.0660 high   C: alkanes
+ C8       135  C1   CT      -0.1200   3.5000   0.0660 high   C: alkanes
+ C9       135  C1   CT      -0.1200   3.5000   0.0660 high   C: alkanes
+ C10      145  C4   CA      -0.1150   3.5500   0.0700 high   Benzene C - 12 site JACS,112,4768-90
+ C11      145  C4   CA       0.0075   3.5500   0.0700 high   Benzene C - 12 site JACS,112,4768-90
+ C12      145  C4   CA      -0.1150   3.5500   0.0700 high   Benzene C - 12 site JACS,112,4768-90
+ C13      145  C4   CA      -0.1150   3.5500   0.0700 high   Benzene C - 12 site JACS,112,4768-90
+ N14      620  N3   NB      -0.7325   3.2800   0.1700 high   N1  in purine (9H)
+ C15      625  C4   CA       0.5275   3.5500   0.0700 high   C6  in purine
+ O16      180  O1   OS      -0.3000   2.9000   0.1400 high   O: ether
+ C17      624  C4   C56B     0.0380   3.5500   0.0700 high   C5  in purine
+ N18      626  N3   N5B     -0.6252   3.2800   0.1700 high   N7  in purine
+ N19      628  N1   NA      -0.7157   3.2500   0.1700 high   N9  in purine
+ C20      623  C4   C56A     0.7565   3.5500   0.0700 high   C4  in purine
+ N21      622  N3   NB      -0.7701   3.2800   0.1700 high   N3  in purine
+ N22     6004  N4   NE      -0.7800   3.3000   0.1700 high   N attached to 6-membered aromatic ring
+ C23      145  C4   CA       0.2000   3.5500   0.0700 high   Benzene C - 12 site JACS,112,4768-90
+ C24      145  C4   CA      -0.1150   3.5500   0.0700 high   Benzene C - 12 site JACS,112,4768-90
+ S25      496  S6   SZ       0.3075   3.5600   0.3950 high   S in sulfoxide and related
+ O26      497  O10  OZ      -0.4600   2.7000   0.2800 high   terminal O in sulfoxide
+ C27      135  C1   CT      -0.0350   3.5000   0.0660 high   C: alkanes
+ H28      146  H6   HA       0.1197   2.4200   0.0300 high   Benzene H - 12 site JACS,112,4768-90
+ H29      140  H1   HC       0.0300   2.5000   0.0300 high   H: alkanes
+ H30      140  H1   HC       0.0300   2.5000   0.0300 high   H: alkanes
+ H31      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H32      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H33      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H34      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H35      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H36      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H37      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H38      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H39      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H40      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H41      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H42      146  H6   HA       0.1150   2.4200   0.0300 high   Benzene H - 12 site JACS,112,4768-90
+ H43      146  H6   HA       0.1150   2.4200   0.0300 high   Benzene H - 12 site JACS,112,4768-90
+ H44      146  H6   HA       0.1150   2.4200   0.0300 high   Benzene H - 12 site JACS,112,4768-90
+ H45      240  H8   H        0.4360   0.5000   0.0300 high   H on neutral N
+ H46      240  H8   H        0.3800   0.5000   0.0300 high   H on neutral N
+ H47      146  H6   HA       0.1150   2.4200   0.0300 high   Benzene H - 12 site JACS,112,4768-90
+ H48      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H49      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+ H50      140  H1   HC       0.0600   2.5000   0.0300 high   H: alkanes
+------------------------------------------------------------------------------
+ Stretch            k            r0    quality         bt        comment
+ C1      N14     502.00000    1.32400   high         0  => 0     CQ-NB      ==> NB-CQ     
+ C1      N21     502.00000    1.32400   high         0  => 0     CQ-NB      ==> NB-CQ     
+ C1      N22     410.00000    1.37500   high         0  => 0     CQ-NE      ==> NE-CQ     
+ C2      N18     488.00000    1.33500   high         0  => 0     CRA-N5B    ==> N5B-CRA   
+ C2      N19     477.00000    1.34300   high         0  => 0     CRA-NA     ==> NA-CRA    
+ C2      H28     367.00000    1.08000   high         0  => 0     CRA-HA     ==> HA-CRA    
+ C3      C4      268.00000    1.52900   high         0  => 0     CT-CT      ==> CT-CT     
+ C3      O16     320.00000    1.41000   high         0  => 0     CT-OS      ==> OS-CT     
+ C3      H29     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C3      H30     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C4      C5      268.00000    1.52900   high         0  => 0     CT-CT      ==> CT-CT     
+ C4      C9      268.00000    1.52900   high         0  => 0     CT-CT      ==> CT-CT     
+ C4      H31     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C5      C6      268.00000    1.52900   high         0  => 0     CT-CT      ==> CT-CT     
+ C5      H32     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C5      H33     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C6      C7      268.00000    1.52900   high         0  => 0     CT-CT      ==> CT-CT     
+ C6      H34     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C6      H35     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C7      C8      268.00000    1.52900   high         0  => 0     CT-CT      ==> CT-CT     
+ C7      H36     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C7      H37     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C8      C9      268.00000    1.52900   high         0  => 0     CT-CT      ==> CT-CT     
+ C8      H38     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C8      H39     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C9      H40     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C9      H41     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C10     C11     469.00000    1.40000   high         0  => 0     CA-CA      ==> CA-CA     
+ C10     C24     469.00000    1.40000   high         0  => 0     CA-CA      ==> CA-CA     
+ C10     H42     367.00000    1.08000   high         0  => 0     CA-HA      ==> HA-CA     
+ C11     C12     469.00000    1.40000   high         0  => 0     CA-CA      ==> CA-CA     
+ C11     S25     200.00000    1.81700   high         0  => 0     CA-SZ      ==> SZ-CA     
+ C12     C13     469.00000    1.40000   high         0  => 0     CA-CA      ==> CA-CA     
+ C12     H43     367.00000    1.08000   high         0  => 0     CA-HA      ==> HA-CA     
+ C13     C23     469.00000    1.40000   high         0  => 0     CA-CA      ==> CA-CA     
+ C13     H44     367.00000    1.08000   high         0  => 0     CA-HA      ==> HA-CA     
+ N14     C15     483.00000    1.33900   high         0  => 0     NB-CA      ==> NB-CA     
+ C15     O16     450.00000    1.36400   high         0  => 0     CA-OS      ==> OS-CA     
+ C15     C17     469.00000    1.40400   high         0  => 0     CA-C56B    ==> CA-C56B   
+ C17     N18     425.00000    1.39100   high         0  => 0     C56B-N5B   ==> N5B-C56B  
+ C17     C20     447.00000    1.41900   high         0  => 0     C56B-C56A  ==> C56B-C56A 
+ N19     C20     428.00000    1.38000   high         0  => 0     NA-C56A    ==> NA-C56A   
+ N19     H45     434.00000    1.01000   high         0  => 0     NA-H       ==> NA-H      
+ C20     N21     461.00000    1.35400   high         0  => 0     C56A-NB    ==> NB-C56A   
+ N22     C23     481.00000    1.39300   high         0  => 0     NE-CA      ==> NE-CA     
+ N22     H46     434.00000    1.01000   high         0  => 0     NE-H       ==> NE-H      
+ C23     C24     469.00000    1.40000   high         0  => 0     CA-CA      ==> CA-CA     
+ C24     H47     367.00000    1.08000   high         0  => 0     CA-HA      ==> HA-CA     
+ S25     O26     700.00000    1.53000   high         0  => 0     SZ-OZ      ==> SZ-OZ     
+ S25     C27     340.00000    1.85300   high         0  => 0     SZ-CT      ==> SZ-CT     
+ C27     H48     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C27     H49     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ C27     H50     340.00000    1.09000   high         0  => 0     CT-HC      ==> HC-CT     
+ Bending                      k       theta0    quality   at  comment
+ N14     C1      N21       70.00000  129.10000   high     0   NB-CQ-NB          ==> NB-CQ-NB         
+ N14     C1      N22       85.00000  116.09700   high     0   NB-CQ-NE          ==> NE-CQ-NB         
+ N21     C1      N22       85.00000  116.09700   high     0   NB-CQ-NE          ==> NE-CQ-NB         
+ N18     C2      N19       70.00000  120.00000   high     0   N5B-CRA-NA        ==> NA-CRA-N5B       
+ N18     C2      H28       35.00000  120.00000   high     0   N5B-CRA-HA        ==> N5B-CRA-HA       
+ N19     C2      H28       35.00000  120.00000   high     0   NA-CRA-HA         ==> NA-CRA-HA        
+ C4      C3      O16       50.00000  109.50000   high     0   CT-CT-OS          ==> OS-CT-CT         
+ C4      C3      H29       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C4      C3      H30       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ O16     C3      H29       35.00000  109.50000   high     0   OS-CT-HC          ==> OS-CT-HC         
+ O16     C3      H30       35.00000  109.50000   high     0   OS-CT-HC          ==> OS-CT-HC         
+ H29     C3      H30       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ C3      C4      C5        58.35000  112.70000   high     0   CT-CT-CT          ==> CT-CT-CT         
+ C3      C4      C9        58.35000  112.70000   high     0   CT-CT-CT          ==> CT-CT-CT         
+ C3      C4      H31       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C5      C4      C9        58.35000  112.70000   high     0   CT-CT-CT          ==> CT-CT-CT         
+ C5      C4      H31       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C9      C4      H31       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C4      C5      C6        58.35000  112.70000   high     0   CT-CT-CT          ==> CT-CT-CT         
+ C4      C5      H32       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C4      C5      H33       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C6      C5      H32       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C6      C5      H33       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ H32     C5      H33       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ C5      C6      C7        58.35000  112.70000   high     0   CT-CT-CT          ==> CT-CT-CT         
+ C5      C6      H34       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C5      C6      H35       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C7      C6      H34       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C7      C6      H35       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ H34     C6      H35       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ C6      C7      C8        58.35000  112.70000   high     0   CT-CT-CT          ==> CT-CT-CT         
+ C6      C7      H36       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C6      C7      H37       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C8      C7      H36       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C8      C7      H37       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ H36     C7      H37       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ C7      C8      C9        58.35000  112.70000   high     0   CT-CT-CT          ==> CT-CT-CT         
+ C7      C8      H38       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C7      C8      H39       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C9      C8      H38       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C9      C8      H39       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ H38     C8      H39       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ C4      C9      C8        58.35000  112.70000   high     0   CT-CT-CT          ==> CT-CT-CT         
+ C4      C9      H40       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C4      C9      H41       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C8      C9      H40       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ C8      C9      H41       37.50000  110.70000   high     0   CT-CT-HC          ==> HC-CT-CT         
+ H40     C9      H41       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ C11     C10     C24       63.00000  120.00000   high     0   CA-CA-CA          ==> CA-CA-CA         
+ C11     C10     H42       35.00000  120.00000   high     0   CA-CA-HA          ==> HA-CA-CA         
+ C24     C10     H42       35.00000  120.00000   high     0   CA-CA-HA          ==> HA-CA-CA         
+ C10     C11     C12       63.00000  120.00000   high     0   CA-CA-CA          ==> CA-CA-CA         
+ C10     C11     S25       65.00000  117.33600   high     0   CA-CA-SZ          ==> SZ-CA-CA         
+ C12     C11     S25       65.00000  117.33600   high     0   CA-CA-SZ          ==> SZ-CA-CA         
+ C11     C12     C13       63.00000  120.00000   high     0   CA-CA-CA          ==> CA-CA-CA         
+ C11     C12     H43       35.00000  120.00000   high     0   CA-CA-HA          ==> HA-CA-CA         
+ C13     C12     H43       35.00000  120.00000   high     0   CA-CA-HA          ==> HA-CA-CA         
+ C12     C13     C23       63.00000  120.00000   high     0   CA-CA-CA          ==> CA-CA-CA         
+ C12     C13     H44       35.00000  120.00000   high     0   CA-CA-HA          ==> HA-CA-CA         
+ C23     C13     H44       35.00000  120.00000   high     0   CA-CA-HA          ==> HA-CA-CA         
+ C1      N14     C15       70.00000  118.60000   high     0   CQ-NB-CA          ==> CQ-NB-CA         
+ N14     C15     O16       95.00000  115.10700   high     0   NB-CA-OS          ==> OS-CA-NB         
+ N14     C15     C17       70.00000  117.30000   high     0   NB-CA-C56B        ==> NB-CA-C56B       
+ O16     C15     C17       70.00000  120.00000   high     0   OS-CA-C56B        ==> CA-CA-OS         
+ C3      O16     C15       75.00000  111.00000   high     0   CT-OS-CA          ==> CT-OS-CA         
+ C15     C17     N18       60.00000  127.02500   high     0   CA-C56B-N5B       ==> N5B-C56B-CA      
+ C15     C17     C20       85.00000  116.20000   high     0   CA-C56B-C56A      ==> CA-C56B-C56A     
+ N18     C17     C20       80.00000  112.17400   high     0   N5B-C56B-C56A     ==> N5B-C56B-C56A    
+ C2      N18     C17       95.00000  105.97700   high     0   CRA-N5B-C56B      ==> CRA-N5B-C56B     
+ C2      N19     C20       90.00000  105.79800   high     0   CRA-NA-C56A       ==> CRA-NA-C56A      
+ C2      N19     H45       35.00000  120.00000   high     0   CRA-NA-H          ==> H-NA-CRA         
+ C20     N19     H45       35.00000  123.10000   high     0   C56A-NA-H         ==> H-NA-C56A        
+ C17     C20     N19       70.00000  104.40000   high     0   C56B-C56A-NA      ==> NA-C56A-C56B     
+ C17     C20     N21       70.00000  127.70000   high     0   C56B-C56A-NB      ==> NB-C56A-C56B     
+ N19     C20     N21       70.00000  126.20000   high     0   NA-C56A-NB        ==> NA-C56A-NB       
+ C1      N21     C20       70.00000  111.00000   high     0   CQ-NB-C56A        ==> CQ-NB-C56A       
+ C1      N22     C23       60.00000  128.10000   high     0   CQ-NE-CA          ==> CQ-NE-CA         
+ C1      N22     H46       50.00000  113.50000   high     0   CQ-NE-H           ==> H-NE-CQ          
+ C23     N22     H46       35.00000  113.50000   high     0   CA-NE-H           ==> H-NE-CA          
+ C13     C23     N22       70.00000  120.10000   high     0   CA-CA-NE          ==> NE-CA-CA         
+ C13     C23     C24       63.00000  120.00000   high     0   CA-CA-CA          ==> CA-CA-CA         
+ N22     C23     C24       70.00000  120.10000   high     0   NE-CA-CA          ==> NE-CA-CA         
+ C10     C24     C23       63.00000  120.00000   high     0   CA-CA-CA          ==> CA-CA-CA         
+ C10     C24     H47       35.00000  120.00000   high     0   CA-CA-HA          ==> HA-CA-CA         
+ C23     C24     H47       35.00000  120.00000   high     0   CA-CA-HA          ==> HA-CA-CA         
+ C11     S25     O26      105.00000  105.91300   high     0   CA-SZ-OZ          ==> OZ-SZ-CA         
+ C11     S25     C27       80.00000   95.00000   med      0   CA-SZ-CT          ==> C?-SZ-C?         
+ O26     S25     C27       74.00000  107.00000   high     0   OZ-SZ-CT          ==> OZ-SZ-CT         
+ S25     C27     H48       35.00000  109.50000   high     0   SZ-CT-HC          ==> SZ-CT-HC         
+ S25     C27     H49       35.00000  109.50000   high     0   SZ-CT-HC          ==> SZ-CT-HC         
+ S25     C27     H50       35.00000  109.50000   high     0   SZ-CT-HC          ==> SZ-CT-HC         
+ H48     C27     H49       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ H48     C27     H50       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ H49     C27     H50       33.00000  107.80000   high     0   HC-CT-HC          ==> HC-CT-HC         
+ proper Torsion                     V1      V2      V3      V4    quality  tt  comment
+ N21     C1      N14     C15       0.000   7.250   0.000   0.000    high   0   NB-CQ-NB-CA          ==> ??-NB-CA-??         
+ N22     C1      N14     C15       0.000   7.250   0.000   0.000    high   0   NE-CQ-NB-CA          ==> ??-NB-CA-??         
+ N14     C1      N21     C20       0.000   7.250   0.000   0.000    high   0   NB-CQ-NB-C56A        ==> ??-NB-CA-??         
+ N22     C1      N21     C20       0.000   7.250   0.000   0.000    high   0   NE-CQ-NB-C56A        ==> ??-NB-CA-??         
+ N14     C1      N22     C23       0.000   2.500   0.000   0.000    high   0   NB-CQ-NE-CA          ==> CA-NE-CA-NB         
+ N14     C1      N22     H46       0.000   3.500   0.000   0.000    high   0   NB-CQ-NE-H           ==> H-NE-CA-NB          
+ N21     C1      N22     C23       0.000   2.500   0.000   0.000    high   0   NB-CQ-NE-CA          ==> CA-NE-CA-NB         
+ N21     C1      N22     H46       0.000   3.500   0.000   0.000    high   0   NB-CQ-NE-H           ==> H-NE-CA-NB          
+ N19     C2      N18     C17       0.000   7.250   0.000   0.000    high   0   NA-CRA-N5B-C56B      ==> ??-NB-CA-??         
+ H28     C2      N18     C17       0.000   7.250   0.000   0.000    high   0   HA-CRA-N5B-C56B      ==> ??-NB-CA-??         
+ N18     C2      N19     C20       0.000   7.250   0.000   0.000    high   0   N5B-CRA-NA-C56A      ==> ??-NA-CA-??         
+ N18     C2      N19     H45       0.000   4.650   0.000   0.000    high   0   N5B-CRA-NA-H         ==> H-NA-CRA-N5B        
+ H28     C2      N19     C20       0.000   7.250   0.000   0.000    high   0   HA-CRA-NA-C56A       ==> ??-NA-CA-??         
+ H28     C2      N19     H45       0.000   4.650   0.000   0.000    high   0   HA-CRA-NA-H          ==> H-NA-CRA-HA         
+ O16     C3      C4      C5        1.255  -0.619   0.546   0.000    high   0   OS-CT-CT-CT          ==> OS-CT-CT-CT         
+ O16     C3      C4      C9        1.255  -0.619   0.546   0.000    high   0   OS-CT-CT-CT          ==> OS-CT-CT-CT         
+ O16     C3      C4      H31       0.000   0.000   0.468   0.000    high   0   OS-CT-CT-HC          ==> O?-CT-CT-HC         
+ H29     C3      C4      C5        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H29     C3      C4      C9        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H29     C3      C4      H31       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H30     C3      C4      C5        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H30     C3      C4      C9        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H30     C3      C4      H31       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ C4      C3      O16     C15      -0.657  -0.716   0.679   0.000    high   0   CT-CT-OS-CA          ==> CA-OS-CT-CT         
+ H29     C3      O16     C15       0.000   0.000   0.161   0.000    high   0   HC-CT-OS-CA          ==> C?-OS-CT-HC         
+ H30     C3      O16     C15       0.000   0.000   0.161   0.000    high   0   HC-CT-OS-CA          ==> C?-OS-CT-HC         
+ C3      C4      C5      C6        1.135  -0.151   0.400   0.000    high   0   CT-CT-CT-CT          ==> CT-CT-CT-CT         
+ C3      C4      C5      H32       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C3      C4      C5      H33       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C9      C4      C5      C6        1.135  -0.151   0.400   0.000    high   0   CT-CT-CT-CT          ==> CT-CT-CT-CT         
+ C9      C4      C5      H32       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C9      C4      C5      H33       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ H31     C4      C5      C6        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H31     C4      C5      H32       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H31     C4      C5      H33       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ C3      C4      C9      C8        1.135  -0.151   0.400   0.000    high   0   CT-CT-CT-CT          ==> CT-CT-CT-CT         
+ C3      C4      C9      H40       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C3      C4      C9      H41       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C5      C4      C9      C8        1.135  -0.151   0.400   0.000    high   0   CT-CT-CT-CT          ==> CT-CT-CT-CT         
+ C5      C4      C9      H40       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C5      C4      C9      H41       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ H31     C4      C9      C8        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H31     C4      C9      H40       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H31     C4      C9      H41       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ C4      C5      C6      C7        1.135  -0.151   0.400   0.000    high   0   CT-CT-CT-CT          ==> CT-CT-CT-CT         
+ C4      C5      C6      H34       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C4      C5      C6      H35       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ H32     C5      C6      C7        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H32     C5      C6      H34       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H32     C5      C6      H35       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H33     C5      C6      C7        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H33     C5      C6      H34       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H33     C5      C6      H35       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ C5      C6      C7      C8        1.135  -0.151   0.400   0.000    high   0   CT-CT-CT-CT          ==> CT-CT-CT-CT         
+ C5      C6      C7      H36       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C5      C6      C7      H37       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ H34     C6      C7      C8        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H34     C6      C7      H36       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H34     C6      C7      H37       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H35     C6      C7      C8        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H35     C6      C7      H36       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H35     C6      C7      H37       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ C6      C7      C8      C9        1.135  -0.151   0.400   0.000    high   0   CT-CT-CT-CT          ==> CT-CT-CT-CT         
+ C6      C7      C8      H38       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C6      C7      C8      H39       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ H36     C7      C8      C9        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H36     C7      C8      H38       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H36     C7      C8      H39       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H37     C7      C8      C9        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H37     C7      C8      H38       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H37     C7      C8      H39       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ C7      C8      C9      C4        1.135  -0.151   0.400   0.000    high   0   CT-CT-CT-CT          ==> CT-CT-CT-CT         
+ C7      C8      C9      H40       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ C7      C8      C9      H41       0.000   0.000   0.300   0.000    high   0   CT-CT-CT-HC          ==> HC-CT-CT-CT         
+ H38     C8      C9      C4        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H38     C8      C9      H40       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H38     C8      C9      H41       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H39     C8      C9      C4        0.000   0.000   0.300   0.000    high   0   HC-CT-CT-CT          ==> HC-CT-CT-CT         
+ H39     C8      C9      H40       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ H39     C8      C9      H41       0.000   0.000   0.300   0.000    high   0   HC-CT-CT-HC          ==> HC-CT-CT-HC         
+ C24     C10     C11     C12       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-CA          ==> CA-CA-CA-CA         
+ C24     C10     C11     S25       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-SZ          ==> ??-CA-CA-??         
+ H42     C10     C11     C12       0.000   7.250   0.000   0.000    high   0   HA-CA-CA-CA          ==> HA-CA-CA-CA         
+ H42     C10     C11     S25       0.000   7.250   0.000   0.000    high   0   HA-CA-CA-SZ          ==> ??-CA-CA-??         
+ C11     C10     C24     C23       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-CA          ==> CA-CA-CA-CA         
+ C11     C10     C24     H47       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-HA          ==> HA-CA-CA-CA         
+ H42     C10     C24     C23       0.000   7.250   0.000   0.000    high   0   HA-CA-CA-CA          ==> HA-CA-CA-CA         
+ H42     C10     C24     H47       0.000   7.250   0.000   0.000    high   0   HA-CA-CA-HA          ==> HA-CA-CA-HA         
+ C10     C11     C12     C13       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-CA          ==> CA-CA-CA-CA         
+ C10     C11     C12     H43       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-HA          ==> HA-CA-CA-CA         
+ S25     C11     C12     C13       0.000   7.250   0.000   0.000    high   0   SZ-CA-CA-CA          ==> ??-CA-CA-??         
+ S25     C11     C12     H43       0.000   7.250   0.000   0.000    high   0   SZ-CA-CA-HA          ==> ??-CA-CA-??         
+ C10     C11     S25     O26       0.000   0.000   0.000   0.000    low    0   CA-CA-SZ-OZ          ==> ??-SZ-CA-??         
+ C10     C11     S25     C27       0.000   0.000   0.000   0.000    low    0   CA-CA-SZ-CT          ==> ??-SZ-CA-??         
+ C12     C11     S25     O26       0.000   0.000   0.000   0.000    low    0   CA-CA-SZ-OZ          ==> ??-SZ-CA-??         
+ C12     C11     S25     C27       0.000   0.000   0.000   0.000    low    0   CA-CA-SZ-CT          ==> ??-SZ-CA-??         
+ C11     C12     C13     C23       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-CA          ==> CA-CA-CA-CA         
+ C11     C12     C13     H44       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-HA          ==> HA-CA-CA-CA         
+ H43     C12     C13     C23       0.000   7.250   0.000   0.000    high   0   HA-CA-CA-CA          ==> HA-CA-CA-CA         
+ H43     C12     C13     H44       0.000   7.250   0.000   0.000    high   0   HA-CA-CA-HA          ==> HA-CA-CA-HA         
+ C12     C13     C23     N22       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-NE          ==> ??-CA-CA-??         
+ C12     C13     C23     C24       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-CA          ==> CA-CA-CA-CA         
+ H44     C13     C23     N22       0.000   7.250   0.000   0.000    high   0   HA-CA-CA-NE          ==> ??-CA-CA-??         
+ H44     C13     C23     C24       0.000   7.250   0.000   0.000    high   0   HA-CA-CA-CA          ==> HA-CA-CA-CA         
+ C1      N14     C15     O16       0.000   7.250   0.000   0.000    high   0   CQ-NB-CA-OS          ==> ??-NB-CA-??         
+ C1      N14     C15     C17       0.000   7.250   0.000   0.000    high   0   CQ-NB-CA-C56B        ==> ??-NB-CA-??         
+ N14     C15     O16     C3       -2.786   4.550   0.000   0.000    high   0   NB-CA-OS-CT          ==> CT-OS-CA-NB         
+ C17     C15     O16     C3        0.000   3.916   0.000   0.000    high   0   C56B-CA-OS-CT        ==> CT-OS-CA-??         
+ N14     C15     C17     N18       0.000   7.250   0.000   0.000    high   0   NB-CA-C56B-N5B       ==> ??-CA-CA-??         
+ N14     C15     C17     C20       0.000   7.250   0.000   0.000    high   0   NB-CA-C56B-C56A      ==> ??-CA-CA-??         
+ O16     C15     C17     N18       0.000   7.250   0.000   0.000    high   0   OS-CA-C56B-N5B       ==> ??-CA-CA-??         
+ O16     C15     C17     C20       0.000   7.250   0.000   0.000    high   0   OS-CA-C56B-C56A      ==> ??-CA-CA-??         
+ C15     C17     N18     C2        0.000   7.250   0.000   0.000    high   0   CA-C56B-N5B-CRA      ==> ??-NB-CA-??         
+ C20     C17     N18     C2        0.000   7.250   0.000   0.000    high   0   C56A-C56B-N5B-CRA    ==> ??-NB-CA-??         
+ C15     C17     C20     N19       0.000   6.000   0.000   0.000    high   0   CA-C56B-C56A-NA      ==> CA-C56B-C56A-NA     
+ C15     C17     C20     N21       0.000   7.250   0.000   0.000    high   0   CA-C56B-C56A-NB      ==> ??-CA-CA-??         
+ N18     C17     C20     N19       0.000   7.250   0.000   0.000    high   0   N5B-C56B-C56A-NA     ==> ??-CA-CA-??         
+ N18     C17     C20     N21       0.000   7.250   0.000   0.000    high   0   N5B-C56B-C56A-NB     ==> ??-CA-CA-??         
+ C2      N19     C20     C17       0.000   7.250   0.000   0.000    high   0   CRA-NA-C56A-C56B     ==> ??-NA-CA-??         
+ C2      N19     C20     N21       0.000   7.250   0.000   0.000    high   0   CRA-NA-C56A-NB       ==> ??-NA-CA-??         
+ H45     N19     C20     C17       0.000   3.050   0.000   0.000    high   0   H-NA-C56A-C56B       ==> H-NA-C56A-C56B      
+ H45     N19     C20     N21       0.000   4.000   0.000   0.000    high   0   H-NA-C56A-NB         ==> H-NA-CA-??          
+ C17     C20     N21     C1        0.000   7.250   0.000   0.000    high   0   C56B-C56A-NB-CQ      ==> ??-NB-CA-??         
+ N19     C20     N21     C1        0.000   7.250   0.000   0.000    high   0   NA-C56A-NB-CQ        ==> ??-NB-CA-??         
+ C1      N22     C23     C13       0.000   0.500   0.000   0.000    high   0   CQ-NE-CA-CA          ==> CQ-NE-CA-CA         
+ C1      N22     C23     C24       0.000   0.500   0.000   0.000    high   0   CQ-NE-CA-CA          ==> CQ-NE-CA-CA         
+ H46     N22     C23     C13       0.000   2.000   0.000   0.000    high   0   H-NE-CA-CA           ==> H-NE-CA-CA          
+ H46     N22     C23     C24       0.000   2.000   0.000   0.000    high   0   H-NE-CA-CA           ==> H-NE-CA-CA          
+ C13     C23     C24     C10       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-CA          ==> CA-CA-CA-CA         
+ C13     C23     C24     H47       0.000   7.250   0.000   0.000    high   0   CA-CA-CA-HA          ==> HA-CA-CA-CA         
+ N22     C23     C24     C10       0.000   7.250   0.000   0.000    high   0   NE-CA-CA-CA          ==> ??-CA-CA-??         
+ N22     C23     C24     H47       0.000   7.250   0.000   0.000    high   0   NE-CA-CA-HA          ==> ??-CA-CA-??         
+ C11     S25     C27     H48       0.000   0.000   0.000   0.000    low    0   CA-SZ-CT-HC          ==> ??-??-??-??         
+ C11     S25     C27     H49       0.000   0.000   0.000   0.000    low    0   CA-SZ-CT-HC          ==> ??-??-??-??         
+ C11     S25     C27     H50       0.000   0.000   0.000   0.000    low    0   CA-SZ-CT-HC          ==> ??-??-??-??         
+ O26     S25     C27     H48       0.000   0.000  -0.144   0.000    high   0   OZ-SZ-CT-HC          ==> OZ-SZ-CT-HC         
+ O26     S25     C27     H49       0.000   0.000  -0.144   0.000    high   0   OZ-SZ-CT-HC          ==> OZ-SZ-CT-HC         
+ O26     S25     C27     H50       0.000   0.000  -0.144   0.000    high   0   OZ-SZ-CT-HC          ==> OZ-SZ-CT-HC         
+ improper Torsion                   V2    quality  comment
+ N21     N22     C1      N14       8.000   high   aromatic atom
+ N19     H28     C2      N18       2.200   high   aromatic atom
+ C24     H42     C10     C11       2.200   high   aromatic atom
+ C12     S25     C11     C10       8.000   high   aromatic atom
+ C13     H43     C12     C11       2.200   high   aromatic atom
+ C23     H44     C13     C12       2.200   high   aromatic atom
+ O16     C17     C15     N14       8.000   high   aromatic atom
+ N18     C20     C17     C15       8.000   high   aromatic atom
+ H45     C2      N19     C20       2.000   high   amino substituted aromatic rings
+ N19     N21     C20     C17       8.000   high   aromatic atom
+ H46     C1      N22     C23       2.000   high   amino substituted aromatic rings
+ N22     C24     C23     C13       8.000   high   aromatic atom
+ C23     H47     C24     C10       2.200   high   aromatic atom

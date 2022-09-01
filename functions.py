@@ -96,3 +96,12 @@ def avg_sem(array):
     sem = np.nanstd(FEP_sum, ddof =1)/np.sqrt(cnt)
 
     return [dG, sem]
+
+
+def lines_equal(curr_line, prev_line, compare_char):
+    curr_line_parts = curr_line
+    prev_line_parts = prev_line
+
+    for item in zip(curr_line_parts, prev_line_parts):
+        if item[0].startswith(compare_char):
+              return item[0] == item[1]

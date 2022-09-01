@@ -1,0 +1,17 @@
+rl /Users/pantelismaragoudakis/software/qligfep/FF/OPLS2015.lib 
+rprm /Users/pantelismaragoudakis/software/qligfep/FF/OPLS2015.prm
+! TO DO Change if protein system is used
+rp 1h1s_PrepWiz_tmp.pdb 
+! set solute_density 0.05794 
+! NOTE, this is now large for water system, change for protein system
+set solvent_pack 3.0
+boundary 1 0.535 26.772 8.819 22.0
+solvate 0.535 26.772 8.819 22.0 1 HOH
+!addbond at1 at2 y
+maketop MKC_p 
+writetop tmp.top 
+wp top_p.pdb y 
+mask none 
+mask not excluded 
+wp complexnotexcluded.pdb y 
+q 

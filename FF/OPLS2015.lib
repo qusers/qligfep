@@ -1055,9 +1055,9 @@
         CG1   HG12  HG13  
         CD1   HD11   HD12   HD13   
 *------------------------------------------------------------------
-{CLA}            !charge: -1.00 ||  Chloride Ion, adm jr.
+{CL}            !charge: -1.00 ||  Chloride Ion, adm jr.
     [atoms]
-         1 CLA    CLA         -1.00
+         1 CL    CL         -1.00
 *------------------------------------------------------------------
 {CLEU}            !charge: -1.1 || LEU C-terminal (standard)
     [atoms]
