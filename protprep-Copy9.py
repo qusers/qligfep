@@ -74,7 +74,7 @@ class Run(object):
         center = center.strip(']')
         center = center.split(':')
         print(center)
-        with open('try53.pdb') as infile:
+        with open(self.prot) as infile:
             for line in infile:
                 if line.startswith(self.include):
                     line = IO.pdb_parse_in(line)
@@ -192,8 +192,7 @@ class Run(object):
                         continue
                     
                     line = IO.pdb_parse_in(line)
-                        
-                    if tmp[13] == 'H':# and line[4] != 'SOL':
+                    if line[13].strip() == 'H':# and line[4] != 'SOL':
                         write = False
                         
                     else:
@@ -581,7 +580,7 @@ class Run(object):
 #                        print(outline)
             
     def run_qprep(self):
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        qprep = s.Q_DIR[self.preplocation] + 'Qprep6'
         options = ' < qprep.inp > qprep.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -760,6 +759,7 @@ if __name__ == "__main__":
     
 
     run.get_center_coordinates()        # 00
+    run.spheremaker()
     run.prepwizard_parse()              # 01
     run.readpdb()                       # 02
     run.decharge()                      # 03
