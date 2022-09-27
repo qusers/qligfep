@@ -193,7 +193,8 @@ class Run(object):
                     
                     line = IO.pdb_parse_in(line)
                     if line[13].strip() == 'H':
-                        if line[4] == 'SOL'
+                        if line[4] == 'SOL':
+                            line[4] = 'HOH'
                             write = True
                         if line[4] == 'POPC':
                             write = True
