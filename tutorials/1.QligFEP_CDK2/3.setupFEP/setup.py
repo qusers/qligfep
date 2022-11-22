@@ -5,7 +5,7 @@ import glob
 systems = ['protein', 'water']
 cnt = 0
 # Change this to where you installed QligFEP
-setupFEP = 'python $QligFEPDIR/QligFEP.py'
+setupFEP = 'python $qligfep/QligFEP.py'
 cysbond = ' '
 
 for system in systems:
