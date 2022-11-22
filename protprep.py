@@ -451,7 +451,7 @@ class Run(object):
                         outfile.write(outline)            
         
     def run_qprep(self):
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        qprep = s.LOCAL['QPREP']
         options = ' < qprep.inp > qprep.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
