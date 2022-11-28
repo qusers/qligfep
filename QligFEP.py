@@ -890,7 +890,7 @@ def parseargs(args: list[str] = []) -> argparse.Namespace:
     parser.add_argument('-b', '--cysbond',
                         dest = "cysbond",
                         default = None,
-                        help = "Temporary function to add cysbonds at1:at2,at3:at4 etc."
+                        help = "Function to add cysbonds given as at1_at2,at3_at4,(...)"
                        )
 
     parser.add_argument('-l', '--start',
