@@ -106,7 +106,7 @@ def calc_ddG(raw_data):
             scores = []
             a = name.split('_')
             FEP = a[0] + '_' + a[1] 
-            print FEP
+            print(FEP)
             system = a[-1]
             scoring = [[], [], []]
             for line in raw_data[name]:
