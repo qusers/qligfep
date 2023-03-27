@@ -25,7 +25,11 @@ class Run(object):
                  cysbond, 
                  temperature, 
                  replicates,
-                 sampling,
+                 sampling1,
+                 sampling2,
+                 sampling3,
+                 sampling4,
+                 sampling5,
                  *args, 
                  **kwargs):
         
@@ -38,7 +42,11 @@ class Run(object):
         self.include = ['ATOM', 'HETATM']
         self.temperature = temperature
         self.replicates = replicates
-        self.sampling = sampling
+        self.sampling1 = sampling1
+        self.sampling2 = sampling2
+        self.sampling3 = sampling3
+        self.sampling4 = sampling4
+        self.sampling5 = sampling5
         # needs to be user defined
         self.waters_to_perturb = 3
     
@@ -77,19 +85,22 @@ class Run(object):
 
     def retreive_lig_coordinates(self, prepdir):
         oxygencoords = []
+        atomnumbers = []
         
         ligand = rdmolfiles.MolFromPDBFile(prepdir + self.lig + '.pdb')
 
         for atom in ligand.GetAtoms():
             atomindex = atom.GetIdx()
+            
             if atomindex % 2:
                 continue
             else:
+                atomnumbers.append(atomindex+1)
                 coordinates = ligand.GetConformer().GetAtomPosition(atomindex)
                 oxygencoords.append([format(round(coordinates.x + 0.001,3), '.3f'),
                 format(round(coordinates.y + 0.001,3), '.3f'),
                 format(round(coordinates.z + 0.001,3), '.3f')])
-        return oxygencoords
+        return oxygencoords, atomnumbers
 
 
     def write_waters_to_pdb(self, coordinates_list, input1folder):
@@ -459,6 +470,7 @@ class Run(object):
         return ligmolsize, charges, atomtypes, merged_molsize
 
     def write_FEP1_file(self, change_charges, change_vdw, FEP_vdw, writedir, ligsize):
+        all_atoms_in_FEP_file = []
 
         with open(writedir + '/FEP1.fep', 'w') as outfile:
             total_atoms = len(change_charges)
@@ -472,6 +484,7 @@ class Run(object):
             for i in range(1, len(change_charges) + 1):
                 outfile.write("{:5}{:5}\n".format(str(i),
                                                     str(i)))
+                all_atoms_in_FEP_file.append(i)
             outfile.write('\n\n')
 
             # changing charges
@@ -486,13 +499,13 @@ class Run(object):
                 # waters from solvent
                 elif atomnumber <= ligsize + self.waters_to_perturb * 3:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            line[1],
+                                                            '0.000',
                                                             '0.000'))
 
                 # solute waters
                 else:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            '0.000',
+                                                            line[1],
                                                             '0.000'))
 
             outfile.write('\n\n')
@@ -524,15 +537,15 @@ class Run(object):
                 # waters from solvent
                 elif atomnumber <= ligsize + self.waters_to_perturb * 3:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            line[1],
-                                                            line[1]))
+                                                            'DUM',
+                                                            'DUM'))
 
                 # solute waters
                 else:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            'DUM',
-                                                            'DUM'))
-
+                                                            line[1],
+                                                            line[1]))
+        return all_atoms_in_FEP_file
 
     def write_FEP2_file(self, change_charges, change_vdw, FEP_vdw, writedir, ligsize):
 
@@ -590,14 +603,14 @@ class Run(object):
                 # waters from solvent
                 elif atomnumber <= ligsize + self.waters_to_perturb * 3:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            line[1],
-                                                            line[1]))
+                                                            'DUM',
+                                                            'DUM'))
 
                 # solute waters
                 else:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            'DUM',
-                                                            'DUM'))
+                                                            line[1],
+                                                            line[1]))
 
 
     def write_FEP3_file(self, change_charges, change_vdw, FEP_vdw, writedir, ligsize):
@@ -647,13 +660,13 @@ class Run(object):
                 elif atomnumber <= ligsize + self.waters_to_perturb * 3:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
                                                             '20',
-                                                            '0'))
+                                                            '20'))
 
                 # solute waters
                 else:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
                                                             '20',
-                                                            '20'))
+                                                            '0'))
 
 
             outfile.write('\n\n')
@@ -671,13 +684,13 @@ class Run(object):
                 # waters from solvent
                 elif atomnumber <= ligsize + self.waters_to_perturb * 3:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            line[1],
+                                                            'DUM',
                                                             'DUM'))
 
                 # solute waters
                 else:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            'DUM',
+                                                            line[1],
                                                             'DUM'))
 
     def write_FEP4_file(self, change_charges, change_vdw, FEP_vdw, writedir, ligsize):
@@ -709,13 +722,13 @@ class Run(object):
                 elif atomnumber <= ligsize + self.waters_to_perturb * 3:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
                                                             '0.000',
-                                                            '0.000'))
+                                                            line[1]))
 
                 # solute waters
                 else:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
                                                             '0.000',
-                                                            line[1]))
+                                                            '0.000'))
 
             outfile.write('\n\n')
 
@@ -739,13 +752,13 @@ class Run(object):
                 # waters from solvent
                 elif atomnumber <= ligsize + self.waters_to_perturb * 3:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            '0',
+                                                            '20',
                                                             '0'))
 
                 # solute waters
                 else:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
-                                                            '20',
+                                                            '0',
                                                             '0'))
 
 
@@ -765,13 +778,13 @@ class Run(object):
                 elif atomnumber <= ligsize + self.waters_to_perturb * 3:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
                                                             'DUM',
-                                                            'DUM'))
+                                                            line[1]))
 
                 # solute waters
                 else:
                     outfile.write("{:<5}{:>10}{:>10}\n".format(line[0],
                                                             'DUM',
-                                                            line[1]))
+                                                            'DUM'))
 
     # need other qprep inputfile
     def write_FEP5_file(self, change_charges, change_vdw, FEP_vdw, writedir, ligsize):
@@ -842,6 +855,281 @@ class Run(object):
         shutil.copy(inputdir1 + 'dualtop.top', inputdir3 + 'dualtop.top')
         shutil.copy(inputdir1 + 'dualtop.top', inputdir4 + 'dualtop.top')
 
+
+    def write_MD(self, lambdas, writedir, total_atoms, atomnumbers_lig, ligmolsize, step):
+        totallambda = len(lambdas)
+        replacements = {}
+
+        lig_water_oxygens = total_atoms[ligmolsize: ligmolsize + self.waters_to_perturb*3:][::3]
+        overlapping_atoms = list(zip(atomnumbers_lig, lig_water_oxygens))
+        waters_begin = total_atoms[ligmolsize:][::3]
+        waters_end = total_atoms[ligmolsize:][::-3][::-1]
+        water_indexes_seq_restr = list(zip(waters_begin, waters_end))
+        lig_indexes_seq_restr = [('1', ligmolsize)]
+
+        if step == 'step1' or step == 'step2' or step == 'step3':
+            only_solvent_waters = water_indexes_seq_restr[int(len(water_indexes_seq_restr)/2):]
+            all_sequence_restraints = lig_indexes_seq_restr + only_solvent_waters
+
+        if step == 'step4':
+            # get the last index of solvate waters
+            all_sequence_restraints = [('1', water_indexes_seq_restr[:int(len(water_indexes_seq_restr)/2)][-1][-1])]
+
+        if step == 'step5':
+            all_sequence_restraints = lig_indexes_seq_restr
+
+        replacements['SPHERE']          =   self.sphereradius    
+        replacements['EQ_LAMBDA']       =   '1.000 0.000'
+
+        if step == 'step1' or step == 'step5':
+            for eq_file_in in sorted(glob.glob(s.ROOT_DIR + '/INPUTS/eq*.inp')):
+                eq_file = eq_file_in.split('/')[-1:][0]
+                eq_file_out = writedir + '/' + eq_file
+
+                with open(eq_file_in) as infile, open(eq_file_out, 'w') as outfile:
+                    for line in infile:
+                        line = run.replace(line, replacements)
+                        # print(line)
+                        if 'WATER_RESTRAINT' in line:
+                            for seq in all_sequence_restraints:
+                                outfile.write('{:<7}{:<8} 1.0 0 1\n'.format(seq[0], seq[1]))
+                        elif 'ATOM_START_LIG1' in line:
+                            force = line[25:]
+                            for seq in all_sequence_restraints:
+                                outfile.write('{:<7}{:<8}{forceinput}'.format(seq[0], seq[1], forceinput = force))
+                        elif 'distance_restraints' in line:
+                            outfile.write(line)
+                            for indexxx in overlapping_atoms:
+                                outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(indexxx[0], indexxx[1]))
+                        else:
+                            outfile.write(line)
+
+        file_in = s.INPUT_DIR + '/md_1000_0000.inp'
+        file_out = writedir + '/md_1000_0000.inp' 
+        with open(file_in) as infile, open(file_out, 'w') as outfile:
+            for line in infile:
+                line = run.replace(line, replacements)
+                if line == '[distance_restraints]\n':
+                    outfile.write(line)
+                    for line in overlapping_atoms:
+                        outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(line[0], line[1]))
+                elif 'WATER_RESTRAINT' in line:
+                    for seq in all_sequence_restraints:
+                        outfile.write('{:<7}{:<8} 1.0 0 1\n'.format(seq[0], seq[1]))
+                else:
+                    outfile.write(line)
+
+        filenr = 0
+
+        for l in lambdas:
+            if l == '1.000':
+                filename_N = 'md_1000_0000'
+                continue
+            else:
+                step_n = totallambda - filenr - 2
+
+                lambda1 = l
+                lambda2 = lambdas[step_n]
+                filename = 'md_' + lambda1.replace('.', '') + '_' + lambda2.replace('.', '')
+                replacements['FLOAT_LAMBDA1']   =   lambda1 
+                replacements['FLOAT_LAMBDA2']   =   lambda2
+                replacements['FILE']          =   filename
+                replacements['FILE_N'] = filename_N
+
+                # Move to functio
+                pattern = re.compile(r'\b(' + '|'.join(replacements.keys()) + r')\b')
+                file_in = s.INPUT_DIR + '/md_XXXX_XXXX.inp'
+                file_out = writedir + '/' + filename + '.inp'
+
+                with open(file_in) as infile, open(file_out, 'w') as outfile:
+                    for line in infile:
+                        line = pattern.sub(lambda x: replacements[x.group()], line)
+                        if 'WATER_RESTRAINT' in line:
+                            for seq in all_sequence_restraints:
+                                outfile.write('{:<7}{:<8} 1.0 0 1\n'.format(seq[0], seq[1]))
+                        elif 'ATOM_START_LIG1' in line:
+                            force = line[25:]
+                            for seq in all_sequence_restraints:
+                                outfile.write('{:<7}{:<8}{forceinput}'.format(seq[0], seq[1], forceinput = force))
+                        elif 'distance_restraints' in line:
+                            outfile.write(line)
+                            for indexxx in overlapping_atoms:
+                                outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(indexxx[0], indexxx[1]))
+                        else:
+                            outfile.write(line)
+                filename_N = filename
+                filenr += 1
+
+    def get_lambdas(self, windows, sampling):
+        # Constructing the lambda partition scheme
+        windows = int(windows)
+        step = int(windows/2)
+        lambdas = []
+        lmbda_1 = []
+        lmbda_2 = []
+        k_dic = {'sigmoidal':-1.1, 
+                 'linear':1000,
+                 'exponential':-1.1,
+                 'reverse_exponential':1.1
+                }
+        k = k_dic[sampling]
+
+        if sampling == 'sigmoidal': 
+            for i in range(0, step + 1):
+                lmbda1 = '{:.3f}'.format(0.5 * (f.sigmoid(float(i)/float(step), k) + 1))
+                lmbda2 = '{:.3f}'.format(0.5 * (-f.sigmoid(float(i)/float(step), k) + 1))
+                lmbda_1.append(lmbda1)
+                lmbda_2.append(lmbda2)
+
+            lmbda_2 = lmbda_2[1:]
+
+            for i in reversed(lmbda_2):
+                lambdas.append(i)
+
+            for i in lmbda_1:
+                lambdas.append(i)
+
+        else:
+            for i in range(0, windows + 1):
+                lmbda = '{:.3f}'.format(f.sigmoid(float(i)/float(windows), k))
+                lambdas.append(lmbda)
+        
+        lambdas = lambdas[::-1]
+        return lambdas
+
+    def write_submitfile(self, writedir):
+        replacements = {}
+        replacements['TEMP_VAR']    = self.temperature
+        replacements['RUN_VAR']     = self.replicates
+        replacements['RUNFILE']     = 'run' + self.cluster + '.sh'
+        submit_in = s.ROOT_DIR + '/INPUTS/FEP_submit.sh'
+        submit_out = writedir + ('/FEP_submit.sh')
+        with open(submit_in) as infile, open (submit_out, 'w') as outfile:
+            for line in infile:
+                line = run.replace(line, replacements)
+                if 'inputfiles=$workdir/inputfiles' in line:
+                    continue
+                elif 'submitfile=$inputfiles/' in line:
+                    submitline = line
+                    outfile.write('inputefiles_fep1=$workdir/inputfiles1\n')
+                    outfile.write('inputefiles_fep2=$workdir/inputfiles2\n')
+                    outfile.write('inputefiles_fep3=$workdir/inputfiles3\n')
+                    outfile.write('inputefiles_fep4=$workdir/inputfiles4\n')
+                    outfile.write('inputefiles_fep5=$workdir/inputfiles5\n')
+                    outfile.write('for inputfiles in "$inputefiles_fep1" "$inputefiles_fep2" "$inputefiles_fep3" "$inputefiles_fep4" "$inputefiles_fep5"; do\n')
+                    outfile.write('submitfile=$inputfiles/runALICE.sh')
+                elif 'sed -i s#inputfiles=.*#inputfiles="$inputfiles"#g $submitfile' in line:
+                    outfile.write(line)
+                    outfile.write('done\n\n')
+                    outfile.write('for inputfiles in "$inputefiles_fep1" "$inputefiles_fep2" "$inputefiles_fep3" "$inputefiles_fep4" "$inputefiles_fep5"; do\n')
+                    outfile.write(submitline)
+                else:
+                    outfile.write(line)
+            outfile.write('wait\n')
+            outfile.write('done')
+
+        try:
+            st = os.stat(submit_out)
+            os.chmod(submit_out, st.st_mode | stat.S_IEXEC)
+        
+        except:
+            print("WARNING: Could not change permission for " + submit_out)
+
+
+    def write_runfile(self, writedir, step):
+        ntasks = getattr(s, self.cluster)['NTASKS']
+        src = s.INPUT_DIR + '/run_abs_solv.sh'
+        tgt = writedir + '/run' + self.cluster + '.sh'
+        EQ_files = sorted(glob.glob(writedir + '/eq*.inp'))
+        MD_files = reversed(sorted(glob.glob(writedir + '/md*.inp')))
+        replacements = getattr(s, self.cluster)
+
+        if step == 'step1':
+            replacements['FEPS']='FEP1.fep'
+            replacements['RUNNUMBER'] = 'cp $inputfiles/eq*.inp .\nsed -i s/SEED_VAR/"$[1 + $[RANDOM % 9999]]"/ eq1.inp\n'
+            replacements['FEPDIRR']='FEP1'
+
+        if step == 'step2':
+            replacements['FEPS']='FEP2.fep'
+            replacements['RUNNUMBER'] = 'lastfep=FEP1\ncp $workdir/$lastfep/$temperature/$run/$finalMDrestart $rundir/eq5.re\n'
+            replacements['FEPDIRR']='FEP2'
+
+        if step == 'step3':
+            replacements['FEPS']='FEP3.fep'
+            replacements['RUNNUMBER'] = 'lastfep=FEP2\ncp $workdir/$lastfep/$temperature/$run/$finalMDrestart $rundir/eq5.re\n'
+            replacements['FEPDIRR']='FEP3'
+
+        if step == 'step4':
+            replacements['FEPS']='FEP4.fep'
+            replacements['RUNNUMBER'] = 'lastfep=FEP3\ncp $workdir/$lastfep/$temperature/$run/$finalMDrestart $rundir/eq5.re\n'
+            replacements['FEPDIRR']='FEP4'
+
+        if step == 'step5':
+            replacements['FEPS']='FEP5.fep'
+            replacements['RUNNUMBER'] = 'cp $inputfiles/eq*.inp .\nsed -i s/SEED_VAR/"$[1 + $[RANDOM % 9999]]"/ eq1.inp\n'
+            replacements['FEPDIRR']='FEP5'
+        
+        with open(src) as infile, open(tgt, 'w') as outfile:
+            for line in infile:
+                if line.strip() == '#SBATCH -A ACCOUNT':
+                    try:
+                        replacements['ACCOUNT']
+                        
+                    except:
+                        line = ''
+                outline = IO.replace(line, replacements)
+                outfile.write(outline)
+                
+                if line.strip() == '#EQ_FILES':
+                    if step == 'step1' or step == 'step5':
+                        for line in EQ_files:
+                            file_base = line.split('/')[-1][:-4]
+                            outline = 'time mpirun -np {} $qdyn {}.inp' \
+                                    ' > {}.log\n'.format(ntasks,
+                                                        file_base,
+                                                        file_base)
+                            outfile.write(outline)
+                        
+                if line.strip() == '#RUN_FILES':
+                    for line in MD_files:
+                        file_base = line.split('/')[-1][:-4]
+                        outline = 'time mpirun -np {} $qdyn {}.inp'  \
+                                    ' > {}.log\n'.format(ntasks,
+                                                        file_base,
+                                                        file_base)
+                        outfile.write(outline)
+                            
+
+    def write_qfep(self, inputdir, windows, lambdas):
+        qfep_in = s.ROOT_DIR + '/INPUTS/qfep.inp' 
+        qfep_out = inputdir + 'qfep.inp'
+        i = 0
+        total_l = len(lambdas)
+        
+        # TO DO: multiple files will need to be written out for temperature range
+        kT = f.kT(float(self.temperature))
+        replacements = {}
+        replacements['kT']=kT
+        replacements['WINDOWS']=windows
+        replacements['TOTAL_L']=str(total_l)
+        with open(qfep_in) as infile, open(qfep_out, 'w') as outfile:
+            for line in infile:
+                line = run.replace(line, replacements)
+                outfile.write(line)
+            
+            if line == '!ENERGY_FILES\n':
+                for i in range(0, total_l):
+                    j = -(i + 1)
+                    lambda1 = lambdas[i]
+                    lambda2 = lambdas[j]
+                    filename = 'md_' +                          \
+                                lambda1.replace('.', '') +      \
+                                '_' +                           \
+                                lambda2.replace('.', '') +      \
+                                '.en\n'
+                                
+                    outfile.write(filename)
+                    
 def parseargs(args: list[str] = []) -> argparse.Namespace:
     """Return a Namespace after parsing an argument string.
 
@@ -895,17 +1183,69 @@ def parseargs(args: list[str] = []) -> argparse.Namespace:
                         help = "How many repeats should be run"
                        )
 
-    parser.add_argument('-S', '--sampling',
-                        dest = "sampling",
+    parser.add_argument('-S1', '--sampling1',
+                        dest = "sampling1",
+                        default = 'linear',
+                        choices = ['linear', 'sigmoidal', 'exponential', 'reverse_exponential'],
+                        help = "Lambda spacing type to be used for removal of coulombic interactions"
+                       )
+
+    parser.add_argument('-S2', '--sampling2',
+                        dest = "sampling2",
+                        default = 'linear',
+                        choices = ['linear', 'sigmoidal', 'exponential', 'reverse_exponential'],
+                        help = "Lambda spacing type to be used for addition of softcore"
+                       )
+
+    parser.add_argument('-S3', '--sampling3',
+                        dest = "sampling3",
+                        default = 'linear',
+                        choices = ['linear', 'sigmoidal', 'exponential', 'reverse_exponential'],
+                        help = "Lambda spacing type to be used to remove solvent waters vdW and softcore"
+                       )
+
+    parser.add_argument('-S4', '--sampling4',
+                        dest = "sampling4",
+                        default = 'linear',
+                        choices = ['linear', 'sigmoidal', 'exponential', 'reverse_exponential'],
+                        help = "Lambda spacing type to be used to perform RBFE with waters"
+                       )
+
+    parser.add_argument('-S5', '--sampling5',
+                        dest = "sampling5",
                         default = 'linear',
                         choices = ['linear', 'sigmoidal', 'exponential', 'reverse_exponential'],
                         help = "Lambda spacing type to be used"
                        )
-                        ### need 5 windows? ###
-    parser.add_argument('-w', '--windows',
-                        dest = "windows",
+
+    parser.add_argument('-w1', '--windows1',
+                        dest = "windows1",
                         default = '50',
-                        help = "Total number of windows that will be run"
+                        help = "Total number of windows that will be run for removal of coulombic interactions"
+                       )
+
+    parser.add_argument('-w2', '--windows2',
+                        dest = "windows2",
+                        default = '50',
+                        help = "Total number of windows that will be run for addition of softcore"
+                       )
+
+    parser.add_argument('-w3', '--windows3',
+                        dest = "windows3",
+                        default = '50',
+                        help = "Total number of windows that will be run to remove solvent waters vdW and softcore"
+                       )
+
+    parser.add_argument('-w4', '--windows4',
+                        dest = "windows4",
+                        default = '50',
+                        help = "Total number of windows that will be run to perform RBFE with waters"
+                       )
+
+    parser.add_argument('-w5', '--windows5',
+                        dest = "windows5",
+                        default = '50',
+                        help = "Total number of windows that will be run to calculate vacuum annihilation"
                        )
 
     if args:
@@ -923,8 +1263,12 @@ if __name__ == "__main__":
               cysbond = args.cysbond,
               temperature = args.temperature,
               replicates = args.replicates,
-              sampling = args.sampling
-             )
+              sampling1 = args.sampling1,
+              sampling2 = args.sampling2,
+              sampling3 = args.sampling3,
+              sampling4 = args.sampling4,
+              sampling5 = args.sampling5
+              )
 
     writedir = run.makedir()
     prepinputdir = writedir + '/prep_input/'
@@ -948,8 +1292,8 @@ if __name__ == "__main__":
     # make new initialize file
     solvent_oxygens = run.get_solvent_oxygens(prepinputdir)
     run.remove_waters(solvent_oxygens, prepinputdir, inputdir1)
-    lig_oxygens = run.retreive_lig_coordinates(inputdir1)
-    all_waters = solvent_oxygens + lig_oxygens
+    lig_oxygens, overlap_atomnumbers_lig = run.retreive_lig_coordinates(inputdir1)
+    all_waters =  lig_oxygens + solvent_oxygens
     run.write_waters_to_pdb(all_waters, inputdir1)
 
     run.prepare_complex('water', inputdir1)
@@ -960,18 +1304,36 @@ if __name__ == "__main__":
     run.qprep(inputdir5)
 
     # write FEP files
-    run.write_FEP1_file(charges, atomtypes, FEP_vdw, inputdir1, ligmolsize)
+    all_atoms_FEP = run.write_FEP1_file(charges, atomtypes, FEP_vdw, inputdir1, ligmolsize)
     run.write_FEP2_file(charges, atomtypes, FEP_vdw, inputdir2, ligmolsize)
     run.write_FEP3_file(charges, atomtypes, FEP_vdw, inputdir3, ligmolsize)
     run.write_FEP4_file(charges, atomtypes, FEP_vdw, inputdir4, ligmolsize)
     run.write_FEP5_file(charges, atomtypes, FEP_vdw, inputdir5, ligmolsize)
 
-    # lambdas = run.get_lambdas(args.windows, args.sampling)
+    # get lambdas
+    lambdas1 = run.get_lambdas(args.windows1, args.sampling1)
+    lambdas2 = run.get_lambdas(args.windows2, args.sampling2)
+    lambdas3 = run.get_lambdas(args.windows3, args.sampling3)
+    lambdas4 = run.get_lambdas(args.windows4, args.sampling4)
+    lambdas5 = run.get_lambdas(args.windows5, args.sampling5)
 
-    # file_list = run.write_MD_1(lambdas, inputdir, lig_size1, lig_size2, overlapping_atoms)
-    # run.write_runfile(inputdir, file_list)    
-    
-    # run.write_submitfile(writedir)
-    # run.write_qfep(inputdir, args.windows, lambdas)
-    # run.write_qprep(inputdir)
-    # run.qprep(inputdir)
+    # write MD files
+    run.write_MD(lambdas1, inputdir1, all_atoms_FEP, overlap_atomnumbers_lig, ligmolsize, 'step1')
+    run.write_MD(lambdas2, inputdir2, all_atoms_FEP, overlap_atomnumbers_lig, ligmolsize, 'step2')
+    run.write_MD(lambdas3, inputdir3, all_atoms_FEP, overlap_atomnumbers_lig, ligmolsize, 'step3')
+    run.write_MD(lambdas4, inputdir4, all_atoms_FEP, overlap_atomnumbers_lig, ligmolsize, 'step4')
+    run.write_MD(lambdas5, inputdir5, all_atoms_FEP, overlap_atomnumbers_lig, ligmolsize, 'step5')
+
+    run.write_runfile(inputdir1, 'step1')
+    run.write_runfile(inputdir2, 'step2')
+    run.write_runfile(inputdir3, 'step3')
+    run.write_runfile(inputdir4, 'step4')
+    run.write_runfile(inputdir5, 'step5')
+
+    run.write_submitfile(writedir)
+
+    run.write_qfep(inputdir1, args.windows1, lambdas1)
+    run.write_qfep(inputdir2, args.windows2, lambdas2)
+    run.write_qfep(inputdir3, args.windows3, lambdas3)
+    run.write_qfep(inputdir4, args.windows4, lambdas4)
+    run.write_qfep(inputdir5, args.windows5, lambdas5)
