@@ -39,7 +39,7 @@ class Run(object):
         self.total_charge = 0
         self.molecule = Molecule.from_file(self.lig + '.sdf')
         self.topology = Topology.from_molecules([self.molecule])
-        self.forcefield = ForceField('openff-1.0.0.offxml')
+        self.forcefield = ForceField('openff-2.0.0.offxml')
         self.parameters = self.forcefield.label_molecules(self.topology)[0]
         self.masses =   {"H"     : "1.0080",
                          "C"     : "12.0110",
@@ -63,13 +63,13 @@ class Run(object):
 
         # loop through dictionary and safe charges in list
         for charge in self.partial_charges.values():
-            self.charges_list_magnitude.append(charge._magnitude)
+            self.charges_list_magnitude.append(round(charge._magnitude, 3))
 
         # get total charge and round
         self.total_charge = round(sum(self.charges_list_magnitude),10)
 
         if self.total_charge != 0.0:
-            print('WARNING: residual charge {} check your mol2 file!'.format(self.total_charge))
+            print('WARNING: residual charge {} ,check charges'.format(self.total_charge))
 
         # loop through sdf lig file and safe relevant information in mapping dictionary
         with open(self.lig + '.sdf') as infile:
@@ -89,7 +89,7 @@ class Run(object):
                                             line[1],                                # Y coordinte
                                             line[2]                                 # Z coordinate
                                         ]
-            
+
     def write_lib_Q(self):
         with open(self.lig + '.lib', 'w') as outfile:
             outfile.write('{}    ! atoms no {}   total charge {} \n\n'.format('{LIG}',
