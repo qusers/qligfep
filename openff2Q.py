@@ -39,7 +39,7 @@ class Run(object):
         self.total_charge = 0
         self.molecule = Molecule.from_file(self.lig + '.sdf')
         self.topology = Topology.from_molecules([self.molecule])
-        self.forcefield = ForceField('openff-2.0.0.offxml')
+        self.forcefield = ForceField('openff-2.1.0.offxml')
         self.parameters = self.forcefield.label_molecules(self.topology)[0]
         self.masses =   {"H"     : "1.0080",
                          "C"     : "12.0110",
