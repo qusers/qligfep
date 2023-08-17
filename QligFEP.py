@@ -713,61 +713,115 @@ class Run(object):
         run_threads = '{}'.format(int(replacements['NTASKS']))
         
         with open(src) as infile, open(tgt, 'w') as outfile:
-            for line in infile:
-                if line.strip() == '#SBATCH -A ACCOUNT':
-                    try:
-                        replacements['ACCOUNT']
-                        
-                    except:
-                        line = ''
-                outline = IO.replace(line, replacements)
-                outfile.write(outline)
-                
-                if line.strip() == '#EQ_FILES':
-                    for line in EQ_files:
-                        file_base = line.split('/')[-1][:-4]
-                        outline = 'time mpirun -np {} $qdyn {}.inp' \
-                                   ' > {}.log\n'.format(ntasks,
-                                                       file_base,
-                                                       file_base)
-                        outfile.write(outline)
-                        
-                if line.strip() == '#RUN_FILES':
-                    if self.start == '1':
-                        for line in MD_files:
+            if self.cluster=='CSB':
+
+                for line in infile:
+                    if line.strip() == '#SBATCH -A ACCOUNT':
+                        try:
+                            replacements['ACCOUNT']
+                            
+                        except:
+                            line = ''
+                    outline = IO.replace(line, replacements)
+                    outfile.write(outline)
+                    
+                    if line.strip() == '#EQ_FILES':
+                        for line in EQ_files:
                             file_base = line.split('/')[-1][:-4]
-                            outline = 'time mpirun -np {} $qdyn {}.inp'  \
-                                      ' > {}.log\n'.format(ntasks,
-                                                           file_base,
-                                                           file_base)
+                            outline = 'time mpirun -np {} $qdyn {}.inp' \
+                                    ' > {}.log\n'.format(ntasks,
+                                                        file_base,
+                                                        file_base)
                             outfile.write(outline)
                             
-                    elif self.start == '0.5':
-                        outline = 'time mpirun -np {} $qdyn {}.inp' \
-                                   ' > {}.log\n\n'.format(ntasks,
-                                                       'md_0500_0500',
-                                                       'md_0500_0500')
-                        outfile.write(outline)
-                        for i, md in enumerate(md_1):
-                            outline1 = 'time mpirun -np {:d} $qdyn {}.inp'  \
-                                      ' > {}.log &\n'.format(int(int(ntasks)/2),
-                                                           md_1[i][:-4],
-                                                           md_1[i][:-4])
+                    if line.strip() == '#RUN_FILES':
+                        if self.start == '1':
+                            for line in MD_files:
+                                file_base = line.split('/')[-1][:-4]
+                                outline = 'time mpirun -np {} $qdyn {}.inp'  \
+                                        ' > {}.log\n'.format(ntasks,
+                                                            file_base,
+                                                            file_base)
+                                outfile.write(outline)
+                                
+                        elif self.start == '0.5':
+                            outline = 'time mpirun -np {} $qdyn {}.inp' \
+                                    ' > {}.log\n\n'.format(ntasks,
+                                                        'md_0500_0500',
+                                                        'md_0500_0500')
+                            outfile.write(outline)
+                            for i, md in enumerate(md_1):
+                                outline1 = 'time mpirun -np {:d} $qdyn {}.inp'  \
+                                        ' > {}.log &\n'.format(int(int(ntasks)/2),
+                                                            md_1[i][:-4],
+                                                            md_1[i][:-4])
 
-                            outline2 = 'time mpirun -np {:d} $qdyn {}.inp'  \
-                                      ' > {}.log\n'.format(int(int(ntasks)/2),
-                                                           md_2[i][:-4],
-                                                           md_2[i][:-4])
+                                outline2 = 'time mpirun -np {:d} $qdyn {}.inp'  \
+                                        ' > {}.log\n'.format(int(int(ntasks)/2),
+                                                            md_2[i][:-4],
+                                                            md_2[i][:-4])
 
-                            outfile.write(outline1)
-                            outfile.write(outline2)
-                            outfile.write('\n')
+                                outfile.write(outline1)
+                                outfile.write(outline2)
+                                outfile.write('\n')
+            elif self.cluster=='TETRA':
+
+                for line in infile:
+                    if line.strip() == '#SBATCH -A ACCOUNT':
+                        try:
+                            replacements['ACCOUNT']
                             
-            if self.cluster == 'ALICE':
+                        except:
+                            line = ''
+                    outline = IO.replace(line, replacements)
+                    outfile.write(outline)
+                    
+                    if line.strip() == '#EQ_FILES':
+                        for line in EQ_files:
+                            file_base = line.split('/')[-1][:-4]
+                            outline = 'time mpprun -np {} $qdyn {}.inp' \
+                                    ' > {}.log\n'.format(ntasks,
+                                                        file_base,
+                                                        file_base)
+                            outfile.write(outline)
+                            
+                    if line.strip() == '#RUN_FILES':
+                        if self.start == '1':
+                            for line in MD_files:
+                                file_base = line.split('/')[-1][:-4]
+                                outline = 'time mpprun -np {} $qdyn {}.inp'  \
+                                        ' > {}.log\n'.format(ntasks,
+                                                            file_base,
+                                                            file_base)
+                                outfile.write(outline)
+                                
+                        elif self.start == '0.5':
+                            outline = 'time mpprun -np {} $qdyn {}.inp' \
+                                    ' > {}.log\n\n'.format(ntasks,
+                                                        'md_0500_0500',
+                                                        'md_0500_0500')
+                            outfile.write(outline)
+                            for i, md in enumerate(md_1):
+                                outline1 = 'time mpprun -np {:d} $qdyn {}.inp'  \
+                                        ' > {}.log &\n'.format(int(int(ntasks)/2),
+                                                            md_1[i][:-4],
+                                                            md_1[i][:-4])
+
+                                outline2 = 'time mpprun -np {:d} $qdyn {}.inp'  \
+                                        ' > {}.log\n'.format(int(int(ntasks)/2),
+                                                            md_2[i][:-4],
+                                                            md_2[i][:-4])
+
+                                outfile.write(outline1)
+                                outfile.write(outline2)
+                                outfile.write('\n')   
+            elif self.cluster == 'ALICE':
                 outfile.write('rm *.dcd\n')
                 outfile.write('rm *.en\n')
                 outfile.write('rm *.re\n')
-    
+            else:
+                raise ValueError(f"Unknown cluster: {self.cluster}")
+            
     def write_qfep(self, inputdir, windows, lambdas):
         qfep_in = s.ROOT_DIR + '/INPUTS/qfep.inp' 
         qfep_out = writedir + '/inputfiles/qfep.inp'
@@ -979,4 +1033,3 @@ if __name__ == "__main__":
     run.write_qfep(inputdir, args.windows, lambdas)
     run.write_qprep(inputdir)
     run.qprep(inputdir)
-    
