@@ -2,6 +2,7 @@ import os
 import shutil
 import glob
 import re
+import json
 
 # Get the path to the '1.ligprep' directory
 current_folder = os.path.dirname(os.path.abspath(__file__))
@@ -42,7 +43,7 @@ systems = ['protein-TETRA', 'water-TETRA']
 cnt = 0
 
 # Change this to where you installed QligFEP
-setupFEP = 'python /home/USER/QLIGFEP/qligfep/QligFEP.py'
+setupFEP = 'python /home/willem/software/qligfep/QligFEP.py'
 windows = '100'
 
 # Open qprep.inp where cysbond to add are specified.
@@ -72,6 +73,22 @@ if os.path.isfile(protprep_folder+'/qprep.inp'):
     pairs = [cys[i] + '_' + cys[i+1] for i in range(0, len(cys), 2)] # Add '_' between atoms and match style required by QligFEP
     cysbond =  ','.join(pairs)
     print('cysbond added: ', cysbond) 
+
+
+    ligand_pairs = []
+    if os.path.exists('pairs.txt') == True:
+        with open('pairs.txt') as infile:
+            line = line.split()
+            ligand_pairs.append([line[0],line[1]])
+
+    jsonfile = 'CDK2_ligands.json'
+    if os.path.exists(jsonfile) == True:
+        with open(jsonfile) as json_file:
+            data = json.load(json_file)
+
+    for edge in (data['edges']):
+        ligand_pairs.append([edge['from'],edge['to']])
+
     for system in systems:
         cnt += 1
         directory = str(cnt) + '.' + system
@@ -85,19 +102,18 @@ if os.path.isfile(protprep_folder+'/qprep.inp'):
 
         os.mkdir(new_directory)
 
-        # Call QligFEP 
-        with open('pairs.txt') as infile:
-            for line in infile:
-                line = line.split()
-                mol1 = line[0]
-                mol2 = line[1]
-                if system == systems[1]:
-                    call = setupFEP + ' -l1 ' + mol1 + ' -l2 ' + mol2 + ' -FF OPLS2015 -s water -S sigmoidal -c TETRA -r 25 -l 1  -w' + windows
-                if system == systems[0]:
-                    call = setupFEP + ' -l1 ' + mol1 + ' -l2 ' + mol2 + ' -FF OPLS2015 -b' + cysbond + ' -S sigmoidal -s protein -c TETRA -r 25 -l 1 -w' + windows
-                src = 'FEP_' + mol1 + '-' + mol2
-                dst = os.path.join(new_directory, 'FEP_' + mol1 + '-' + mol2)
-                os.system(call)
-                shutil.move(src, dst)
+        # Call QligFEP
+        for pair in ligand_pairs:
+            if system == systems[1]:
+                call = setupFEP + ' -l1 ' + pair[0] + ' -l2 ' + pair[1] + ' -FF OPLS2015 -s water -S sigmoidal -c TETRA -r 25 -l 1  -w' + windows
+            if system == systems[0] and cysbond != '':
+                call = setupFEP + ' -l1 ' + pair[0] + ' -l2 ' + pair[1] + ' -FF OPLS2015 -b' + cysbond + ' -S sigmoidal -s protein -c TETRA -r 25 -l 1 -w' + windows
+            elif system == systems[0] and cysbond == '':
+                call = setupFEP + ' -l1 ' + pair[0] + ' -l2 ' + pair[1] + ' -FF OPLS2015 -S sigmoidal -s protein -c TETRA -r 25 -l 1 -w' + windows
+
+            src = 'FEP_' + pair[0] + '-' + pair[1]
+            dst = os.path.join(new_directory, 'FEP_' + pair[0] + '-' + pair[1])
+            os.system(call)
+            shutil.move(src, dst)
 else:
     print('Error: qprep.inp file not found in 2.protprep folder. Have you used --noclean when calling protprep.py?')
