@@ -4,4 +4,4 @@ Initial results show comparable performance to QligFEP and are deposited in the 
 
 The perturbation scheme is visualized in QabsFEP_cycle.jpeg, and details of each leg in QabsFEP_perturbation_legs.jpg.
 
-![ QabsFEP_cycle](QabsFEP_cycle.jpeg)
+![ QabsFEP_cycle](QabsFEP_cycle.jpg)
