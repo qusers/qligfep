@@ -6,14 +6,19 @@ ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 FF_DIR = os.path.join(ROOT_DIR, "FF")
 INPUT_DIR = os.path.join(ROOT_DIR, "INPUTS")
 # Dicionary of locations of Q executables
-Q_DIR = {'CSB':'/home/jespers/software/q6/bin/',
-         'LOCAL':'/home/jespers/software/q6/bin/'
+Q_DIR = {'CSB':'/home/willem/software/Q/bin/q6/',
+         'LOCAL':'/home/yannickrvd/software/Q/bin/q6/',
+         'ALICE':'/home/s2904160/data1/projects/pi-gerard/Q/bin/qfep',
+        #  'SNELLIUS':'/home/wjespers/software/Q/bin/q6/'
          #'LOCAL':'/Users/willemjespers/Software/Q6/bin/'
         }
 BIN = os.path.join(ROOT_DIR, "bin")
 
 # some example schrodinger directory
-#SCHROD_DIR = '/opt/schrodinger/suites2017-3/'
+SCHROD_DIR = '/mnt/c/Program\ Files/Schrodinger2022-2/'
+
+# quick fix to run .exe files on wsl
+EXE = '.exe'
 
 # CLUSTER INPUTS. To add your own cluster, use the same input as below
 CSB = {'NODES'        : '1',
@@ -26,13 +31,24 @@ CSB = {'NODES'        : '1',
        'QCALC'        : Q_DIR['CSB'] + 'qcalc'
       }
 
+# CLUSTER INPUTS. To add your own cluster, use the same input as below
+# SNELLIUS = {'NODES'        : '1',
+#             'NTASKS'       : '16',
+#             'TIME'         : '0-12:00:00',  # d-hh:mm:ss
+#             'MODULES'      : 'module load 2021\n module load gompi/2021a',
+#             'QDYN'         : 'qdyn=' + Q_DIR['SNELLIUS'] + 'qdynp',
+#             'QPREP'        : Q_DIR['LOCAL'] + 'qprep',
+#             'QFEP'         : Q_DIR['SNELLIUS'] + 'qfep',
+#             'QCALC'        : Q_DIR['SNELLIUS'] + 'qcalc'
+#       }
+
 ALICE = {'MAINDIR'      : '/home/jespersw/software/q6/',
          'NODES'        : '1',
          'NTASKS'       : '24',
          'TIME'         : '0-3:00:00',  # d-hh:mm:ss
          'MODULES'      : 'module load OpenMPI/3.1.3-GCC-8.2.0-2.31.1',
          'QDYN'         : 'qdyn=/home/jespersw/software/q6/bin/qdynp',
-         'QPREP'        : Q_DIR['CSB'] + 'qprep',
+         'QPREP'        : '/home/yannickrvd/software/Q/bin/q6/qprep',
          'QFEP'         : '/home/jespersw/software/q6/bin/qfep',
          'QCALC'        : '/home/jespersw/software/q6/bin/qcalc'
         }
@@ -92,8 +108,8 @@ LOCAL = {'NODES'      : '',
          'NTASKS'     : '',
          'TIME'       : '',  # d-hh:mm:ss
          'MODULES'    : '\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/Users/willemjespers/Software/Q6/bin/qdyn', #fix qdyn= !!!!!
-         'QPREP'      : '/Users/willemjespers/Software/Q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'QFEP'       : '/Users/willemjespers/Software/Q6/bin/qfep',
+         'QDYN'       : 'qdyn=/home/yannickrvd/software/Q/bin/q6/qdyn', #fix qdyn= !!!!!
+         'QPREP'      : '/home/yannickrvd/software/Q/bin/q6/qprep', # NOTE: change to where you are setting up, not where you are running!
+         'QFEP'       : '/home/yannickrvd/software/Q/bin/q6/qfep',
          'ACCOUNT'    : ''
         }

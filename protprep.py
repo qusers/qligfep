@@ -4,6 +4,12 @@ import os
 import collections
 from time import gmtime, strftime
 import numpy as np
+import sys
+import glob
+
+# Import Q modules
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../env/')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../share/')))
 
 import functions as f
 import settings as s
@@ -92,8 +98,14 @@ class Run(object):
                         continue
                     
                     line = IO.pdb_parse_in(line)
-                        
-                    if tmp[13] == 'H':# and line[4] != 'SOL':
+
+                    if line[4] == 'POP':
+                        element = line[2][0]
+                        line[13] = ' {}'.format(element)
+                        #print(line)
+                        write = True
+
+                    if line[13] == ' H':# and line[4] != 'SOL':
                         write = False
                         
                     else:
@@ -426,6 +438,7 @@ class Run(object):
                 atom_numbers = sorted(list(self.PDB[chain].keys()))
                 for atom in atom_numbers:
                     outline = IO.pdb_parse_out(self.PDB[chain][atom]) + '\n'
+                    # print(outline)
                     outfile.write(outline)
                 if len(self.PDB) != 1:
                     outfile.write('GAP\n')
@@ -456,7 +469,8 @@ class Run(object):
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
         # subprocess module....
-        IO.run_command(qprep, options, string = True)
+        out = IO.run_command(qprep, options, string = True)
+        # print(out)
         
     ##### THIS PART COMES AFTER THE TEMP .pdb IS WRITTEN ######
     def write_pdb_out(self):
@@ -468,6 +482,7 @@ class Run(object):
         with open('top_p.pdb') as infile:
             for line in infile:
                 if line.startswith(self.include):
+                    # print(line)
                     line = IO.pdb_parse_in(line)
                     if line[4].strip() in waters and \
                        line[2].strip() == waters[line[4].strip()][0]:
@@ -492,6 +507,7 @@ class Run(object):
 
                     if line[4] not in waters:
                         outline = IO.pdb_parse_out(line) + '\n'
+                        # print(outline)
                         protout.write(outline)
                 if line[0:3] == 'TER' or line == 'GAP':
                     protout.write(line)
@@ -557,6 +573,9 @@ class Run(object):
             os.remove('top_p.pdb')
             os.remove('complexnotexcluded.pdb')
             os.remove('tmp.top')
+
+        else:
+            print(glob.glob('*'))
             
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
