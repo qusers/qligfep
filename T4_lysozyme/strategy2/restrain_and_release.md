@@ -10,3 +10,4 @@ We have tried 3 different alternatives in this scheme.
 
 The uploaded inputfiles are the ones without use of softcore. Hoever they can easily be transformed to the other schemes.
 
+![ strategy2_start_in_middle_cycle](strategy2_start_in_middle_cycle.jpg)
