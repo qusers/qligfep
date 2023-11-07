@@ -1,0 +1,14 @@
+{WAT}     ! atoms no    3   total charge 0.000 
+
+[atoms] 
+   1   O1        YO1         -0.8200
+   2   H2        YH2          0.4100
+   3   H3        YH3          0.4100
+
+[bonds]
+O1        H2
+O1        H3
+
+[impropers]
+
+[charge_groups]

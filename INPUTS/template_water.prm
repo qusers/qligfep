@@ -1,0 +1,27 @@
+[options]
+
+[atom_types]
+! Ligand vdW parameters
+YO1      793.40    793.40     25.01    561.02     17.69   15.9994
+YH2        0.00      0.00      0.00      0.00      0.00    1.0080
+YH3        0.00      0.00      0.00      0.00      0.00    1.0080
+! End ligand vdW parameters
+
+[bonds]
+! Ligand bond parameters
+YO1        YH2            2000.0     1.000
+YO1        YH3            2000.0     1.000
+! End ligand bond parameters
+
+[angles]
+! Ligand angle parameters
+YH2        YO1        YH3          400.00     109.470
+! End ligand angle parameters
+
+[torsions]
+! Ligand torsion parameters
+! End Ligand torsion parameters
+
+[impropers]
+! Ligand improper parameters
+! End ligand improper parameters
