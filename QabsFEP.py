@@ -30,6 +30,7 @@ class Run(object):
                  sampling3,
                  sampling4,
                  sampling5,
+                 waters_to_perturb,
                  *args, 
                  **kwargs):
         
@@ -48,7 +49,7 @@ class Run(object):
         self.sampling4 = sampling4
         self.sampling5 = sampling5
         # needs to be user defined
-        self.waters_to_perturb = 3
+        self.waters_to_perturb = int(waters_to_perturb)
     
 
     def replace(self, string, replacements):
@@ -88,11 +89,10 @@ class Run(object):
         atomnumbers = []
         
         ligand = rdmolfiles.MolFromPDBFile(prepdir + self.lig + '.pdb')
-
         for atom in ligand.GetAtoms():
             atomindex = atom.GetIdx()
             
-            if atomindex % 2:
+            if atomindex % 2 or atom.GetSymbol() == 'H':
                 continue
             else:
                 atomnumbers.append(atomindex+1)
@@ -100,7 +100,7 @@ class Run(object):
                 oxygencoords.append([format(round(coordinates.x + 0.001,3), '.3f'),
                 format(round(coordinates.y + 0.001,3), '.3f'),
                 format(round(coordinates.z + 0.001,3), '.3f')])
-        return oxygencoords, atomnumbers
+        return oxygencoords[:self.waters_to_perturb], atomnumbers
 
 
     def write_waters_to_pdb(self, coordinates_list, input1folder):
@@ -301,9 +301,6 @@ class Run(object):
         # subprocess module....
         IO.run_command(qprep, options, string = True)
         os.chdir('../../')
-
-
-
 
 
     def change_prm(self, replacements, writedir):
@@ -855,7 +852,6 @@ class Run(object):
         shutil.copy(inputdir1 + 'dualtop.top', inputdir3 + 'dualtop.top')
         shutil.copy(inputdir1 + 'dualtop.top', inputdir4 + 'dualtop.top')
 
-
     def write_MD(self, lambdas, writedir, total_atoms, atomnumbers_lig, ligmolsize, step):
         totallambda = len(lambdas)
         replacements = {}
@@ -897,7 +893,7 @@ class Run(object):
                             force = line[25:]
                             for seq in all_sequence_restraints:
                                 outfile.write('{:<7}{:<8}{forceinput}'.format(seq[0], seq[1], forceinput = force))
-                        elif 'distance_restraints' in line:
+                        elif 'distance_restraints' in line and step != 'step5':
                             outfile.write(line)
                             for indexxx in overlapping_atoms:
                                 outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(indexxx[0], indexxx[1]))
@@ -909,7 +905,7 @@ class Run(object):
         with open(file_in) as infile, open(file_out, 'w') as outfile:
             for line in infile:
                 line = run.replace(line, replacements)
-                if line == '[distance_restraints]\n':
+                if line == '[distance_restraints]\n' and step != 'step5':
                     outfile.write(line)
                     for line in overlapping_atoms:
                         outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(line[0], line[1]))
@@ -951,7 +947,7 @@ class Run(object):
                             force = line[25:]
                             for seq in all_sequence_restraints:
                                 outfile.write('{:<7}{:<8}{forceinput}'.format(seq[0], seq[1], forceinput = force))
-                        elif 'distance_restraints' in line:
+                        elif 'distance_restraints' in line and step != 'step5':
                             outfile.write(line)
                             for indexxx in overlapping_atoms:
                                 outfile.write('{:d} {:d} 0.0 0.2 0.5 0\n'.format(indexxx[0], indexxx[1]))
@@ -1183,6 +1179,12 @@ def parseargs(args: list[str] = []) -> argparse.Namespace:
                         help = "How many repeats should be run"
                        )
 
+    parser.add_argument('-wat', '--waters_to_perturb',
+                        dest = "waters_to_perturb",
+                        default = '2',
+                        help = "How many waters should displace the ligand"
+                       )
+
     parser.add_argument('-S1', '--sampling1',
                         dest = "sampling1",
                         default = 'linear',
@@ -1267,7 +1269,8 @@ if __name__ == "__main__":
               sampling2 = args.sampling2,
               sampling3 = args.sampling3,
               sampling4 = args.sampling4,
-              sampling5 = args.sampling5
+              sampling5 = args.sampling5,
+              waters_to_perturb = args.waters_to_perturb
               )
 
     writedir = run.makedir()
