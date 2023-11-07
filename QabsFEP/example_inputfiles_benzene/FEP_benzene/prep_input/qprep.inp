@@ -1,0 +1,19 @@
+rl /home/yannickrvd/software/qligfep/FF/OPLS2005.lib 
+rl benzene.lib
+rl /home/yannickrvd/software/qligfep/INPUTS/template_water_lib.lib
+rprm OPLS2005_benzene_water_merged.prm 
+! TO DO Change if protein system is used
+rp benzene.pdb 
+! set solute_density 0.05794 
+! NOTE, this is now large for water system, change for protein system
+set solvent_pack 2.5
+boundary 1 0 0 0 25
+solvate 0 0 0 25 1 HOH
+!addbond at1 at2 y
+maketop MKC_p 
+writetop dualtop.top 
+wp top_p.pdb y 
+mask none 
+mask not excluded 
+wp prep_complex.pdb y 
+q 

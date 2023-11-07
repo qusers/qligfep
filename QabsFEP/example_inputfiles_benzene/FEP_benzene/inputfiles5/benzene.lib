@@ -1,0 +1,39 @@
+{LIG}     ! atoms no   12   total charge -0.000 
+
+[atoms] 
+   1   C1        XC1         -0.1150
+   2   C2        XC2         -0.1150
+   3   C3        XC3         -0.1150
+   4   C4        XC4         -0.1150
+   5   C5        XC5         -0.1150
+   6   C6        XC6         -0.1150
+   7   H7        XH7          0.1150
+   8   H8        XH8          0.1150
+   9   H9        XH9          0.1150
+  10   H10       XH10         0.1150
+  11   H11       XH11         0.1150
+  12   H12       XH12         0.1150
+
+[bonds]
+C1        C2
+C1        C6
+C1        H7
+C2        C3
+C2        H8
+C3        C4
+C3        H9
+C4        C5
+C4        H10
+C5        C6
+C5        H11
+C6        H12
+
+[impropers]
+C6        H7        C1        C2
+C3        H8        C2        C1
+C4        H9        C3        C2
+C3        H10       C4        C5
+C6        H11       C5        C4
+C1        H12       C6        C5
+
+[charge_groups]
