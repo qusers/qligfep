@@ -6,7 +6,7 @@ import stat
 import numpy as np
 
 import functions as f
-import settings as s
+import src.settings as s
 
 ## Some useful objects TO DO add GLH etc.
 charged_res = {'HIS': {'HD1' : 'HID',
@@ -22,6 +22,7 @@ def pdb_parse_in(line, include=('ATOM','HETATM')):
     """
     at_entry = []
     line = line.strip('\n')
+    # print(line)
     if line.startswith(include):
         at_entry.append(line[0:6])              #  0 ATOM/HETATM
         at_entry.append(int(line[6:11]))        #  1 ATOM serial number
@@ -68,13 +69,17 @@ def pdb_parse_out(line):
     """
     Takes a list and parses it into a pdb writeable line
     """
-    if len(line[2]) <= 3: 
-        line = '{:6s}{:5d}  {:3s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
-               '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
-            
-    elif len(line[2]) == 4: 
-        line = '{:6s}{:5d} {:4s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
-               '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
+    #if len(line[2]) <= 3: 
+    #    line = '{:6s}{:5d} {:4s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
+    #           '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
+    line = "{:6s}{:5d}  {:<3s}{:1s}{:3s} {:1s}{:4d}{:1s}   {:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}".format(*line)    
+    # print(line)
+    if ' ' not in line[13:17]:
+        line = line[:17] + line[18:]
+
+    #elif len(line[2]) == 4: 
+    #    line = '{:6s}{:5d} {:4s}{:1s}{:4s}{:1s}{:4d}{:1s}   '\
+    #           '{:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}          {:>2s}{:2s}'.format(*line)
     return line
 
 def replace(string, replacements):
