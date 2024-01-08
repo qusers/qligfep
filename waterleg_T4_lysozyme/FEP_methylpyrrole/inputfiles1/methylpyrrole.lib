@@ -1,0 +1,40 @@
+{LIG}     ! atoms no   13   total charge 0.000 
+
+[atoms] 
+   1   C1        XC1          0.0313
+   2   C2        XC2         -0.1490
+   3   C3        XC3         -0.1490
+   4   C4        XC4         -0.1630
+   5   C5        XC5         -0.1630
+   6   N6        XN6         -0.1333
+   7   H7        XH7          0.0600
+   8   H8        XH8          0.0600
+   9   H9        XH9          0.0600
+  10   H10       XH10         0.1180
+  11   H11       XH11         0.1180
+  12   H12       XH12         0.1550
+  13   H13       XH13         0.1550
+
+[bonds]
+C1        N6
+C1        H7
+C1        H8
+C1        H9
+C2        C3
+C2        C4
+C2        H10
+C3        C5
+C3        H11
+C4        N6
+C4        H12
+C5        N6
+C5        H13
+
+[impropers]
+C4        H10       C2        C3
+C5        H11       C3        C2
+N6        H12       C4        C2
+N6        H13       C5        C3
+C4        C5        N6        C1
+
+[charge_groups]

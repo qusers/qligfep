@@ -1,0 +1,54 @@
+[MD]
+steps                     10000
+stepsize                  1.0
+temperature               150
+bath_coupling             1.0
+shake_solvent             on
+shake_hydrogens           off
+shake_solute              off
+lrf                       on
+
+[cut-offs]
+solute_solvent            10
+solute_solute             10
+solvent_solvent           10
+q_atom                    99
+lrf                       99
+
+[sphere]
+shell_force               10.0
+shell_radius              15
+
+[solvent]
+radial_force              60.0
+polarisation              on
+polarisation_force        20.0
+
+[intervals]
+output                    5
+trajectory                100
+non_bond                  25
+
+[files]
+topology                  dualtop.top
+trajectory                eq3.dcd
+restart                   eq2.re
+final                     eq3.re
+fep                       FEP_VAR
+
+[trajectory_atoms]
+not excluded
+
+[lambdas]
+1.000 0.000
+
+[sequence_restraints]
+1      13       5.0 0  0
+23     25       5.0 0  0
+26     28       5.0 0  0
+29     31       5.0 0  0
+
+[distance_restraints]
+1 14 0.0 0.2 0.5 0
+3 17 0.0 0.2 0.5 0
+5 20 0.0 0.2 0.5 0
