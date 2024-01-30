@@ -1,0 +1,7 @@
+rl LIB_FILE_PATH
+rl FF_FILE_PATH
+rt TOP_FILE_PATH
+rx RE_INPUT
+wp PDB_OUPUT
+y
+q
