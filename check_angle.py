@@ -32,13 +32,14 @@ class Run(object):
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
         # subprocess module....
-        IO.run_command('/home/yannickrvd/software/q6/bin/qprep', ' <convert_re2pdb_temp.inp > convert_re2pdb_temp.out', string = True)
+        IO.run_command('/home/wjespers/software/Q/bin/qprep', ' <convert_re2pdb_temp.inp > convert_re2pdb_temp.out', string = True)
         os.chdir(self.rootdir)
         
     def make_pdb_files(self):
         replacements = {}
         repfolders = sorted(glob.glob(self.FEP + '/*/'))
         directories = [repfolders[0] + entry for entry in os.listdir(repfolders[0]) if os.path.isdir(repfolders[0] + entry)]
+        directories = sorted(directories)
         inputdirectory = self.rootdir + self.INPUTS 
         top_file = glob.glob(inputdirectory + '/*.top')[0]
         libfile_file = glob.glob(inputdirectory + '/*.lib')[0]
@@ -46,21 +47,27 @@ class Run(object):
         replacements['LIB_FILE_PATH'] = libfile_file
         replacements["FF_FILE_PATH"] = self.rootdir + 'FF/' + self.FF + '.lib'
         for folder in directories:
+            print(folder)
             qfepfilesrep = sorted(glob.glob(folder + '/*.re'))
+            qfepfilesrep = [file_ for file_ in qfepfilesrep if "md"in file_]
+            qfepfilesrep = sorted(qfepfilesrep)
             for file in qfepfilesrep:
-                # print(file)
+                print(file)
                 shutil.copy("INPUTS/convert_re2pdb.inp", self.rootdir + folder)
-                # full_path = self.rootdir + file
+                full_path = self.rootdir + file
                 replacements['RE_INPUT'] = file.split("/")[-1]
                 replacements['PDB_OUPUT'] = file.split("/")[-1].strip('.re') + ".pdb"
                 run.replace_placeholders(replacements, self.rootdir + folder + "/convert_re2pdb.inp",  self.rootdir + folder + "/convert_re2pdb_temp.inp")
                 writedirectory = self.rootdir + folder
                 run.qprep(writedirectory)
+                print(file)
                 filepath_created_pdb = file.strip('.re') + ".pdb"
                 cmd.load(filepath_created_pdb,"ethylbenzene")
-
-            for state_num in range(1, len(qfepfilesrep) + 1):
-                print(cmd.get_dihedral(atom1="resi 111 and name N",atom2="resi 111 and name CA",atom3="resi 111 and name CB",atom4="resi 111 and name CG1",state=state_num))
+            #break
+        no_of_states = cmd.count_states("ethylbenzene")
+        print(no_of_states)
+        for state_num in range(1, no_of_states + 1):
+            print(cmd.get_dihedral(atom1="resi 111 and name N",atom2="resi 111 and name CA",atom3="resi 111 and name CB",atom4="resi 111 and name CG1",state=state_num))
 
     def replace_placeholders(self, replacements, convertion_Q_file_path, convertion_Q_output):
         with open(convertion_Q_file_path) as infile, open(convertion_Q_output, 'w') as outfile:
