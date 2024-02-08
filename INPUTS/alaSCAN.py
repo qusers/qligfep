@@ -8,15 +8,17 @@ mutations = [
             ]
 SYSTEMS
 systems.append('apo')
-executable = 'python /home/jespers/software/qligfep-p3/qligfep/QresFEP.py' + ' '
+QLIGFEP
+executable = 'python {}/QresFEP.py '.format(qligfep)
 options = {
-           '-f'    : 'OPLS2015',      # Forcefield
+           '-f'    : 'OPLS2015',       # Forcefield
            '-l'     : '1',             # starting point
            '-T'     : '298',           # Temperature
            '-r'     : '10',            # Total repeats
            '-s'     : 'linear',        # Sampling type
            '-w'     : '20',            # Number of windows
            '-C'     : 'KEBNE',         # Cluster to run on
+           '-mc'    : 'A',             # Chain of the mutations
           }
 
 rootdir = os.getcwd()

@@ -19,8 +19,8 @@ temperature=298
 run=10
 finalMDrestart=md_0000_1000.re
 
-workdir=/home/jespers/adenosine/1.A1-A2A_selectivity/A1/5.FEP/holo
-inputfiles=/home/jespers/adenosine/1.A1-A2A_selectivity/A1/5.FEP/holo/inputfiles
+workdir=/WORKDIR
+inputfiles=/INPUTFILES
 length=${#fepfiles[@]}
 length=$((length-1))
 for index in $(seq 0 $length);do
@@ -40,8 +40,6 @@ cp $inputfiles/md*.inp .
 cp $inputfiles/*.top .
 cp $inputfiles/qfep.inp .
 cp $inputfiles/$fepfile .
-cp $inputfiles/run_0500-1000.sh .
-cp $inputfiles/run_0500-0000.sh .
 
 if [ $index -lt 1 ]; then
 cp $inputfiles/eq*.inp .
@@ -54,9 +52,11 @@ fi
 sed -i s/T_VAR/"$temperature"/ *.inp
 sed -i s/FEP_VAR/"$fepfile"/ *.inp
 if [ $index -lt 1 ]; then
-#time mpirun -np 16 $qdyn eq1.inp > eq1.log
+echo $run
+#time srun $qdyn eq1.inp > eq1.log
 #EQ_FILES
 fi
+echo $fepfile
 #RUN_FILES
 timeout 30s QFEP < qfep.inp > qfep.out
 done

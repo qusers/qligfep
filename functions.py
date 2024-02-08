@@ -83,6 +83,35 @@ def overlapping_pairs(pdbfile, reslist, include=('ATOM', 'HETATM')):
                         
     return atomlist
 
+def correct_CT(inline):
+    line = inline.split()
+    if line[2] == 'N' or line[2] == 'CA' or line[2] == 'H':
+        try:
+            int(line[4])
+            outline = inline
+        except:
+            resi = ' {} '.format(int(line[4][:-1]) + 1)
+            outline = inline[:24] + resi + inline[27:]
+    else:
+        ati = 'HA{} '.format(line[2][0])
+        try:
+            int(line[4])
+            outline = inline[:13] + ati + inline[17:]
+        except:
+            resi = ' {} '.format(int(line[4][:-1]) + 1)
+            outline = inline[:13] + ati + inline[17:24] + resi + inline[27:]
+#    print(outline)
+    return outline
+
+def correct_NT(inline):
+    line = inline.split()
+    if line[2] == 'CH3' or line[2] == 'O' or line[2] =='C':
+        outline = inline
+    else:
+        ati = 'HH3{}'.format(line[2][0])
+        outline = inline[:13] + ati + inline[17:]
+    return outline
+
 def kT(T):
     k = 0.0019872041 # kcal/(mol.K)
     kT = k * T
@@ -91,8 +120,15 @@ def kT(T):
 
 def avg_sem(array):
     FEP_sum = array.sum(axis = 0)
-    dG = np.nanmean(FEP_sum)
-    cnt = len(FEP_sum)
-    sem = np.nanstd(FEP_sum, ddof =1)/np.sqrt(cnt)
-
+    if all([np.isnan(i) for i in FEP_sum]):
+        dG = np.nan
+        sem = np.nan
+    else:
+        if len(FEP_sum) > 1:
+            dG = np.nanmean(FEP_sum)
+            cnt = len([i for i in FEP_sum if not np.isnan(i)])
+            sem = np.nanstd(FEP_sum, ddof =1)/np.sqrt(cnt)
+        else:
+            dG = FEP_sum[0]
+            sem = np.nan
     return [dG, sem]

@@ -10,6 +10,7 @@ solvate CENTER SPHERE SOLVENT
 maketop MKC_p 
 writetop dualtop.top 
 wp top_p.pdb y 
+rt dualtop.top
 mask none 
 mask not excluded 
 wp complexnotexcluded.pdb y 

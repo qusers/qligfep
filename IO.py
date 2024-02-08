@@ -4,6 +4,7 @@ from subprocess import check_output
 import os
 import stat
 import numpy as np
+import pandas as pd
 
 import functions as f
 import settings as s
@@ -137,6 +138,39 @@ def AA(AA):
     if len(AA) == 1:
         AA = oneAA[AA]
         return AA
+    
+def restraint_matrix(mutation):
+    """
+    Matrix stroring appropriate restraints for side chain overlap of given mutation
+    """
+    wt, mut = AA(AA(mutation[0])), AA(AA(mutation[2]))
+    
+    sidechains = {
+        'ASP': ['CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2'],
+        'GLU': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'OE2'],
+        'HID': ['CB', 'HB2', 'HB3', 'CG', 'ND1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2'],
+        'ARG': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'NE', 'HE', 'CZ', 'NH1', 'HH11', 'HH12', 'NH2', 'HH21', 'HH22'],
+        'LYS': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'NZ', 'HZ1', 'HZ2', 'HZ3'],
+        'ALA': ['CB', 'HB1', 'HB2', 'HB3'],
+        'CYS': ['CB', 'HB2', 'HB3', 'SG', 'HG'],
+        'PHE': ['CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'CE2', 'HE2', 'CZ', 'HZ'],
+        'ILE': ['CB', 'HB', 'CG1', 'HG12', 'HG13', 'CG2', 'HG21', 'HG22', 'HG23', 'CD1', 'HD11', 'HD12', 'HD13'],
+        'LEU': ['CB', 'HB2', 'HB3', 'CG', 'HG', 'CD1', 'HD11', 'HD12', 'HD13', 'CD2', 'HD21', 'HD22', 'HD23'],
+        'MET': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'SD', 'CE', 'HE1', 'HE2', 'HE3'],
+        'VAL': ['CB', 'HB', 'CG1', 'HG11', 'HG12', 'HG13', 'CG2', 'HG21', 'HG22', 'HG23'],
+        'TRP': ['CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'NE1', 'HE1', 'CE2', 'CE3', 'HE3', 'CZ2', 'HZ2', 'CZ3', 'HZ3', 'CH2', 'HH2'],
+        'TYR': ['CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'CE2', 'HE2', 'CZ', 'OH', 'HH'],
+        'ASN': ['CB', 'HB2', 'HB3', 'CG', 'OD1', 'ND2', 'HD21', 'HD22'],
+        'GLN': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'NE2', 'HE21', 'HE22'],
+        'SER': ['CB', 'HB2', 'HB3', 'OG', 'HG'],
+        'THR': ['CB', 'HB', 'CG2', 'HG21', 'HG22', 'HG23', 'OG1', 'HG1'],
+        'GLY': []
+    }
+    
+    wt_chain  = sidechains[wt]
+    mut_chain = [x.lower() for x in sidechains[mut]]
+
+    return wt_chain, mut_chain
 
 
 def read_prm(prmfiles):
@@ -245,6 +279,21 @@ def write_submitfile(writedir, replacements):
     except:
         print("WARNING: Could not change permission for " + submit_out)
 
+def write_submitfile_benchmark(writedir, replacements):
+    submit_in = s.ROOT_DIR + '/INPUTS/FEP_submit_benchmark.sh'
+    submit_out = writedir + ('/FEP_submit.sh')
+    with open(submit_in) as infile, open (submit_out, 'w') as outfile:
+        for line in infile:
+            line = replace(line, replacements)
+            outfile.write(line)
+
+    try:
+        st = os.stat(submit_out)
+        os.chmod(submit_out, st.st_mode | stat.S_IEXEC)
+
+    except:
+        print("WARNING: Could not change permission for " + submit_out)
+
 def merge_two_dicts(x, y):
     """Given two dicts, merge them into a new dict as a shallow copy."""
     z = x.copy()
@@ -288,10 +337,10 @@ def read_qfep(qfep):
             if len(line) > 1:
                 if block == 1:
                     if line[0] == '1.000000':
-                        Zwanzig_r = line[4]
+                        Zwanzig_r = float(line[4])
 
                     elif line[0] == '0.000000':
-                        Zwanzig_f = line[2]
+                        Zwanzig_f = float(line[2])
 
                         if line[5] == '-Infinity':
                             Zwanzig = np.nan
@@ -319,9 +368,84 @@ def read_qfep(qfep):
                         BAR = np.nan
                     else:
                         BAR = float(line[2])
+    try: OS
+    except: OS = np.nan
+    try: BAR
+    except: BAR = np.nan
                         
     return [Zwanzig, Zwanzig_f, Zwanzig_r, OS, BAR]
-#    return [Zwanzig, Zwanzig_f, Zwanzig_r]#, OS, BAR]
+
+def read_qfep_esc(qfep):
+    """
+    Reads a given qfep.out file.
+
+    returns [Zwanzig, dGfr, dGr, TI, OS, BAR]
+    """
+    with open(qfep) as infile:
+        block = 0
+        for line in infile:
+            line = line.split()
+            if len(line) > 3:
+                if line[0] == 'ERROR:' or line[1] == 'ERROR:':
+                    ERROR = True
+
+                if line[3] == 'Free':
+                    block = 1
+
+                if line[3] == 'Termodynamic':
+                    #continue
+                    block = 2
+
+                if line[3] == 'Overlap':
+                    block = 3
+
+                if line[3] == 'BAR':
+                    block = 4
+
+                if line[3] == 'Reaction':
+                    block = 0
+
+            if len(line) > 1:
+                if block == 1:
+                    if line[0] == '0.980000':
+                        Zwanzig_r = float(line[4])
+
+                    elif line[0] == '0.020000':
+                        Zwanzig_f = float(line[2])
+
+                        if line[5] == '-Infinity':
+                            Zwanzig = np.nan
+
+                        else:
+                            Zwanzig = float(line[5])
+
+                if block == 2 and line[0] == '0.020000':
+                    try:
+                        TI = line[2]
+                        if line[2] == '-Infinity':
+                            TI = np.nan
+                    except:
+                        TI = np.nan
+
+                if block == 3 and line[0] == '0.020000':
+                    if line[2] == '-Infinity':
+                        OS = np.nan
+
+                    else:
+                        OS = float(line[2])
+
+                if block == 4 and line[0] == '0.020000':
+                    if line[2] == '-Infinity':
+                        BAR = np.nan
+                    else:
+                        BAR = float(line[2])
+    try: OS
+    except: OS = np.nan
+    try: BAR
+    except: BAR = np.nan
+
+    return [Zwanzig, Zwanzig_f, Zwanzig_r, OS, BAR]
+
 def read_qfep_verbose(qfep):
     """
     Reads a given qfep.out file.

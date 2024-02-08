@@ -1,0 +1,2882 @@
+*-------------------------------------------------------------
+*
+* Q-FF params:
+*Translation of OplsAA force field parameters.
+*Use CAREFULLY!!
+*Only natural amino acid parameters have been adopted.
+*-------------------------------------------------------------
+[options] force-field options
+name   Q-OPLSAA
+type   AMBER
+vdw_rule   geometric !vdW combination rule
+scale_14   0.5   !electrostatic 1-4 scaling factor 
+switch_atoms   on
+improper_potential   periodic
+improper_definition   explicit
+
+[atom_types] atom type definitions
+*tac-----------Avdw1---Avdw2---Bvdw1----Avdw3---Bvdw2&3---mass----SYBYL-name-old-comment
+H   0.00   0.00   0.00   0.00   0.00   1.008   ! Peptide
+H2   0.00   0.00   0.00   0.00   0.00   1.008   !
+HA   69.58   69.58   4.91   49.20   3.47   1.008   ! Aromatic
+HC   84.57   84.57   5.41   59.80   3.83   1.008   ! Nonpolar H
+HC1   84.57   84.57   5.41   59.80   3.83   1.008   ! Nonpolar H, GLU - HG1, HG2
+HC2   84.57   84.57   5.41   59.80   3.83   1.008   ! Nonpolar H, GLN - HG1, HG2
+HO   0.00   0.00   0.00   0.00   0.00   1.008   ! Ser/Thr/Tyr
+HW   0.00   0.00   0.00   0.00   0.00   1.008   ! TIP3P
+HS   0.00   0.00   0.00   0.00   0.00   1.008   ! CYS
+H3   0.00   0.00   0.00   0.00   0.00   1.008   ! Arg
+C   1802.24 1802.24   34.18 1274.38   24.17   12.01   ! sp2 carbonyl
+C2   1802.24 1802.24   34.18 1274.38   24.17   12.01   ! sp2 carbonyl
+C21     1802.24 1802.24   34.18 1274.38   24.17   12.01   ! sp2 carbonyl, GLN
+CA   1059.13 1059.13   23.67   748.92   16.74   12.01   ! Aromatic
+CAr   1103.59   1103.59   24.67   780.35   17.44   12.01   ! CZ in ARG J Phys Chem B 2004, 108, 16264
+CB   1059.13 1059.13   23.67   748.92   16.74   12.01   ! TRP
+CN   1059.13 1059.13   23.67   748.92   16.74   12.01   
+CR   1059.13 1059.13   23.67   748.92   16.74   12.01   ! HIS
+Cstar   1059.13 1059.13   23.67   748.92   16.74   12.01   ! TRP
+CT   944.52   944.52   22.03   667.88   15.58   12.01   ! sp3 nonpolar
+CP1   944.52   944.52   22.03   667.88   15.58   12.01   ! CD PRO
+CV   1059.13 1059.13   23.67   748.92   16.74   12.01   ! HIS
+CW   1059.13 1059.13   23.67   748.92   16.74   12.01   ! HIS
+CX   1059.13 1059.13   23.67   748.92   16.74   12.01   ! HIS
+N   971.75   971.75   28.31   687.13   20.02   14.01   ! Peptide
+NA   971.75   971.75   28.31   687.13   20.02   14.01   ! HIS
+NB   971.75   971.75   28.31   687.13   20.02   14.01   ! HIS
+N2   971.75   971.75   28.31   687.13   20.02   14.01   ! Arg
+!Dummy atoms
+DUC   0.00        0.00     0.0000      0.00    0.00     12.01 ! dummy c
+DUN   0.00        0.00     0.0000      0.00    0.00     14.01 ! dummy n
+DUO   0.00        0.00     0.0000      0.00    0.00     16.00 ! dummy o
+DUH   0.00        0.00     0.0000      0.00    0.00      1.01 ! dummy h
+!changed N3   aa
+N3   971.75   971.75   28.31   687.13   20.02   14.01   ! LYS
+O   616.44   616.44   23.77   435.89   16.81   16.00   ! Peptide carbonyl
+OA   616.44   616.44   23.77   435.89   16.81   16.00   ! ASN/GLN
+!OH in ASPH/GLUH is different, OH in Tyr is different   
+OH   760.65   760.65   25.05   537.86   17.71   16.00   ! Ser/Thr
+OTY   690.37   690.37   23.86   488.17   16.87   16.00   ! Tyr
+OW   762.89   762.89   24.39   539.45   17.25   16.00   ! TIP3P
+!O2   793.35   793.35   25.01   560.99   17.69   16.00    ! ASP/GLU
+!O2   616.44   616.44   23.77   435.89   16.81   16.00   ! ASP/GLU
+O2   956.00    956.00   23.01   435.89   16.81   16.00   ! ASP/GLU
+O1   616.44   616.44   23.77   435.89   16.81   16.00   ! ASH
+OS   616.44   616.44   23.77   435.89   16.81   16.00   !   
+ODE   601.15   601.15   22.27   425.08   15.74   16.00   ! ASPH/GLUH 
+S   2001.57 2001.57   44.74 1415.32   31.64   32.06   ! Met/CYX
+SH   2001.57 2001.57   44.74 1415.32   31.64   32.06   ! CYS
+NY   971.75   971.75   28.31   687.13   20.02   14.01   
+NZ   971.75   971.75   28.31   687.13   20.02   14.01   
+NT   1064.97 1064.97   29.63   753.05   20.96   14.01   
+CAL   264.10   264.10   18.82   186.75   13.31   40.08   !CA2+
+P   2447.79 2447.79   46.79 1730.85   33.09   30.97   !P
+Zn   3518.74 3518.74   59.32 2488.13   41.95   53.37   !Zn2+ 
+MG   96.00   0.00  32.00   96.00  32.00   24.31   !Mg+2
+MG0  37.00   0.00   8.32   26.16   5.88   24.31   !Mg 0 charge
+NA+    143.69    0.00    3.89  101.61    2.75  23.000 !Aqvist's cation
+!Lars parameters
+!herg
+K   522.99   0.00   4.35   369.81   3.08   39.10   !408 Potassium ion from QOPLS2001.prm 
+! Christoffer ribosome parameters
+!SOCKER
+SO1   873.79   873.79   27.96   617.86   19.77   16.00 ! quality: high
+SP2   2447.79   2447.79   46.79   1730.85   33.09   30.97 ! quality: high
+SO3   873.79   873.79   27.96   617.86   19.77   16.00 ! quality: high
+SO4   873.79   873.79   27.96   617.86   19.77   16.00 ! quality: high
+SO5   445.13   445.13   18.25   314.75   12.91   16.00 ! quality: high
+SC6   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+SC7   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+SO8   445.13   445.13   18.25   314.75   12.91   16.00 ! quality: high
+SC9   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+SO10   690.37   690.37   23.86   488.17   16.87   16.00 ! quality: high
+SC11   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+SO12   690.37   690.37   23.86   488.17   16.87   16.00 ! quality: high
+SC13   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+SH14    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+SH15   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+SH16   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+SH17   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+SH18   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+SH19    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+SH20   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+SH21   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+SH5T    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+SH3T    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+!ADENINE
+AN1   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+AC2   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+AN3   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+AC4   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+AC5   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+AN6   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+AN7   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+AC8   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+AN9   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+AC10   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+AH11    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+AH12    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+AH13   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+AH14   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+!GUANINE
+GN1   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+GC2   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+GN3   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+GC4   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+GC5   1802.24   1802.24   34.18   1274.38   24.17   12.01 ! quality: high
+GO6   616.44   616.44   23.77   435.89   16.81   16.00 ! quality: high
+GN7   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+GC8   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+GN9   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+GN10   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+GC11   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+GH12    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+GH13    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+GH14    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+GH15   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+GH36   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+!CYTOSINE
+CN1   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+CC2   1802.24   1802.24   34.18   1274.38   24.17   12.01 ! quality: high
+CO3   616.44   616.44   23.77   435.89   16.81   16.00 ! quality: high
+CN4   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+CC5   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+CN6   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+CC7   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+CC8   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+CH9    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+CH10    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+CH11   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+CH12   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+CH22    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+CH25   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+CH26   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+CH27   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+CH28   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+CH29    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+CH30   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+CH31   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+!URACIL
+UN1   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+UC2   1802.24   1802.24   34.18   1274.38   24.17   12.01 ! quality: high
+UO3   616.44   616.44   23.77   435.89   16.81   16.00 ! quality: high
+UN4   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+UC5   1802.24   1802.24   34.18   1274.38   24.17   12.01 ! quality: high
+UO6   616.44   616.44   23.77   435.89   16.81   16.00 ! quality: high
+UC7   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+UC8   1039.88   1039.88   24.25   735.31   17.15   12.01 ! quality: high
+UH9    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+UH10   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+UH11   109.18   109.18    6.99   77.20    4.94    1.01 ! quality: high
+!PHEACE Christoffer
+PO1   616.44   616.44   23.77   435.89   16.81   16.00 ! quality: high
+PC2   1802.24   1802.24   34.18   1274.38   24.17   12.01 ! quality: high
+PC3   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+PN4   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+PH5    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+PC6   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+PC7   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+PC8   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+PC9   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+PC10   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+PC11   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+PC12   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+PO13   616.44   616.44   23.77   435.89   16.81   16.00 ! quality: high
+PC14   1802.24   1802.24   34.18   1274.38   24.17   12.01 ! quality: high
+PC15   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+PH16   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+PH17   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+PH18   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+PH19   69.58   69.58    4.91   49.20    3.47    1.01 ! quality: high
+PH20   69.58   69.58    4.91   49.20    3.47    1.01 ! quality: high
+PH21   69.58   69.58    4.91   49.20    3.47    1.01 ! quality: high
+PH22   69.58   69.58    4.91   49.20    3.47    1.01 ! quality: high
+PH23   69.58   69.58    4.91   49.20    3.47    1.01 ! quality: high
+PH24   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+PH25   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+PH26   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+! LINEZOLID PARAMETERS FROM MACROMODEL
+LC1   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+LC2   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+LC3   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+LN4   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+LC5   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+LC6   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+LC7   1802.24   1802.24   34.18   1274.38   24.17   12.01 ! quality: high
+LC8   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+LC9   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+LO10   601.15   601.15   22.26   425.08   15.74   16.00 ! quality: high
+LN11   971.75   971.75   28.31   687.13   20.02   14.01 ! quality: high
+LC12   1802.24   1802.24   34.18   1274.38   24.17   12.01 ! quality: high
+LC13   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+LO14   616.44   616.44   23.77   435.89   16.81   16.00 ! quality: high
+LO15   616.44   616.44   23.77   435.89   16.81   16.00 ! quality: high
+LC16   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+LC17   1059.13   1059.13   23.67   748.92   16.74   12.01 ! quality: high
+LN18   1064.97   1064.97   29.63   753.05   20.95   14.01 ! quality: high
+LC19   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+LC20   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+LO21   445.13   445.13   18.25   314.75   12.91   16.00 ! quality: high
+LC22   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+LC23   944.52   944.52   22.03   667.88   15.58   12.01 ! quality: high
+LF24   264.71   264.71   11.43   187.18    8.09   19.00 ! quality: high
+LH25   69.58   69.58    4.91   49.20    3.47    1.01 ! quality: high
+LH26   69.58   69.58    4.91   49.20    3.47    1.01 ! quality: high
+LH27   69.58   69.58    4.91   49.20    3.47    1.01 ! quality: high
+LH28   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH29   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH30   49.20   49.20    3.47   34.79    2.45    1.01 ! quality: high
+LH31   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH32   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH33    0.00    0.00    0.00    0.00    0.00    1.01 ! quality: high
+LH34   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH35   59.80   59.80    3.83   42.29    2.71    1.01 ! quality: high
+LH36   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH37   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH38   59.80   59.80    3.83   42.29    2.71    1.01 ! quality: high
+LH39   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH40   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH41   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+LH42   59.80   59.80    3.83   42.29    2.71    1.01 ! quality: high
+LH43   59.80   59.80    3.83   42.29    2.71    1.01 ! quality: high
+LH44   84.57   84.57    5.41   59.80    3.83    1.01 ! quality: high
+*-----------------------------------------------------------------------
+[bonds] bond type definitions
+*iaci iacj   force.c.   dist.   SYBYL
+*-----------------------------------------------------------------------
+CA   NT   962.0   1.34   !anilines
+OS   C2   600.0   1.55
+CT   OS   640.0   1.410
+P   O2   1050.0   1.480
+P   OS   630.0   1.610
+HW   OW   1106.0   0.957
+!HW   HW   1106.0   1.514
+HW   HW   0.0   1.5183
+H   N   868.0   1.010
+H   NA   868.0   1.010
+H3   N2   868.0   1.010
+H3   N3   868.0   1.010
+Cstar   CB   776.0   1.459
+Cstar   CT   634.0   1.495
+Cstar   CW   1092.0   1.352
+C   CT   634.0   1.522
+C2   CT   634.0   1.522
+C21   CT   634.0   1.522
+C   N   980.0   1.335
+C   O   1140.0   1.229
+C2   N   980.0   1.335
+C21   N   980.0   1.335   !GLN
+C2   O   1140.0   1.229
+C2   O1   1140.0   1.229   !ASH
+C21   O   1140.0   1.229   !GLN
+C   OA   1140.0   1.229   !GLN/ASN
+C   O2   1312.0   1.250
+C2   O2   1312.0   1.250
+C   OH   900.0   1.364
+C   SO10  900.0   1.364
+C2   OH   900.0   1.364
+C2   ODE   900.0   1.364
+CA   CA   938.0   1.400
+CA   CAr   938.0   1.400
+CA   CB   938.0   1.404
+CA   CT   634.0   1.510
+CA   HA   734.0   1.080   
+CA   N2   962.0   1.340
+CAr   N2   962.0   1.340
+CA   OH   900.0   1.364
+CA   OTY   900.0   1.364
+CN   CA   938.0   1.400
+CN   CB   894.0   1.419
+CN   NA   856.0   1.380
+CR   HA   734.0   1.080
+CR   NA   954.0   1.343
+CR   NB   976.0   1.335
+CT   CT   536.0   1.529
+CT   N   674.0   1.449
+CT   N2   674.0   1.463
+CT   N3   734.0   1.471
+CT   OH   640.0   1.410
+CT   S   454.0   1.810
+CT   SH   444.0   1.810
+CP1   CT   536.0   1.529
+CP1   N   674.0   1.449
+CP1   HC   680.0   1.090
+CV   CT   634.0   1.504
+CV   CW   1040.0   1.370
+CV   HA   734.0   1.080
+CV   NB   820.0   1.394
+CW   CT   634.0   1.504
+CW   HA   734.0   1.080
+CW   NA   854.0   1.381
+CT   CX   634.0   1.504
+CX   NA   854.0   1.381
+CX   HA   734.0   1.080
+CX   CX   1040.0   1.370
+HC   CT   680.0   1.090
+HC1     CT      680.0   1.090  ! GLU: HB1 and HB2
+HC2     CT      680.0   1.090  ! GLN: HB1 and HB2
+HO   OH   1106.0   0.945
+HO   OTY   1106.0   0.945
+HO   ODE   1106.0   0.945
+HS   SH   548.0   1.336
+S   S   332.0   2.038
+NT   H   868.0   1.010
+NY   H2   868.0   1.010
+NY   H   868.0   1.010
+NZ   H   868.0   1.010
+CT   NY   764.0   1.448
+CA   NY   764.0   1.448
+CA   NZ   1000.0   1.261
+CAr   NY   764.0   1.448
+CAr   NZ   1000.0   1.261
+CT   NT   764.0   1.448
+CA   N3   962.0   1.340   !Aniline
+
+! Christoffer ribosome parameters
+!SOCKER
+SO1   SP2   1050.0   1.480   ! quality : high
+SP2   SO3   1050.0   1.480   ! quality : high
+SP2   SO4   1050.0   1.480   ! quality : high
+SP2   SO5   460.0   1.610   ! quality : high
+SO5   SC6   640.0   1.410   ! quality : high
+SC6   SC7   536.0   1.529   ! quality : high
+SC6   SH15   680.0   1.090   ! quality : high
+SC6   SH16   680.0   1.090   ! quality : high
+SC7   SO8   640.0   1.410   ! quality : high
+SC7   SC9   536.0   1.529   ! quality : high
+SC7   SH17   680.0   1.090   ! quality : high
+SO8   SC13   640.0   1.410   ! quality : high
+SC9   SO10   640.0   1.410   ! quality : high
+SC9   SC11   536.0   1.529   ! quality : high
+SC9   SH18   680.0   1.090   ! quality : high
+SO10   SH19   1106.0   0.945   ! quality : high
+SC11   SO12   640.0   1.410   ! quality : high
+SC11   SC13   536.0   1.529   ! quality : high
+SC11   SH20   680.0   1.090   ! quality : high
+SO12   SH14   1106.0   0.945   ! quality : high
+SC13   SH21   680.0   1.090   ! quality : high
+SO5    SH5T   1106.0   0.945   ! quality : high
+SO10   SH3T   1106.0   0.945   ! quality : high
+SO1    HO     1106.0   0.945   ! quality : high
+!ADENINE
+AN1   AC2   880.0   1.371   ! quality : high
+AN1   AC10   872.0   1.374   ! quality : high
+AC2   AN3   1058.0   1.304   ! quality : high
+AC2   AH13   734.0   1.080   ! quality : high
+AN3   AC4   828.0   1.391   ! quality : high
+AC4   AC5   938.0   1.404   ! quality : high
+AC4   AC10   1040.0   1.370   ! quality : high
+AC5   AN6   962.0   1.340   ! quality : high
+AC5   AN7   966.0   1.339   ! quality : high
+AN6   AH11   868.0   1.010   ! quality : med
+AN6   AH12   868.0   1.010   ! quality : med
+AN7   AC8   1004.0   1.324   ! quality : high
+AC8   AN9   1004.0   1.324   ! quality : high
+AC8   AH14   734.0   1.080   ! quality : high
+AN9   AC10   922.0   1.354   ! quality : high
+!CONNECTION SUGAR2BASE
+SC13   AN1    674.0   1.475   ! quality : high
+SC13   GN1    674.0   1.475   ! quality : high
+SC13   CN1    674.0   1.475   ! quality : high
+SC13   UN1    674.0   1.475   ! quality : high
+!CONNECTION SUGAR2PHOSPHATE
+SO10   SP2    460.0   1.610   ! quality : high
+!CONNECTION PHA2SUGAR
+SO10    PC2     428.0   1.327   ! quality : high
+!GUANINE
+GN1   GC2   880.0   1.371   ! quality : high
+GN1   GC11   872.0   1.374   ! quality : high
+GC2   GN3   1058.0   1.304   ! quality : high
+GC2   GH36   734.0   1.080   ! quality : high
+GN3   GC4   828.0   1.391   ! quality : high
+GC4   GC5   894.0   1.419   ! quality : high
+GC4   GC11   1040.0   1.370   ! quality : high
+GC5   GO6   1140.0   1.229   ! quality : high
+GC5   GN7   836.0   1.388   ! quality : high
+GN7   GC8   854.0   1.381   ! quality : high
+GN7   GH12   868.0   1.010   ! quality : high
+GC8   GN9   962.0   1.340   ! quality : high
+GC8   GN10   966.0   1.339   ! quality : high
+GN9   GH14   868.0   1.010   ! quality : med
+GN9   GH15   868.0   1.010   ! quality : med
+GN10   GC11   922.0   1.354   ! quality : high
+!CYTOSINE
+CN1   CC2   836.0   1.388   ! quality : high
+CN1   CC8   896.0   1.365   ! quality : high
+CC2   CO3   1140.0   1.229   ! quality : high
+CC2   CN4   914.0   1.358   ! quality : high
+CN4   CC5   966.0   1.339   ! quality : high
+CC5   CN6   962.0   1.340   ! quality : high
+CC5   CC7   854.0   1.433   ! quality : high
+CN6   CH9   868.0   1.010   ! quality : med
+CN6   CH10   868.0   1.010   ! quality : med
+CC7   CC8   1098.0   1.340   ! quality : high
+CC7   CH11   680.0   1.080   ! quality : high
+CC8   CH12   734.0   1.080   ! quality : high
+!URACIL
+UN1   UC2   836.0   1.388   ! quality : high
+UN1   UC8   896.0   1.365   ! quality : high
+UC2   UO3   1140.0   1.229   ! quality : high
+UC2   UN4   836.0   1.388   ! quality : high
+UN4   UC5   836.0   1.388   ! quality : high
+UN4   UH9   868.0   1.010   ! quality : med
+UC5   UO6   1140.0   1.229   ! quality : high
+UC5   UC7   820.0   1.444   ! quality : high
+UC7   UC8   1098.0   1.340   ! quality : high
+UC7   UH10   680.0   1.080   ! quality : high
+UC8   UH11   680.0   1.080   ! quality : high
+!PHEACE
+PO1   PC2   1140.0   1.229   ! quality : high
+PC2   PC3   634.0   1.522   ! quality : high
+PC3   PN4   674.0   1.449   ! quality : high
+PC3   PC6   536.0   1.529   ! quality : high
+PC3   PH16   680.0   1.090   ! quality : high
+PN4   PH5   868.0   1.010   ! quality : high
+PN4   PC14   980.0   1.335   ! quality : high
+PC6   PC7   634.0   1.510   ! quality : high
+PC6   PH17   680.0   1.090   ! quality : high
+PC6   PH18   680.0   1.090   ! quality : high
+PC7   PC8   938.0   1.400   ! quality : high
+PC7   PC9   938.0   1.400   ! quality : high
+PC8   PC10   938.0   1.400   ! quality : high
+PC8   PH19   734.0   1.080   ! quality : high
+PC9   PC11   938.0   1.400   ! quality : high
+PC9   PH20   734.0   1.080   ! quality : high
+PC10   PC12   938.0   1.400   ! quality : high
+PC10   PH21   734.0   1.080   ! quality : high
+PC11   PC12   938.0   1.400   ! quality : high
+PC11   PH22   734.0   1.080   ! quality : high
+PC12   PH23   734.0   1.080   ! quality : high
+PO13   PC14   1140.0   1.229   ! quality : high
+PC14   PC15   634.0   1.522   ! quality : high
+PC15   PH24   680.0   1.090   ! quality : high
+PC15   PH25   680.0   1.090   ! quality : high
+PC15   PH26   680.0   1.090   ! quality : high
+! LINEZOLID PARAMETERS FROM MACROMODEL
+LC1   LC2   938.0   1.400   ! quality : high
+LC1   LC3   938.0   1.400   ! quality : high
+LC1   LH25   734.0   1.080   ! quality : high
+LC2   LN4   854.0   1.381   ! quality : high
+LC2   LC5   938.0   1.400   ! quality : high
+LC3   LC17   938.0   1.400   ! quality : high
+LC3   LH26   734.0   1.080   ! quality : high
+LN4   LC6   674.0   1.449   ! quality : high
+LN4   LC7   980.0   1.335   ! quality : high
+LC5   LC16   938.0   1.400   ! quality : high
+LC5   LH27   734.0   1.080   ! quality : high
+LC6   LC8   536.0   1.529   ! quality : high
+LC6   LH28   680.0   1.090   ! quality : high
+LC6   LH29   680.0   1.090   ! quality : high
+LC7   LO10   428.0   1.327   ! quality : high
+LC7   LO15   1140.0   1.229   ! quality : high
+LC8   LC9   536.0   1.529   ! quality : high
+LC8   LO10   640.0   1.410   ! quality : high
+LC8   LH30   680.0   1.090   ! quality : high
+LC9   LN11   674.0   1.449   ! quality : high
+LC9   LH31   680.0   1.090   ! quality : high
+LC9   LH32   680.0   1.090   ! quality : high
+LN11   LC12   980.0   1.335   ! quality : high
+LN11   LH33   868.0   1.010   ! quality : high
+LC12   LC13   634.0   1.522   ! quality : high
+LC12   LO14   1140.0   1.229   ! quality : high
+LC13   LH34   680.0   1.090   ! quality : high
+LC13   LH39   680.0   1.090   ! quality : high
+LC13   LH40   680.0   1.090   ! quality : high
+LC16   LC17   938.0   1.400   ! quality : high
+LC16   LF24   840.0   1.354   ! quality : high
+LC17   LN18   962.0   1.340   ! quality : high
+LN18   LC19   764.0   1.448   ! quality : high
+LN18   LC23   764.0   1.448   ! quality : high
+LC19   LC20   536.0   1.529   ! quality : high
+LC19   LH35   680.0   1.090   ! quality : high
+LC19   LH43   680.0   1.090   ! quality : high
+LC20   LO21   640.0   1.410   ! quality : high
+LC20   LH36   680.0   1.090   ! quality : high
+LC20   LH44   680.0   1.090   ! quality : high
+LO21   LC22   640.0   1.410   ! quality : high
+LC22   LC23   536.0   1.529   ! quality : high
+LC22   LH37   680.0   1.090   ! quality : high
+LC22   LH41   680.0   1.090   ! quality : high
+LC23   LH38   680.0   1.090   ! quality : high
+LC23   LH42   680.0   1.090   ! quality : high
+! FOR FEP
+UO6   CH9   868.0   1.010   ! quality : med
+UO6   CH10   868.0   1.010   ! quality : med
+*-----------------------------------------------------------------------
+[angles] angle type definitions
+* iaci iacj iack   forceK angle0
+*-----------------------------------------------------------------------
+OS   C2   O2   120.000   120.000 0.000   0.000
+OS   C2   CT   120.000   120.000 0.000   0.000
+P   OS   CT   200.000   120.500 0.000   0.000
+OS   CT   HC   70.000   109.500 0.000   0.000
+CT   CT   OS   100.000   109.500 0.000   0.000
+CT   OS   C2   120.000   120.000 0.000   0.000
+O2   P   OS   200.000   108.230 0.000   0.000
+O2   P   O2   240.000   119.900 0.000   0.000
+OS   P   OS   90.000   102.600 0.000   0.000
+CA   CA   N3   140.000   120.100 0.000   0.000 !Aniline
+CA   N3   H3   70.000   111.000 0.000   0.000 !""
+CA   CT   N3   120.000   120.000 0.000   0.000 !BENZYLAMINE
+CA   CAr   N2   140.000   120.000 0.000   0.000 !Benzamidine
+HW   OW   HW   200.000   104.520 0.000   0.000
+HW   HW   OW   0.000   127.740 0.000   0.000
+HC   CT   OH   70.000   109.500 0.000   0.000
+CT   S   S   136.000   103.700 0.000   0.000
+C   CT   N3   160.000   111.200 0.000   0.000
+N2   CA   N2   140.000   120.000 0.000   0.000
+N2   CAr   N2   140.000   120.000 0.000   0.000
+C   CT   N   126.000   110.100 0.000   0.000
+C   CT   CT   126.000   111.100 0.000   0.000
+C2   CT   CT   126.000   111.100 0.000   0.000
+C21   CT   CT   126.000   111.100 0.000   0.000
+CA   CA   CA   126.000   120.000 0.000   0.000
+CA   CA   CAr   126.000   120.000 0.000   0.000
+CA   CA   CT   140.000   120.000 0.000   0.000
+CA   CA   HA   70.000   120.000 0.000   0.000
+CA   CA   OH   140.000   120.000 0.000   0.000
+CA   CA   OTY   140.000   120.000 0.000   0.000
+CA   OH   HO   70.000   113.000 0.000   0.000
+CA   OTY   HO   70.000   113.000 0.000   0.000
+CT   C   O   160.000   120.400 0.000   0.000
+SO10   C   O   160.000   120.400 0.000   0.000
+CT   C   SO10   160.000   120.400 0.000   0.000
+CT   C2   O   160.000   120.400 0.000   0.000
+CT   C2   O1   160.000   120.400 0.000   0.000 !ASH
+CT   C21   O   160.000   120.400 0.000   0.000 !GLN
+CT   C   OA   160.000   120.400 0.000   0.000 !GLN/ASN
+CT   C   O2   140.000   117.000 0.000   0.000
+CT   C2   O2   140.000   117.000 0.000   0.000
+CT   C   N   140.000   116.600 0.000   0.000
+CT   C2   N   140.000   116.600 0.000   0.000
+CT   C21   N   140.000   116.600 0.000   0.000 !GLN
+O2   C   O2   160.000   126.000 0.000   0.000
+O2   C2   O2   160.000   126.000 0.000   0.000
+N   C   O   160.000   122.900 0.000   0.000
+N   C2   O   160.000   122.900 0.000   0.000
+N   C21   O   160.000   122.900 0.000   0.000
+N   C   OA   160.000   122.900 0.000   0.000 !GLN/ASN
+CA   CT   CT   126.000   114.000 0.000   0.000
+CT   CT   CT   116.700   112.700 0.000   0.000
+CT   CT   CW   126.000   114.000 0.000   0.000
+CT   CT   CV   126.000   114.000 0.000   0.000
+CT   CT   N   160.000   109.700 0.000   0.000
+CT   CT   N2   160.000   111.200 0.000   0.000
+CT   CT   N3   160.000   111.200 0.000   0.000
+CT   CT   OH   100.000   109.500 0.000   0.000
+CT   CT   Cstar   126.000   115.600 0.000   0.000
+HC   CT   Cstar   70.000   109.500 0.000   0.000
+CT   Cstar   CW   140.000   125.000 0.000   0.000
+CB   Cstar   CT   140.000   128.600 0.000   0.000
+CA   CN   NA   140.000   132.800 0.000   0.000
+CB   CN   NA   140.000   104.400 0.000   0.000
+Cstar   CW   NA   140.000   108.700 0.000   0.000
+Cstar   CW   HA   70.000   120.000 0.000   0.000
+CN   NA   CW   140.000   111.600 0.000   0.000
+H   NA   CN   70.000   123.100 0.000   0.000
+CB   Cstar   CW   170.000   106.400 0.000   0.000
+HA   CA   CN   70.000   120.000 0.000   0.000
+CA   CA   CN   170.000   120.000 0.000   0.000
+CA   CN   CB   170.000   122.700 0.000   0.000
+CA   CA   CB   126.000   120.000 0.000   0.000
+HA   CA   CB   70.000   120.000 0.000   0.000
+CA   CB   Cstar   126.000   134.900 0.000   0.000
+CA   CB   Cstar   170.000   134.900 0.000   0.000
+CA   CB   CN   170.000   116.200 0.000   0.000
+CN   CB   Cstar   170.000   108.800 0.000   0.000
+CT   CT   S   100.000   114.700 0.000   0.000
+CT   CT   SH   100.000   108.600 0.000   0.000
+HC   CT   CA   70.000   109.500 0.000   0.000
+HC   CT   CV   70.000   109.500 0.000   0.000
+N3   CT   HC   70.000   109.500 0.000   0.000 
+HA   CR   NA   70.000   120.000 0.000   0.000
+HA   CR   NB   70.000   120.000 0.000   0.000
+NA   CR   NB   140.000   120.000 0.000   0.000
+HA   CV   NB   70.000   120.000 0.000   0.000 !HIS Amber
+NA   CR   NA   140.000   120.000 0.000   0.000 !HIS Amber
+CT   CV   NB   140.000   124.500 0.000   0.000 !HIS Amber
+CT   CV   CW   140.000   130.700 0.000   0.000 !HIS Amber
+CW   CV   NB   140.000   111.000 0.000   0.000 !HIS Amber
+HA   CV   CW   70.000   128.200 0.000   0.000 !HIE Amber (OPLS2002)
+CT   CW   NA   140.000   121.600 0.000   0.000
+CT   CW   CV   140.000   130.700 0.000   0.000
+CV   CW   NA   140.000   106.300 0.000   0.000 !HIS Amber
+HA   CW   CV   70.000   130.700 0.000   0.000 !HIS Amber
+HA   CW   NA   70.000   121.600 0.000   0.000 !HIS Amber
+CT   N   CT   100.000   118.000 0.000   0.000
+H   N   CT   76.000   118.400 0.000   0.000
+H   N   C   70.000   119.800 0.000   0.000
+H   N   C2   70.000   119.800 0.000   0.000
+H   N   C21   70.000   119.800 0.000   0.000 ! GLN
+H   N   H   70.000   120.000 0.000   0.000
+H   NA   CR   70.000   120.000 0.000   0.000
+H   NA   CW   70.000   120.000 0.000   0.000
+CR   NA   CW   140.000   109.800 0.000   0.000 !HIS Amber
+CR   NB   CV   140.000   110.000 0.000   0.000 !HIS Amber
+H3   N3   CT   70.000   109.500 0.000   0.000
+H3   N3   H3   70.000   109.500 0.000   0.000
+HC   CT   CT   75.000   110.700 0.000   0.000
+HC1     CT      CT      75.000   110.700 0.000   0.000 ! GLU: HB1 HB2
+HC2     CT      CT      75.000   110.700 0.000   0.000 ! GLN: HB1 HB2
+HC   CT   C   70.000   109.500 0.000   0.000
+HC   CT   C2   70.000   109.500 0.000   0.000 ! GLN
+HC   CT   C21   70.000   109.500 0.000   0.000 ! GLN
+HC   CT   HC   66.000   107.800 0.000   0.000
+HC1   CT   HC1   66.000   107.800 0.000   0.000 ! GLU: HB1 HB2
+HC2   CT   HC2   66.000   107.800 0.000   0.000 ! GLN: HB1 HB2
+HC   CT   N2   70.000   109.500 0.000   0.000
+HC   CT   S   70.000   109.500 0.000   0.000
+HC   CT   SH   70.000   109.500 0.000   0.000
+HC   CT   CW   70.000   109.500 0.000   0.000
+H3   N2   CA   70.000   120.000 0.000   0.000
+H3   N2   CAr   70.000   120.000 0.000   0.000
+H3   N2   CT   70.000   118.400 0.000   0.000
+CA   N2   CT   100.000   123.200 0.000   0.000
+CAr   N2   CT   100.000   123.200 0.000   0.000
+H3   N2   H3   70.000   120.000 0.000   0.000
+HO   OH   CT   110.000   108.500 0.000   0.000
+N   CT   HC   70.000   109.500 0.000   0.000
+HS   SH   CT   88.000   96.000 0.000   0.000
+CX   CT   CT   126.000   114.000 0.000   0.000
+CX   CT   HC   70.000   109.500 0.000   0.000
+CT   CX   NA   140.000   121.600 0.000   0.000 !HIS Amber
+CX   NA   H   70.000   120.000 0.000   0.000
+CX   NA   CR   140.000   109.800 0.000   0.000 
+HA   CX   NA   70.000   120.000 0.000   0.000
+CT   CX   CX   140.000   130.700 0.000   0.000 !HIS Amber
+NA   CX   CX   140.000   106.300 0.000   0.000 !HIS Amber
+HA   CX   CX   70.000   130.700 0.000   0.000 !HIS Amber
+CT   S   CT   124.000   98.900 0.000   0.000
+C   N   CT   100.000   121.900 0.000   0.000
+CT   CT   NY   160.000   111.200 0.000   0.000
+HC   CT   NY   70.000   109.500 0.000   0.000
+H2   CT   NY   70.000   109.500 0.000   0.000
+CT   NY   CA   100.000   120.500 0.000   0.000
+CT   NY   CAr   100.000   120.500 0.000   0.000
+H   NY   CA   100.000   112.500 0.000   0.000
+H   NY   CAr   100.000   112.500 0.000   0.000
+H2   NY   CA   100.000   112.500 0.000   0.000
+NY   CA   NY   140.000   111.800 0.000   0.000
+NY   CAr   NY   140.000   111.800 0.000   0.000
+CT   NY   H   70.000   109.500 0.000   0.000
+CT   NY   H2   70.000   109.500 0.000   0.000
+NY   CA   NZ   140.000   124.100 0.000   0.000
+NY   CAr   NZ   140.000   124.100 0.000   0.000
+CA   NZ   H   70.000   112.500 0.000   0.000
+CAr   NZ   H   70.000   112.500 0.000   0.000
+H   NY   H   87.200   106.400 0.000   0.000
+H2   NY   H2   87.200   106.400 0.000   0.000
+CT   C   OH   140.000   117.000 0.000   0.000
+CT   C2   OH   140.000   108.000 0.000   0.000
+CT   C2   ODE   140.000   117.000 0.000   0.000
+O   C   OH   160.000   126.000 0.000   0.000
+O   C2   OH   160.000   121.000 0.000   0.000 
+O1   C2   OH   160.000   121.000 0.000   0.000 ! ASH
+O   C2   ODE   160.000   126.000 0.000   0.000
+HO   OH   C   70.000   113.000 0.000   0.000
+HO   OH   C2   70.000   113.000 0.000   0.000
+HO   ODE   C2   70.000   113.000 0.000   0.000
+CT   CT   NT   112.400   109.470 0.000   0.000
+HC   CT   NT   70.000   109.500 0.000   0.000
+H   NT   CT   70.000   109.500 0.000   0.000
+H   NT   H   87.200   106.400 0.000   0.000
+CA   CT   N   160.0   111.2   0.000   0.000! Amino terminal
+CA   CT   CA   80.0   109.5   0.000   0.000! DIP
+CA   CA   NT   140.0   120.1   0.000   0.000!aniline
+CA   NT   H   70.0   111.0   0.000   0.000! aniline
+C   N   CP1   100.000   121.900   0.000   0.000
+CP1   CT   CT   116.700   112.700   0.000   0.000
+CP1   CT   HC   75.000   110.700   0.000   0.000
+CP1   N   CT   100.000   118.000   0.000   0.000
+CT   CP1   HC   75.000   110.700   0.000   0.000
+CT   CP1   N   160.000   109.700   0.000   0.000
+HC   CP1   HC   66.000   107.800   0.000   0.000
+HC   CP1   N   70.000   109.500   0.000   0.000
+
+! Christoffer ribosome parameters
+!SOCKER
+SO1   SP2   SO3   280.0   119.900   ! quality : high
+SO1   SP2   SO4   280.0   119.900   ! quality : high
+SO1   SP2   SO5   200.0   108.230   ! quality : high
+SO5   SP2   SO5   200.0   108.230   ! quality : high
+SP2   SO5   SP2   200.0   120.500   ! quality : high
+SP2   SO5   SC6   200.0   120.500   ! quality : high
+SP2   SO1   HO    110.0   108.500   ! quality : high
+SO4   SP2   SO3   280.0   119.900   ! quality : high
+SO5   SP2   SO3   200.0   108.230   ! quality : high
+SO5   SP2   SO4   200.0   108.230   ! quality : high
+SO5   SC6   SC7   100.0   109.500   ! quality : high
+SO5   SC6   SH15    70.0   109.500   ! quality : high
+SO5   SC6   SH16    70.0   109.500   ! quality : high
+SC6   SC7   SO8   100.0   109.500   ! quality : high
+SC6   SC7   SC9   116.7   112.700   ! quality : high
+SC6   SC7   SH17    75.0   110.700   ! quality : high
+SC7   SO8   SC13   120.0   109.500   ! quality : high
+SC7   SC9   SO10   100.0   109.500   ! quality : high
+SC7   SC9   SC11   116.7   112.700   ! quality : high
+SC7   SC9   SH18    75.0   110.700   ! quality : high
+SO8   SC13   SC11   100.0   109.500   ! quality : high
+SO8   SC13   SH21    70.0   109.500   ! quality : high
+SC9   SC7   SO8   100.0   109.500   ! quality : high
+SC9   SO10   SH19   110.0   108.500   ! quality : high
+SC9   SO10   C   110.0   108.500   ! quality : high
+SC9   SC11   SO12   100.0   109.500   ! quality : high
+SC9   SC11   SC13   116.7   112.700   ! quality : high
+SC9   SC11   SH20    75.0   110.700   ! quality : high
+SC11   SC9   SO10   100.0   109.500   ! quality : high
+SC11   SO12   SH14   110.0   108.500   ! quality : high
+SC11   SC13   SH21    75.0   110.700   ! quality : high
+SC13   SC11   SO12   100.0   109.500   ! quality : high
+SH15   SC6   SC7    75.0   110.700   ! quality : high
+SH16   SC6   SC7    75.0   110.700   ! quality : high
+SH16   SC6   SH15    66.0   107.800   ! quality : high
+SH17   SC7   SO8    70.0   109.500   ! quality : high
+SH17   SC7   SC9    75.0   110.700   ! quality : high
+SH18   SC9   SO10    70.0   109.500   ! quality : high
+SH18   SC9   SC11    75.0   110.700   ! quality : high
+SH20   SC11   SO12    70.0   109.500   ! quality : high
+SH20   SC11   SC13    75.0   110.700   ! quality : high
+SH5T   SO5    SC6   110.0   108.500   ! quality : high
+SC9    SO10   SH3T   110.0   108.500   ! quality : high
+!ADENINE
+AN1   AC2   AN3   140.0   113.900   ! quality : high
+AN1   AC2   AH13    70.0   123.050   ! quality : high
+AN1   AC10   AC4   140.0   106.200   ! quality : high
+AN1   AC10   AN9   140.0   126.200   ! quality : high
+AC2   AN3   AC4   140.0   103.800   ! quality : high
+AN3   AC4   AC5   140.0   132.400   ! quality : high
+AN3   AC4   AC10   140.0   110.400   ! quality : high
+AC4   AC5   AN6   140.0   123.500   ! quality : high
+AC4   AC5   AN7   140.0   117.300   ! quality : high
+AC4   AC10   AN9   140.0   127.700   ! quality : high
+AC5   AN6   AH11    70.0   120.000   ! quality : high
+AC5   AN6   AH12    70.0   120.000   ! quality : high
+AC5   AN7   AC8   140.0   118.600   ! quality : high
+AN7   AC5   AN6   140.0   119.300   ! quality : high
+AN7   AC8   AN9   140.0   129.100   ! quality : high
+AN7   AC8   AH14    70.0   115.450   ! quality : high
+AC8   AN9   AC10   140.0   111.000   ! quality : high
+AC10   AN1   AC2   140.0   105.400   ! quality : high
+AC10   AC4   AC5   170.0   117.300   ! quality : high
+AH12   AN6   AH11    70.0   120.000   ! quality : high
+AH13   AC2   AN3    70.0   123.050   ! quality : high
+AH14   AC8   AN9    70.0   115.450   ! quality : high
+!CONNECTION SUGAR2BASE
+SO8       SC13   AN1    100.0   109.500   ! quality : high
+SC11   SC13   AN1    160.0   111.200   ! quality : high
+AN1    SC13   SH21    70.0   109.500   ! quality : high
+SC13   AN1    AC2    140.0   128.800   ! quality : high
+SC13   AN1    AC10   140.0   125.800   ! quality : high
+SO8       SC13    GN1    100.0   109.500   ! quality : high
+SC11   SC13   GN1    160.0   111.200   ! quality : high
+GN1    SC13   SH21     70.0   109.500   ! quality : high
+SC13   GN1    GC2    140.0   128.800   ! quality : high
+SC13   GN1    GC11   140.0   125.800   ! quality : high
+SO8       SC13   CN1    100.0   109.500   ! quality : high
+SC11   SC13   CN1    160.0   111.200   ! quality : high
+CN1       SC13   SH21    70.0   109.500   ! quality : high
+SC13   CN1    CC2    140.0   117.600   ! quality : high
+SC13   CN1    CC8    140.0   121.200   ! quality : high
+SO8       SC13   UN1    100.0   109.500   ! quality : high
+SC11   SC13   UN1    160.0   111.200   ! quality : high
+UN1     SC13   SH21    70.0   109.500   ! quality : high
+SC13   UN1    UC2    140.0   117.600   ! quality : high
+SC13   UN1    UC8    140.0   121.200   ! quality : high
+!CONNECTION SUGAR2PHOSPHATE
+SC9       SO10   SP2    200.0   120.500   ! quality : high
+SO10   SP2    SO3       200.0   108.230   ! quality : high
+SO10   SP2    SO4       200.0   108.230   ! quality : high
+SO10   SP2    SO5       90.0   102.600   ! quality : high
+!CONNECTION PHA2SUGAR
+SC9     SO10    PC2     166.0   116.900   ! quality : high
+SO10    PC2     PO1     166.0   123.400   ! quality : high
+SO10    PC2     PC3     162.0   111.400   ! quality : high
+!GUANINE
+GC11   GN1   GC2   140.0   105.400   ! quality : high
+GN1   GC2   GN3   140.0   113.900   ! quality : high
+GN1   GC2   GH36    70.0   123.050   ! quality : high
+GN1   GC11   GC4   140.0   106.200   ! quality : high
+GN1   GC11   GN10   140.0   126.200   ! quality : high
+GH36   GC2   GN3    70.0   123.050   ! quality : high
+GC2   GN3   GC4   140.0   103.800   ! quality : high
+GN3   GC4   GC5   140.0   130.000   ! quality : high
+GN3   GC4   GC11   140.0   110.400   ! quality : high
+GC4   GC5   GO6   160.0   128.800   ! quality : high
+GC4   GC5   GN7   140.0   111.300   ! quality : high
+GC4   GC11   GN10   140.0   127.700   ! quality : high
+GC11   GC4   GC5   170.0   119.200   ! quality : high
+GN7   GC5   GO6   160.0   120.600   ! quality : high
+GC5   GN7   GC8   140.0   125.200   ! quality : high
+GC5   GN7   GH12    70.0   116.800   ! quality : high
+GH12   GN7   GC8    70.0   118.000   ! quality : high
+GN7   GC8   GN9   140.0   116.000   ! quality : high
+GN7   GC8   GN10   140.0   123.300   ! quality : high
+GN10   GC8   GN9   140.0   119.300   ! quality : high
+GC8   GN9   GH14    70.0   120.000   ! quality : high
+GC8   GN9   GH15    70.0   120.000   ! quality : high
+GC8   GN10   GC11   140.0   112.200   ! quality : high
+GH14   GN9   GH15    70.0   120.000   ! quality : high
+!CYTOSINE
+CC8    CN1    CC2    140.0   121.600   ! quality : high
+CN1    CC2    CO3    160.0   120.600   ! quality : high
+CN1    CC2    CN4    140.0   118.600   ! quality : high
+CN1    CC8    CC7    140.0   121.200   ! quality : high
+CN1    CC8    CH12    70.0   119.100   ! quality : high
+CN4    CC2    CO3    160.0   122.500   ! quality : high
+CC2    CN4    CC5    140.0   120.500   ! quality : high
+CN4    CC5    CN6    140.0   119.300   ! quality : high
+CN4    CC5       CC7       140.0   121.500   ! quality : high
+CC7       CC5       CN6       140.0   120.100   ! quality : high
+CC5       CN6       CH9       70.0   120.000   ! quality : high
+CC5   CN6   CH10    70.0   120.000   ! quality : high
+CC5   CC7   CC8   170.0   117.000   ! quality : high
+CC5   CC7   CH11    70.0   123.300   ! quality : high
+CH10   CN6   CH9    70.0   120.000   ! quality : high
+CH11   CC7   CC8    70.0   120.000   ! quality : high
+CC7   CC8   CH12    70.0   119.700   ! quality : high
+!URACIL
+UC8   UN1   UC2   140.0   121.600   ! quality : high
+UN1   UC2   UO3   160.0   120.600   ! quality : high
+UN1   UC2   UN4   140.0   118.600   ! quality : high
+UN1   UC8   UC7   140.0   121.200   ! quality : high
+UN1   UC8   UH11    70.0   119.100   ! quality : high
+UN4   UC2   UO3   160.0   120.600   ! quality : high
+UC2   UN4   UC5   140.0   126.400   ! quality : high
+UC2   UN4   UH9    70.0   116.800   ! quality : high
+UN4   UC5   UO6   160.0   120.600   ! quality : high
+UN4   UC5   UC7   140.0   114.100   ! quality : high
+UC7   UC5   UO6   160.0   125.300   ! quality : high
+UC5   UC7   UC8   140.0   118.700   ! quality : high
+UC5   UC7   UH10    70.0   119.700   ! quality : high
+UH10   UC7   UC8    70.0   120.000   ! quality : high
+UC7   UC8   UH11    70.0   120.000   ! quality : high
+UH9   UN4   UC5    70.0   116.800   ! quality : high
+!PHEACE
+PO1   PC2   PC3   160.0   120.400   ! quality : high
+PC2   PC3   PN4   126.0   110.100   ! quality : high
+PC2   PC3   PC6   126.0   111.100   ! quality : high
+PC2   PC3   PH16    70.0   109.500   ! quality : high
+PC3   PN4   PH5    76.0   118.400   ! quality : high
+PC3   PN4   PC14   100.0   121.900   ! quality : high
+PC3   PC6   PC7   126.0   114.000   ! quality : high
+PC3   PC6   PH17    75.0   110.700   ! quality : high
+PC3   PC6   PH18    75.0   110.700   ! quality : high
+PN4   PC14   PO13   160.0   122.900   ! quality : high
+PN4   PC14   PC15   140.0   116.600   ! quality : high
+PC6   PC3   PN4   160.0   109.700   ! quality : high
+PC6   PC7   PC8   140.0   120.000   ! quality : high
+PC6   PC7   PC9   140.0   120.000   ! quality : high
+PC7   PC8   PC10   126.0   120.000   ! quality : high
+PC7   PC8   PH19    70.0   120.000   ! quality : high
+PC7   PC9   PC11   126.0   120.000   ! quality : high
+PC7   PC9   PH20    70.0   120.000   ! quality : high
+PC8   PC10   PC12   126.0   120.000   ! quality : high
+PC8   PC10   PH21    70.0   120.000   ! quality : high
+PC9   PC7   PC8   126.0   120.000   ! quality : high
+PC9   PC11   PC12   126.0   120.000   ! quality : high
+PC9   PC11   PH22    70.0   120.000   ! quality : high
+PC10   PC12   PC11   126.0   120.000   ! quality : high
+PC10   PC12   PH23    70.0   120.000   ! quality : high
+PC11   PC12   PH23    70.0   120.000   ! quality : high
+PO13   PC14   PC15   160.0   120.400   ! quality : high
+PC14   PN4   PH5    70.0   119.800   ! quality : high
+PC14   PC15   PH24    70.0   109.500   ! quality : high
+PC14   PC15   PH25    70.0   109.500   ! quality : high
+PC14   PC15   PH26    70.0   109.500   ! quality : high
+PH16   PC3   PN4    70.0   109.500   ! quality : high
+PH16   PC3   PC6    75.0   110.700   ! quality : high
+PH17   PC6   PC7    70.0   109.500   ! quality : high
+PH18   PC6   PC7    70.0   109.500   ! quality : high
+PH18   PC6   PH17    66.0   107.800   ! quality : high
+PH19   PC8   PC10    70.0   120.000   ! quality : high
+PH20   PC9   PC11    70.0   120.000   ! quality : high
+PH21   PC10   PC12    70.0   120.000   ! quality : high
+PH22   PC11   PC12    70.0   120.000   ! quality : high
+PH25   PC15   PH24    66.0   107.800   ! quality : high
+PH26   PC15   PH24    66.0   107.800   ! quality : high
+PH26   PC15   PH25    66.0   107.800   ! quality : high
+! LINEZOLID PARAMETERS FROM MACROMODEL
+LC1   LC2   LN4   140.0   120.000   ! quality : high
+LC1   LC2   LC5   126.0   120.000   ! quality : high
+LC1   LC3   LC17   126.0   120.000   ! quality : high
+LC1   LC3   LH26    70.0   120.000   ! quality : high
+LC2   LN4   LC6   100.0   118.000   ! quality : high
+LC2   LN4   LC7   100.0   121.900   ! quality : high
+LC2   LC5   LC16   126.0   120.000   ! quality : high
+LC2   LC5   LH27    70.0   120.000   ! quality : high
+LC3   LC1   LC2   126.0   120.000   ! quality : high
+LC3   LC17   LC16   126.0   120.000   ! quality : high
+LC3   LC17   LN18   140.0   120.100   ! quality : high
+LN4   LC6   LC8   160.0   109.700   ! quality : high
+LN4   LC6   LH28    70.0   109.500   ! quality : high
+LN4   LC6   LH29    70.0   109.500   ! quality : high
+LN4   LC7   LO10   160.0   122.900   ! quality : high
+LN4   LC7   LO15   160.0   122.900   ! quality : high
+LC5   LC2   LN4   140.0   120.000   ! quality : high
+LC5   LC16   LC17   126.0   120.000   ! quality : high
+LC5   LC16   LF24   160.0   120.000   ! quality : high
+LC6   LC8   LC9   116.7   112.700   ! quality : high
+LC6   LC8   LO10   100.0   109.500   ! quality : high
+LC6   LC8   LH30    75.0   110.700   ! quality : high
+LC7   LN4   LC6   100.0   121.900   ! quality : high
+LC7   LO10   LC8   166.0   116.900   ! quality : high
+LC8   LC9   LN11   160.0   109.700   ! quality : high
+LC8   LC9   LH31    75.0   110.700   ! quality : high
+LC8   LC9   LH32    75.0   110.700   ! quality : high
+LC9   LN11   LC12   100.0   121.900   ! quality : high
+LC9   LN11   LH33    76.0   118.400   ! quality : high
+LO10   LC8   LC9   100.0   109.500   ! quality : high
+LN11   LC12   LC13   140.0   116.600   ! quality : high
+LN11   LC12   LO14   160.0   122.900   ! quality : high
+LC12   LC13   LH34    70.0   109.500   ! quality : high
+LC12   LC13   LH39    70.0   109.500   ! quality : high
+LC12   LC13   LH40    70.0   109.500   ! quality : high
+LO14   LC12   LC13   160.0   120.400   ! quality : high
+LO15   LC7   LO10   166.0   123.400   ! quality : high
+LC16   LC17   LN18   140.0   120.100   ! quality : high
+LC17   LN18   LC19   100.0   109.500   ! quality : high
+LC17   LN18   LC23   100.0   109.500   ! quality : high
+LN18   LC19   LC20   112.4   109.470   ! quality : high
+LN18   LC19   LH35    70.0   109.500   ! quality : high
+LN18   LC19   LH43    70.0   109.500   ! quality : high
+LN18   LC23   LC22   112.4   109.470   ! quality : high
+LN18   LC23   LH38    70.0   109.500   ! quality : high
+LN18   LC23   LH42    70.0   109.500   ! quality : high
+LC19   LC20   LO21   100.0   109.500   ! quality : high
+LC19   LC20   LH36    75.0   110.700   ! quality : high
+LC19   LC20   LH44    75.0   110.700   ! quality : high
+LC20   LO21   LC22   120.0   109.500   ! quality : high
+LO21   LC22   LC23   100.0   109.500   ! quality : high
+LO21   LC22   LH37    70.0   109.500   ! quality : high
+LO21   LC22   LH41    70.0   109.500   ! quality : high
+LC22   LC23   LH38    75.0   110.700   ! quality : high
+LC22   LC23   LH42    75.0   110.700   ! quality : high
+LC23   LN18   LC19   103.6   107.200   ! quality : high
+LF24   LC16   LC17   160.0   120.000   ! quality : high
+LH25   LC1   LC2    70.0   120.000   ! quality : high
+LH25   LC1   LC3    70.0   120.000   ! quality : high
+LH26   LC3   LC17    70.0   120.000   ! quality : high
+LH27   LC5   LC16    70.0   120.000   ! quality : high
+LH28   LC6   LC8    75.0   110.700   ! quality : high
+LH29   LC6   LC8    75.0   110.700   ! quality : high
+LH29   LC6   LH28    66.0   107.800   ! quality : high
+LH30   LC8   LC9    75.0   110.700   ! quality : high
+LH30   LC8   LO10    70.0   109.500   ! quality : high
+LH31   LC9   LN11    70.0   109.500   ! quality : high
+LH32   LC9   LN11    70.0   109.500   ! quality : high
+LH32   LC9   LH31    66.0   107.800   ! quality : high
+LH33   LN11   LC12    70.0   119.800   ! quality : high
+LH35   LC19   LC20    75.0   110.700   ! quality : high
+LH36   LC20   LO21    70.0   109.500   ! quality : high
+LH37   LC22   LC23    75.0   110.700   ! quality : high
+LH39   LC13   LH34    66.0   107.800   ! quality : high
+LH40   LC13   LH34    66.0   107.800   ! quality : high
+LH40   LC13   LH39    66.0   107.800   ! quality : high
+LH41   LC22   LC23    75.0   110.700   ! quality : high
+LH41   LC22   LH37    66.0   107.800   ! quality : high
+LH42   LC23   LH38    66.0   107.800   ! quality : high
+LH43   LC19   LC20    75.0   110.700   ! quality : high
+LH43   LC19   LH35    66.0   107.800   ! quality : high
+LH44   LC20   LO21    70.0   109.500   ! quality : high
+LH44   LC20   LH36    66.0   107.800   ! quality : high
+! FOR FEP
+UC5    UO6    CH9     70.0   120.000   ! quality : high
+UC5    UO6    CH10    70.0   120.000   ! quality : high
+CH10   UO6    CH9     70.0   120.000   ! quality : high
+AN1    SC13   CN1     0.00   0.00      ! test
+UN1    SC13   CN1     0.00   0.00      ! test
+UN1    SC13   AN1     0.00   0.00      ! test
+*-----------------------------------------------------------------------
+[torsions] torsion type definitions
+*iaci   iacj   iack   iacl   forceK   minima   phase   paths   comment
+*-----------------------------------------------------------------
+OS   CT   CT   N3   0.000   2.000   0.000 1.000
+HC   CT   OS   C2   0.066   3.000   0.000 1.000
+CT   OS   C2   O2   2.562   2.00   180.000 1.000
+CT   OS   C2   CT   2.335   -1.00   0.000 1.000
+CT   OS   C2   CT   2.562   2.00   180.000 1.000
+CT   CT   OS   C2   -0.610   -1.000   0.000 1.000
+CT   CT   OS   C2   -0.063   -2.000   180.000 1.000
+CT   CT   OS   C2   0.211   3.000   0.000 1.000 
+P   OS   CT   HC   0.150   3.000   0.000 1.000
+P   OS   CT   CT   0.000   1.000   0.000 1.000
+OS   CT   CT   HC   0.066   3.000   0.000 1.000
+OS   P   OS   CT   0.000   1.000   0.000 1.000
+O2   P   OS   CT   0.281   3.000   0.000 1.000
+OS   CT   CT   CT   -0.277   3.000   0.000 1.000
+OS   C2   CT   HC   0.066   3.000   0.000 1.000
+OS   C2   CT   CT   -0.277   3.000   0.000 1.000
+OS   CT   CT   OS   -0.275   1.000   0.000 1.000
+CA   CT   N3   H3   1.400   3.000   0.000   1 !BENZYLAMINE
+OA   C   N   H   2.450   2.000   180.000   1
+HC   CT   C2   OH   0.000   1.000   0.000   1
+HC   CT   C2   ODE   0.000   1.000   0.000   1
+CT   CT   C2   OH   0.500   -1.000   0.000   1.000   !096 ASH 
+CT   CT   C2   OH   0.273   -2.000   180.000   1.000   !096 ASH 
+CT   CT   C2   OH   0.225   3.000   0.000   1.000   !096 ASH 
+CT   CT   C2   ODE   0.583   2.000   180.000   1
+HC   CT   CT   HC   0.150   3.000   0.000   1.000   !001 
+HC1   CT   CT   HC      0.150   3.000   0.000   1.000   !001 GLU
+HC2   CT   CT   HC      0.150   3.000   0.000   1.000   !001 GLN
+C2   CT   CT   HC      0.150   3.000   0.000   1.000   !002 ASP/ASH/GLH
+C2   CT   CT   HC1    -0.113   3.000   0.000   1.000   !092 GLU 
+C21   CT   CT   HC2    -0.050   3.000   0.000   1.000   !070  GLN 
+HC   CP1   CT   HC   0.150   3.000   0.000   1.000   !001
+CT   CT   CT   HC   0.150   3.000   0.000   1.000   !002
+CT   CT   CP1   HC   0.150   3.000   0.000   1.000   !002
+CP1   CT   CT   HC   0.150   3.000   0.000   1.000   !002
+CT   CT   CT   CT   0.650   -1.000   0.000   1.000   !003
+CT   CT   CT   CT   -0.025   -2.000   180.000   1.000   !003
+CT   CT   CT   CT   0.100   3.000   0.000   1.000   !003
+CT   CT   CT   CP1   0.650   -1.000   0.000   1.000   !003
+CT   CT   CT   CP1   -0.025   -2.000   180.000   1.000   !003
+CT   CT   CT   CP1   0.100   3.000   0.000   1.000   !003
+HC   CT   CT   OH   0.234   3.000   0.000   1.000   !005
+HO   OH   CT   HC   0.225   3.000   0.000   1.000   !008
+HO   OH   CT   CT   -0.178   -1.000   0.000   1.000   !009
+HO   OH   CT   CT   -0.087   -2.000   180.000   1.000   !009
+HO   OH   CT   CT   0.246   3.000   0.000   1.000   !009
+CA   CA   CT   HC   0.000   1.000   0.000   1.000   !020
+CV   CW   CT   HC   0.000   1.000   0.000   1.000   !020
+CW   CV   CT   HC   0.000   1.000   0.000   1.000   !020
+CX   CX   CT   HC   0.000   1.000   0.000   1.000   !020
+CT   CT   CA   CA   0.000   1.000   0.000   1.000   !021
+CT   CT   CV   CW   0.000   1.000   0.000   1.000   !021
+CT   CT   CW   CV   0.000   1.000   0.000   1.000   !021
+CT   CT   CX   CX   0.000   1.000   0.000   1.000   !021
+N3   CT   CA   CA   0.000   1.000   0.000   1.000   !021
+CA   CT   CT   HC   0.231   3.000   0.000   1.000   !022
+CV   CT   CT   H   0.231   3.000   0.000   1.000   !022
+CW   CT   CT   H   0.231   3.000   0.000   1.000   !022
+CX   CT   CT   H   0.231   3.000   0.000   1.000   !022
+HC   CT   CT   Cstar   0.231   3.000   0.000   1.000   !022
+HC   CT   CT   CV   0.231   3.000   0.000   1.000   !022
+HC   CT   CT   CW   0.231   3.000   0.000   1.000   !022
+HC   CT   CT   CX   0.231   3.000   0.000   1.000   !022
+CT   S   S   CT   -3.707   -2.000   180.000   1.000   !023
+CT   S   S   CT   0.853   3.000   0.000   1.000   !023
+S   S   CT   HC   0.279   3.000   0.000   1.000   !024
+CT   CT   S   S   0.971   -1.000   0.000   1.000   !025
+CT   CT   S   S   -0.418   -2.000   180.000   1.000   !025
+CT   CT   S   S   0.468   3.000   0.000   1.000   !025
+HS   SH   CT   HC   0.24   3.000   0.000   1.000   !026
+CT   CT   SH   HS   -0.380   -1.000   0.000   1.000   !027
+CT   CT   SH   HS   -0.141   -2.000   180.000   1.000   !027
+CT   CT   SH   HS   0.340   3.000   0.000   1.000   !027
+HC   CT   CT   S   0.226   3.000   0.000   1.000   !028
+HC   CT   CT   SH   0.226   3.000   0.000   1.000   !028
+HC   CT   NT   H   0.2   3.000   0.000   1.000   !030
+HC   CT   CT   NT   -0.507   -1.000   0.000   1.000   !031
+HC   CT   CT   NT   -0.355   -2.000   180.000   1.000   !031
+HC   CT   CT   NT   0.237   3.000   0.000   1.000   !031
+CT   CT   NT   H   -0.095   -1.000   0.000   1.000   !032
+CT   CT   NT   H   -0.209   -2.000   180.000   1.000   !032
+CT   CT   NT   H   0.209   3.000   0.000   1.000   !032
+H   NY   CA   NY   -0.095   -1.000   0.000   1.000   !032
+H   NY   CA   NY   -0.209   -2.000   180.000   1.000   !032
+H   NY   CA   NY   0.209   3.000   0.000   1.000   !032
+H   NY   CAr   NY   -0.095   -1.000   0.000   1.000   !032
+H   NY   CAr   NY   -0.209   -2.000   180.000   1.000   !032
+H   NY   CAr   NY   0.209   3.000   0.000   1.000   !032
+H   NY   CA   NZ   -0.095   -1.000   0.000   1.000   !032
+H   NY   CA   NZ   -0.209   -2.000   180.000   1.000   !032
+H   NY   CA   NZ   0.209   3.000   0.000   1.000   !032
+H   NY   CAr   NZ   -0.095   -1.000   0.000   1.000   !032
+H   NY   CAr   NZ   -0.209   -2.000   180.000   1.000   !032
+H   NY   CAr   NZ   0.209   3.000   0.000   1.000   !032
+H   NY   CT   CT   -0.095   -1.000   0.000   1.000   !032
+H   NY   CT   CT   -0.209   -2.000   180.000   1.000   !032
+H   NY   CT   CT   0.209   3.000   0.000   1.000   !032
+H3   N2   CT   CT   -0.095   -1.000   0.000   1.000   !032
+H3   N2   CT   CT   -0.209   -2.000   180.000   1.000   !032
+H3   N2   CT   CT   0.209   3.000   0.000   1.000   !032
+H3   N2   CAr   CA   -0.095   -1.000   0.000   1.000   !032 Benzamidine
+H3   N2   CAr   CA   -0.209   -2.000   180.000   1.000   !032 Benzamidine
+H3   N2   CAr   CA   0.209   3.000   0.000   1.000   !032 Benzamidine
+CT   CT   CT   NT   1.196   -1.000   0.000   1.000   !033
+CT   CT   CT   NT   -0.337   -2.000   180.000   1.000   !033
+CT   CT   CT   NT   0.275   3.000   0.000   1.000   !033
+CA   CA   OH   HO   0.841   2.000   180.000   1.000   !034
+CA   CA   OTY   HO   0.841   2.000   180.000   1.000   !034
+C   CT   CT   N   0.423   -1.000   0.000   1.000   !035
+C   CT   CT   N   -0.481   -2.000   180.000   1.000   !035
+C   CT   CT   N   0.357   3.000   0.000   1.000   !035
+C2   CT   CT   N   0.423   -1.000   0.000   1.000   !035
+C2   CT   CT   N   -0.481   -2.000   180.000   1.000   !035
+C2   CT   CT   N   0.357   3.000   0.000   1.000   !035
+CA   CT   CT   N   0.423   -1.000   0.000   1.000   !035
+CA   CT   CT   N   -0.481   -2.000   180.000   1.000   !035
+CA   CT   CT   N   0.357   3.000   0.000   1.000   !035
+CT   CT   CT   N   0.423   -1.000   0.000   1.000   !035
+CT   CT   CT   N   -0.481   -2.000   180.000   1.000   !035
+CT   CT   CT   N   0.357   3.000   0.000   1.000   !035
+CT   CT   CP1   N   0.423   -1.000   0.000   1.000   !035
+CT   CT   CP1   N   -0.481   -2.000   180.000   1.000   !035
+CT   CT   CP1   N   0.357   3.000   0.000   1.000   !035
+CV   CT   CT   N   0.423   -1.000   0.000   1.000   !035
+CV   CT   CT   N   -0.481   -2.000   180.000   1.000   !035
+CV   CT   CT   N   0.357   3.000   0.000   1.000   !035
+CW   CT   CT   N   0.423   -1.000   0.000   1.000   !035
+CW   CT   CT   N   -0.481   -2.000   180.000   1.000   !035
+CW   CT   CT   N   0.357   3.000   0.000   1.000   !035
+CX   CT   CT   N   0.423   -1.000   0.000   1.000   !035
+CX   CT   CT   N   -0.481   -2.000   180.000   1.000   !035
+CX   CT   CT   N   0.357   3.000   0.000   1.000   !035
+N   CT   CT   Cstar   0.423   -1.000   0.000   1.000   !035
+N   CT   CT   Cstar   -0.481   -2.000   180.000   1.000   !035
+N   CT   CT   Cstar   0.357   3.000   0.000   1.000   !035
+N3   CT   CT   C   0.423   -1.000   0.000   1.000   !035
+N3   CT   CT   C   -0.481   -2.000   180.000   1.000   !035
+N3   CT   CT   C   0.357   3.000   0.000   1.000   !035
+N3   CT   CT   CA   0.423   -1.000   0.000   1.000   !035
+N3   CT   CT   CA   -0.481   -2.000   180.000   1.000   !035
+N3   CT   CT   CA   0.357   3.000   0.000   1.000   !035
+N3   CT   CT   CV   0.423   -1.000   0.000   1.000   !035
+N3   CT   CT   CV   -0.481   -2.000   180.000   1.000   !035
+N3   CT   CT   CV   0.357   3.000   0.000   1.000   !035
+N3   CT   CT   CW   0.423   -1.000   0.000   1.000   !035
+N3   CT   CT   CW   -0.481   -2.000   180.000   1.000   !035
+N3   CT   CT   CW   0.357   3.000   0.000   1.000   !035
+C   CT   N   C   -1.183   -1.000   0.000   1.000   !036
+C   CT   N   C   0.456   -2.000   180.000   1.000   !036
+C   CT   N   C   -0.425   3.000   0.000   1.000   !036
+N   C   CT   N   0.908   -1.000   0.000   1.000   !037
+N   C   CT   N   0.611   -2.000   180.000   1.000   !037
+N   C   CT   N   0.791   3.000   0.000   1.000   !037
+N3   CT   C   N   0.908   -1.000   0.000   1.000   !037
+N3   CT   C   N   0.611   -2.000   180.000   1.000   !037
+N3   CT   C   N   0.791   3.000   0.000   1.000   !037
+CT   CT   N   C   0.231   2.000   180.000   1.000   !038
+CT   CP1   N   C   0.231   2.000   180.000   1.000   !038
+CT   CT   C   N   0.587   -1.000   0.000   1.000   !039
+CT   CT   C   N   0.095   -2.000   180.000   1.000   !039
+CT   CT   C   N   -0.6   3.000   0.000   1.000   !039
+HC   CT   N   C   0.000   1.000   0.000   1.000   !040
+HC   CP1   N   C   0.000   1.000   0.000   1.000   !040
+HC   CT   C   N   0.000   1.000   0.000   1.000   !041
+H   N   CT   C   0.000   1.000   0.000   1.000   !042
+H   N   CT   CT   0.000   1.000   0.000   1.000   !042
+H   N   CT   HC   0.000   1.000   0.000   1.000   !042
+CT   CT   C   O   0.000   1.000   0.000   1.000   !043
+HC   CT   C   O   0.000   1.000   0.000   1.000   !043
+N   CT   C   O   0.000   1.000   0.000   1.000   !043
+N3   CT   C   O   0.000   1.000   0.000   1.000   !043
+CT   C2   N   H   2.45   2.000   180.000   1.000   !044
+CT   C21   N   H   2.45   2.000   180.000   1.000   !044 GLN
+CT   C   N   H   2.45   2.000   180.000   1.000   !044
+CT   C   N   CT   1.15   -1.000   0.000   1.000   !045
+CT   C   N   CT   3.045   2.000   180.000   1.000   !045
+CT   C   N   CP1   3.045   2.000   180.000   1.000   !045
+H   N   C2   O   2.45   2.000   180.000   1.000   !046
+H   N   C21   O   2.45   2.000   180.000   1.000   !046 GLN
+H   N   C   O   2.45   2.000   180.000   1.000   !046
+CT   N   C   O   3.045   2.000   180.000   1.000   !047
+CP1   N   C   O   3.045   2.000   180.000   1.000   !047
+CT   N   CT   HC   0.000   1.000   0.000   1.000   !048
+CT   N   CP1   HC   0.000   1.000   0.000   1.000   !048
+CP1   N   CT   HC   0.000   1.000   0.000   1.000   !048
+CT   S   CT   HC   0.324   3.000   0.000   1.000   !051
+CT   CT   CT   S   1.310   -1.000   0.000   1.000   !052
+CT   CT   CT   S   -0.31   -2.000   180.000   1.000   !052
+CT   CT   CT   S   0.129   3.000   0.000   1.000   !052
+CT   S   CT   CT   0.463   -1.000   0.000   1.000   !053
+CT   S   CT   CT   -0.288   -2.000   180.000   1.000   !053
+CT   S   CT   CT   0.339   3.000   0.000   1.000   !053
+N2   CA   N2   H3   1.95   2.000   180.000   1.000   !054
+N2   CAr   N2   H3   1.95   2.000   180.000   1.000   !054
+NY   CA   NZ   H   1.95   2.000   180.000   1.000   !054
+NY   CAr   NZ   H   1.95   2.000   180.000   1.000   !054
+N2   CA   N2   CT   3.968   2.000   180.000   1.000   !055
+N2   CAr   N2   CT   3.968   2.000   180.000   1.000   !055
+CA   N2   CT   HC   0.089   3.000   0.000   1.000   !056
+CAr   N2   CT   HC   0.089   3.000   0.000   1.000   !056
+CA   NY   CT   HC   0.089   3.000   0.000   1.000   !056
+CAr   NY   CT   HC   0.089   3.000   0.000   1.000   !056
+H   NY   CT   HC   0.000   1.000   0.000   1.000   !057
+H3   N2   CT   HC   0.000   1.000   0.000   1.000   !057
+CA   N2   CT   CT   0.915   -1.000   0.000   1.000   !058
+CA   N2   CT   CT   0.122   -2.000   180.000   1.000   !058
+CA   N2   CT   CT   -0.249   3.000   0.000   1.000   !058
+CAr   N2   CT   CT   0.915   -1.000   0.000   1.000   !058
+CAr   N2   CT   CT   0.122   -2.000   180.000   1.000   !058
+CAr   N2   CT   CT   -0.249   3.000   0.000   1.000   !058
+CA   NY   CT   CT   0.915   -1.000   0.000   1.000   !058
+CA   NY   CT   CT   0.122   -2.000   180.000   1.000   !058
+CA   NY   CT   CT   -0.249   3.000   0.000   1.000   !058
+CAr   NY   CT   CT   0.915   -1.000   0.000   1.000   !058
+CAr   NY   CT   CT   0.122   -2.000   180.000   1.000   !058
+CAr   NY   CT   CT   -0.249   3.000   0.000   1.000   !058
+N2   CT   CT   HC   -0.291   3.000   0.000   1.000   !059
+NY   CT   CT   HC   -0.291   3.000   0.000   1.000   !059
+N   CT   CT   HC   0.232   3.000   0.000   1.000   !064
+N   CT   CT   HC1   0.232   3.000   0.000   1.000   !064 GLU
+N   CT   CT   HC2   0.232   3.000   0.000   1.000   !064 GLN
+N   CP1   CT   HC   0.232   3.000   0.000   1.000   !064
+HC   CT   C2   N   0.000   1.000   0.000   1.000   !066
+HC   CT   C21   N   0.000   1.000   0.000   1.000   !066 GLN
+HC   CT   C2   O   0.000   2.000   180.000   1.000   !067 ASH
+HC   CT   C2   O1   0.000   2.000   180.000   1.000   !067 
+HC   CT   C21   O   0.000   2.000   180.000   1.000   !067 GLN
+CT   CT   C2   N   1.625   -1.000   0.000   1.000   !068
+CT   CT   C2   N   -0.201   -2.000   180.000   1.000   !068
+CT   CT   C2   N   -0.068   3.000   0.000   1.000   !068
+CT   CT   C21   N   1.625   -1.000   0.000   1.000   !068 GLN
+CT   CT   C21   N   -0.201   -2.000   180.000   1.000   !068 GLN
+CT   CT   C21   N   -0.068    3.000   0.000   1.000   !068 GLN
+!CT   CT   C   O   0.583   2.000   180.000   1.000   !069
+N   CT   CT   OH   3.14   -1.000   0.000   1.000   !072
+N   CT   CT   OH   -0.734   -2.000   180.000   1.000   !072
+N   CT   CT   OH   1.015   3.000   0.000   1.000   !072
+N3   CT   CT   OH   3.14   -1.000   0.000   1.000   !072
+N3   CT   CT   OH   -0.734   -2.000   180.000   1.000   !072
+N3   CT   CT   OH   1.015   3.000   0.000   1.000   !072
+C   CT   CT   OH   -3.09   1.000   0.000   1.000   !074
+N   CT   CT   S   0.015   -3   0.000   1.000   !076
+N   CT   CT   S   0.043   -2   180.000   1.000   !076
+N   CT   CT   S   0.714   1   0.000   1.000   !076
+N   CT   CT   SH   0.015   -3   0.000   1.000   !076
+N   CT   CT   SH   0.043   -2   180.000   1.000   !076
+N   CT   CT   SH   0.714   1   0.000   1.000   !076
+N3   CT   CT   S   0.015   -3   0.000   1.000   !076
+N3   CT   CT   S   0.043   -2   180.000   1.000   !076
+N3   CT   CT   S   0.714   1   0.000   1.000   !076
+N3   CT   CT   SH   0.015   -3   0.000   1.000   !076
+N3   CT   CT   SH   0.043   -2   180.000   1.000   !076
+N3   CT   CT   SH   0.714   1   0.000   1.000   !076
+C   CT   CT   S   -2.172   -1.000   0.000   1.000   !078
+C   CT   CT   S   -0.857   -2.000   180.000   1.000   !078
+C   CT   CT   SH   -2.172   -1.000   0.000   1.000   !078
+C   CT   CT   SH   -0.857   -2.000   180.000   1.000   !078
+HC   CT   Cstar   CW   -0.24   3.000   0.000   1.000   !080
+HC   CT   Cstar   CB   0.000   1.000   0.000   1.000   !081
+CT   CT   Cstar   CW   -0.357   1.000   0.000   1.000   !082
+CT   CT   Cstar   CB   0.000   1.000   0.000   1.000   !083
+NA   CW   CT   HC   0.210   3.000   0.000   1.000   !084
+NA   CX   CT   HC   0.210   3.000   0.000   1.000   !084
+NB   CV   CT   HC   0.210   3.000   0.000   1.000   !084
+CT   CT   CA   NA   1.183   -1.000   0.000   1.000   !085
+CT   CT   CA   NA   -0.131   -2.000   180.000   1.000   !085
+CT   CT   CA   NA   0.253   3.000   0.000   1.000   !085
+CT   CT   CV   NB   1.183   -1.000   0.000   1.000   !085
+CT   CT   CV   NB   -0.131   -2.000   180.000   1.000   !085
+CT   CT   CV   NB   0.253   3.000   0.000   1.000   !085
+CT   CT   CW   NA   1.183   -1.000   0.000   1.000   !085
+CT   CT   CW   NA   -0.131   -2.000   180.000   1.000   !085
+CT   CT   CW   NA   0.253   3.000   0.000   1.000   !085
+CT   CT   CX   NA   1.183   -1.000   0.000   1.000   !085
+CT   CT   CX   NA   -0.131   -2.000   180.000   1.000   !085
+CT   CT   CX   NA   0.253   3.000   0.000   1.000   !085
+H3   N3   CT   HC   0.131   3.000   0.000   1.000   !086
+H3   N3   CT   C   0.174   3.000   0.000   1.000   !087
+H3   N3   CT   CT   0.174   3.000   0.000   1.000   !087
+N3   CT   CT   HC   0.192   3.000   0.000   1.000   !088
+N2   CT   CT   CT   1.366   -1.000   0.000   1.000   !089
+N2   CT   CT   CT   -0.115   -2.000   180.000   1.000   !089
+N2   CT   CT   CT   0.243   3.000   0.000   1.000   !089
+N3   CT   CT   CT   1.366   -1.000   0.000   1.000   !089
+N3   CT   CT   CT   -0.115   -2.000   180.000   1.000   !089
+N3   CT   CT   CT   0.243   3.000   0.000   1.000   !089
+NY   CT   CT   CT   1.366   -1.000   0.000   1.000   !089
+NY   CT   CT   CT   -0.115   -2.000   180.000   1.000   !089
+NY   CT   CT   CT   0.243   3.000   0.000   1.000   !089
+HC   CT   C   O2   0.000   1.000   0.000   1.000   !090
+N   CT   C   O2   0.410   2.000   180.000 1.000   !091
+N   CT   C   SO10   0.410   2.000   180.000 1.000   !091
+HC   CT   C  SO10   0.410   2.000   180.000 1.000   !091
+CT   CT   C  SO10   0.410   2.000   180.000 1.000   !091
+CT   CT   C   O2   0.410   2.000   180.000 1.000   !091
+O2   C2   CT   HC   0.000   1.000   0.000   1.000   !094
+O2   C   CT   HC   0.000   1.000   0.000   1.000   !094
+OH   C   CT   HC   0.000   1.000   0.000   1.000   !094
+CT   CT   C2   O2   0.273   2.000   180.000   1.000   !095 ASP/GLU
+CT   CT   C2   O1   0.273   2.000   180.000   1.000   !095 ASH
+CT   CT   C2   O   0.583    2.000   180.000   1.000   !069 ASN
+CT   CT   C21   O   0.583    2.000   180.000   1.000   !069 GLN
+OH   C   CT   CT   0.5   -1.000   0.000   1.000   !096
+OH   C   CT   CT   0.273   -2.000   180.000   1.000   !096
+OH   C   CT   CT   0.225   3.000   0.000   1.000   !096
+O   C2   OH   HO   2.45   2.000   180.000   1.000   !102
+O1   C2   OH   HO   2.75   2.000   180.000   1.000   !102 ASH
+O   C2   ODE   HO   2.45   2.000   180.000   1.000   !102
+CT   C2   OH   HO   0.75   -1.000   0.000   1.000   !103 ASH
+CT   C2   OH   HO   2.75   2.000   180.000   1.000   !103 ASH
+CT   C   SO10  SC9   0.75   -1.000   0.000   1.000   !103 ASH
+CT   C   SO10  SC9   2.75   2.000   180.000   1.000   !103 ASH
+O   C   SO10  SC9   0.75   -1.000   0.000   1.000   !103 ASH
+O   C   SO10  SC9   2.75   2.000   180.000   1.000   !103 ASH
+CT   C2   ODE   HO   1.5   -1.000   0.000   1.000   !103
+CT   C2   ODE   HO   2.45   2.000   180.000   1.000   !103
+C   CT   N   CT   -0.869   -1.000   0.000   1.000   !107
+C   CT   N   CT   0.626   -2.000   180.000   1.000   !107
+C   CT   N   CT   -1.751   3.000   0.000   1.000   !107
+C   CT   N   CP1   -0.869   -1.000   0.000   1.000   !107
+C   CT   N   CP1   0.626   -2.000   180.000   1.000   !107
+C   CT   N   CP1   -1.751   3.000   0.000   1.000   !107
+CT   CT   N   CP1   2.377   -1.000   0.000   1.000   !108
+CT   CT   N   CP1   -0.367   2.000   180.000   1.000   !108
+CT   CT   N   CT   1.430   -1.000   0.000   1.000   !109
+CT   CT   N   CT   1.029   -2.000   180.000   1.000   !109
+CT   CT   N   CT   -5.633   3.000   0.000   1.000   !109
+CT   CP1   N   CT   1.430   -1.000   0.000   1.000   !109
+CT   CP1   N   CT   1.029   -2.000   180.000   1.000   !109
+CT   CP1   N   CT   -5.633   3.000   0.000   1.000   !109
+C   CT   CT   HC   -0.038   3.000   0.000   1.000   !115
+C   CT   CT   HC1   -0.038   3.000   0.000   1.000   !115 GLU
+C   CT   CT   HC2   -0.038   3.000   0.000   1.000   !115 GLN
+C   CT   CT   C2   -0.849   -1.000   0.000   1.000   !116
+C   CT   CT   C2   -0.228   -2.000   180.000   1.000   !116
+C   CT   CT   C2   0.293   3.000   0.000   1.000   !116
+C   CT   CT   CA   -0.849   -1.000   0.000   1.000   !116
+C   CT   CT   CA   -0.228   -2.000   180.000   1.000   !116
+C   CT   CT   CA   0.293   3.000   0.000   1.000   !116
+C2   CT   CT   CT   -1.593   -1.000   0.000   1.000   !093
+C2   CT   CT   CT   -0.413   -2.000   180.000   1.000   !093
+C2   CT   CT   CT   0.247   3.000   0.000   1.000   !093
+C21   CT   CT   CT   -1.030   -1.000   0.000   1.000   !093 GLN
+C21   CT   CT   CT   -0.157   -2.000   180.000   1.000   !093 GLN
+C21   CT   CT   CT   0.158   3.000   0.000   1.000   !093 GLN
+C   CT   CT   CT   -0.849   -1.000   0.000   1.000   !116
+C   CT   CT   CT   -0.228   -2.000   180.000   1.000   !116
+C   CT   CT   CT   0.293   3.000   0.000   1.000   !116
+C   CT   CT   Cstar   -0.849   -1.000   0.000   1.000   !116
+C   CT   CT   Cstar   -0.228   -2.000   180.000   1.000   !116
+C   CT   CT   Cstar   0.293   3.000   0.000   1.000   !116
+C   CT   CT   CV   -0.849   -1.000   0.000   1.000   !116
+C   CT   CT   CV   -0.228   -2.000   180.000   1.000   !116
+C   CT   CT   CV   0.293   3.000   0.000   1.000   !116
+C   CT   CT   CW   -0.849   -1.000   0.000   1.000   !116
+C   CT   CT   CW   -0.228   -2.000   180.000   1.000   !116
+C   CT   CT   CW   0.293   3.000   0.000   1.000   !116
+C   CT   CT   CX   -0.849   -1.000   0.000   1.000   !116
+C   CT   CT   CX   -0.228   -2.000   180.000   1.000   !116
+C   CT   CT   CX   0.293   3.000   0.000   1.000   !116
+CA   CA   CA   CA   3.625   2.000   180.000   1.000   !165
+CA   CA   CA   CAr   3.625   2.000   180.000   1.000   !165
+CA   CA   CA   CB   3.625   2.000   180.000   1.000   !165
+CA   CA   CA   HA   3.625   2.000   180.000   1.000   !165
+CAr   CA   CA   HA   3.625   2.000   180.000   1.000   !165
+CA   CA   CA   OH   3.625   2.000   180.000   1.000   !165
+CA   CA   CA   OTY   3.625   2.000   180.000   1.000   !165
+CB   CN   CA   CA   3.625   2.000   180.000   1.000   !165
+CB   CN   CA   HA   3.625   2.000   180.000   1.000   !165
+CN   CA   CA   CA   3.625   2.000   180.000   1.000   !165
+CN   CA   CA   HA   3.625   2.000   180.000   1.000   !165
+CT   CA   CA   CA   3.625   2.000   180.000   1.000   !165
+HA   CA   CA   CB   3.625   2.000   180.000   1.000   !165
+HA   CA   CA   CT   3.625   2.000   180.000   1.000   !165
+HA   CA   CA   HA   3.625   2.000   180.000   1.000   !165
+HA   CA   CA   OH   3.625   2.000   180.000   1.000   !165
+HA   CA   CA   OTY   3.625   2.000   180.000   1.000   !165
+NA   CN   CA   CA   3.625   2.000   180.000   1.000   !165
+NA   CN   CA   HA   3.625   2.000   180.000   1.000   !165
+NT   CA   CA   CA   3.625   2.000   180.000   1.000   !165 aniline
+NT   CA   CA   HA   3.625   2.000   180.000   1.000   !165 aniline
+CR   NA   CW   CT   1.4   2.000   180.000   1.000   !166
+CR   NA   CW   CV   1.4   2.000   180.000   1.000   !166
+CT   CX   NA   CR   1.4   2.000   180.000   1.000   !166
+CT   CX   NA   H   1.4   2.000   180.000   1.000   !166
+CX   CX   NA   CR   1.4   2.000   180.000   1.000   !166
+CX   CX   NA   H   1.4   2.000   180.000   1.000   !166
+H   NA   CW   CT   1.4   2.000   180.000   1.000   !166
+H   NA   CW   CV   1.4   2.000   180.000   1.000   !166
+CW   NA   CR   HA   2.325   2.000   180.000   1.000   !167
+CW   NA   CR   NB   2.325   2.000   180.000   1.000   !167
+CX   NA   CR   HA   2.325   2.000   180.000   1.000   !167
+CX   NA   CR   NA   2.325   2.000   180.000   1.000   !167
+H   NA   CR   HA   2.325   2.000   180.000   1.000   !167
+H   NA   CR   HC   2.325   2.000   180.000   1.000   !167
+H   NA   CR   NA   2.325   2.000   180.000   1.000   !167
+H   NA   CR   NB   2.325   2.000   180.000   1.000   !167
+HA   CR   NB   CV   5   2.000   180.000   1.000   !168
+NA   CR   NB   CV   5   2.000   180.000   1.000   !168
+CR   NB   CV   CT   2.4   2.000   180.000   1.000   !169
+CR   NB   CV   CW   2.4   2.000   180.000   1.000   !169
+CR   NB   CV   HA   2.4   2.000   180.000   1.000   !169
+CT   CW   CV   HA   5.375   2.000   180.000   1.000   !170
+CT   CW   CV   NB   5.375   2.000   180.000   1.000   !170
+CT   CX   CX   HA   5.375   2.000   180.000   1.000   !170
+CT   CX   CX   NA   5.375   2.000   180.000   1.000   !170
+HA   CW   CV   CT   5.375   2.000   180.000   1.000   !170
+HA   CW   CV   NB   5.375   2.000   180.000   1.000   !170
+NA   CW   CV   CT   5.375   2.000   180.000   1.000   !170
+NA   CW   CV   HA   5.375   2.000   180.000   1.000   !170
+NA   CW   CV   NB   5.375   2.000   180.000   1.000   !170
+NA   CX   CX   HA   5.375   2.000   180.000   1.000   !170
+NA   CX   CX   NA   5.375   2.000   180.000   1.000   !170
+CR   NA   CW   HA   1.6   2.000   180.000   1.000   !171
+CR   NA   CX   HA   1.6   2.000   180.000   1.000   !171
+H   NA   CW   HA   1.6   2.000   180.000   1.000   !171
+H   NA   CX   HA   1.6   2.000   180.000   1.000   !171
+CB   Cstar   CW   HA   6.525   2.000   180.000   1.000   !172
+CB   Cstar   CW   NA   6.525   2.000   180.000   1.000   !172
+CT   Cstar   CW   HA   6.525   2.000   180.000   1.000   !172
+CT   Cstar   CW   NA   6.525   2.000   180.000   1.000   !172
+CT   Cstar   CB   CA   1.675   2.000   180.000   1.000   !173
+CT   Cstar   CB   CN   1.675   2.000   180.000   1.000   !173
+CW   Cstar   CB   CA   1.675   2.000   180.000   1.000   !173
+CW   Cstar   CB   CN   1.675   2.000   180.000   1.000   !173
+CA   CA   CB   CN   3.5   2.000   180.000   1.000   !174
+CA   CA   CB   Cstar   3.5   2.000   180.000   1.000   !174
+HA   CA   CB   CN   3.5   2.000   180.000   1.000   !174
+HA   CA   CB   Cstar   3.5   2.000   180.000   1.000   !174
+CA   CB   CN   CA   3   2.000   180.000   1.000   !175
+CA   CB   CN   NA   3   2.000   180.000   1.000   !175
+Cstar   CB   CN   CA   3   2.000   180.000   1.000   !175
+Cstar   CB   CN   NA   3   2.000   180.000   1.000   !175
+CW   NA   CN   CA   1.525   2.000   180.000   1.000   !176
+CW   NA   CN   CB   1.525   2.000   180.000   1.000   !176
+H   NA   CN   CA   1.525   2.000   180.000   1.000   !176
+H   NA   CN   CB   1.525   2.000   180.000   1.000   !176
+Cstar   CW   NA   CN   1.5   2.000   180.000   1.000   !177
+Cstar   CW   NA   H   1.5   2.000   180.000   1.000   !177
+HA   CW   NA   CN   1.5   2.000   180.000   1.000   !177
+CT   NY   CA   NY   1.826   2.000   180.000   1.000   !191
+CT   NY   CAr   NY   1.826   2.000   180.000   1.000   !191
+CT   NY   CA   NZ   1.826   2.000   180.000   1.000   !191
+CT   NY   CAr   NZ   1.826   2.000   180.000   1.000   !191
+CA   CA   CAr   N2   0.839   2.000   180.000 1.000   !190 Benzamidine
+CA   CA   CA   N3   3.625   2.000   180.000 1.000   !Aniline charged
+CA   CA   N3   H3   1.050   2.000   180.000 1.000   !Aniline charged
+N3   CA   CA   HA   3.625   2.000   180.000   1.000   !165 Aniline
+H   N   CT   CA   0.000   1.000   0.000   1.000   !DIP
+N   CT   CA   CA   0.000   1.000   0.000   1.000   !"
+CA   CT   CA   CA   0.000   1.000   0.000   1.000   !"
+C   N   CT   CA   0.000   1.000   0.000   1.000   !"
+CA   CA   NT   H   1.015   2.000   180.000 1.000   ! Aniline
+*adopted from biovitrum
+C2   CT   CT   N3   0.356   -3   0.000   1 !0 * - ASPB,ASNB
+C2   CT   CT   N3   -0.481   -2   180.000   1 !0 * - ASPB,ASNB
+C2   CT   CT   N3   0.422   1   0.000   1 !0 * - ASPB,ASNB
+! Christoffer ribosome parameters
+!SOCKER
+SO1   SP2   SO5   SC6   0.000   -1.000   0.000   1.000   ! quality : high
+SO1   SP2   SO5   SC6   0.000   -2.000   180.000   1.000
+SO1   SP2   SO5   SC6   0.281   3.000   0.000   1.000
+SO1   SP2   SO5   SP2   0.000   -1.000   0.000   1.000   ! quality : high
+SO1   SP2   SO5   SP2   0.000   -2.000   180.000   1.000
+SO1   SP2   SO5   SP2   0.281   3.000   0.000   1.000
+SP2   SO5   SC6   SC7   0.000   -1.000   0.000   1.000   ! quality : high
+SP2   SO5   SC6   SC7   1.495   -2.000   180.000   1.000
+SP2   SO5   SC6   SC7   0.000   3.000   0.000   1.000
+SP2   SO5   SC6   SH15   0.000   -1.000   0.000   1.000   ! quality : high
+SP2   SO5   SC6   SH15   0.000   -2.000   180.000   1.000
+SP2   SO5   SC6   SH15   0.178   3.000   0.000   1.000
+SP2   SO5   SC6   SH16   0.000   -1.000   0.000   1.000   ! quality : high
+SP2   SO5   SC6   SH16   0.000   -2.000   180.000   1.000
+SP2   SO5   SC6   SH16   0.178   3.000   0.000   1.000
+SO3   SP2   SO5   SC6   0.000   -1.000   0.000   1.000   ! quality : high
+SO3   SP2   SO5   SC6   0.000   -2.000   180.000   1.000
+SO3   SP2   SO5   SC6   0.281   3.000   0.000   1.000
+SO3   SP2   SO5   SP2   0.000   -1.000   0.000   1.000   ! quality : high
+SO3   SP2   SO5   SP2   0.000   -2.000   180.000   1.000
+SO3   SP2   SO5   SP2   0.281   3.000   0.000   1.000
+SO3   SP2   SO1   HO   -0.178   -1.000   0.000   1.000   ! quality : high
+SO3   SP2   SO1   HO   -0.087   -2.000   180.000   1.000
+SO3   SP2   SO1   HO   0.246   3.000   0.000   1.000
+SO4   SP2   SO5   SC6   0.000   -1.000   0.000   1.000   ! quality : high
+SO4   SP2   SO5   SC6   0.000   -2.000   180.000   1.000
+SO4   SP2   SO5   SC6   0.281   3.000   0.000   1.000
+SO4   SP2   SO5   SP2   0.000   -1.000   0.000   1.000   ! quality : high
+SO4   SP2   SO5   SP2   0.000   -2.000   180.000   1.000
+SO4   SP2   SO5   SP2   0.281   3.000   0.000   1.000
+SO4   SP2   SO1   HO   -0.178   -1.000   0.000   1.000   ! quality : high
+SO4   SP2   SO1   HO   -0.087   -2.000   180.000   1.000
+SO4   SP2   SO1   HO   0.246   3.000   0.000   1.000
+SO5   SP2   SO5   SP2   0.000   -1.000   0.000   1.000   ! quality : high
+SO5   SP2   SO5   SP2   0.000   -2.000   180.000   1.000
+SO5   SP2   SO5   SP2   0.281   3.000   0.000   1.000
+SO5   SP2   SO5   SC6   0.000   -1.000   0.000   1.000   ! quality : high
+SO5   SP2   SO5   SC6   0.000   -2.000   180.000   1.000
+SO5   SP2   SO5   SC6   0.281   3.000   0.000   1.000
+SO5   SC6   SC7   SO8   -0.275   -1.000   0.000   1.000   ! quality : high
+SO5   SC6   SC7   SO8   0.000   -2.000   180.000   1.000
+SO5   SC6   SC7   SO8   0.000   3.000   0.000   1.000
+SO5   SC6   SC7   SC9   0.856   -1.000   0.000   1.000   ! quality : high
+SO5   SC6   SC7   SC9   -0.250   -2.000   180.000   1.000
+SO5   SC6   SC7   SC9   0.332   3.000   0.000   1.000
+SO5   SC6   SC7   SH17   0.000   -1.000   0.000   1.000   ! quality : high
+SO5   SC6   SC7   SH17   0.000   -2.000   180.000   1.000
+SO5   SC6   SC7   SH17   0.234   3.000   0.000   1.000
+SO5   SP2   SO1   HO   -0.178   -1.000   0.000   1.000   ! quality : high
+SO5   SP2   SO1   HO   -0.087   -2.000   180.000   1.000
+SO5   SP2   SO1   HO   0.246   3.000   0.000   1.000
+SC6   SC7   SO8   SC13   0.325   -1.000   0.000   1.000   ! quality : high
+SC6   SC7   SO8   SC13   -0.125   -2.000   180.000   1.000
+SC6   SC7   SO8   SC13   0.335   3.000   0.000   1.000
+SC6   SC7   SC9   SO10   -0.776   -1.000   0.000   1.000   ! quality : high
+SC6   SC7   SC9   SO10   0.000   -2.000   180.000   1.000
+SC6   SC7   SC9   SO10   0.000   3.000   0.000   1.000
+SC6   SC7   SC9   SC11   0.650   -1.000   0.000   1.000   ! quality : high
+SC6   SC7   SC9   SC11   -0.025   -2.000   180.000   1.000
+SC6   SC7   SC9   SC11   0.100   3.000   0.000   1.000
+SC6   SC7   SC9   SH18   0.000   -1.000   0.000   1.000   ! quality : high
+SC6   SC7   SC9   SH18   0.000   -2.000   180.000   1.000
+SC6   SC7   SC9   SH18   0.150   3.000   0.000   1.000
+SC7   SO8   SC13   SC11   0.325   -1.000   0.000   1.000   ! quality : high
+SC7   SO8   SC13   SC11   -0.125   -2.000   180.000   1.000
+SC7   SO8   SC13   SC11   0.335   3.000   0.000   1.000
+SC7   SO8   SC13   SH21   0.000   -1.000   0.000   1.000   ! quality : high
+SC7   SO8   SC13   SH21   0.000   -2.000   180.000   1.000
+SC7   SO8   SC13   SH21   0.380   3.000   0.000   1.000
+SC7   SC9   SO10   SH19   -0.178   -1.000   0.000   1.000   ! quality : high
+SC7   SC9   SO10   SH19   -0.087   -2.000   180.000   1.000
+SC7   SC9   SO10   SH19   0.246   3.000   0.000   1.000
+SC7   SC9   SO10   C     -0.178   -1.000   0.000   1.000   ! quality : high
+SC7   SC9   SO10   C     -0.087   -2.000   180.000   1.000
+SC7   SC9   SO10   C      0.246   3.000   0.000   1.000
+SC7   SC9   SC11   SO12   -0.776   -1.000   0.000   1.000   ! quality : high
+SC7   SC9   SC11   SO12   0.000   -2.000   180.000   1.000
+SC7   SC9   SC11   SO12   0.000   3.000   0.000   1.000
+SC7   SC9   SC11   SC13   0.650   -1.000   0.000   1.000   ! quality : high
+SC7   SC9   SC11   SC13   -0.025   -2.000   180.000   1.000
+SC7   SC9   SC11   SC13   0.100   3.000   0.000   1.000
+SC7   SC9   SC11   SH20   0.000   -1.000   0.000   1.000   ! quality : high
+SC7   SC9   SC11   SH20   0.000   -2.000   180.000   1.000
+SC7   SC9   SC11   SH20   0.150   3.000   0.000   1.000
+SO8   SC7   SC9   SO10   2.159   -1.000   0.000   1.000   ! quality : high
+SO8   SC7   SC9   SO10   0.000   -2.000   180.000   1.000
+SO8   SC7   SC9   SO10   0.000   3.000   0.000   1.000
+SO8   SC7   SC9   SC11   0.856   -1.000   0.000   1.000   ! quality : high
+SO8   SC7   SC9   SC11   -0.250   -2.000   180.000   1.000
+SO8   SC7   SC9   SC11   0.332   3.000   0.000   1.000
+SO8   SC7   SC9   SH18   0.000   -1.000   0.000   1.000   ! quality : high
+SO8   SC7   SC9   SH18   0.000   -2.000   180.000   1.000
+SO8   SC7   SC9   SH18   0.234   3.000   0.000   1.000
+SC9   SC7   SO8   SC13   0.325   -1.000   0.000   1.000   ! quality : high
+SC9   SC7   SO8   SC13   -0.125   -2.000   180.000   1.000
+SC9   SC7   SO8   SC13   0.335   3.000   0.000   1.000
+SC9   SC11   SO12   SH14   -0.178   -1.000   0.000   1.000   ! quality : high
+SC9   SC11   SO12   SH14   -0.087   -2.000   180.000   1.000
+SC9   SC11   SO12   SH14   0.246   3.000   0.000   1.000
+SC9   SC11   SC13   SO8   0.856   -1.000   0.000   1.000   ! quality : high
+SC9   SC11   SC13   SO8   -0.250   -2.000   180.000   1.000
+SC9   SC11   SC13   SO8   0.332   3.000   0.000   1.000
+SC9   SC11   SC13   SH21   0.000   -1.000   0.000   1.000   ! quality : high
+SC9   SC11   SC13   SH21   0.000   -2.000   180.000   1.000
+SC9   SC11   SC13   SH21   0.150   3.000   0.000   1.000
+SO10   SC9   SC11   SO12   4.754   -1.000   0.000   1.000   ! quality : high
+SO10   SC9   SC11   SO12   0.000   -2.000   180.000   1.000
+SO10   SC9   SC11   SO12   0.000   3.000   0.000   1.000
+SO10   SC9   SC11   SC13   -0.776   -1.000   0.000   1.000   ! quality : high
+SO10   SC9   SC11   SC13   0.000   -2.000   180.000   1.000
+SO10   SC9   SC11   SC13   0.000   3.000   0.000   1.000
+SO10   SC9   SC11   SH20   0.000   -1.000   0.000   1.000   ! quality : high
+SO10   SC9   SC11   SH20   0.000   -2.000   180.000   1.000
+SO10   SC9   SC11   SH20   0.234   3.000   0.000   1.000
+SC11   SC9   SO10   SH19   -0.178   -1.000   0.000   1.000   ! quality : high
+SC11   SC9   SO10   SH19   -0.087   -2.000   180.000   1.000
+SC11   SC9   SO10   SH19   0.246   3.000   0.000   1.000
+SC11   SC9   SO10   C     -0.178   -1.000   0.000   1.000   ! quality : high
+SC11   SC9   SO10   C     -0.087   -2.000   180.000   1.000
+SC11   SC9   SO10   C     0.246   3.000   0.000   1.000
+SO12   SC11   SC13   SO8   2.159   -1.000   0.000   1.000   ! quality : high
+SO12   SC11   SC13   SO8   0.000   -2.000   180.000   1.000
+SO12   SC11   SC13   SO8   0.000   3.000   0.000   1.000
+SO12   SC11   SC13   SH21   0.000   -1.000   0.000   1.000   ! quality : high
+SO12   SC11   SC13   SH21   0.000   -2.000   180.000   1.000
+SO12   SC11   SC13   SH21   0.234   3.000   0.000   1.000
+SC13   SC11   SO12   SH14   -0.178   -1.000   0.000   1.000   ! quality : high
+SC13   SC11   SO12   SH14   -0.087   -2.000   180.000   1.000
+SC13   SC11   SO12   SH14   0.246   3.000   0.000   1.000
+SH15   SC6   SC7   SO8   0.000   -1.000   0.000   1.000   ! quality : high
+SH15   SC6   SC7   SO8   0.000   -2.000   180.000   1.000
+SH15   SC6   SC7   SO8   0.234   3.000   0.000   1.000
+SH15   SC6   SC7   SC9   0.000   -1.000   0.000   1.000   ! quality : high
+SH15   SC6   SC7   SC9   0.000   -2.000   180.000   1.000
+SH15   SC6   SC7   SC9   0.150   3.000   0.000   1.000
+SH15   SC6   SC7   SH17   0.000   -1.000   0.000   1.000   ! quality : high
+SH15   SC6   SC7   SH17   0.000   -2.000   180.000   1.000
+SH15   SC6   SC7   SH17   0.150   3.000   0.000   1.000
+SH16   SC6   SC7   SO8   0.000   -1.000   0.000   1.000   ! quality : high
+SH16   SC6   SC7   SO8   0.000   -2.000   180.000   1.000
+SH16   SC6   SC7   SO8   0.234   3.000   0.000   1.000
+SH16   SC6   SC7   SC9   0.000   -1.000   0.000   1.000   ! quality : high
+SH16   SC6   SC7   SC9   0.000   -2.000   180.000   1.000
+SH16   SC6   SC7   SC9   0.150   3.000   0.000   1.000
+SH16   SC6   SC7   SH17   0.000   -1.000   0.000   1.000   ! quality : high
+SH16   SC6   SC7   SH17   0.000   -2.000   180.000   1.000
+SH16   SC6   SC7   SH17   0.150   3.000   0.000   1.000
+SH17   SC7   SO8   SC13   0.000   -1.000   0.000   1.000   ! quality : high
+SH17   SC7   SO8   SC13   0.000   -2.000   180.000   1.000
+SH17   SC7   SO8   SC13   0.380   3.000   0.000   1.000
+SH17   SC7   SC9   SO10   0.000   -1.000   0.000   1.000   ! quality : high
+SH17   SC7   SC9   SO10   0.000   -2.000   180.000   1.000
+SH17   SC7   SC9   SO10   0.234   3.000   0.000   1.000
+SH17   SC7   SC9   SC11   0.000   -1.000   0.000   1.000   ! quality : high
+SH17   SC7   SC9   SC11   0.000   -2.000   180.000   1.000
+SH17   SC7   SC9   SC11   0.150   3.000   0.000   1.000
+SH17   SC7   SC9   SH18   0.000   -1.000   0.000   1.000   ! quality : high
+SH17   SC7   SC9   SH18   0.000   -2.000   180.000   1.000
+SH17   SC7   SC9   SH18   0.150   3.000   0.000   1.000
+SH18   SC9   SO10   SH19   0.000   -1.000   0.000   1.000   ! quality : high
+SH18   SC9   SO10   SH19   0.000   -2.000   180.000   1.000
+SH18   SC9   SO10   SH19   0.225   3.000   0.000   1.000
+SH18   SC9   SO10   C      0.000   -1.000   0.000   1.000   ! quality : high
+SH18   SC9   SO10   C      0.000   -2.000   180.000   1.000
+SH18   SC9   SO10   C      0.225   3.000   0.000   1.000
+SH18   SC9   SC11   SO12   0.000   -1.000   0.000   1.000   ! quality : high
+SH18   SC9   SC11   SO12   0.000   -2.000   180.000   1.000
+SH18   SC9   SC11   SO12   0.234   3.000   0.000   1.000
+SH18   SC9   SC11   SC13   0.000   -1.000   0.000   1.000   ! quality : high
+SH18   SC9   SC11   SC13   0.000   -2.000   180.000   1.000
+SH18   SC9   SC11   SC13   0.150   3.000   0.000   1.000
+SH18   SC9   SC11   SH20   0.000   -1.000   0.000   1.000   ! quality : high
+SH18   SC9   SC11   SH20   0.000   -2.000   180.000   1.000
+SH18   SC9   SC11   SH20   0.150   3.000   0.000   1.000
+SH20   SC11   SO12   SH14   0.000   -1.000   0.000   1.000   ! quality : high
+SH20   SC11   SO12   SH14   0.000   -2.000   180.000   1.000
+SH20   SC11   SO12   SH14   0.225   3.000   0.000   1.000
+SH20   SC11   SC13   SO8   0.000   -1.000   0.000   1.000   ! quality : high
+SH20   SC11   SC13   SO8   0.000   -2.000   180.000   1.000
+SH20   SC11   SC13   SO8   0.234   3.000   0.000   1.000
+SH20   SC11   SC13   SH21   0.000   -1.000   0.000   1.000   ! quality : high
+SH20   SC11   SC13   SH21   0.000   -2.000   180.000   1.000
+SH20   SC11   SC13   SH21   0.150   3.000   0.000   1.000
+SH5T   SO5   SC6   SC7   -0.178   -1.000   0.000   1.000   ! quality : high
+SH5T   SO5   SC6   SC7   -0.087   -2.000   180.000   1.000
+SH5T   SO5   SC6   SC7   0.246   3.000   0.000   1.000
+SH5T   SO5   SC6   SH15   0.000   -1.000   0.000   1.000   ! quality : high
+SH5T   SO5   SC6   SH15   0.000   -2.000   180.000   1.000
+SH5T   SO5   SC6   SH15   0.225   3.000   0.000   1.000
+SH5T   SO5   SC6   SH16   0.000   -1.000   0.000   1.000   ! quality : high
+SH5T   SO5   SC6   SH16   0.000   -2.000   180.000   1.000
+SH5T   SO5   SC6   SH16   0.225   3.000   0.000   1.000
+SC7    SC9    SO10   SH3T   -0.178   -1.000   0.000   1.000   ! quality : high
+SC7    SC9    SO10   SH3T   -0.087   -2.000   180.000   1.000
+SC7    SC9    SO10   SH3T   0.246   3.000   0.000   1.000
+SC11   SC9    SO10   SH3T   -0.178   -1.000   0.000   1.000   ! quality : high
+SC11   SC9    SO10   SH3T   -0.087   -2.000   180.000   1.000
+SC11   SC9    SO10   SH3T   0.246   3.000   0.000   1.000
+SH18   SC9    SO10   SH3T   0.000   -1.000   0.000   1.000   ! quality : high
+SH18   SC9    SO10   SH3T   0.000   -2.000   180.000   1.000
+SH18   SC9    SO10   SH3T   0.225   3.000   0.000   1.000
+!ADENINE
+AN1   AC2   AN3   AC4   0.000   -1.000   0.000   1.000   ! quality : high
+AN1   AC2   AN3   AC4   3.625   -2.000   180.000   1.000
+AN1   AC2   AN3   AC4   0.000   3.000   0.000   1.000
+AC2   AN1   AC10   AC4   0.000   -1.000   0.000   1.000   ! quality : high
+AC2   AN1   AC10   AC4   3.625   -2.000   180.000   1.000
+AC2   AN1   AC10   AC4   0.000   3.000   0.000   1.000
+AC2   AN1   AC10   AN9   0.000   -1.000   0.000   1.000   ! quality : high
+AC2   AN1   AC10   AN9   3.625   -2.000   180.000   1.000
+AC2   AN1   AC10   AN9   0.000   3.000   0.000   1.000
+AC2   AN3   AC4   AC5   0.000   -1.000   0.000   1.000   ! quality : high
+AC2   AN3   AC4   AC5   3.625   -2.000   180.000   1.000
+AC2   AN3   AC4   AC5   0.000   3.000   0.000   1.000
+AC2   AN3   AC4   AC10   0.000   -1.000   0.000   1.000   ! quality : high
+AC2   AN3   AC4   AC10   3.625   -2.000   180.000   1.000
+AC2   AN3   AC4   AC10   0.000   3.000   0.000   1.000
+AN3   AC4   AC5   AN6   0.000   -1.000   0.000   1.000   ! quality : high
+AN3   AC4   AC5   AN6   3.625   -2.000   180.000   1.000
+AN3   AC4   AC5   AN6   0.000   3.000   0.000   1.000
+AN3   AC4   AC5   AN7   0.000   -1.000   0.000   1.000   ! quality : high
+AN3   AC4   AC5   AN7   3.625   -2.000   180.000   1.000
+AN3   AC4   AC5   AN7   0.000   3.000   0.000   1.000
+AN3   AC4   AC10   AN1   0.000   -1.000   0.000   1.000   ! quality : high
+AN3   AC4   AC10   AN1   3.625   -2.000   180.000   1.000
+AN3   AC4   AC10   AN1   0.000   3.000   0.000   1.000
+AN3   AC4   AC10   AN9   0.000   -1.000   0.000   1.000   ! quality : high
+AN3   AC4   AC10   AN9   3.625   -2.000   180.000   1.000
+AN3   AC4   AC10   AN9   0.000   3.000   0.000   1.000
+AC4   AC5   AN6   AH11   0.000   -1.000   0.000   1.000   ! quality : high
+AC4   AC5   AN6   AH11   0.700   -2.000   180.000   1.000
+AC4   AC5   AN6   AH11   0.000   3.000   0.000   1.000
+AC4   AC5   AN6   AH12   0.000   -1.000   0.000   1.000   ! quality : high
+AC4   AC5   AN6   AH12   0.700   -2.000   180.000   1.000
+AC4   AC5   AN6   AH12   0.000   3.000   0.000   1.000
+AC4   AC5   AN7   AC8   0.000   -1.000   0.000   1.000   ! quality : high
+AC4   AC5   AN7   AC8   3.625   -2.000   180.000   1.000
+AC4   AC5   AN7   AC8   0.000   3.000   0.000   1.000
+AC5   AC4   AC10   AN1   0.000   -1.000   0.000   1.000   ! quality : high
+AC5   AC4   AC10   AN1   3.625   -2.000   180.000   1.000
+AC5   AC4   AC10   AN1   0.000   3.000   0.000   1.000
+AC5   AC4   AC10   AN9   0.000   -1.000   0.000   1.000   ! quality : high
+AC5   AC4   AC10   AN9   3.625   -2.000   180.000   1.000
+AC5   AC4   AC10   AN9   0.000   3.000   0.000   1.000
+AC5   AN7   AC8   AN9   0.000   -1.000   0.000   1.000   ! quality : high
+AC5   AN7   AC8   AN9   3.625   -2.000   180.000   1.000
+AC5   AN7   AC8   AN9   0.000   3.000   0.000   1.000
+AC5   AN7   AC8   AH14   0.000   -1.000   0.000   1.000   ! quality : high
+AC5   AN7   AC8   AH14   3.625   -2.000   180.000   1.000
+AC5   AN7   AC8   AH14   0.000   3.000   0.000   1.000
+AN6   AC5   AN7   AC8   0.000   -1.000   0.000   1.000   ! quality : high
+AN6   AC5   AN7   AC8   3.625   -2.000   180.000   1.000
+AN6   AC5   AN7   AC8   0.000   3.000   0.000   1.000
+AN7   AC5   AN6   AH11   0.000   -1.000   0.000   1.000   ! quality : high
+AN7   AC5   AN6   AH11   0.700   -2.000   180.000   1.000
+AN7   AC5   AN6   AH11   0.000   3.000   0.000   1.000
+AN7   AC5   AN6   AH12   0.000   -1.000   0.000   1.000   ! quality : high
+AN7   AC5   AN6   AH12   0.700   -2.000   180.000   1.000
+AN7   AC5   AN6   AH12   0.000   3.000   0.000   1.000
+AN7   AC8   AN9   AC10   0.000   -1.000   0.000   1.000   ! quality : high
+AN7   AC8   AN9   AC10   3.625   -2.000   180.000   1.000
+AN7   AC8   AN9   AC10   0.000   3.000   0.000   1.000
+AC8   AN9   AC10   AN1   0.000   -1.000   0.000   1.000   ! quality : high
+AC8   AN9   AC10   AN1   3.625   -2.000   180.000   1.000
+AC8   AN9   AC10   AN1   0.000   3.000   0.000   1.000
+AC8   AN9   AC10   AC4   0.000   -1.000   0.000   1.000   ! quality : high
+AC8   AN9   AC10   AC4   3.625   -2.000   180.000   1.000
+AC8   AN9   AC10   AC4   0.000   3.000   0.000   1.000
+AC10   AN1   AC2   AN3   0.000   -1.000   0.000   1.000   ! quality : high
+AC10   AN1   AC2   AN3   3.625   -2.000   180.000   1.000
+AC10   AN1   AC2   AN3   0.000   3.000   0.000   1.000
+AC10   AN1   AC2   AH13   0.000   -1.000   0.000   1.000   ! quality : high
+AC10   AN1   AC2   AH13   3.625   -2.000   180.000   1.000
+AC10   AN1   AC2   AH13   0.000   3.000   0.000   1.000
+AC10   AC4   AC5   AN6   0.000   -1.000   0.000   1.000   ! quality : high
+AC10   AC4   AC5   AN6   3.625   -2.000   180.000   1.000
+AC10   AC4   AC5   AN6   0.000   3.000   0.000   1.000
+AC10   AC4   AC5   AN7   0.000   -1.000   0.000   1.000   ! quality : high
+AC10   AC4   AC5   AN7   3.625   -2.000   180.000   1.000
+AC10   AC4   AC5   AN7   0.000   3.000   0.000   1.000
+AH13   AC2   AN3   AC4   0.000   -1.000   0.000   1.000   ! quality : high
+AH13   AC2   AN3   AC4   3.625   -2.000   180.000   1.000
+AH13   AC2   AN3   AC4   0.000   3.000   0.000   1.000
+AH14   AC8   AN9   AC10   0.000   -1.000   0.000   1.000   ! quality : high
+AH14   AC8   AN9   AC10   3.625   -2.000   180.000   1.000
+AH14   AC8   AN9   AC10   0.000   3.000   0.000   1.000
+!GUANINE
+GN1   GC2   GN3   GC4   0.000   -1.000   0.000   1.000   ! quality : high
+GN1   GC2   GN3   GC4   3.625   -2.000   180.000   1.000
+GN1   GC2   GN3   GC4   0.000   3.000   0.000   1.000
+GC2   GN1   GC11   GC4   0.000   -1.000   0.000   1.000   ! quality : high
+GC2   GN1   GC11   GC4   3.625   -2.000   180.000   1.000
+GC2   GN1   GC11   GC4   0.000   3.000   0.000   1.000
+GC2   GN1   GC11   GN10   0.000   -1.000   0.000   1.000   ! quality : high
+GC2   GN1   GC11   GN10   3.625   -2.000   180.000   1.000
+GC2   GN1   GC11   GN10   0.000   3.000   0.000   1.000
+GC2   GN3   GC4   GC5   0.000   -1.000   0.000   1.000   ! quality : high
+GC2   GN3   GC4   GC5   3.625   -2.000   180.000   1.000
+GC2   GN3   GC4   GC5   0.000   3.000   0.000   1.000
+GC2   GN3   GC4   GC11   0.000   -1.000   0.000   1.000   ! quality : high
+GC2   GN3   GC4   GC11   3.625   -2.000   180.000   1.000
+GC2   GN3   GC4   GC11   0.000   3.000   0.000   1.000
+GN3   GC4   GC5   GO6   0.000   -1.000   0.000   1.000   ! quality : med
+GN3   GC4   GC5   GO6   0.410   -2.000   180.000   1.000
+GN3   GC4   GC5   GO6   0.000   3.000   0.000   1.000
+GN3   GC4   GC5   GN7   0.000   -1.000   0.000   1.000   ! quality : med
+GN3   GC4   GC5   GN7   5.375   -2.000   180.000   1.000
+GN3   GC4   GC5   GN7   0.000   3.000   0.000   1.000
+GN3   GC4   GC11   GN1   0.000   -1.000   0.000   1.000   ! quality : high
+GN3   GC4   GC11   GN1   3.625   -2.000   180.000   1.000
+GN3   GC4   GC11   GN1   0.000   3.000   0.000   1.000
+GN3   GC4   GC11   GN10   0.000   -1.000   0.000   1.000   ! quality : high
+GN3   GC4   GC11   GN10   3.625   -2.000   180.000   1.000
+GN3   GC4   GC11   GN10   0.000   3.000   0.000   1.000
+GC4   GC5   GN7   GC8   0.000   -1.000   0.000   1.000   ! quality : med
+GC4   GC5   GN7   GC8   1.525   -2.000   180.000   1.000
+GC4   GC5   GN7   GC8   0.000   3.000   0.000   1.000
+GC5   GC4   GC11   GN1   0.000   -1.000   0.000   1.000   ! quality : high
+GC5   GC4   GC11   GN1   3.625   -2.000   180.000   1.000
+GC5   GC4   GC11   GN1   0.000   3.000   0.000   1.000
+GC5   GC4   GC11   GN10   0.000   -1.000   0.000   1.000   ! quality : high
+GC5   GC4   GC11   GN10   3.625   -2.000   180.000   1.000
+GC5   GC4   GC11   GN10   0.000   3.000   0.000   1.000
+GC5   GN7   GC8   GN9   0.000   -1.000   0.000   1.000   ! quality : high
+GC5   GN7   GC8   GN9   3.625   -2.000   180.000   1.000
+GC5   GN7   GC8   GN9   0.000   3.000   0.000   1.000
+GC5   GN7   GC8   GN10   0.000   -1.000   0.000   1.000   ! quality : high
+GC5   GN7   GC8   GN10   3.625   -2.000   180.000   1.000
+GC5   GN7   GC8   GN10   0.000   3.000   0.000   1.000
+GO6   GC5   GN7   GC8   0.000   -1.000   0.000   1.000   ! quality : high
+GO6   GC5   GN7   GC8   3.045   -2.000   180.000   1.000
+GO6   GC5   GN7   GC8   0.000   3.000   0.000   1.000
+GN7   GC8   GN10   GC11   0.000   -1.000   0.000   1.000   ! quality : high
+GN7   GC8   GN10   GC11   3.625   -2.000   180.000   1.000
+GN7   GC8   GN10   GC11   0.000   3.000   0.000   1.000
+GC8   GN10   GC11   GN1   0.000   -1.000   0.000   1.000   ! quality : high
+GC8   GN10   GC11   GN1   3.625   -2.000   180.000   1.000
+GC8   GN10   GC11   GN1   0.000   3.000   0.000   1.000
+GC8   GN10   GC11   GC4   0.000   -1.000   0.000   1.000   ! quality : high
+GC8   GN10   GC11   GC4   3.625   -2.000   180.000   1.000
+GC8   GN10   GC11   GC4   0.000   3.000   0.000   1.000
+GN9   GC8   GN10   GC11   0.000   -1.000   0.000   1.000   ! quality : high
+GN9   GC8   GN10   GC11   3.625   -2.000   180.000   1.000
+GN9   GC8   GN10   GC11   0.000   3.000   0.000   1.000
+GC11   GN1   GC2   GN3   0.000   -1.000   0.000   1.000   ! quality : high
+GC11   GN1   GC2   GN3   3.625   -2.000   180.000   1.000
+GC11   GN1   GC2   GN3   0.000   3.000   0.000   1.000
+GC11   GN1   GC2   GH36   0.000   -1.000   0.000   1.000   ! quality : high
+GC11   GN1   GC2   GH36   3.625   -2.000   180.000   1.000
+GC11   GN1   GC2   GH36   0.000   3.000   0.000   1.000
+GH36   GC2   GN3   GC4   0.000   -1.000   0.000   1.000   ! quality : high
+GH36   GC2   GN3   GC4   3.625   -2.000   180.000   1.000
+GH36   GC2   GN3   GC4   0.000   3.000   0.000   1.000
+GC11   GC4   GC5   GO6   0.000   -1.000   0.000   1.000   ! quality : high
+GC11   GC4   GC5   GO6   1.050   -2.000   180.000   1.000
+GC11   GC4   GC5   GO6   0.000   3.000   0.000   1.000
+GC11   GC4   GC5   GN7   0.000   -1.000   0.000   1.000   ! quality : high
+GC11   GC4   GC5   GN7   1.500   -2.000   180.000   1.000
+GC11   GC4   GC5   GN7   0.000   3.000   0.000   1.000
+GC4   GC5   GN7   GH12   0.000   -1.000   0.000   1.000   ! quality : high
+GC4   GC5   GN7   GH12   1.525   -2.000   180.000   1.000
+GC4   GC5   GN7   GH12   0.000   3.000   0.000   1.000
+GO6   GC5   GN7   GH12   0.000   -1.000   0.000   1.000   ! quality : high
+GO6   GC5   GN7   GH12   2.450   -2.000   180.000   1.000
+GO6   GC5   GN7   GH12   0.000   3.000   0.000   1.000
+GH12   GN7   GC8   GN9   0.000   -1.000   0.000   1.000   ! quality : high
+GH12   GN7   GC8   GN9   3.625   -2.000   180.000   1.000
+GH12   GN7   GC8   GN9   0.000   3.000   0.000   1.000
+GH12   GN7   GC8   GN10   0.000   -1.000   0.000   1.000   ! quality : high
+GH12   GN7   GC8   GN10   3.625   -2.000   180.000   1.000
+GH12   GN7   GC8   GN10   0.000   3.000   0.000   1.000
+GN7   GC8   GN9   GH14   0.000   -1.000   0.000   1.000   ! quality : high
+GN7   GC8   GN9   GH14   1.015   -2.000   180.000   1.000
+GN7   GC8   GN9   GH14   0.000   3.000   0.000   1.000
+GN7   GC8   GN9   GH15   0.000   -1.000   0.000   1.000   ! quality : high
+GN7   GC8   GN9   GH15   1.015   -2.000   180.000   1.000
+GN7   GC8   GN9   GH15   0.000   3.000   0.000   1.000
+GN10   GC8   GN9   GH14   0.000   -1.000   0.000   1.000   ! quality : high
+GN10   GC8   GN9   GH14   0.700   -2.000   180.000   1.000
+GN10   GC8   GN9   GH14   0.000   3.000   0.000   1.000
+GN10   GC8   GN9   GH15   0.000   -1.000   0.000   1.000   ! quality : high
+GN10   GC8   GN9   GH15   0.700   -2.000   180.000   1.000
+GN10   GC8   GN9   GH15   0.000   3.000   0.000   1.000
+!CYTOSINE
+CC8   CN1   CC2   CO3   0.000   -1.000   0.000   1.000   ! quality : med
+CC8   CN1   CC2   CO3   3.045   -2.000   180.000   1.000
+CC8   CN1   CC2   CO3   0.000   3.000   0.000   1.000
+CC8   CN1   CC2   CN4   0.000   -1.000   0.000   1.000   ! quality : med
+CC8   CN1   CC2   CN4   2.325   -2.000   180.000   1.000
+CC8   CN1   CC2   CN4   0.000   3.000   0.000   1.000
+CC2   CN1   CC8   CC7   0.000   -1.000   0.000   1.000   ! quality : high
+CC2   CN1   CC8   CC7   3.625   -2.000   180.000   1.000
+CC2   CN1   CC8   CC7   0.000   3.000   0.000   1.000
+CC2   CN1   CC8   CH12   0.000   -1.000   0.000   1.000   ! quality : high
+CC2   CN1   CC8   CH12   3.625   -2.000   180.000   1.000
+CC2   CN1   CC8   CH12   0.000   3.000   0.000   1.000
+CN1   CC2   CN4   CC5   0.000   -1.000   0.000   1.000   ! quality : med
+CN1   CC2   CN4   CC5   5.000   -2.000   180.000   1.000
+CN1   CC2   CN4   CC5   0.000   3.000   0.000   1.000
+CO3   CC2   CN4   CC5   0.000   -1.000   0.000   1.000   ! quality : med
+CO3   CC2   CN4   CC5   3.045   -2.000   180.000   1.000
+CO3   CC2   CN4   CC5   0.000   3.000   0.000   1.000
+CC2   CN4   CC5   CN6   0.000   -1.000   0.000   1.000   ! quality : high
+CC2   CN4   CC5   CN6   3.625   -2.000   180.000   1.000
+CC2   CN4   CC5   CN6   0.000   3.000   0.000   1.000
+CC2   CN4   CC5   CC7   0.000   -1.000   0.000   1.000   ! quality : high
+CC2   CN4   CC5   CC7   3.625   -2.000   180.000   1.000
+CC2   CN4   CC5   CC7   0.000   3.000   0.000   1.000
+CN4   CC5   CN6   CH9   0.000   -1.000   0.000   1.000   ! quality : high
+CN4   CC5   CN6   CH9   0.700   -2.000   180.000   1.000
+CN4   CC5   CN6   CH9   0.000   3.000   0.000   1.000
+CN4   CC5   CN6   CH10   0.000   -1.000   0.000   1.000   ! quality : high
+CN4   CC5   CN6   CH10   0.700   -2.000   180.000   1.000
+CN4   CC5   CN6   CH10   0.000   3.000   0.000   1.000
+CC7   CC5   CN6   CH9   0.000   -1.000   0.000   1.000   ! quality : high
+CC7   CC5   CN6   CH9   0.700   -2.000   180.000   1.000
+CC7   CC5   CN6   CH9   0.000   3.000   0.000   1.000
+CC7   CC5   CN6   CH10   0.000   -1.000   0.000   1.000   ! quality : high
+CC7   CC5   CN6   CH10   0.700   -2.000   180.000   1.000
+CC7   CC5   CN6   CH10   0.000   3.000   0.000   1.000
+CN4   CC5   CC7   CC8   0.000   -1.000   0.000   1.000   ! quality : high
+CN4   CC5   CC7   CC8   7.000   -2.000   180.000   1.000
+CN4   CC5   CC7   CC8   0.000   3.000   0.000   1.000
+CN4   CC5   CC7   CH11   0.000   -1.000   0.000   1.000   ! quality : high
+CN4   CC5   CC7   CH11   7.000   -2.000   180.000   1.000
+CN4   CC5   CC7   CH11   0.000   3.000   0.000   1.000
+CN6   CC5   CC7   CC8   0.000   -1.000   0.000   1.000   ! quality : high
+CN6   CC5   CC7   CC8   7.000   -2.000   180.000   1.000
+CN6   CC5   CC7   CC8   0.000   3.000   0.000   1.000
+CN6   CC5   CC7   CH11   0.000   -1.000   0.000   1.000   ! quality : high
+CN6   CC5   CC7   CH11   7.000   -2.000   180.000   1.000
+CN6   CC5   CC7   CH11   0.000   3.000   0.000   1.000
+CC5   CC7   CC8   CN1   0.000   -1.000   0.000   1.000   ! quality : high
+CC5   CC7   CC8   CN1   7.000   -2.000   180.000   1.000
+CC5   CC7   CC8   CN1   0.000   3.000   0.000   1.000
+CC5   CC7   CC8   CH12   0.000   -1.000   0.000   1.000   ! quality : high
+CC5   CC7   CC8   CH12   7.000   -2.000   180.000   1.000
+CC5   CC7   CC8   CH12   0.000   3.000   0.000   1.000
+CH11   CC7   CC8   CN1   0.000   -1.000   0.000   1.000   ! quality : high
+CH11   CC7   CC8   CN1   7.000   -2.000   180.000   1.000
+CH11   CC7   CC8   CN1   0.000   3.000   0.000   1.000
+CH11   CC7   CC8   CH12   0.000   -1.000   0.000   1.000   ! quality : high
+CH11   CC7   CC8   CH12   7.000   -2.000   180.000   1.000
+CH11   CC7   CC8   CH12   0.000   3.000   0.000   1.000
+!URACIL
+UC8   UN1   UC2   UO3   0.000   -1.000   0.000   1.000   ! quality : med
+UC8   UN1   UC2   UO3   3.045   -2.000   180.000   1.000
+UC8   UN1   UC2   UO3   0.000   3.000   0.000   1.000
+UC8   UN1   UC2   UN4   0.000   -1.000   0.000   1.000   ! quality : med
+UC8   UN1   UC2   UN4   2.325   -2.000   180.000   1.000
+UC8   UN1   UC2   UN4   0.000   3.000   0.000   1.000
+UC2   UN1   UC8   UC7   0.000   -1.000   0.000   1.000   ! quality : high
+UC2   UN1   UC8   UC7   3.625   -2.000   180.000   1.000
+UC2   UN1   UC8   UC7   0.000   3.000   0.000   1.000
+UC2   UN1   UC8   UH11   0.000   -1.000   0.000   1.000   ! quality : high
+UC2   UN1   UC8   UH11   3.625   -2.000   180.000   1.000
+UC2   UN1   UC8   UH11   0.000   3.000   0.000   1.000
+UN1   UC2   UN4   UC5   0.000   -1.000   0.000   1.000   ! quality : med
+UN1   UC2   UN4   UC5   2.325   -2.000   180.000   1.000
+UN1   UC2   UN4   UC5   0.000   3.000   0.000   1.000
+UN1   UC2   UN4   UH9   0.000   -1.000   0.000   1.000   ! quality : med
+UN1   UC2   UN4   UH9   2.325   -2.000   180.000   1.000
+UN1   UC2   UN4   UH9   0.000   3.000   0.000   1.000
+UO3   UC2   UN4   UC5   0.000   -1.000   0.000   1.000   ! quality : med
+UO3   UC2   UN4   UC5   3.045   -2.000   180.000   1.000
+UO3   UC2   UN4   UC5   0.000   3.000   0.000   1.000
+UO3   UC2   UN4   UH9   0.000   -1.000   0.000   1.000   ! quality : med
+UO3   UC2   UN4   UH9   2.450   -2.000   180.000   1.000
+UO3   UC2   UN4   UH9   0.000   3.000   0.000   1.000
+UC2   UN4   UC5   UO6   0.000   -1.000   0.000   1.000   ! quality : med
+UC2   UN4   UC5   UO6   3.045   -2.000   180.000   1.000
+UC2   UN4   UC5   UO6   0.000   3.000   0.000   1.000
+UC2   UN4   UC5   UC7   0.000   -1.000   0.000   1.000   ! quality : med
+UC2   UN4   UC5   UC7   7.000   -2.000   180.000   1.000
+UC2   UN4   UC5   UC7   0.000   3.000   0.000   1.000
+UH9   UN4   UC5   UO6   0.000   -1.000   0.000   1.000   ! quality : med
+UH9   UN4   UC5   UO6   2.450   -2.000   180.000   1.000
+UH9   UN4   UC5   UO6   0.000   3.000   0.000   1.000
+UH9   UN4   UC5   UC7   0.000   -1.000   0.000   1.000   ! quality : high
+UH9   UN4   UC5   UC7   1.525   -2.000   180.000   1.000
+UH9   UN4   UC5   UC7   0.000   3.000   0.000   1.000
+UN4   UC5   UC7   UC8   0.000   -1.000   0.000   1.000   ! quality : high
+UN4   UC5   UC7   UC8   1.500   -2.000   180.000   1.000
+UN4   UC5   UC7   UC8   0.000   3.000   0.000   1.000
+UN4   UC5   UC7   UH10   0.000   -1.000   0.000   1.000   ! quality : med
+UN4   UC5   UC7   UH10   7.000   -2.000   180.000   1.000
+UN4   UC5   UC7   UH10   0.000   3.000   0.000   1.000
+UO6   UC5   UC7   UC8   1.250   -1.000   0.000   1.000   ! quality : high
+UO6   UC5   UC7   UC8   3.000   -2.000   180.000   1.000
+UO6   UC5   UC7   UC8   0.000   3.000   0.000   1.000
+UO6   UC5   UC7   UH10   0.000   -1.000   0.000   1.000   ! quality : high
+UO6   UC5   UC7   UH10   0.000   -2.000   180.000   1.000
+UO6   UC5   UC7   UH10   0.000   3.000   0.000   1.000
+UC5   UC7   UC8   UN1   0.000   -1.000   0.000   1.000   ! quality : high
+UC5   UC7   UC8   UN1   7.000   -2.000   180.000   1.000
+UC5   UC7   UC8   UN1   0.000   3.000   0.000   1.000
+UC5   UC7   UC8   UH11   0.000   -1.000   0.000   1.000   ! quality : high
+UC5   UC7   UC8   UH11   7.000   -2.000   180.000   1.000
+UC5   UC7   UC8   UH11   0.000   3.000   0.000   1.000
+UH10   UC7   UC8   UN1   0.000   -1.000   0.000   1.000   ! quality : high
+UH10   UC7   UC8   UN1   7.000   -2.000   180.000   1.000
+UH10   UC7   UC8   UN1   0.000   3.000   0.000   1.000
+UH10   UC7   UC8   UH11   0.000   -1.000   0.000   1.000   ! quality : high
+UH10   UC7   UC8   UH11   7.000   -2.000   180.000   1.000
+UH10   UC7   UC8   UH11   0.000   3.000   0.000   1.000
+!CONNECTION SUGAR2BASE
+SC7   SO8   SC13   AN1    -0.250   -1.000   0.000   1.000   ! quality : high
+SC7   SO8   SC13   AN1    -0.750   -2.000   180.000   1.000
+SC7   SO8   SC13   AN1    0.500   3.000   0.000   1.000
+SC9   SC11   SC13   AN1    1.366   -1.000   0.000   1.000   ! quality : high
+SC9   SC11   SC13   AN1    -0.115   -2.000   180.000   1.000
+SC9   SC11   SC13   AN1    0.242   3.000   0.000   1.000
+SO12   SC11   SC13   AN1    3.140   -1.000   0.000   1.000   ! quality : high
+SO12   SC11   SC13   AN1    -0.734   -2.000   180.000   1.000
+SO12   SC11   SC13   AN1    1.015   3.000   0.000   1.000
+SH20   SC11   SC13   AN1    -0.506   -1.000   0.000   1.000   ! quality : high
+SH20   SC11   SC13   AN1    -0.354   -2.000   180.000   1.000
+SH20   SC11   SC13   AN1    0.236   3.000   0.000   1.000
+SO8   SC13   AN1    AC2    -0.750   -1.000   0.000   1.000   ! quality : high
+SO8   SC13   AN1    AC2    -0.750   -2.000   180.000   1.000
+SO8   SC13   AN1    AC2    0.000   3.000   0.000   1.000
+SO8   SC13   AN1    AC10   0.750   -1.000   0.000   1.000   ! quality : high
+SO8   SC13   AN1    AC10   -0.750   -2.000   180.000   1.000
+SO8   SC13   AN1    AC10   0.000   3.000   0.000   1.000
+SC11   SC13   AN1    AC2    -0.500   -1.000   0.000   1.000   ! quality : high
+SC11   SC13   AN1    AC2    -0.175   -2.000   180.000   1.000
+SC11   SC13   AN1    AC2    0.000   3.000   0.000   1.000
+SC11   SC13   AN1    AC10   0.500   -1.000   0.000   1.000   ! quality : high
+SC11   SC13   AN1    AC10   -0.175   -2.000   180.000   1.000
+SC11   SC13   AN1    AC10   0.000   3.000   0.000   1.000
+SH21   SC13   AN1    AC2    0.000   -1.000   0.000   1.000   ! quality : high
+SH21   SC13   AN1    AC2    0.000   -2.000   180.000   1.000
+SH21   SC13   AN1    AC2    0.000   3.000   0.000   1.000
+SH21   SC13   AN1    AC10    0.000   -1.000   0.000   1.000   ! quality : high
+SH21   SC13   AN1    AC10    0.000   -2.000   180.000   1.000
+SH21   SC13   AN1    AC10    0.000   3.000   0.000   1.000
+SC13   AN1    AC2    AN3    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   AN1    AC2    AN3    3.625   -2.000   180.000   1.000
+SC13   AN1    AC2    AN3    0.000   3.000   0.000   1.000
+SC13   AN1    AC2    AH13   0.000   -1.000   0.000   1.000   ! quality : high
+SC13   AN1    AC2    AH13   3.625   -2.000   180.000   1.000
+SC13   AN1    AC2    AH13   0.000   3.000   0.000   1.000
+SC13   AN1    AC10    AC4    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   AN1    AC10    AC4    3.625   -2.000   180.000   1.000
+SC13   AN1    AC10    AC4    0.000   3.000   0.000   1.000
+SC13   AN1    AC10   AN9    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   AN1    AC10   AN9    3.625   -2.000   180.000   1.000
+SC13   AN1    AC10   AN9    0.000   3.000   0.000   1.000
+SC7   SO8   SC13   GN1    -0.250   -1.000   0.000   1.000   ! quality : high
+SC7   SO8   SC13   GN1    -0.750   -2.000   180.000   1.000
+SC7   SO8   SC13   GN1    0.500   3.000   0.000   1.000
+SC9   SC11   SC13   GN1    1.366   -1.000   0.000   1.000   ! quality : high
+SC9   SC11   SC13   GN1    -0.115   -2.000   180.000   1.000
+SC9   SC11   SC13   GN1    0.242   3.000   0.000   1.000
+SO12   SC11   SC13   GN1    3.140   -1.000   0.000   1.000   ! quality : high
+SO12   SC11   SC13   GN1    -0.734   -2.000   180.000   1.000
+SO12   SC11   SC13   GN1    1.015   3.000   0.000   1.000
+SH20   SC11   SC13   GN1    -0.506   -1.000   0.000   1.000   ! quality : high
+SH20   SC11   SC13   GN1    -0.354   -2.000   180.000   1.000
+SH20   SC11   SC13   GN1    0.236   3.000   0.000   1.000
+SO8   SC13   GN1    GC2    -0.750   -1.000   0.000   1.000   ! quality : high
+SO8   SC13   GN1    GC2    -0.750   -2.000   180.000   1.000
+SO8   SC13   GN1    GC2    0.000   3.000   0.000   1.000
+SO8   SC13   GN1    GC11   0.750   -1.000   0.000   1.000   ! quality : high
+SO8   SC13   GN1    GC11   -0.750   -2.000   180.000   1.000
+SO8   SC13   GN1    GC11   0.000   3.000   0.000   1.000
+SC11   SC13   GN1    GC2    -0.500   -1.000   0.000   1.000   ! quality : high
+SC11   SC13   GN1    GC2    -0.175   -2.000   180.000   1.000
+SC11   SC13   GN1    GC2    0.000   3.000   0.000   1.000
+SC11   SC13   GN1    GC11   0.500   -1.000   0.000   1.000   ! quality : high
+SC11   SC13   GN1    GC11   -0.175   -2.000   180.000   1.000
+SC11   SC13   GN1    GC11   0.000   3.000   0.000   1.000
+SH20   SC13   GN1    GC2    0.000   -1.000   0.000   1.000   ! quality : high
+SH20   SC13   GN1    GC2    0.000   -2.000   180.000   1.000
+SH20   SC13   GN1    GC2    0.000   3.000   0.000   1.000
+SH20   SC13   GN1    GC11   0.000   -1.000   0.000   1.000   ! quality : high
+SH20   SC13   GN1    GC11   0.000   -2.000   180.000   1.000
+SH20   SC13   GN1    GC11   0.000   3.000   0.000   1.000
+SC13   GN1    GC2    GN3    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   GN1    GC2    GN3    3.625   -2.000   180.000   1.000
+SC13   GN1    GC2    GN3    0.000   3.000   0.000   1.000
+SC13   GN1    GC2    GH36   0.000   -1.000   0.000   1.000   ! quality : high
+SC13   GN1    GC2    GH36   3.625   -2.000   180.000   1.000
+SC13   GN1    GC2    GH36   0.000   3.000   0.000   1.000
+SH21   SC13   GN1    GC2    0.000   -1.000   0.000   1.000   ! quality : high
+SH21   SC13   GN1    GC2    0.000   -2.000   180.000   1.000
+SH21   SC13   GN1    GC2    0.000   3.000   0.000   1.000
+SH21   SC13   GN1    GC11   0.000   -1.000   0.000   1.000   ! quality : high
+SH21   SC13   GN1    GC11   0.000   -2.000   180.000   1.000
+SH21   SC13   GN1    GC11   0.000   3.000   0.000   1.000
+SC13   GN1    GC11   GC4    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   GN1    GC11   GC4    3.625   -2.000   180.000   1.000
+SC13   GN1    GC11   GC4    0.000   3.000   0.000   1.000
+SC13   GN1    GC11   GN10   0.000   -1.000   0.000   1.000   ! quality : high
+SC13   GN1    GC11   GN10   3.625   -2.000   180.000   1.000
+SC13   GN1    GC11   GN10   0.000   3.000   0.000   1.000
+SC7       SO8    SC13   CN1      -0.250   -1.000   0.000   1.000   ! quality : high
+SC7       SO8       SC13   CN1      -0.750   -2.000   180.000   1.000
+SC7       SO8       SC13   CN1    0.500   3.000   0.000   1.000
+SC9   SC11   SC13   CN1     1.366   -1.000   0.000   1.000   ! quality : high
+SC9   SC11   SC13   CN1    -0.115   -2.000   180.000   1.000
+SC9   SC11   SC13   CN1    0.242   3.000   0.000   1.000
+SO12   SC11   SC13   CN1    3.140   -1.000   0.000   1.000   ! quality : high
+SO12   SC11   SC13   CN1    -0.734   -2.000   180.000   1.000
+SO12   SC11   SC13   CN1    1.015   3.000   0.000   1.000
+SH20   SC11   SC13   CN1    -0.506   -1.000   0.000   1.000   ! quality : high
+SH20   SC11   SC13   CN1    -0.354   -2.000   180.000   1.000
+SH20   SC11   SC13   CN1    0.236   3.000   0.000   1.000
+SO8   SC13   CN1    CC2    0.750   -1.000   0.000   1.000   ! quality : high
+SO8   SC13   CN1    CC2    -0.750   -2.000   180.000   1.000
+SO8   SC13   CN1    CC2    0.000   3.000   0.000   1.000
+SO8   SC13   CN1    CC8    0.750   -1.000   0.000   1.000   ! quality : high
+SO8   SC13   CN1    CC8    -0.750   -2.000   180.000   1.000
+SO8   SC13   CN1    CC8    0.000   3.000   0.000   1.000
+SC11   SC13   CN1    CC2    0.500   -1.000   0.000   1.000   ! quality : high
+SC11   SC13   CN1    CC2    -0.175   -2.000   180.000   1.000
+SC11   SC13   CN1    CC2    0.000   3.000   0.000   1.000
+SC11   SC13   CN1    CC8    0.500   -1.000   0.000   1.000   ! quality : high
+SC11   SC13   CN1    CC8    -0.175   -2.000   180.000   1.000
+SC11   SC13   CN1    CC8    0.000   3.000   0.000   1.000
+SH21   SC13   CN1    CC2    0.000   -1.000   0.000   1.000   ! quality : high
+SH21   SC13   CN1    CC2    0.000   -2.000   180.000   1.000
+SH21   SC13   CN1    CC2    0.000   3.000   0.000   1.000
+SH21   SC13   CN1    CC8    0.000   -1.000   0.000   1.000   ! quality : high
+SH21   SC13   CN1    CC8    0.000   -2.000   180.000   1.000
+SH21   SC13   CN1    CC8    0.000   3.000   0.000   1.000
+SC13   CN1    CC2    CO3    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   CN1    CC2    CO3    3.045   -2.000   180.000   1.000
+SC13   CN1    CC2    CO3    0.000   3.000   0.000   1.000
+SC13   CN1    CC2    CN4    0.000   -1.000   0.000   1.000   ! quality : med
+SC13   CN1    CC2    CN4    2.325   -2.000   180.000   1.000
+SC13   CN1    CC2    CN4    0.000   3.000   0.000   1.000
+SC13   CN1    CC8    CC7    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   CN1    CC8    CC7    3.625   -2.000   180.000   1.000
+SC13   CN1    CC8    CC7    0.000   3.000   0.000   1.000
+SC13   CN1    CC8    CH12   0.000   -1.000   0.000   1.000   ! quality : high
+SC13   CN1    CC8    CH12   3.625   -2.000   180.000   1.000
+SC13   CN1    CC8    CH12   0.000   3.000   0.000   1.000
+SC7   SO8   SC13   UN1    -0.250   -1.000   0.000   1.000   ! quality : high
+SC7   SO8   SC13   UN1    -0.750   -2.000   180.000   1.000
+SC7   SO8   SC13   UN1    0.500   3.000   0.000   1.000
+SC9   SC11   SC13   UN1    1.366   -1.000   0.000   1.000   ! quality : high
+SC9   SC11   SC13   UN1    -0.115   -2.000   180.000   1.000
+SC9   SC11   SC13   UN1    0.242   3.000   0.000   1.000
+SO12   SC11   SC13   UN1    3.140   -1.000   0.000   1.000   ! quality : high
+SO12   SC11   SC13   UN1    -0.734   -2.000   180.000   1.000
+SO12   SC11   SC13   UN1    1.015   3.000   0.000   1.000
+SH20   SC11   SC13   UN1    -0.506   -1.000   0.000   1.000   ! quality : high
+SH20   SC11   SC13   UN1    -0.354   -2.000   180.000   1.000
+SH20   SC11   SC13   UN1    0.236   3.000   0.000   1.000
+SO8   SC13   UN1    UC2    0.750   -1.000   0.000   1.000   ! quality : high
+SO8   SC13   UN1    UC2    -0.750   -2.000   180.000   1.000
+SO8   SC13   UN1    UC2    0.000   3.000   0.000   1.000
+SO8   SC13   UN1    UC8    0.750   -1.000   0.000   1.000   ! quality : high
+SO8   SC13   UN1    UC8    -0.750   -2.000   180.000   1.000
+SO8   SC13   UN1    UC8    0.000   3.000   0.000   1.000
+SC11   SC13   UN1    UC2    0.500   -1.000   0.000   1.000   ! quality : high
+SC11   SC13   UN1    UC2    -0.175   -2.000   180.000   1.000
+SC11   SC13   UN1    UC2    0.000   3.000   0.000   1.000
+SC11   SC13   UN1    UC8    0.500   -1.000   0.000   1.000   ! quality : high
+SC11   SC13   UN1    UC8    -0.175   -2.000   180.000   1.000
+SC11   SC13   UN1    UC8    0.000   3.000   0.000   1.000
+SH21   SC13   UN1    UC2    0.000   -1.000   0.000   1.000   ! quality : high
+SH21   SC13   UN1    UC2    0.000   -2.000   180.000   1.000
+SH21   SC13   UN1    UC2    0.000   3.000   0.000   1.000
+SH21   SC13   UN1    UC8    0.000   -1.000   0.000   1.000   ! quality : high
+SH21   SC13   UN1    UC8    0.000   -2.000   180.000   1.000
+SH21   SC13   UN1    UC8    0.000   3.000   0.000   1.000
+SC13   UN1    UC2    UO3    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   UN1    UC2    UO3    3.045   -2.000   180.000   1.000
+SC13   UN1    UC2    UO3    0.000   3.000   0.000   1.000
+SC13   UN1    UC2    UN4    0.000   -1.000   0.000   1.000   ! quality : med
+SC13   UN1    UC2    UN4    2.325   -2.000   180.000   1.000
+SC13   UN1    UC2    UN4    0.000   3.000   0.000   1.000
+SC13   UN1    UC8    UC7    0.000   -1.000   0.000   1.000   ! quality : high
+SC13   UN1    UC8    UC7    3.625   -2.000   180.000   1.000
+SC13   UN1    UC8    UC7    0.000   3.000   0.000   1.000
+SC13   UN1    UC8    UH11   0.000   -1.000   0.000   1.000   ! quality : high
+SC13   UN1    UC8    UH11   3.625   -2.000   180.000   1.000
+SC13   UN1    UC8    UH11   0.000   3.000   0.000   1.000
+!CONNECTION SUGAR2PHOSPHATE
+SC7   SC9   SO10   SP2    0.000   -1.000   0.000   1.000   ! quality : high
+SC7   SC9   SO10   SP2    1.495   -2.000   180.000   1.000
+SC7   SC9   SO10   SP2    0.000   3.000   0.000   1.000
+SC9   SO10   SP2    SO3   0.000   -1.000   0.000   1.000   ! quality : high
+SC9   SO10   SP2    SO3   0.000   -2.000   180.000   1.000
+SC9   SO10   SP2    SO3   0.281   3.000   0.000   1.000
+SC9   SO10   SP2    SO4   0.000   -1.000   0.000   1.000   ! quality : high
+SC9   SO10   SP2    SO4   0.000   -2.000   180.000   1.000
+SC9   SO10   SP2    SO4   0.281   3.000   0.000   1.000
+SC9   SO10   SP2    SO5   0.000   -1.000   0.000   1.000   ! quality : high
+SC9   SO10   SP2    SO5   0.000   -2.000   180.000   1.000
+SC9   SO10   SP2    SO5   0.281   3.000   0.000   1.000
+SO10   SP2    SO5   SC6   0.000   -1.000   0.000   1.000   ! quality : high
+SO10   SP2    SO5   SC6   0.000   -2.000   180.000   1.000
+SO10   SP2    SO5   SC6   0.281   3.000   0.000   1.000
+SC11   SC9   SO10   SP2    0.000   -1.000   0.000   1.000   ! quality : high
+SC11   SC9   SO10   SP2    1.495   -2.000   180.000   1.000
+SC11   SC9   SO10   SP2    0.000   3.000   0.000   1.000
+SH18   SC9   SO10   SP2    0.000   -1.000   0.000   1.000   ! quality : high
+SH18   SC9   SO10   SP2    0.000   -2.000   180.000   1.000
+SH18   SC9   SO10   SP2    0.178   3.000   0.000   1.000
+!CONNECTION PHA2SUGAR
+SC7      SC9      SO10     PC2   0.000   -1.000   0.000   1.000   ! quality : high
+SC7      SC9      SO10     PC2   0.000   -2.000   180.000   1.000
+SC7      SC9      SO10     PC2   0.099   3.000   0.000   1.000
+SC11     SC9      SO10     PC2   0.000   -1.000   0.000   1.000   ! quality : high
+SC11     SC9      SO10     PC2   0.000   -2.000   180.000   1.000
+SC11     SC9      SO10     PC2   0.099   3.000   0.000   1.000
+SH18     SC9      SO10     PC2   0.000   -1.000   0.000   1.000   ! quality : high
+SH18     SC9      SO10     PC2   0.000   -2.000   180.000   1.000
+SH18     SC9      SO10     PC2   0.099   3.000   0.000   1.000
+SC9      SO10     PC2      PO1   0.000   -1.000   0.000   1.000   ! quality : high
+SC9      SO10     PC2      PO1   2.562   -2.000   180.000   1.000
+SC9      SO10     PC2      PO1   0.000   3.000   0.000   1.000
+SC9      SO10     PC2      PC3   2.334   -1.000   0.000   1.000   ! quality : high
+SC9      SO10     PC2      PC3   2.562   -2.000   180.000   1.000
+SC9      SO10     PC2      PC3   0.000   3.000   0.000   1.000
+SO10     PC2      PC3      PN4   2.630   -1.000   0.000   1.000   ! quality : high
+SO10     PC2      PC3      PN4   0.410   -2.000   180.000   1.000
+SO10     PC2      PC3      PN4   0.000   3.000   0.000   1.000
+SO10     PC2      PC3      PC6   0.000   -1.000   0.000   1.000   ! quality : high
+SO10     PC2      PC3      PC6   0.000   -2.000   180.000   1.000
+SO10     PC2      PC3      PC6   -0.277   3.000   0.000   1.000
+SO10     PC2      PC3      PH16 0.000   -1.000   0.000   1.000   ! quality : high
+SO10     PC2      PC3      PH16   0.000   -2.000   180.000   1.000
+SO10     PC2      PC3      PH16   0.066   3.000   0.000   1.000
+!PHEACE
+PO1   PC2   PC3   PN4   0.000   -1.000   0.000   1.000   ! quality : high
+PO1   PC2   PC3   PN4   0.000   -2.000   180.000   1.000
+PO1   PC2   PC3   PN4   0.000   3.000   0.000   1.000
+PO1   PC2   PC3   PC6   0.000   -1.000   0.000   1.000   ! quality : high
+PO1   PC2   PC3   PC6   0.000   -2.000   180.000   1.000
+PO1   PC2   PC3   PC6   0.000   3.000   0.000   1.000
+PO1   PC2   PC3   PH16   0.000   -1.000   0.000   1.000   ! quality : high
+PO1   PC2   PC3   PH16   0.000   -2.000   180.000   1.000
+PO1   PC2   PC3   PH16   0.000   3.000   0.000   1.000
+PC2   PC3   PN4   PH5   0.000   -1.000   0.000   1.000   ! quality : high
+PC2   PC3   PN4   PH5   0.000   -2.000   180.000   1.000
+PC2   PC3   PN4   PH5   0.000   3.000   0.000   1.000
+PC2   PC3   PN4   PC14   -1.183   -1.000   0.000   1.000   ! quality : high
+PC2   PC3   PN4   PC14   0.456   -2.000   180.000   1.000
+PC2   PC3   PN4   PC14   -0.425   3.000   0.000   1.000
+PC2   PC3   PC6   PC7   -0.849   -1.000   0.000   1.000   ! quality : high
+PC2   PC3   PC6   PC7   -0.228   -2.000   180.000   1.000
+PC2   PC3   PC6   PC7   0.292   3.000   0.000   1.000
+PC2   PC3   PC6   PH17   0.000   -1.000   0.000   1.000   ! quality : high
+PC2   PC3   PC6   PH17   0.000   -2.000   180.000   1.000
+PC2   PC3   PC6   PH17   -0.038   3.000   0.000   1.000
+PC2   PC3   PC6   PH18   0.000   -1.000   0.000   1.000   ! quality : high
+PC2   PC3   PC6   PH18   0.000   -2.000   180.000   1.000
+PC2   PC3   PC6   PH18   -0.038   3.000   0.000   1.000
+PC3   PN4   PC14   PO13   0.000   -1.000   0.000   1.000   ! quality : high
+PC3   PN4   PC14   PO13   3.045   -2.000   180.000   1.000
+PC3   PN4   PC14   PO13   0.000   3.000   0.000   1.000
+PC3   PN4   PC14   PC15   1.150   -1.000   0.000   1.000   ! quality : high
+PC3   PN4   PC14   PC15   3.045   -2.000   180.000   1.000
+PC3   PN4   PC14   PC15   0.000   3.000   0.000   1.000
+PC3   PC6   PC7   PC8   0.000   -1.000   0.000   1.000   ! quality : high
+PC3   PC6   PC7   PC8   0.000   -2.000   180.000   1.000
+PC3   PC6   PC7   PC8   0.000   3.000   0.000   1.000
+PC3   PC6   PC7   PC9   0.000   -1.000   0.000   1.000   ! quality : high
+PC3   PC6   PC7   PC9   0.000   -2.000   180.000   1.000
+PC3   PC6   PC7   PC9   0.000   3.000   0.000   1.000
+PN4   PC3   PC6   PC7   0.422   -1.000   0.000   1.000   ! quality : high
+PN4   PC3   PC6   PC7   -0.481   -2.000   180.000   1.000
+PN4   PC3   PC6   PC7   0.356   3.000   0.000   1.000
+PN4   PC3   PC6   PH17   0.000   -1.000   0.000   1.000   ! quality : high
+PN4   PC3   PC6   PH17   0.000   -2.000   180.000   1.000
+PN4   PC3   PC6   PH17   0.232   3.000   0.000   1.000
+PN4   PC3   PC6   PH18   0.000   -1.000   0.000   1.000   ! quality : high
+PN4   PC3   PC6   PH18   0.000   -2.000   180.000   1.000
+PN4   PC3   PC6   PH18   0.232   3.000   0.000   1.000
+PN4   PC14   PC15   PH24   0.000   -1.000   0.000   1.000   ! quality : high
+PN4   PC14   PC15   PH24   0.000   -2.000   180.000   1.000
+PN4   PC14   PC15   PH24   0.000   3.000   0.000   1.000
+PN4   PC14   PC15   PH25   0.000   -1.000   0.000   1.000   ! quality : high
+PN4   PC14   PC15   PH25   0.000   -2.000   180.000   1.000
+PN4   PC14   PC15   PH25   0.000   3.000   0.000   1.000
+PN4   PC14   PC15   PH26   0.000   -1.000   0.000   1.000   ! quality : high
+PN4   PC14   PC15   PH26   0.000   -2.000   180.000   1.000
+PN4   PC14   PC15   PH26   0.000   3.000   0.000   1.000
+PH5   PN4   PC14   PO13   0.000   -1.000   0.000   1.000   ! quality : high
+PH5   PN4   PC14   PO13   2.450   -2.000   180.000   1.000
+PH5   PN4   PC14   PO13   0.000   3.000   0.000   1.000
+PH5   PN4   PC14   PC15   0.000   -1.000   0.000   1.000   ! quality : high
+PH5   PN4   PC14   PC15   2.450   -2.000   180.000   1.000
+PH5   PN4   PC14   PC15   0.000   3.000   0.000   1.000
+PC6   PC3   PN4   PH5   0.000   -1.000   0.000   1.000   ! quality : high
+PC6   PC3   PN4   PH5   0.000   -2.000   180.000   1.000
+PC6   PC3   PN4   PH5   0.000   3.000   0.000   1.000
+PC6   PC3   PN4   PC14   0.000   -1.000   0.000   1.000   ! quality : high
+PC6   PC3   PN4   PC14   0.231   -2.000   180.000   1.000
+PC6   PC3   PN4   PC14   0.000   3.000   0.000   1.000
+PC6   PC7   PC8   PC10   0.000   -1.000   0.000   1.000   ! quality : high
+PC6   PC7   PC8   PC10   3.625   -2.000   180.000   1.000
+PC6   PC7   PC8   PC10   0.000   3.000   0.000   1.000
+PC6   PC7   PC8   PH19   0.000   -1.000   0.000   1.000   ! quality : high
+PC6   PC7   PC8   PH19   3.625   -2.000   180.000   1.000
+PC6   PC7   PC8   PH19   0.000   3.000   0.000   1.000
+PC6   PC7   PC9   PC11   0.000   -1.000   0.000   1.000   ! quality : high
+PC6   PC7   PC9   PC11   3.625   -2.000   180.000   1.000
+PC6   PC7   PC9   PC11   0.000   3.000   0.000   1.000
+PC6   PC7   PC9   PH20   0.000   -1.000   0.000   1.000   ! quality : high
+PC6   PC7   PC9   PH20   3.625   -2.000   180.000   1.000
+PC6   PC7   PC9   PH20   0.000   3.000   0.000   1.000
+PC7   PC8   PC10   PC12   0.000   -1.000   0.000   1.000   ! quality : high
+PC7   PC8   PC10   PC12   3.625   -2.000   180.000   1.000
+PC7   PC8   PC10   PC12   0.000   3.000   0.000   1.000
+PC7   PC8   PC10   PH21   0.000   -1.000   0.000   1.000   ! quality : high
+PC7   PC8   PC10   PH21   3.625   -2.000   180.000   1.000
+PC7   PC8   PC10   PH21   0.000   3.000   0.000   1.000
+PC7   PC9   PC11   PC12   0.000   -1.000   0.000   1.000   ! quality : high
+PC7   PC9   PC11   PC12   3.625   -2.000   180.000   1.000
+PC7   PC9   PC11   PC12   0.000   3.000   0.000   1.000
+PC7   PC9   PC11   PH22   0.000   -1.000   0.000   1.000   ! quality : high
+PC7   PC9   PC11   PH22   3.625   -2.000   180.000   1.000
+PC7   PC9   PC11   PH22   0.000   3.000   0.000   1.000
+PC8   PC7   PC9   PC11   0.000   -1.000   0.000   1.000   ! quality : high
+PC8   PC7   PC9   PC11   3.625   -2.000   180.000   1.000
+PC8   PC7   PC9   PC11   0.000   3.000   0.000   1.000
+PC8   PC7   PC9   PH20   0.000   -1.000   0.000   1.000   ! quality : high
+PC8   PC7   PC9   PH20   3.625   -2.000   180.000   1.000
+PC8   PC7   PC9   PH20   0.000   3.000   0.000   1.000
+PC8   PC10   PC12   PC11   0.000   -1.000   0.000   1.000   ! quality : high
+PC8   PC10   PC12   PC11   3.625   -2.000   180.000   1.000
+PC8   PC10   PC12   PC11   0.000   3.000   0.000   1.000
+PC8   PC10   PC12   PH23   0.000   -1.000   0.000   1.000   ! quality : high
+PC8   PC10   PC12   PH23   3.625   -2.000   180.000   1.000
+PC8   PC10   PC12   PH23   0.000   3.000   0.000   1.000
+PC9   PC7   PC8   PC10   0.000   -1.000   0.000   1.000   ! quality : high
+PC9   PC7   PC8   PC10   3.625   -2.000   180.000   1.000
+PC9   PC7   PC8   PC10   0.000   3.000   0.000   1.000
+PC9   PC7   PC8   PH19   0.000   -1.000   0.000   1.000   ! quality : high
+PC9   PC7   PC8   PH19   3.625   -2.000   180.000   1.000
+PC9   PC7   PC8   PH19   0.000   3.000   0.000   1.000
+PC9   PC11   PC12   PC10   0.000   -1.000   0.000   1.000   ! quality : high
+PC9   PC11   PC12   PC10   3.625   -2.000   180.000   1.000
+PC9   PC11   PC12   PC10   0.000   3.000   0.000   1.000
+PC9   PC11   PC12   PH23   0.000   -1.000   0.000   1.000   ! quality : high
+PC9   PC11   PC12   PH23   3.625   -2.000   180.000   1.000
+PC9   PC11   PC12   PH23   0.000   3.000   0.000   1.000
+PO13   PC14   PC15   PH24   0.000   -1.000   0.000   1.000   ! quality : high
+PO13   PC14   PC15   PH24   0.000   -2.000   180.000   1.000
+PO13   PC14   PC15   PH24   0.000   3.000   0.000   1.000
+PO13   PC14   PC15   PH25   0.000   -1.000   0.000   1.000   ! quality : high
+PO13   PC14   PC15   PH25   0.000   -2.000   180.000   1.000
+PO13   PC14   PC15   PH25   0.000   3.000   0.000   1.000
+PO13   PC14   PC15   PH26   0.000   -1.000   0.000   1.000   ! quality : high
+PO13   PC14   PC15   PH26   0.000   -2.000   180.000   1.000
+PO13   PC14   PC15   PH26   0.000   3.000   0.000   1.000
+PH16   PC3   PN4   PH5   0.000   -1.000   0.000   1.000   ! quality : high
+PH16   PC3   PN4   PH5   0.000   -2.000   180.000   1.000
+PH16   PC3   PN4   PH5   0.000   3.000   0.000   1.000
+PH16   PC3   PN4   PC14   0.000   -1.000   0.000   1.000   ! quality : high
+PH16   PC3   PN4   PC14   0.000   -2.000   180.000   1.000
+PH16   PC3   PN4   PC14   0.000   3.000   0.000   1.000
+PH16   PC3   PC6   PC7   0.000   -1.000   0.000   1.000   ! quality : high
+PH16   PC3   PC6   PC7   0.000   -2.000   180.000   1.000
+PH16   PC3   PC6   PC7   0.231   3.000   0.000   1.000
+PH16   PC3   PC6   PH17   0.000   -1.000   0.000   1.000   ! quality : high
+PH16   PC3   PC6   PH17   0.000   -2.000   180.000   1.000
+PH16   PC3   PC6   PH17   0.150   3.000   0.000   1.000
+PH16   PC3   PC6   PH18   0.000   -1.000   0.000   1.000   ! quality : high
+PH16   PC3   PC6   PH18   0.000   -2.000   180.000   1.000
+PH16   PC3   PC6   PH18   0.150   3.000   0.000   1.000
+PH17   PC6   PC7   PC8   0.000   -1.000   0.000   1.000   ! quality : high
+PH17   PC6   PC7   PC8   0.000   -2.000   180.000   1.000
+PH17   PC6   PC7   PC8   0.000   3.000   0.000   1.000
+PH17   PC6   PC7   PC9   0.000   -1.000   0.000   1.000   ! quality : high
+PH17   PC6   PC7   PC9   0.000   -2.000   180.000   1.000
+PH17   PC6   PC7   PC9   0.000   3.000   0.000   1.000
+PH18   PC6   PC7   PC8   0.000   -1.000   0.000   1.000   ! quality : high
+PH18   PC6   PC7   PC8   0.000   -2.000   180.000   1.000
+PH18   PC6   PC7   PC8   0.000   3.000   0.000   1.000
+PH18   PC6   PC7   PC9   0.000   -1.000   0.000   1.000   ! quality : high
+PH18   PC6   PC7   PC9   0.000   -2.000   180.000   1.000
+PH18   PC6   PC7   PC9   0.000   3.000   0.000   1.000
+PH19   PC8   PC10   PC12   0.000   -1.000   0.000   1.000   ! quality : high
+PH19   PC8   PC10   PC12   3.625   -2.000   180.000   1.000
+PH19   PC8   PC10   PC12   0.000   3.000   0.000   1.000
+PH19   PC8   PC10   PH21   0.000   -1.000   0.000   1.000   ! quality : high
+PH19   PC8   PC10   PH21   3.625   -2.000   180.000   1.000
+PH19   PC8   PC10   PH21   0.000   3.000   0.000   1.000
+PH20   PC9   PC11   PC12   0.000   -1.000   0.000   1.000   ! quality : high
+PH20   PC9   PC11   PC12   3.625   -2.000   180.000   1.000
+PH20   PC9   PC11   PC12   0.000   3.000   0.000   1.000
+PH20   PC9   PC11   PH22   0.000   -1.000   0.000   1.000   ! quality : high
+PH20   PC9   PC11   PH22   3.625   -2.000   180.000   1.000
+PH20   PC9   PC11   PH22   0.000   3.000   0.000   1.000
+PH21   PC10   PC12   PC11   0.000   -1.000   0.000   1.000   ! quality : high
+PH21   PC10   PC12   PC11   3.625   -2.000   180.000   1.000
+PH21   PC10   PC12   PC11   0.000   3.000   0.000   1.000
+PH21   PC10   PC12   PH23   0.000   -1.000   0.000   1.000   ! quality : high
+PH21   PC10   PC12   PH23   3.625   -2.000   180.000   1.000
+PH21   PC10   PC12   PH23   0.000   3.000   0.000   1.000
+PH22   PC11   PC12   PC10   0.000   -1.000   0.000   1.000   ! quality : high
+PH22   PC11   PC12   PC10   3.625   -2.000   180.000   1.000
+PH22   PC11   PC12   PC10   0.000   3.000   0.000   1.000
+PH22   PC11   PC12   PH23   0.000   -1.000   0.000   1.000   ! quality : high
+PH22   PC11   PC12   PH23   3.625   -2.000   180.000   1.000
+PH22   PC11   PC12   PH23   0.000   3.000   0.000   1.000
+! LINEZOLID PARAMETERS FROM MACROMODEL
+LC1   LC2   LN4   LC6   0.000   -1.000   0.000   1.000   ! quality : high
+LC1   LC2   LN4   LC6   1.050   -2.000   180.000   1.000
+LC1   LC2   LN4   LC6   0.000   3.000   0.000   1.000
+LC1   LC2   LN4   LC7   0.000   -1.000   0.000   1.000   ! quality : high
+LC1   LC2   LN4   LC7   1.050   -2.000   180.000   1.000
+LC1   LC2   LN4   LC7   0.000   3.000   0.000   1.000
+LC1   LC2   LC5   LC16   0.000   -1.000   0.000   1.000   ! quality : high
+LC1   LC2   LC5   LC16   3.625   -2.000   180.000   1.000
+LC1   LC2   LC5   LC16   0.000   3.000   0.000   1.000
+LC1   LC2   LC5   LH27   0.000   -1.000   0.000   1.000   ! quality : high
+LC1   LC2   LC5   LH27   3.625   -2.000   180.000   1.000
+LC1   LC2   LC5   LH27   0.000   3.000   0.000   1.000
+LC1   LC3   LC17   LC16   0.000   -1.000   0.000   1.000   ! quality : high
+LC1   LC3   LC17   LC16   3.625   -2.000   180.000   1.000
+LC1   LC3   LC17   LC16   0.000   3.000   0.000   1.000
+LC1   LC3   LC17   LN18   0.000   -1.000   0.000   1.000   ! quality : high
+LC1   LC3   LC17   LN18   3.625   -2.000   180.000   1.000
+LC1   LC3   LC17   LN18   0.000   3.000   0.000   1.000
+LC2   LC1   LC3   LC17   0.000   -1.000   0.000   1.000   ! quality : high
+LC2   LC1   LC3   LC17   3.625   -2.000   180.000   1.000
+LC2   LC1   LC3   LC17   0.000   3.000   0.000   1.000
+LC2   LC1   LC3   LH26   0.000   -1.000   0.000   1.000   ! quality : high
+LC2   LC1   LC3   LH26   3.625   -2.000   180.000   1.000
+LC2   LC1   LC3   LH26   0.000   3.000   0.000   1.000
+LC2   LN4   LC6   LC8   -0.698   -1.000   0.000   1.000   ! quality : high
+LC2   LN4   LC6   LC8   -0.213   -2.000   180.000   1.000
+LC2   LN4   LC6   LC8   0.000   3.000   0.000   1.000
+LC2   LN4   LC6   LH28   0.000   -1.000   0.000   1.000   ! quality : high
+LC2   LN4   LC6   LH28   0.000   -2.000   180.000   1.000
+LC2   LN4   LC6   LH28   0.000   3.000   0.000   1.000
+LC2   LN4   LC6   LH29   0.000   -1.000   0.000   1.000   ! quality : high
+LC2   LN4   LC6   LH29   0.000   -2.000   180.000   1.000
+LC2   LN4   LC6   LH29   0.000   3.000   0.000   1.000
+LC2   LN4   LC7   LO10   0.000   -1.000   0.000   1.000   ! quality : high
+LC2   LN4   LC7   LO10   3.045   -2.000   180.000   1.000
+LC2   LN4   LC7   LO10   0.000   3.000   0.000   1.000
+LC2   LN4   LC7   LO15   0.000   -1.000   0.000   1.000   ! quality : high
+LC2   LN4   LC7   LO15   3.045   -2.000   180.000   1.000
+LC2   LN4   LC7   LO15   0.000   3.000   0.000   1.000
+LC2   LC5   LC16   LC17   0.000   -1.000   0.000   1.000   ! quality : high
+LC2   LC5   LC16   LC17   3.625   -2.000   180.000   1.000
+LC2   LC5   LC16   LC17   0.000   3.000   0.000   1.000
+LC2   LC5   LC16   LF24   0.000   -1.000   0.000   1.000   ! quality : high
+LC2   LC5   LC16   LF24   3.625   -2.000   180.000   1.000
+LC2   LC5   LC16   LF24   0.000   3.000   0.000   1.000
+LC3   LC1   LC2   LN4   0.000   -1.000   0.000   1.000   ! quality : high
+LC3   LC1   LC2   LN4   3.625   -2.000   180.000   1.000
+LC3   LC1   LC2   LN4   0.000   3.000   0.000   1.000
+LC3   LC1   LC2   LC5   0.000   -1.000   0.000   1.000   ! quality : high
+LC3   LC1   LC2   LC5   3.625   -2.000   180.000   1.000
+LC3   LC1   LC2   LC5   0.000   3.000   0.000   1.000
+LC3   LC17   LN18   LC19   -3.791   -1.000   0.000   1.000   ! quality : high
+LC3   LC17   LN18   LC19   1.716   -2.000   180.000   1.000
+LC3   LC17   LN18   LC19   1.599   3.000   0.000   1.000
+LC3   LC17   LN18   LC23   -3.791   -1.000   0.000   1.000   ! quality : high
+LC3   LC17   LN18   LC23   1.716   -2.000   180.000   1.000
+LC3   LC17   LN18   LC23   1.599   3.000   0.000   1.000
+LN4   LC2   LC5   LC16   0.000   -1.000   0.000   1.000   ! quality : high
+LN4   LC2   LC5   LC16   3.625   -2.000   180.000   1.000
+LN4   LC2   LC5   LC16   0.000   3.000   0.000   1.000
+LN4   LC2   LC5   LH27   0.000   -1.000   0.000   1.000   ! quality : high
+LN4   LC2   LC5   LH27   3.625   -2.000   180.000   1.000
+LN4   LC2   LC5   LH27   0.000   3.000   0.000   1.000
+LN4   LC6   LC8   LC9   0.982   -1.000   0.000   1.000   ! quality : high
+LN4   LC6   LC8   LC9   0.000   -2.000   180.000   1.000
+LN4   LC6   LC8   LC9   0.330   3.000   0.000   1.000
+LN4   LC6   LC8   LO10   3.140   -1.000   0.000   1.000   ! quality : high
+LN4   LC6   LC8   LO10   -0.734   -2.000   180.000   1.000
+LN4   LC6   LC8   LO10   1.015   3.000   0.000   1.000
+LN4   LC6   LC8   LH30   0.000   -1.000   0.000   1.000   ! quality : high
+LN4   LC6   LC8   LH30   0.000   -2.000   180.000   1.000
+LN4   LC6   LC8   LH30   0.232   3.000   0.000   1.000
+LN4   LC7   LO10   LC8   0.000   -1.000   0.000   1.000   ! quality : low
+LN4   LC7   LO10   LC8   0.000   -2.000   180.000   1.000
+LN4   LC7   LO10   LC8   0.000   3.000   0.000   1.000
+LC5   LC2   LN4   LC6   0.000   -1.000   0.000   1.000   ! quality : high
+LC5   LC2   LN4   LC6   1.050   -2.000   180.000   1.000
+LC5   LC2   LN4   LC6   0.000   3.000   0.000   1.000
+LC5   LC2   LN4   LC7   0.000   -1.000   0.000   1.000   ! quality : high
+LC5   LC2   LN4   LC7   1.050   -2.000   180.000   1.000
+LC5   LC2   LN4   LC7   0.000   3.000   0.000   1.000
+LC5   LC16   LC17   LC3   0.000   -1.000   0.000   1.000   ! quality : high
+LC5   LC16   LC17   LC3   3.625   -2.000   180.000   1.000
+LC5   LC16   LC17   LC3   0.000   3.000   0.000   1.000
+LC5   LC16   LC17   LN18   0.000   -1.000   0.000   1.000   ! quality : high
+LC5   LC16   LC17   LN18   3.625   -2.000   180.000   1.000
+LC5   LC16   LC17   LN18   0.000   3.000   0.000   1.000
+LC6   LN4   LC7   LO10   0.000   -1.000   0.000   1.000   ! quality : high
+LC6   LN4   LC7   LO10   3.045   -2.000   180.000   1.000
+LC6   LN4   LC7   LO10   0.000   3.000   0.000   1.000
+LC6   LN4   LC7   LO15   0.000   -1.000   0.000   1.000   ! quality : high
+LC6   LN4   LC7   LO15   3.045   -2.000   180.000   1.000
+LC6   LN4   LC7   LO15   0.000   3.000   0.000   1.000
+LC6   LC8   LC9   LN11   0.982   -1.000   0.000   1.000   ! quality : high
+LC6   LC8   LC9   LN11   0.000   -2.000   180.000   1.000
+LC6   LC8   LC9   LN11   0.330   3.000   0.000   1.000
+LC6   LC8   LC9   LH31   0.000   -1.000   0.000   1.000   ! quality : high
+LC6   LC8   LC9   LH31   0.000   -2.000   180.000   1.000
+LC6   LC8   LC9   LH31   0.150   3.000   0.000   1.000
+LC6   LC8   LC9   LH32   0.000   -1.000   0.000   1.000   ! quality : high
+LC6   LC8   LC9   LH32   0.000   -2.000   180.000   1.000
+LC6   LC8   LC9   LH32   0.150   3.000   0.000   1.000
+LC6   LC8   LO10   LC7   -0.610   -1.000   0.000   1.000   ! quality : high
+LC6   LC8   LO10   LC7   -0.063   -2.000   180.000   1.000
+LC6   LC8   LO10   LC7   0.211   3.000   0.000   1.000
+LC7   LN4   LC6   LC8   -0.698   -1.000   0.000   1.000   ! quality : high
+LC7   LN4   LC6   LC8   -0.213   -2.000   180.000   1.000
+LC7   LN4   LC6   LC8   0.000   3.000   0.000   1.000
+LC7   LN4   LC6   LH28   0.000   -1.000   0.000   1.000   ! quality : high
+LC7   LN4   LC6   LH28   0.000   -2.000   180.000   1.000
+LC7   LN4   LC6   LH28   -0.070   3.000   0.000   1.000
+LC7   LN4   LC6   LH29   0.000   -1.000   0.000   1.000   ! quality : high
+LC7   LN4   LC6   LH29   0.000   -2.000   180.000   1.000
+LC7   LN4   LC6   LH29   -0.070   3.000   0.000   1.000
+LC8   LC9   LN11   LC12   -0.698   -1.000   0.000   1.000   ! quality : high
+LC8   LC9   LN11   LC12   -0.213   -2.000   180.000   1.000
+LC8   LC9   LN11   LC12   0.000   3.000   0.000   1.000
+LC8   LC9   LN11   LH33   0.000   -1.000   0.000   1.000   ! quality : high
+LC8   LC9   LN11   LH33   0.000   -2.000   180.000   1.000
+LC8   LC9   LN11   LH33   0.000   3.000   0.000   1.000
+LC9   LC8   LO10   LC7   -0.610   -1.000   0.000   1.000   ! quality : high
+LC9   LC8   LO10   LC7   -0.063   -2.000   180.000   1.000
+LC9   LC8   LO10   LC7   0.211   3.000   0.000   1.000
+LC9   LN11   LC12   LC13   1.150   -1.000   0.000   1.000   ! quality : high
+LC9   LN11   LC12   LC13   3.045   -2.000   180.000   1.000
+LC9   LN11   LC12   LC13   0.000   3.000   0.000   1.000
+LC9   LN11   LC12   LO14   0.000   -1.000   0.000   1.000   ! quality : high
+LC9   LN11   LC12   LO14   3.045   -2.000   180.000   1.000
+LC9   LN11   LC12   LO14   0.000   3.000   0.000   1.000
+LO10   LC8   LC9   LN11   3.140   -1.000   0.000   1.000   ! quality : high
+LO10   LC8   LC9   LN11   -0.734   -2.000   180.000   1.000
+LO10   LC8   LC9   LN11   1.015   3.000   0.000   1.000
+LO10   LC8   LC9   LH31   0.000   -1.000   0.000   1.000   ! quality : high
+LO10   LC8   LC9   LH31   0.000   -2.000   180.000   1.000
+LO10   LC8   LC9   LH31   0.234   3.000   0.000   1.000
+LO10   LC8   LC9   LH32   0.000   -1.000   0.000   1.000   ! quality : high
+LO10   LC8   LC9   LH32   0.000   -2.000   180.000   1.000
+LO10   LC8   LC9   LH32   0.234   3.000   0.000   1.000
+LN11   LC12   LC13   LH34   0.000   -1.000   0.000   1.000   ! quality : high
+LN11   LC12   LC13   LH34   0.000   -2.000   180.000   1.000
+LN11   LC12   LC13   LH34   0.000   3.000   0.000   1.000
+LN11   LC12   LC13   LH39   0.000   -1.000   0.000   1.000   ! quality : high
+LN11   LC12   LC13   LH39   0.000   -2.000   180.000   1.000
+LN11   LC12   LC13   LH39   0.000   3.000   0.000   1.000
+LN11   LC12   LC13   LH40   0.000   -1.000   0.000   1.000   ! quality : high
+LN11   LC12   LC13   LH40   0.000   -2.000   180.000   1.000
+LN11   LC12   LC13   LH40   0.000   3.000   0.000   1.000
+LO14   LC12   LC13   LH34   0.000   -1.000   0.000   1.000   ! quality : high
+LO14   LC12   LC13   LH34   0.000   -2.000   180.000   1.000
+LO14   LC12   LC13   LH34   0.000   3.000   0.000   1.000
+LO14   LC12   LC13   LH39   0.000   -1.000   0.000   1.000   ! quality : high
+LO14   LC12   LC13   LH39   0.000   -2.000   180.000   1.000
+LO14   LC12   LC13   LH39   0.000   3.000   0.000   1.000
+LO14   LC12   LC13   LH40   0.000   -1.000   0.000   1.000   ! quality : high
+LO14   LC12   LC13   LH40   0.000   -2.000   180.000   1.000
+LO14   LC12   LC13   LH40   0.000   3.000   0.000   1.000
+LO15   LC7   LO10   LC8   0.000   -1.000   0.000   1.000   ! quality : high
+LO15   LC7   LO10   LC8   2.562   -2.000   180.000   1.000
+LO15   LC7   LO10   LC8   0.000   3.000   0.000   1.000
+LC16   LC17   LN18   LC19   -3.791   -1.000   0.000   1.000   ! quality : high
+LC16   LC17   LN18   LC19   1.716   -2.000   180.000   1.000
+LC16   LC17   LN18   LC19   1.599   3.000   0.000   1.000
+LC16   LC17   LN18   LC23   -3.791   -1.000   0.000   1.000   ! quality : high
+LC16   LC17   LN18   LC23   1.716   -2.000   180.000   1.000
+LC16   LC17   LN18   LC23   1.599   3.000   0.000   1.000
+LC17   LN18   LC19   LC20   0.208   -1.000   0.000   1.000   ! quality : high
+LC17   LN18   LC19   LC20   -0.064   -2.000   180.000   1.000
+LC17   LN18   LC19   LC20   0.347   3.000   0.000   1.000
+LC17   LN18   LC19   LH35   0.000   -1.000   0.000   1.000   ! quality : high
+LC17   LN18   LC19   LH35   0.000   -2.000   180.000   1.000
+LC17   LN18   LC19   LH35   0.280   3.000   0.000   1.000
+LC17   LN18   LC19   LH43   0.000   -1.000   0.000   1.000   ! quality : high
+LC17   LN18   LC19   LH43   0.000   -2.000   180.000   1.000
+LC17   LN18   LC19   LH43   0.280   3.000   0.000   1.000
+LC17   LN18   LC23   LC22   0.208   -1.000   0.000   1.000   ! quality : high
+LC17   LN18   LC23   LC22   -0.064   -2.000   180.000   1.000
+LC17   LN18   LC23   LC22   0.347   3.000   0.000   1.000
+LC17   LN18   LC23   LH38   0.000   -1.000   0.000   1.000   ! quality : high
+LC17   LN18   LC23   LH38   0.000   -2.000   180.000   1.000
+LC17   LN18   LC23   LH38   0.280   3.000   0.000   1.000
+LC17   LN18   LC23   LH42   0.000   -1.000   0.000   1.000   ! quality : high
+LC17   LN18   LC23   LH42   0.000   -2.000   180.000   1.000
+LC17   LN18   LC23   LH42   0.280   3.000   0.000   1.000
+LN18   LC19   LC20   LO21   3.140   -1.000   0.000   1.000   ! quality : high
+LN18   LC19   LC20   LO21   -0.734   -2.000   180.000   1.000
+LN18   LC19   LC20   LO21   1.015   3.000   0.000   1.000
+LN18   LC19   LC20   LH36   -0.506   -1.000   0.000   1.000   ! quality : high
+LN18   LC19   LC20   LH36   -0.354   -2.000   180.000   1.000
+LN18   LC19   LC20   LH36   0.236   3.000   0.000   1.000
+LN18   LC19   LC20   LH44   -0.506   -1.000   0.000   1.000   ! quality : high
+LN18   LC19   LC20   LH44   -0.354   -2.000   180.000   1.000
+LN18   LC19   LC20   LH44   0.236   3.000   0.000   1.000
+LC19   LN18   LC23   LC22   0.208   -1.000   0.000   1.000   ! quality : high
+LC19   LN18   LC23   LC22   -0.064   -2.000   180.000   1.000
+LC19   LN18   LC23   LC22   0.347   3.000   0.000   1.000
+LC19   LN18   LC23   LH38   0.000   -1.000   0.000   1.000   ! quality : high
+LC19   LN18   LC23   LH38   0.000   -2.000   180.000   1.000
+LC19   LN18   LC23   LH38   0.280   3.000   0.000   1.000
+LC19   LN18   LC23   LH42   0.000   -1.000   0.000   1.000   ! quality : high
+LC19   LN18   LC23   LH42   0.000   -2.000   180.000   1.000
+LC19   LN18   LC23   LH42   0.280   3.000   0.000   1.000
+LC19   LC20   LO21   LC22   0.325   -1.000   0.000   1.000   ! quality : high
+LC19   LC20   LO21   LC22   -0.125   -2.000   180.000   1.000
+LC19   LC20   LO21   LC22   0.335   3.000   0.000   1.000
+LC20   LO21   LC22   LC23   0.325   -1.000   0.000   1.000   ! quality : high
+LC20   LO21   LC22   LC23   -0.125   -2.000   180.000   1.000
+LC20   LO21   LC22   LC23   0.335   3.000   0.000   1.000
+LC20   LO21   LC22   LH37   0.000   -1.000   0.000   1.000   ! quality : high
+LC20   LO21   LC22   LH37   0.000   -2.000   180.000   1.000
+LC20   LO21   LC22   LH37   0.380   3.000   0.000   1.000
+LC20   LO21   LC22   LH41   0.000   -1.000   0.000   1.000   ! quality : high
+LC20   LO21   LC22   LH41   0.000   -2.000   180.000   1.000
+LC20   LO21   LC22   LH41   0.380   3.000   0.000   1.000
+LO21   LC22   LC23   LN18   3.140   -1.000   0.000   1.000   ! quality : high
+LO21   LC22   LC23   LN18   -0.734   -2.000   180.000   1.000
+LO21   LC22   LC23   LN18   1.015   3.000   0.000   1.000
+LO21   LC22   LC23   LH38   0.000   -1.000   0.000   1.000   ! quality : high
+LO21   LC22   LC23   LH38   0.000   -2.000   180.000   1.000
+LO21   LC22   LC23   LH38   0.234   3.000   0.000   1.000
+LO21   LC22   LC23   LH42   0.000   -1.000   0.000   1.000   ! quality : high
+LO21   LC22   LC23   LH42   0.000   -2.000   180.000   1.000
+LO21   LC22   LC23   LH42   0.234   3.000   0.000   1.000
+LC23   LN18   LC19   LC20   0.208   -1.000   0.000   1.000   ! quality : high
+LC23   LN18   LC19   LC20   -0.064   -2.000   180.000   1.000
+LC23   LN18   LC19   LC20   0.347   3.000   0.000   1.000
+LC23   LN18   LC19   LH35   0.000   -1.000   0.000   1.000   ! quality : high
+LC23   LN18   LC19   LH35   0.000   -2.000   180.000   1.000
+LC23   LN18   LC19   LH35   0.280   3.000   0.000   1.000
+LC23   LN18   LC19   LH43   0.000   -1.000   0.000   1.000   ! quality : high
+LC23   LN18   LC19   LH43   0.000   -2.000   180.000   1.000
+LC23   LN18   LC19   LH43   0.280   3.000   0.000   1.000
+LF24   LC16   LC17   LC3   0.000   -1.000   0.000   1.000   ! quality : high
+LF24   LC16   LC17   LC3   3.625   -2.000   180.000   1.000
+LF24   LC16   LC17   LC3   0.000   3.000   0.000   1.000
+LF24   LC16   LC17   LN18   0.000   -1.000   0.000   1.000   ! quality : high
+LF24   LC16   LC17   LN18   3.625   -2.000   180.000   1.000
+LF24   LC16   LC17   LN18   0.000   3.000   0.000   1.000
+LH25   LC1   LC2   LN4   0.000   -1.000   0.000   1.000   ! quality : high
+LH25   LC1   LC2   LN4   3.625   -2.000   180.000   1.000
+LH25   LC1   LC2   LN4   0.000   3.000   0.000   1.000
+LH25   LC1   LC2   LC5   0.000   -1.000   0.000   1.000   ! quality : high
+LH25   LC1   LC2   LC5   3.625   -2.000   180.000   1.000
+LH25   LC1   LC2   LC5   0.000   3.000   0.000   1.000
+LH25   LC1   LC3   LC17   0.000   -1.000   0.000   1.000   ! quality : high
+LH25   LC1   LC3   LC17   3.625   -2.000   180.000   1.000
+LH25   LC1   LC3   LC17   0.000   3.000   0.000   1.000
+LH25   LC1   LC3   LH26   0.000   -1.000   0.000   1.000   ! quality : high
+LH25   LC1   LC3   LH26   3.625   -2.000   180.000   1.000
+LH25   LC1   LC3   LH26   0.000   3.000   0.000   1.000
+LH26   LC3   LC17   LC16   0.000   -1.000   0.000   1.000   ! quality : high
+LH26   LC3   LC17   LC16   3.625   -2.000   180.000   1.000
+LH26   LC3   LC17   LC16   0.000   3.000   0.000   1.000
+LH26   LC3   LC17   LN18   0.000   -1.000   0.000   1.000   ! quality : high
+LH26   LC3   LC17   LN18   3.625   -2.000   180.000   1.000
+LH26   LC3   LC17   LN18   0.000   3.000   0.000   1.000
+LH27   LC5   LC16   LC17   0.000   -1.000   0.000   1.000   ! quality : high
+LH27   LC5   LC16   LC17   3.625   -2.000   180.000   1.000
+LH27   LC5   LC16   LC17   0.000   3.000   0.000   1.000
+LH27   LC5   LC16   LF24   0.000   -1.000   0.000   1.000   ! quality : high
+LH27   LC5   LC16   LF24   3.625   -2.000   180.000   1.000
+LH27   LC5   LC16   LF24   0.000   3.000   0.000   1.000
+LH28   LC6   LC8   LC9   0.000   -1.000   0.000   1.000   ! quality : high
+LH28   LC6   LC8   LC9   0.000   -2.000   180.000   1.000
+LH28   LC6   LC8   LC9   0.150   3.000   0.000   1.000
+LH28   LC6   LC8   LO10   0.000   -1.000   0.000   1.000   ! quality : high
+LH28   LC6   LC8   LO10   0.000   -2.000   180.000   1.000
+LH28   LC6   LC8   LO10   0.234   3.000   0.000   1.000
+LH28   LC6   LC8   LH30   0.000   -1.000   0.000   1.000   ! quality : high
+LH28   LC6   LC8   LH30   0.000   -2.000   180.000   1.000
+LH28   LC6   LC8   LH30   0.150   3.000   0.000   1.000
+LH29   LC6   LC8   LC9   0.000   -1.000   0.000   1.000   ! quality : high
+LH29   LC6   LC8   LC9   0.000   -2.000   180.000   1.000
+LH29   LC6   LC8   LC9   0.150   3.000   0.000   1.000
+LH29   LC6   LC8   LO10   0.000   -1.000   0.000   1.000   ! quality : high
+LH29   LC6   LC8   LO10   0.000   -2.000   180.000   1.000
+LH29   LC6   LC8   LO10   0.234   3.000   0.000   1.000
+LH29   LC6   LC8   LH30   0.000   -1.000   0.000   1.000   ! quality : high
+LH29   LC6   LC8   LH30   0.000   -2.000   180.000   1.000
+LH29   LC6   LC8   LH30   0.150   3.000   0.000   1.000
+LH30   LC8   LC9   LN11   0.000   -1.000   0.000   1.000   ! quality : high
+LH30   LC8   LC9   LN11   0.000   -2.000   180.000   1.000
+LH30   LC8   LC9   LN11   0.232   3.000   0.000   1.000
+LH30   LC8   LC9   LH31   0.000   -1.000   0.000   1.000   ! quality : high
+LH30   LC8   LC9   LH31   0.000   -2.000   180.000   1.000
+LH30   LC8   LC9   LH31   0.150   3.000   0.000   1.000
+LH30   LC8   LC9   LH32   0.000   -1.000   0.000   1.000   ! quality : high
+LH30   LC8   LC9   LH32   0.000   -2.000   180.000   1.000
+LH30   LC8   LC9   LH32   0.150   3.000   0.000   1.000
+LH30   LC8   LO10   LC7   0.000   -1.000   0.000   1.000   ! quality : high
+LH30   LC8   LO10   LC7   0.000   -2.000   180.000   1.000
+LH30   LC8   LO10   LC7   0.099   3.000   0.000   1.000
+LH31   LC9   LN11   LC12   0.000   -1.000   0.000   1.000   ! quality : high
+LH31   LC9   LN11   LC12   0.000   -2.000   180.000   1.000
+LH31   LC9   LN11   LC12   -0.070   3.000   0.000   1.000
+LH31   LC9   LN11   LH33   0.000   -1.000   0.000   1.000   ! quality : high
+LH31   LC9   LN11   LH33   0.000   -2.000   180.000   1.000
+LH31   LC9   LN11   LH33   0.000   3.000   0.000   1.000
+LH32   LC9   LN11   LC12   0.000   -1.000   0.000   1.000   ! quality : high
+LH32   LC9   LN11   LC12   0.000   -2.000   180.000   1.000
+LH32   LC9   LN11   LC12   -0.070   3.000   0.000   1.000
+LH32   LC9   LN11   LH33   0.000   -1.000   0.000   1.000   ! quality : high
+LH32   LC9   LN11   LH33   0.000   -2.000   180.000   1.000
+LH32   LC9   LN11   LH33   0.000   3.000   0.000   1.000
+LH33   LN11   LC12   LC13   0.000   -1.000   0.000   1.000   ! quality : high
+LH33   LN11   LC12   LC13   2.450   -2.000   180.000   1.000
+LH33   LN11   LC12   LC13   0.000   3.000   0.000   1.000
+LH33   LN11   LC12   LO14   0.000   -1.000   0.000   1.000   ! quality : high
+LH33   LN11   LC12   LO14   2.450   -2.000   180.000   1.000
+LH33   LN11   LC12   LO14   0.000   3.000   0.000   1.000
+LH35   LC19   LC20   LO21   0.000   -1.000   0.000   1.000   ! quality : high
+LH35   LC19   LC20   LO21   0.000   -2.000   180.000   1.000
+LH35   LC19   LC20   LO21   0.234   3.000   0.000   1.000
+LH35   LC19   LC20   LH36   0.000   -1.000   0.000   1.000   ! quality : high
+LH35   LC19   LC20   LH36   0.000   -2.000   180.000   1.000
+LH35   LC19   LC20   LH36   0.150   3.000   0.000   1.000
+LH35   LC19   LC20   LH44   0.000   -1.000   0.000   1.000   ! quality : high
+LH35   LC19   LC20   LH44   0.000   -2.000   180.000   1.000
+LH35   LC19   LC20   LH44   0.150   3.000   0.000   1.000
+LH36   LC20   LO21   LC22   0.000   -1.000   0.000   1.000   ! quality : high
+LH36   LC20   LO21   LC22   0.000   -2.000   180.000   1.000
+LH36   LC20   LO21   LC22   0.380   3.000   0.000   1.000
+LH37   LC22   LC23   LN18   -0.506   -1.000   0.000   1.000   ! quality : high
+LH37   LC22   LC23   LN18   -0.354   -2.000   180.000   1.000
+LH37   LC22   LC23   LN18   0.236   3.000   0.000   1.000
+LH37   LC22   LC23   LH38   0.000   -1.000   0.000   1.000   ! quality : high
+LH37   LC22   LC23   LH38   0.000   -2.000   180.000   1.000
+LH37   LC22   LC23   LH38   0.150   3.000   0.000   1.000
+LH37   LC22   LC23   LH42   0.000   -1.000   0.000   1.000   ! quality : high
+LH37   LC22   LC23   LH42   0.000   -2.000   180.000   1.000
+LH37   LC22   LC23   LH42   0.150   3.000   0.000   1.000
+LH41   LC22   LC23   LN18   -0.506   -1.000   0.000   1.000   ! quality : high
+LH41   LC22   LC23   LN18   -0.354   -2.000   180.000   1.000
+LH41   LC22   LC23   LN18   0.236   3.000   0.000   1.000
+LH41   LC22   LC23   LH38   0.000   -1.000   0.000   1.000   ! quality : high
+LH41   LC22   LC23   LH38   0.000   -2.000   180.000   1.000
+LH41   LC22   LC23   LH38   0.150   3.000   0.000   1.000
+LH41   LC22   LC23   LH42   0.000   -1.000   0.000   1.000   ! quality : high
+LH41   LC22   LC23   LH42   0.000   -2.000   180.000   1.000
+LH41   LC22   LC23   LH42   0.150   3.000   0.000   1.000
+LH43   LC19   LC20   LO21   0.000   -1.000   0.000   1.000   ! quality : high
+LH43   LC19   LC20   LO21   0.000   -2.000   180.000   1.000
+LH43   LC19   LC20   LO21   0.234   3.000   0.000   1.000
+LH43   LC19   LC20   LH36   0.000   -1.000   0.000   1.000   ! quality : high
+LH43   LC19   LC20   LH36   0.000   -2.000   180.000   1.000
+LH43   LC19   LC20   LH36   0.150   3.000   0.000   1.000
+LH43   LC19   LC20   LH44   0.000   -1.000   0.000   1.000   ! quality : high
+LH43   LC19   LC20   LH44   0.000   -2.000   180.000   1.000
+LH43   LC19   LC20   LH44   0.150   3.000   0.000   1.000
+LH44   LC20   LO21   LC22   0.000   -1.000   0.000   1.000   ! quality : high
+LH44   LC20   LO21   LC22   0.000   -2.000   180.000   1.000
+LH44   LC20   LO21   LC22   0.380   3.000   0.000   1.000
+! FOR FEP
+UN4   UC5   UO6   CH9   0.000   -1.000   0.000   1.000   ! quality : high
+UN4   UC5   UO6   CH9   0.700   -2.000   180.000   1.000
+UN4   UC5   UO6   CH9   0.000   3.000   0.000   1.000
+UN4   UC5   UO6   CH10   0.000   -1.000   0.000   1.000   ! quality : high
+UN4   UC5   UO6   CH10   0.700   -2.000   180.000   1.000
+UN4   UC5   UO6   CH10   0.000   3.000   0.000   1.000
+UC7   UC5   UO6   CH9   0.000   -1.000   0.000   1.000   ! quality : high
+UC7   UC5   UO6   CH9   0.700   -2.000   180.000   1.000
+UC7   UC5   UO6   CH9   0.000   3.000   0.000   1.000
+UC7   UC5   UO6   CH10   0.000   -1.000   0.000   1.000   ! quality : high
+UC7   UC5   UO6   CH10   0.700   -2.000   180.000   1.000
+UC7   UC5   UO6   CH10   0.000   3.000   0.000   1.000
+CN1      SC13     AN1      AC10 0.0 -1.00 0.00 1.00
+CN1      SC13     AN1      AC10 0.0 -2.00 0.00 1.00
+CN1      SC13     AN1      AC10 0.0  3.00 0.00 1.00
+CN1      SC13     AN1      AC2 0.0  -1.00 0.00 1.00
+CN1      SC13     AN1      AC2 0.0  -2.00 0.00 1.00
+CN1      SC13     AN1      AC2 0.0   3.00 0.00 1.00
+AN1      SC13     CN1      CC2 0.0  -1.00 0.00 1.00
+AN1      SC13     CN1      CC2 0.0  -2.00 0.00 1.00
+AN1      SC13     CN1      CC2 0.0   3.00 0.00 1.00
+AN1      SC13     CN1      CC8 0.0  -1.00 0.00 1.00
+AN1      SC13     CN1      CC8 0.0  -2.00 0.00 1.00
+AN1      SC13     CN1      CC8 0.0   3.00 0.00 1.00
+CN1      SC13     UN1      UC2 0.0  -1.00 0.00 1.00
+CN1      SC13     UN1      UC2 0.0  -2.00 0.00 1.00
+CN1      SC13     UN1      UC2 0.0   3.00 0.00 1.00
+CN1      SC13     UN1      UC8 0.0  -1.00 0.00 1.00
+CN1      SC13     UN1      UC8 0.0  -2.00 0.00 1.00
+CN1      SC13     UN1      UC8 0.0   3.00 0.00 1.00
+UN1      SC13     CN1      CC2 0.0  -1.00 0.00 1.00
+UN1      SC13     CN1      CC2 0.0  -2.00 0.00 1.00
+UN1      SC13     CN1      CC2 0.0   3.00 0.00 1.00
+UN1      SC13     CN1      CC8 0.0  -1.00 0.00 1.00
+UN1      SC13     CN1      CC8 0.0  -2.00 0.00 1.00
+UN1      SC13     CN1      CC8 0.0   3.00 0.00 1.00
+AN1      SC13     UN1      UC2 0.0  -1.00 0.00 1.00
+AN1      SC13     UN1      UC2 0.0  -2.00 0.00 1.00
+AN1      SC13     UN1      UC2 0.0   3.00 0.00 1.00
+AN1      SC13     UN1      UC8 0.0  -1.00 0.00 1.00
+AN1      SC13     UN1      UC8 0.0  -2.00 0.00 1.00
+AN1      SC13     UN1      UC8 0.0   3.00 0.00 1.00
+UN1      SC13     AN1      AC10 0.0  -1.00 0.00 1.00
+UN1      SC13     AN1      AC10 0.0  -2.00 0.00 1.00
+UN1      SC13     AN1      AC10 0.0   3.00 0.00 1.00
+UN1      SC13     AN1      AC2 0.0  -1.00 0.00 1.00
+UN1      SC13     AN1      AC2 0.0  -2.00 0.00 1.00
+UN1      SC13     AN1      AC2 0.0   3.00 0.00 1.00
+
+
+*-----------------------------------------------------------------------
+[impropers] improper type definitions
+*taci   tacj   tack   tacl   forceK   phase
+*-----------------------------------------------------------------
+N2   CAr   N2   N2   10.5   180.000   !160
+CA   CAr   N2   N2   10.5   180.000   !160
+NY   CAr   NZ   NY   10.5   180.000   !160
+O   C   CT   N   10.5   180.000   !160
+O   C2   CT   N   10.5   180.000   !160
+O   C21   CT   N   10.5   180.000   !160 GLN
+O   C   CT   OH   10.5   180.000   !160
+O   C   CT   N   10.5   180.000   !160
+O2   C   CT   O2   10.5   180.000   !160
+O2   C2   CT   O2   10.5   180.000   !160
+OH   C2   CT   O   10.5   180.000   !160
+OH   C2   CT   O1   10.5   180.000   !160 ASH
+ODE   C2   CT   O   10.5   180.000   !160
+CT   N   C   CT   1   180.000   !161
+H   N   C   CT   1   180.000   !161
+CT   N   C   CP1   1   180.000 !161 PRO
+H   N   C   H   1   180.000   !161
+H   N   C2   H   1   180.000   !161
+H   N   C21   H   1   180.000   !161 GLN
+H   NA   CA   CX   1   180.000   !161
+H   NA   CR   CW   1   180.000   !161
+H   NA   CW   CN   1   180.000   !161
+H   NA   CW   CR   1   180.000   !161
+H   NA   CX   CA   1   180.000   !161
+H   NA   CR   CX   1   180.000   !161
+H   NA   CX   CR   1   180.000   !161
+H3   N2   CA   H3   1   180.000   !161
+H3   N2   CAr   H3   1   180.000   !161
+H   NY   CA   H   1   180.000   !161
+H   NY   CAr   H   1   180.000   !161
+H3   N2   CT   CA   1   180.000   !161
+H3   N2   CT   CAr   1   180.000   !161
+H   NY   CT   CA   1   180.000   !161
+H   NY   CT   CAr   1   180.000   !161
+CA   CN   CB   NA   1.1   180.000   !162
+CN   CB   CA   Cstar   1.1   180.000   !162
+CT   CA   CA   CA   1.1   180.000   !162
+CA   CA   N3   CA   1.1   180.000 ! Aniline
+CT   Cstar   CW   CB   1.1   180.000   !162
+CT   CV   NB   CW   1.1   180.000   !162
+CT   CW   NA   CA   1.1   180.000   !162
+CT   CW   NA   CV   1.1   180.000   !162
+CT   CX   NA   CX   1.1   180.000   !162
+HA   CA   CA   CA   1.1   180.000   !162
+HA   CA   CA   CB   1.1   180.000   !162
+HA   CA   CN   CA   1.1   180.000   !162
+HA   CR   NA   NA   1.1   180.000   !162
+HA   CR   NA   NB   1.1   180.000   !162
+HA   CR   NB   NA   1.1   180.000   !162
+HA   CV   NB   CW   1.1   180.000   !162
+HA   CW   Cstar   NA   1.1   180.000   !162
+HA   CW   NA   CV   1.1   180.000   !162
+HA   CX   NA   CX   1.1   180.000   !162
+OH   CA   CA   CA   1.1   180.000   !162
+OTY   CA   CA   CA   1.1   180.000   !162
+CA   CA   NT   CA   1.1   180.000 ! Aniline (neutral)
+CB   NA   CK   CT   1.000   180.000   ! quality : high
+NB   CK   H5   NA   1.100   180.000   ! quality : high
+CA   CB   CB   NB   1.100   180.000   ! quality : high
+N2   CA   NC   CB   1.100   180.000   ! quality : high
+H3   N2   CA   H3   1.000   180.000   ! quality : high
+NC   CQ   H5   NC   1.100   180.000   ! quality : high
+CB   CB   NC   NA   1.100   180.000   ! quality : high
+!PHEACE
+PH5   PN4   PC14   PC3   1.000   180.000   ! quality : high
+PC8   PC7   PC9   PC6   1.100   180.000   ! quality : high
+PC10   PC8   PH19   PC7   1.100   180.000   ! quality : high
+PC11   PC9   PH20   PC7   1.100   180.000   ! quality : high
+PC12   PC10   PH21   PC8   1.100   180.000   ! quality : high
+PC12   PC11   PH22   PC9   1.100   180.000   ! quality : high
+PC11   PC12   PH23   PC10   1.100   180.000   ! quality : high
+PN4   PC14   PC15   PO13   10.500   180.000   ! quality : high
+!SOCKER
+!ADENINE
+AN3   AC2   AH13   AN1   1.100   180.000   ! quality : high
+AC5   AC4   AC10   AN3   1.100   180.000   ! quality : high
+AN6   AC5   AN7   AC4   1.100   180.000   ! quality : high
+AH12   AN6   AC5   AH11   1.000   180.000   ! quality : high
+AN9   AC8   AH14   AN7   1.100   180.000   ! quality : high
+AC4   AC10   AN9   AN1   1.100   180.000   ! quality : high
+!GUANINE
+GN3   GC2   GH36   GN1   1.100   180.000   ! quality : high
+GC5   GC4   GC11   GN3   1.100   180.000   ! quality : high
+GC4   GC5   GN7   GO6   10.500   180.000   ! quality : high
+GH12   GN7   GC5   GC8   1.000   180.000   ! quality : high
+GN7   GC8   GN9   GN10   10.500   180.000   ! quality : high
+GH14   GN9   GC8   GH15   1.000   180.000   ! quality : high
+GC4   GC11   GN10   GN1   1.100   180.000   ! quality : high
+!CYTOSINE
+CN1   CC2   CN4   CO3   10.500   180.000   ! quality : high
+CN6   CC5   CC7   CN4   10.500   180.000   ! quality : high
+CH10   CN6   CC5   CH9   1.000   180.000   ! quality : high
+CC5   CC7   CH11   CC8   1.100   180.000   ! quality : high
+CN1   CC8   CH12   CC7   1.100   180.000   ! quality : high
+!URACIL
+UN1   UC2   UN4   UO3   10.500   180.000   ! quality : high
+UH9   UN4   UC2   UC5   1.000   180.000   ! quality : high
+UN4   UC5   UC7   UO6   10.500   180.000   ! quality : high
+UC5   UC7   UH10   UC8   1.100   180.000   ! quality : high
+UN1   UC8   UH11   UC7   1.100   180.000   ! quality : high
+!CONNECTION SUGAR2BASE
+AC10   AN1    AC2   SC13   1.000   180.000   ! quality : high
+GC11   GN1    GC2   SC13   1.000   180.000   ! quality : high
+CC8    CN1    CC2 SC13   1.000   180.000   ! quality : high
+UC8       UN1    UC2 SC13   1.000   180.000   ! quality : high
+!CONNECTION PHA2SUGAR
+PC3      PC2      SO10     PO1   10.500   180.000   ! quality : high
+! FOR FEP
+CH10   UO6   UC5   CH9   1.000   180.000   ! quality : high
+! LINEZOLID PARAMETERS FROM MACROMODEL
+LC3   LC1   LH25   LC2   1.100   180.000   ! quality : high
+LN4   LC2   LC5   LC1   1.100   180.000   ! quality : high
+LC17   LC3   LH26   LC1   1.100   180.000   ! quality : high
+LC6   LN4   LC7   LC2   1.000   180.000   ! quality : high
+LC16   LC5   LH27   LC2   1.100   180.000   ! quality : high
+LN4   LC7   LO10   LO15   10.500   180.000   ! quality : high
+LH33   LN11   LC12   LC9   1.000   180.000   ! quality : high
+LN11   LC12   LC13   LO14   10.500   180.000   ! quality : high
+LC17   LC16   LF24   LC5   1.100   180.000   ! quality : high
+LC16   LC17   LN18   LC3   1.100   180.000   ! quality : high
+LC23   LN18   LC17   LC19   1.000   180.000   ! quality : high
+
+

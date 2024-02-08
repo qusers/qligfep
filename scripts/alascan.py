@@ -7,7 +7,7 @@ import os
 import argparse
 
 # Add this path so we can find the QligFEP modules
-sys.path.append('/home/jespers/software/qligfep-p3/qligfep/')
+sys.path.append('../')
 import IO
 import settings as s
 import functions as f
@@ -50,7 +50,7 @@ class Run(object):
                 if 'S-S' in line:
                     block = 2 
                     
-                if block == 1 and len(line) == 3:
+                if block == 1 and len(line) == 4:
                     try:
                         self.mapping[int(line[0])] = int(line[1])
                     except:
@@ -77,7 +77,7 @@ class Run(object):
                         
                     coord = (line[8],line[9],line[10])
                     self.prot_coord[line[1]] = [coord, line[6], line[4]]
-                    
+
         for lig in self.lig:
             self.liglist.append("'{}'".format(lig))
             with open(lig + '.pdb') as infile:
@@ -111,6 +111,9 @@ class Run(object):
                     ligs = ','.join(self.liglist)
                     outfile.write("systems=[{}]\n".format(ligs))
                     continue
+                if line.strip() == 'QLIGFEP':
+                    outfile.write("qligfep='{}'\n".format(os.path.dirname(os.path.dirname(__file__))))
+                    continue
                 outfile.write(line)
 
 if __name__ == "__main__":
@@ -121,6 +124,7 @@ if __name__ == "__main__":
 
     
     parser.add_argument('-l', '--ligand',
+                        nargs='*',
                         dest = "lig",
                         required = True,
                         help = "name of the ligand, or [ligand1, ligand2]")

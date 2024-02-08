@@ -6,94 +6,77 @@ ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 FF_DIR = os.path.join(ROOT_DIR, "FF")
 INPUT_DIR = os.path.join(ROOT_DIR, "INPUTS")
 # Dicionary of locations of Q executables
-Q_DIR = {'CSB':'/home/jespers/software/q6/bin/',
-         'LOCAL':'/home/jespers/software/q6/bin/'
-         #'LOCAL':'/Users/willemjespers/Software/Q6/bin/'
+Q_DIR = {'CSB':'/home/apps/apps/Q/5.10/bin/',
+         'LOCAL':'/home/apps/apps/Q/5.10/bin/'
         }
 BIN = os.path.join(ROOT_DIR, "bin")
-
-# some example schrodinger directory
-#SCHROD_DIR = '/opt/schrodinger/suites2017-3/'
+SCHROD_DIR = '/home/apps/apps/schrodinger2020-3/'
 
 # CLUSTER INPUTS. To add your own cluster, use the same input as below
 CSB = {'NODES'        : '1',
-       'NTASKS'       : '16',
-       'TIME'         : '0-12:00:00',  # d-hh:mm:ss
-       'MODULES'      : 'module load gcc/6.2.0\n module load openmpi/2.1.0',
-       'QDYN'         : 'qdyn=' + Q_DIR['CSB'] + 'qdynp',
-       'QPREP'        : Q_DIR['CSB'] + 'qprep',
-       'QFEP'         : Q_DIR['CSB'] + 'qfep',
-       'QCALC'        : Q_DIR['CSB'] + 'qcalc'
+       'NTASKS'       : '8',
+       'TIME'         : '0-08:00:00',  # d-hh:mm:ss
+       'PARTITION'    : 'CLUSTER-AMD',
+       'MODULES'      : '\n',
+       'QDYN'         : 'qdyn=' + Q_DIR['CSB'] + 'qdyn5p',
+       'QPREP'        : Q_DIR['CSB'] + 'qprep5',
+       'QFEP'         : Q_DIR['CSB'] + 'qfep5',
+       'QCALC'        : Q_DIR['CSB'] + 'qcalc5'
       }
 
-ALICE = {'MAINDIR'      : '/home/jespersw/software/q6/',
-         'NODES'        : '1',
-         'NTASKS'       : '24',
-         'TIME'         : '0-3:00:00',  # d-hh:mm:ss
-         'MODULES'      : 'module load OpenMPI/3.1.3-GCC-8.2.0-2.31.1',
-         'QDYN'         : 'qdyn=/home/jespersw/software/q6/bin/qdynp',
-         'QPREP'        : Q_DIR['CSB'] + 'qprep',
-         'QFEP'         : '/home/jespersw/software/q6/bin/qfep',
-         'QCALC'        : '/home/jespersw/software/q6/bin/qcalc'
+TETRA  = {'NODES'      : '1',
+          'NTASKS'     : '8',
+          'TIME'       : '2-00:00:00',  # d-hh:mm:ss
+          'PARTITION'  : 'tetralith',
+          'MODULES'    : '\n', # Add a \n for every added module
+          'QDYN'       : 'qdyn=qdyn5p', #fix qdyn= !!!!!
+          'QPREP'      : 'qprep', # NOTE: change to where you are setting up, not where you are running!
+          'QFEP'       : 'qfep5',
+          'ACCOUNT'    : 'naiss2023-3-5'
         }
 
-
-HEBBE = {'NODES'      : '1',
-         'NTASKS'     : '20',
-         'TIME'       : '0-02:00:00',  # d-hh:mm:ss
-         'MODULES'    : 'module load GCC/5.4.0-2.26\nmodule load OpenMPI/1.10.3\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/c3se/users/jwillem/Hebbe/software/qsource/bin/qdyn5p', #fix qdyn= !!!!
-         'QFEP'       : 'qdyn=/c3se/users/jwillem/Hebbe/software/qsource/bin/qfep5', #fix qdyn= !!!!!!
-         'QPREP'      : '/home/jespers/software/q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'ACCOUNT'    : 'SNIC2018-2-3'
+DARDEL = {'NODES'      : '1',
+          'NTASKS'     : '8',
+          'TIME'       : '2-00:00:00',  # d-hh:mm:ss
+          'PARTITION'  : 'shared',
+          'MODULES'    : '\n', # Add a \n for every added module
+          'QDYN'       : 'qdyn=qdyn5p', #fix qdyn= !!!!!
+          'QPREP'      : 'qprep', # NOTE: change to where you are setting up, not where you are running!
+          'QFEP'       : 'qfep5',
+          'ACCOUNT'    : 'naiss2023-3-5'
         }
 
 KEBNE = {'NODES'      : '1',
-         'NTASKS'     : '28',
-         'TIME'       : '0-04:00:00',  # d-hh:mm:ss
-         'MODULES'    : 'module load gompi/2017b\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/home/w/wije/pfs/software/q/bin/qdynp', #fix qdyn= !!!!!
-         'QPREP'      : '/home/jespers/software/q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'QFEP'       : '/home/w/wije/pfs/software/q/bin/qfep',
-         'QCALC'      : '/home/w/wije/pfs/software/q/bin/qcalc',
-         'ACCOUNT'    : 'SNIC2018-2-3'
-        }
-
-STALLO = {'NODES'      : '1',
-         'NTASKS'     : '20',
-         'TIME'       : '0-12:00:00',  # d-hh:mm:ss
-         'MODULES'    : 'module load impi/2018.1.163-iccifort-2018.1.163-GCC-6.4.0-2.28\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/home/jespersw/software/Q6/bin/qdynp', #fix qdyn= !!!!!
-         'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'ACCOUNT'    : 'nn4654K'
-        }
-
-UPPMAX = {'NODES'      : '1',
-         'NTASKS'     : '20',
+         'NTASKS'     : '8',
          'TIME'       : '0-24:00:00',  # d-hh:mm:ss
-         'MODULES'    : 'gcc/9.2.0\nopenmpi/4.0.2\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/domus/h1/willem/software/q6/bin/qdynp', #fix qdyn= !!!!!
-         'QPREP'      : '/home/apps/q-5.06/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'QFEP'       : '/domus/h1/willem/software/q6/bin/qfep',
-          'ACCOUNT'    : 'snic2018-2-3'
+         'MODULES'    : '\n', # Add a \n for every added module
+         'QDYN'       : 'qdyn=qdyn5p', #fix qdyn= !!!!!
+         'QPREP'      : 'qprep5', # NOTE: change to where you are setting up, not where you are running!
+         'QFEP'       : 'qfep5',
+         'QCALC'      : 'qcalc5',
+         'ACCOUNT'    : 'SNIC2021-3-1'
         }
 
-TETRA  = {'NODES'      : '1',
-          'NTASKS'     : '32',
-          'TIME'       : '0-24:00:00',  # d-hh:mm:ss
-          'MODULES'    : '\n', # Add a \n for every added module
-          'QDYN'       : 'qdyn=/home/x_wilje/Software/q6/bin/qdynp', #fix qdyn= !!!!!
-          'QPREP'      : '/home/jespers/software/q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
-          'QFEP'       : '/home/x_wilje/Software/q6/bin/qfep',
-          'ACCOUNT'    : 'snic2019-2-1'
-        }
+RACKHAM = {'NODES'      : '1',
+           'NTASKS'     : '10',
+           'TIME'       : '0-10:00:00',  # d-hh:mm:ss
+           'MODULES'    : '\n', # Add a \n for every added module
+           'QDYN'       : 'qdyn=qdyn5p', #fix qdyn= !!!!!
+           'QPREP'      : 'qprep5', # NOTE: change to where you are setting up, not where you are running!
+           'QFEP'       : 'qfep5',
+           'QCALC'      : 'qcalc5',
+           'ACCOUNT'    : 'SNIC2021-3-1'
+          }
+
+
 
 LOCAL = {'NODES'      : '',
          'NTASKS'     : '',
          'TIME'       : '',  # d-hh:mm:ss
          'MODULES'    : '\n', # Add a \n for every added module
-         'QDYN'       : 'qdyn=/Users/willemjespers/Software/Q6/bin/qdyn', #fix qdyn= !!!!!
-         'QPREP'      : '/Users/willemjespers/Software/Q6/bin/qprep', # NOTE: change to where you are setting up, not where you are running!
-         'QFEP'       : '/Users/willemjespers/Software/Q6/bin/qfep',
+         'QDYN'       : 'qdyn=qdyn5p', #fix qdyn= !!!!!
+         'QPREP'      : 'qprep5', # NOTE: change to where you are setting up, not where you are running!
+         'QFEP'       : 'qfep5',
+         'QCALC'      : 'qcalc5',           
          'ACCOUNT'    : ''
         }

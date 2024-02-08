@@ -1,11 +1,11 @@
 [MD]
-steps                     10000
-stepsize                  1.0
+steps                     NSTEPS2
+stepsize                  STEPSIZE
 temperature               T_VAR
 bath_coupling             10
-shake_hydrogens           off
-shake_solute              off
 shake_solvent             on
+shake_hydrogens           STEPTOGGLE
+shake_solute              off
 lrf                       on
 
 [cut-offs]
@@ -46,5 +46,7 @@ FLOAT_LAMBDA1 FLOAT_LAMBDA2
 
 [sequence_restraints]
 WATER_RESTRAINT
+WT_RES
+MUT_RES
 
 [distance_restraints]

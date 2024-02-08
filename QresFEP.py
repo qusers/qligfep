@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 import re
 import os
@@ -15,12 +17,12 @@ class Run(object):
     """
     def __init__(self, cofactor, mutation, include, forcefield, windows,
                  sampling, system, cluster, temperature, replicates, dual, 
-                 preplocation, start, *args, **kwargs):
+                 preplocation, start, timestep, mutchain, *args, **kwargs):
         
-        self.cofactor = [cofactor]
+        self.cofactor = cofactor
         # Check whether all required files are there:
         required = ['protein.pdb', 'water.pdb', 'protPREP.log']
-        if self.cofactor[0] != None:
+        if self.cofactor != None:
             extension = ['.pdb', '.lib', '.prm']
             for filename in self.cofactor:
                 for line in extension:
@@ -57,11 +59,10 @@ class Run(object):
         
         tmp = mutation.split(':')
         if len(tmp) == 2:
-            self.chain = tmp[0]
             self.mutation = re.split('(\d+)', tmp[1])
         else:
-            self.chain = ' '
             self.mutation = re.split('(\d+)', tmp[0])
+
         self.include = include
         self.forcefield = forcefield
         self.preplocation = preplocation
@@ -69,6 +70,7 @@ class Run(object):
         self.CYX = []
         self.PDB = {}
         self.PDB2Q = {}
+        self.chain = mutchain
         self.systemsize = 0
         self.system = system
         self.cluster = cluster
@@ -77,6 +79,7 @@ class Run(object):
         self.start = start
         self.dualMUT = {'0':[], '1':[]}
         self.nonAA = False
+        self.timestep = timestep
         
         self.replacements = {'ATOM_START_LIG1':'1',
                              'WATER_RESTRAINT':'',
@@ -90,8 +93,6 @@ class Run(object):
             
         if self.start == '0.5':
             self.replacements['EQ_LAMBDA'] = '0.500 0.500'
-    
-        print(self.chain)
     
     def checkFEP(self):
         if len(self.mutation[0]) == 1:
@@ -111,10 +112,12 @@ class Run(object):
             print("residue not found in library, assuming non-natural AA")
             AA_to = 'X'
             self.nonAA = True
-            
-        
+
         mutation = '{}{}{}'.format(*self.mutation)
-        FEPdir = s.FF_DIR + '/.FEP/' + self.forcefield +  '/' + AA_from + '_' + AA_to
+        if self.forcefield == 'OPLS2015_GTPase':
+            FEPdir = s.FF_DIR + '/.FEP/OPLS2015/' + AA_from + '_' + AA_to
+        else:
+            FEPdir = s.FF_DIR + '/.FEP/' + self.forcefield +  '/' + AA_from + '_' + AA_to
             
         if self.dual == True:
             print('Generating dual topology inputfiles')
@@ -143,7 +146,7 @@ class Run(object):
                  s.FF_DIR + '/' + self.forcefield + '.lib',
                 }
         
-        if self.cofactor[0] != None:
+        if self.cofactor != None:
             for filename in self.cofactor:
                 files[self.directory + '/inputfiles/' + filename + '.lib'] = filename + '.lib'
         
@@ -175,13 +178,18 @@ class Run(object):
                     if block == 1:
                         if line[0].isdigit():
                             self.CYX.append([line[0], line[1]])
-                        
-                    if block == 2 and len(line) > 2:
+
+                    if block == 2 and len(line) ==  3:
+                        chain = ' '
+                        if chain not in self.PDB2Q:
+                            self.PDB2Q[chain] = {}
+                        self.PDB2Q[chain][line[1]] = line[0]    
+                    if block == 2 and len(line) == 4:
                         chain = line[2]
                         if chain not in self.PDB2Q:
                             self.PDB2Q[chain] = {}
                         self.PDB2Q[chain][line[1]] = line[0]
-                        
+
     def readpdb(self):
         atnr = 0
         if len(self.mutation[2]) == 1:
@@ -192,25 +200,26 @@ class Run(object):
         
         elif len(self.mutation[2]) == 3:
             self.MUTresn = '{}2{}'.format(IO.AA(self.mutation[0]),IO.AA(self.mutation[2]))
-        #self.backbone = []
-        self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
+
+        self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA', 'HA2'] # HA2 (Glycine backbone H)
         # Read in the mutant residue
         if self.dual == True:
             MUT = []
             with open(self.mutation[2] + '.pdb') as infile:
                 for line in infile:
-                    line = IO.pdb_parse_in(line)
-                    # The residue name should match the mutant residue number
-                    # relative to Q numbering from protPREP.log
-                    line[6] = int(self.PDB2Q[self.mutation[1]])
-                    if line[2] in self.backbone:
-                        continue
-                        
-                    else:
-                        MUT.append(line)
+                    if line.startswith(self.include):
+                        line = IO.pdb_parse_in(line)
+                        # The residue name should match the mutant residue number
+                        # relative to Q numbering from protPREP.log
+                        line[6] = int(self.PDB2Q[self.chain][self.mutation[1]])
+                        if line[2] in self.backbone:
+                            continue
+
+                        else:
+                            MUT.append(line)
         
         pdb_files = ['protein.pdb']
-        if self.cofactor[0] != None:
+        if self.cofactor != None:
             for line in self.cofactor:
                 pdb_files.append(line + '.pdb')
         
@@ -228,7 +237,7 @@ class Run(object):
                         
                         # Change to hybrid residue name
                         if self.dual == True:
-                            if str(line[6]) == self.PDB2Q[self.mutation[1]]:
+                            if str(line[6]) == self.PDB2Q[self.chain][self.mutation[1]]:
                                 line[4] = self.MUTresn  
                         
                         # Generate the dual topology residue in the PDB dictionary
@@ -240,7 +249,7 @@ class Run(object):
                             self.PDB[line[6]] = [line]                        
                         
                         if self.dual == True:
-                            if str(line[6]) == self.PDB2Q[self.mutation[1]]:
+                            if str(line[6]) == self.PDB2Q[self.chain][self.mutation[1]]:
                                 if line[2] == 'O':
                                     for MUTat in MUT:
                                         atnr += 1
@@ -266,7 +275,7 @@ class Run(object):
                                             self.dualMUT['0'].append(MUTat)
                             
                                 self.dualMUT['1'].append(line)
-                        
+
                         self.systemsize += 1
                 
                 resoffset = len(self.PDB)
@@ -310,7 +319,7 @@ class Run(object):
 
         # Read the WT residue
         if len(self.mutation[0]) == 1:
-            AA = AA(self.mutation[0])
+            AA = IO.AA(self.mutation[0])
         else:
             AA = self.mutation[0]        
         for line in FFlib[AA]:
@@ -373,6 +382,7 @@ class Run(object):
                 or line.split()[1] == 'H'     \
                 or line.split()[1] == 'HA':
                     continue
+                # Check if Glycine backbone HA2 is not required here as well
                 
                 # Merge the library on the reference
                 line = IO.replace(line, replacements)
@@ -429,7 +439,7 @@ class Run(object):
         
         # Write out PDB file
         with open(pdb_tmp, 'w') as outfile:
-            mutPDB = self.PDB[int(self.PDB2Q[self.mutation[1]])]
+            mutPDB = self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]
             for atom in mutPDB:            
                 outfile.write(IO.pdb_parse_out(atom) + '\n')
 
@@ -453,7 +463,9 @@ class Run(object):
             
         # run qprep to get bonded parameters to be set to zero
         os.chdir(self.directory + '/inputfiles/')
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        
+        cluster_options = getattr(s, self.preplocation)
+        qprep = cluster_options['QPREP']
         options = ' < tmp.inp > tmp.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -497,6 +509,12 @@ class Run(object):
         os.chdir('../../')
         
     def merge_prm(self):
+        if self.forcefield == 'OPLS2015_GTPase':
+            self.prm_merged = s.FF_DIR + '/' + self.forcefield + '.prm'
+            prm_merged = self.directory + '/inputfiles/' + self.forcefield + '.prm'
+            shutil.copyfile(self.prm_merged, prm_merged)
+            return
+        
         headers =['[options]', 
                   '[atom_types]',
                   '[bonds]',
@@ -506,13 +524,13 @@ class Run(object):
                  ]
         
         prmfiles = [s.FF_DIR + '/' + self.forcefield + '.prm']
-        if self.cofactor[0] != None:
+        if self.cofactor != None:
             for filename in self.cofactor:
                 prmfiles.append(filename + '.prm')
                 
         if self.nonAA == True:
             prmfiles.append(self.mutation[2] + '.prm')
-            
+
         prms = IO.read_prm(prmfiles)
         prm_merged = self.directory + '/inputfiles/' + self.forcefield + '_merged.prm'
         self.prm_merged = self.forcefield + '_merged.prm'
@@ -545,7 +563,7 @@ class Run(object):
         waters_remove = []
         waters = {}
         
-        if self.cofactor[0] != None:
+        if self.cofactor != None:
             for line in self.cofactor:
                 with open(line + '.pdb') as infile:
                     for line in infile:
@@ -553,31 +571,39 @@ class Run(object):
                             line = IO.pdb_parse_in(line)    
                             cofactor_coordinates.append([line[8], line[9], line[10]])
         
-        with open (src) as infile, open (tgt, 'w') as outfile:
-            outfile.write('{} SPHERE\n'.format(self.radius))
-            for line in infile:
-                line = IO.pdb_parse_in(line)    
-                coord_wat = [line[8], line[9], line[10]]
-                try:
-                    waters[line[6]].append(line)
-                except:
-                    waters[line[6]] = [line]
+        with open (src) as infile:
+            with open (tgt, 'w') as outfile:
+                outfile.write('{} SPHERE\n'.format(self.radius))
+                for line in infile:
+                    line = IO.pdb_parse_in(line)    
+                    coord_wat = [line[8], line[9], line[10]]
+                    try:
+                        waters[line[6]].append(line)
+                    except:
+                        waters[line[6]] = [line]
 
-                for coord_co in cofactor_coordinates:
-                    if f.euclidian_overlap(coord_wat, coord_co, 1.6) == True:
-                        waters_remove.append(line[6])
-            
-            for key in waters:
-                if key not in waters_remove:
-                    for water in waters[key]:
-                        outfile.write(IO.pdb_parse_out(water) + '\n')
-            
+                    for coord_co in cofactor_coordinates:
+                        if f.euclidian_overlap(coord_wat, coord_co, 1.6) == True:
+                            waters_remove.append(line[6])
+                
+                for key in waters:
+                    if key not in waters_remove:
+                        for water in waters[key]:
+                            outfile.write(IO.pdb_parse_out(water) + '\n')
+
     def write_qprep(self):
-        replacements = {'PRM':self.prm_merged,
-                        'PDB':self.PDBout,
-                        'CENTER':'{} {} {}'.format(*self.sphere),
-                        'SPHERE':self.radius,
-                       }
+        if self.forcefield == 'OPLS2015_GTPase':
+            replacements = {'PRM':self.forcefield + '.prm',
+                            'PDB':self.PDBout,
+                            'CENTER':'{} {} {}'.format(*self.sphere),
+                            'SPHERE':self.radius,
+               }
+        else:
+            replacements = {'PRM':self.prm_merged,
+                            'PDB':self.PDBout,
+                            'CENTER':'{} {} {}'.format(*self.sphere),
+                            'SPHERE':self.radius,
+                           }
         if self.system == 'protein':
             replacements['SOLVENT'] = '4 water.pdb'
             
@@ -590,7 +616,7 @@ class Run(object):
         src = s.INPUT_DIR + '/qprep_resFEP.inp'
         self.qprep = self.directory + '/inputfiles/qprep.inp'
         libraries = [self.forcefield + '.lib']
-        if self.cofactor[0] != None:
+        if self.cofactor != None:
             for filename in self.cofactor:
                 libraries.append(filename + '.lib')
                 
@@ -611,10 +637,11 @@ class Run(object):
                     continue
                 
                 outfile.write(line)
-        
+
     def run_qprep(self):
         os.chdir(self.directory + '/inputfiles/')
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        cluster_options = getattr(s, self.preplocation)
+        qprep = cluster_options['QPREP']
         options = ' < qprep.inp > qprep.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -626,7 +653,7 @@ class Run(object):
         self.lambdas = IO.get_lambdas(self.windows, self.sampling)
 
     def write_EQ(self):
-        for line in self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]:
+        for line in self.PDB[int(self.PDB2Q[self.chain][str(self.mutation[1])])]:
             if line[2] == 'CA' and self.system == 'water'              \
             or line[2] == 'CA' and self.system == 'vacuum':             \
                 self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
@@ -637,10 +664,11 @@ class Run(object):
             src = EQ_file
             EQ_file = EQ_file.split('/')
             tgt = self.directory + '/inputfiles/' + EQ_file[-1]
-            with open(src) as infile, open(tgt, 'w') as outfile:
-                for line in infile:
-                    outline = IO.replace(line, self.replacements)
-                    outfile.write(outline)
+            with open(src) as infile:
+                with open(tgt, 'w') as outfile:
+                    for line in infile:
+                        outline = IO.replace(line, self.replacements)
+                        outfile.write(outline)
                     
     def write_MD(self):
         # Get restraint for water and vacuum systems
@@ -668,10 +696,11 @@ class Run(object):
                 self.replacements['FILE'] = 'md_{}_{}'.format(lambda1,
                                                               lambda2)
 
-                with open(src) as infile, open(tgt, 'w') as outfile:
-                    for line in infile:
-                        outline = IO.replace(line, self.replacements)
-                        outfile.write(outline)
+                with open(src) as infile:
+                    with open(tgt, 'w') as outfile:
+                        for line in infile:
+                            outline = IO.replace(line, self.replacements)
+                            outfile.write(outline)
 
                 ## Store previous file
                 self.replacements['FILE_N'] = 'md_{}_{}'.format(lambda1,
@@ -687,10 +716,11 @@ class Run(object):
             self.replacements['FILE_N'] = 'md_0500_0500'
             src = s.INPUT_DIR + '/md_0500_0500.inp'
             tgt = self.directory + '/inputfiles/md_0500_0500.inp'
-            with open(src) as infile, open(tgt, 'w') as outfile:
-                for line in infile:
-                    outline = IO.replace(line, self.replacements)
-                    outfile.write(outline)
+            with open(src) as infile:
+                with open(tgt, 'w') as outfile:
+                    for line in infile:
+                        outline = IO.replace(line, self.replacements)
+                        outfile.write(outline)
             
             # Write out part 1 of the out files
             src = s.INPUT_DIR + '/md_XXXX_XXXX.inp'
@@ -704,10 +734,11 @@ class Run(object):
                 self.replacements['FILE'] = 'md_{}_{}'.format(l1,
                                                               l2)
                 
-                with open(src) as infile, open(tgt, 'w') as outfile:
-                    for line in infile:
-                        outline = IO.replace(line, self.replacements)
-                        outfile.write(outline)
+                with open(src) as infile:
+                    with open(tgt, 'w') as outfile:
+                        for line in infile:
+                            outline = IO.replace(line, self.replacements)
+                            outfile.write(outline)
                         
                 ## Store previous file
                 self.replacements['FILE_N'] = 'md_{}_{}'.format(l1,
@@ -727,10 +758,11 @@ class Run(object):
                 self.replacements['FILE'] = 'md_{}_{}'.format(l1,
                                                               l2)
                 
-                with open(src) as infile, open(tgt, 'w') as outfile:
-                    for line in infile:
-                        outline = IO.replace(line, self.replacements)
-                        outfile.write(outline)
+                with open(src) as infile:
+                    with open(tgt, 'w') as outfile:
+                        for line in infile:
+                            outline = IO.replace(line, self.replacements)
+                            outfile.write(outline)
                         
                 ## Store previous file
                 self.replacements['FILE_N'] = 'md_{}_{}'.format(l1,
@@ -757,56 +789,57 @@ class Run(object):
         replacements = IO.merge_two_dicts(self.replacements, getattr(s, self.cluster))
         replacements['FEPS'] = ' '.join(self.FEPlist)
             
-        with open(src) as infile, open(tgt, 'w') as outfile:
-            for line in infile:
-                if line.strip() == '#SBATCH -A ACCOUNT':
-                    try:
-                        replacements['ACCOUNT']
-                        
-                    except:
-                        line = ''
-                outline = IO.replace(line, replacements)
-                outfile.write(outline)
-                
-                if line.strip() == '#EQ_FILES':
-                    for line in EQ_files:
-                        file_base = line.split('/')[-1][:-4]
-                        outline = 'time mpirun -np {} $qdyn {}.inp' \
-                                   ' > {}.log\n'.format(ntasks,
-                                                       file_base,
-                                                       file_base)
-                        outfile.write(outline)
-                        
-                if line.strip() == '#RUN_FILES':
-                    if self.start == '1':
-                        for line in MD_files:
-                            file_base = line.split('/')[-1][:-4]
-                            outline = 'time mpirun -np {} $qdyn {}.inp'  \
-                                      ' > {}.log\n'.format(ntasks,
-                                                           file_base,
-                                                           file_base)
-                            outfile.write(outline)
+        with open(src) as infile:
+            with open(tgt, 'w') as outfile:
+                for line in infile:
+                    if line.strip() == '#SBATCH -A ACCOUNT':
+                        try:
+                            replacements['ACCOUNT']
                             
-                    elif self.start == '0.5':
-                        outline = 'time mpirun -np {} $qdyn {}.inp' \
-                                   ' > {}.log\n\n'.format(ntasks,
-                                                       'md_0500_0500',
-                                                       'md_0500_0500')
-                        outfile.write(outline)
-                        for i, md in enumerate(md_1):
-                            outline1 = 'time mpirun -np {:d} $qdyn {}.inp'  \
-                                      ' > {}.log &\n'.format(int(int(ntasks)/2),
-                                                           md_1[i],
-                                                           md_1[i])
+                        except:
+                            line = ''
+                    outline = IO.replace(line, replacements)
+                    outfile.write(outline)
+                    
+                    if line.strip() == '#EQ_FILES':
+                        for line in EQ_files:
+                            file_base = line.split('/')[-1][:-4]
+                            outline = 'time mpirun -np {} $qdyn {}.inp' \
+                                       ' > {}.log\n'.format(ntasks,
+                                                            file_base,
+                                                            file_base)
+                            outfile.write(outline)
 
-                            outline2 = 'time mpirun -np {:d} $qdyn {}.inp'  \
-                                      ' > {}.log\n'.format(int(int(ntasks)/2),
-                                                           md_2[i],
-                                                           md_2[i])
+                    if line.strip() == '#RUN_FILES':
+                        if self.start == '1':
+                            for line in MD_files:
+                                file_base = line.split('/')[-1][:-4]
+                                outline = 'time mpirun -np {} $qdyn {}.inp'  \
+                                          ' > {}.log\n'.format(ntasks,
+                                                               file_base,
+                                                               file_base)
+                                outfile.write(outline)
 
-                            outfile.write(outline1)
-                            outfile.write(outline2)
-                            outfile.write('\n')
+                        elif self.start == '0.5':
+                            outline = 'time mpirun -np {} $qdyn {}.inp' \
+                                       ' > {}.log\n\n'.format(ntasks,
+                                                           'md_0500_0500',
+                                                           'md_0500_0500')
+                            outfile.write(outline)
+                            for i, md in enumerate(md_1):
+                                outline1 = 'time mpirun -np {:d} $qdyn {}.inp'  \
+                                          ' > {}.log &\n'.format(int(int(ntasks)/2),
+                                                               md_1[i],
+                                                               md_1[i])
+
+                                outline2 = 'time mpirun -np {:d} $qdyn {}.inp'  \
+                                          ' > {}.log\n'.format(int(int(ntasks)/2),
+                                                               md_2[i],
+                                                               md_2[i])
+
+                                outfile.write(outline1)
+                                outfile.write(outline2)
+                                outfile.write('\n')
                         
     def write_submitfile(self):
         IO.write_submitfile(self.directory, self.replacements)
@@ -830,66 +863,79 @@ class Run(object):
                  '[bond_types]'                
                 ]
         atom_map = {}
-        
-        print(RES_list)
-        
         for line in RES_list:
+            line[2:4] = [''.join(line[2:4])]
+            line.insert(3, ' ')
             RES_dic[line[2].strip()] = line
 
         for src in sorted(glob.glob(self.FEPdir + '/FEP*.fep')):
             tgt = self.directory + '/inputfiles/' + src.split('/')[-1]
-            with open (src) as infile, open (tgt, 'w') as outfile:
-                for line in infile:
-                    if line.strip() == '[atoms]':
-                        outfile.write(line)
-                        block = 1
-                        
-                    if line.strip() == '[change_bonds]':
-                        outfile.write(line)
-                        block = 2
-                        
-                    if line.strip() in empty:
-                        block = 0
-                    
-                    if block == 0:
-                        outfile.write(line)
-                        
-                    if block == 1:
-                        if line.strip() != '[atoms]':
-                            line = line.split()
-                            if len(line) > 1 and line[0] != '!charge':
-                                atnr = RES_dic[line[3]][1]
-                                atom_map[line[0]] = atnr
-
-                                try:
-                                    comment = line[4]
-
-                                except:
-                                    comment = ' '
-                                outline = ('{:7s}{:<7d}{:5s}{:5s}{:5s}\n'.format(line[1],
-                                                                              atnr,
-                                                                              '!',
-                                                                              line[3],
-                                                                              comment))
+            with open (src) as infile:
+                with open (tgt, 'w') as outfile:
+                    for line in infile:
+                        if line.strip() == '[atoms]':
+                            outfile.write(line)
+                            block = 1
                             
-                                outfile.write(outline)
-                            else:
-                                outfile.write('\n')
+                        if line.strip() == '[change_bonds]':
+                            outfile.write(line)
+                            block = 2
                             
-                    if block == 2:
-                        if line.strip != '[change_bonds]':
-                            line = line.split()
-                            if len(line) > 1 and line[0] != '!charge':
-                                at_1 = atom_map[line[0]]
-                                at_2 = atom_map[line[1]]
-                                outline = '{:<7d}{:<7d}{:5s}{:5s}\n'.format(at_1,
-                                                                         at_2,
-                                                                         line[2],
-                                                                         line[3]) 
+                        if line.strip() in empty:
+                            block = 0
+                        
+                        if block == 0:
+                            outfile.write(line)
+                            
+                        if block == 1:
+                            if line.strip() != '[atoms]':
+                                line = line.split()
+                                if len(line) > 1 and line[0] != '!charge':
+                                    atnr = RES_dic[line[3]][1]
+                                    atom_map[line[0]] = atnr
+
+                                    try:
+                                        comment = line[4]
+
+                                    except:
+                                        comment = ' '
+                                    outline = ('{:7s}{:<7d}{:5s}{:5s}{:5s}\n'.format(line[1],
+                                                                                  atnr,
+                                                                                  '!',
+                                                                                  line[3],
+                                                                                  comment))
+                                
+                                    outfile.write(outline)
+                                else:
+                                    outfile.write('\n')
+                                
+                        if block == 2:
+                            if line.strip != '[change_bonds]':
+                                line = line.split()
+                                if len(line) > 1 and line[0] != '!charge':
+                                    at_1 = atom_map[line[0]]
+                                    at_2 = atom_map[line[1]]
+                                    outline = '{:<7d}{:<7d}{:5s}{:5s}\n'.format(at_1,
+                                                                             at_2,
+                                                                             line[2],
+                                                                             line[3]) 
+                
+                                    outfile.write(outline)
+                                else:
+                                    outfile.write('\n')
+
+    def settimestep(self):
+        if self.timestep == '1fs':
+            self.replacements['NSTEPS1'] = '100000'
+            self.replacements['NSTEPS2'] = '10000'
+            self.replacements['STEPSIZE'] = '1.0'
+            self.replacements['STEPTOGGLE'] = 'off'
             
-                                outfile.write(outline)
-                            else:
-                                outfile.write('\n')
+        if self.timestep == '2fs':
+            self.replacements['NSTEPS1'] = '50000'
+            self.replacements['NSTEPS2'] = '5000'
+            self.replacements['STEPSIZE'] = '2.0'
+            self.replacements['STEPTOGGLE'] = 'on'
 
     def write_dualFEPfile(self):
         # The vdW paramers need to be extracted from the reference .prm file
@@ -909,7 +955,7 @@ class Run(object):
             # Write out [atoms] section
             outfile.write('[atoms]\n')
             cnt = 0
-            res_ID = int(self.PDB2Q[self.mutation[1]])
+            res_ID = int(self.PDB2Q[self.chain][self.mutation[1]])
             for line in self.PDB[res_ID]:
                 cnt += 1
                 outfile.write('{:4d} {:4d} ! {:<4s}\n'.format(cnt, line[1], line[2]))
@@ -931,11 +977,11 @@ class Run(object):
                     else:
                         outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
                                                                      line[3], 
-                                                                     '0.0000'))
+                                                                     '0.000'))
                     
                 else:
                     outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                 '0.0000', 
+                                                                 '0.000', 
                                                                  line[3]))
                     
             outfile.write('\n')
@@ -1024,23 +1070,24 @@ class Run(object):
         replacements['WINDOWS']=str(self.windows)
         replacements['TOTAL_L']=str(total_l)
         
-        with open(qfep_in) as infile, open(qfep_out, 'w') as outfile:
-            for line in infile:
-                line = IO.replace(line, replacements)
-                outfile.write(line)
+        with open(qfep_in) as infile:
+            with open(qfep_out, 'w') as outfile:
+                for line in infile:
+                    line = IO.replace(line, replacements)
+                    outfile.write(line)
 
-            if line == '!ENERGY_FILES\n':
-                for i in range(0, total_l):
-                    j = -(i + 1)
-                    lambda1 = self.lambdas[i]
-                    lambda2 = self.lambdas[j]
-                    filename = 'md_' +                          \
-                                lambda1.replace('.', '') +      \
-                                '_' +                           \
-                                lambda2.replace('.', '') +      \
-                                '.en\n'
+                if line == '!ENERGY_FILES\n':
+                    for i in range(0, total_l):
+                        j = -(i + 1)
+                        lambda1 = self.lambdas[i]
+                        lambda2 = self.lambdas[j]
+                        filename = 'md_' +                          \
+                                    lambda1.replace('.', '') +      \
+                                    '_' +                           \
+                                    lambda2.replace('.', '') +      \
+                                    '.en\n'
 
-                    outfile.write(filename)
+                        outfile.write(filename)
                             
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -1050,6 +1097,7 @@ if __name__ == "__main__":
 
     
     parser.add_argument('-c', '--cofactor',
+                        nargs='*',
                         dest = "cofactor",
                         required = False,
                         help = "PDB files of cofactors (e.g. ligand) with *.prm and *.lib files")
@@ -1062,7 +1110,7 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--forcefield',
                         dest = "forcefield",
                         required = True,
-                        choices = ['OPLS2015', 'OPLS2005', 'SIDECHAIN', 'AMBER14sb','CHARMM36'],
+                        choices = ['OPLS2015', 'OPLS2005', 'OPLS2015_GTPase', 'SIDECHAIN', 'AMBER14sb','CHARMM36'],
                         help = "Forcefield to use.")
     
     parser.add_argument('-s', '--sampling',
@@ -1118,6 +1166,18 @@ if __name__ == "__main__":
                         help = "Starting FEP in the middle or endpoint, 0.5 recommended for dual"
                        )
     
+    parser.add_argument('-ts', '--timestep',
+                        dest = "timestep",
+                        choices = ['1fs','2fs'],
+                        default = "2fs",
+                        help = "Simulation timestep, default 2fs"
+                       )
+
+    parser.add_argument('-mc', '--mutchain',
+                        dest = "mutchain",
+                        default = ' ',
+                        help = "Chain of the mutation"
+                       )
 
     args = parser.parse_args()
     run = Run(mutation = args.mutation,
@@ -1132,6 +1192,8 @@ if __name__ == "__main__":
               preplocation = args.preplocation,
               dual = args.dual,
               start = args.start,
+              timestep = args.timestep,              
+              mutchain = args.mutchain,
               include = ('ATOM','HETATM')
              )
     
@@ -1147,9 +1209,10 @@ if __name__ == "__main__":
     run.write_qprep()                   # 09
     run.run_qprep()                     # 10
     run.get_lambdas()                   # 11
-    run.write_EQ()                      # 12
-    run.write_MD()                      # 13
-    run.write_submitfile()              # 14
-    run.write_runfile()                 # 15
-    run.write_FEPfile()                 # 16
-    run.write_qfep()                    # 17
+    run.settimestep()                   # 12
+    run.write_EQ()                      # 13
+    run.write_MD()                      # 14
+    run.write_submitfile()              # 15
+    run.write_runfile()                 # 16
+    run.write_FEPfile()                 # 17
+    run.write_qfep()                    # 18

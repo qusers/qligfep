@@ -7,7 +7,7 @@
 *Parameters translated for Q with charmm_Q_par.py (Geir V. Isaksen, 2015)
 *________________________________________________
 [options]
-name        OPLS-AA/M 2015
+*name        OPLS-AA/M 2015
 vdw_rule    geometric   ! vdW combination rule (geometric or arithmetic )
 scale_14         0.5         ! electrostatic 1-4 scaling factor
 switch_atoms  on       ! on = use switch atom; off = use charge group
@@ -94,13 +94,12 @@ O272     616.4386   616.4386   23.7692   435.8879   16.8074     15.9994 1
 S200    2838.1770  2838.1770   60.8320  2006.8942   43.0147     32.0600 1  
 S202    2593.9356  2593.9356   55.5970  1834.1895   39.3130     32.0600 1  
 S203    2593.9356  2593.9356   55.5970  1834.1895   39.3130     32.0600 1  
-OT       762.89     762.89     24.39     539.45     17.25       15.9994 1 ! TIP3P taken from OPLS2005.prm 
-HT         0.00       0.00      0.00       0.00      0.00        1.0080 1 ! TIP3P 
-!OT       762.8390   762.8390   24.3929   539.4086   17.2484     15.9994 1 ! CHARMM TIP3P 
-!HT         0.0018     0.0018    0.0275     0.0012    0.0194      1.0080 1 ! CHARMM TIP3P 
+OT       762.8390   762.8390   24.3929   539.4086   17.2484     15.9994 1  
+HT         0.000      0.000     0.000      0.000     0.00        1.0080 1  
 SOD     1036.9613  1036.9613    6.8099   733.2424    4.8153     22.9898 1  
 CLA     7112.3885  7112.3885  109.4806  5029.2181   77.4145     35.4500 1  
 ZN        53.50       0.00      7.19      37.83      5.09       65.38   !ZN2+ from Hugo-QOPLSAA2001.prm
+DUM        0.0000     0.0000    0.0000     0.0000    0.0000     6.0000
 
 !popc
 LC      1802.25 1802.25 34.18 1274.38   24.17   12.01
@@ -339,6 +338,8 @@ LP2     LP3     800.0   1.53
 
 ! Ligand bond parameters
 ! End ligand bond parameters
+
+! Dual topology zero forceK bonds
 
 ! non ALA_test
 !XCB    C224     536.000     1.529 
@@ -856,9 +857,6 @@ TO2Z   TP3  TO2Z   280.00   114.00  !high     0   O2Z-P3-O2Z        ==> O2Z-P3-O
  C      N239   C246      100.00    121.9      0.00      0.00 
 
 ! Dual topology zero forceK angles
-!C158   C224   C157      0.00    118.0      0.00      0.00
-!C136   C224   C149      0.00    118.0      0.00      0.00
-!C137   C224   C136      0.00    118.0      0.00      0.00
 
 ! Ligand angle parameters
 ! End ligand angle parameters
@@ -2535,22 +2533,6 @@ O      C      CT     HC      0.000     1    0.000   1 !high   0   O-C-CT-HC     
  C      N238   C224   C505       0.169     3.000     0.000     1  
 
 ! Dual topology zero forceK torsions
-!O154     C158     C224     C157       0.000     1.000     0.000     1  
-!C135     C158     C224     C157       0.000     1.000     0.000     1  
-!H140     C158     C224     C157       0.000     1.000     0.000     1  
-!O154     C157     C224     C158       0.000     1.000     0.000     1  
-!H140     C157     C224     C158       0.000     1.000     0.000     1  
-
-!C500     C136     C224     C149       0.000     1.000     0.000     1  
-!H140     C136     C224     C149       0.000     1.000     0.000     1  
-!C136     C224     C149     C145       0.000     1.000     0.000     1  
-!C136     C224     C149     H140       0.000     1.000     0.000     1  
-!H140     C157     C224     C158       0.000     1.000     0.000     1  
-
-!C135     C137     C224     C136       0.000     1.000     0.000     1  
-!H140     C137     C224     C136       0.000     1.000     0.000     1  
-!C137     C224     C136     C137       0.000     1.000     0.000     1  
-!C137     C224     C136     H140       0.000     1.000     0.000     1  
 
 ! Ligand torsion parameters
 

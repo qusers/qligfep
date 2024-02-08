@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 import glob
 import numpy as np
@@ -19,13 +21,15 @@ except:
 class Run(object):
     """
     """
-    def __init__(self, FEP, color, PDB, cluster, *args, **kwargs):
+    def __init__(self, FEP, color, PDB, cluster, esc, *args, **kwargs):
+        self.esc = esc
         self.cluster=cluster
         self.FEP = FEP.strip('/')
         self.energies = {}
         self.FEPstages = []
         FEPfiles = glob.glob(self.FEP + '/inputfiles/FEP*.fep')
         inputs = glob.glob(self.FEP + '/inputfiles/md*.inp')
+        inputs = [x for x in inputs if not '_F.inp' in x]
         FEPfiles.sort()
         self.failed = []
         for FEPfile in FEPfiles:
@@ -58,7 +62,7 @@ class Run(object):
         results = {}
         out = []
         
-        FEPs = sorted(glob.glob(self.FEP + '/*/*/*/qfep.out'))
+        FEPs = sorted(glob.glob(self.FEP + '/FEP*/*/*/qfep.out'))
         for filename in FEPs:
             i = -1
             file_parse = filename.split('/')
@@ -67,17 +71,16 @@ class Run(object):
             replicate = file_parse[3]
             
             try:
-                energies = IO.read_qfep(filename)
+                if self.esc:
+                    energies = IO.read_qfep_esc(filename)
+                else:
+                    energies = IO.read_qfep(filename)
             except:
                 print("Could not retrieve energies for: " + filename)
                 energies = [np.nan, np.nan, np.nan, np.nan, np.nan]
-                self.failed.append(replicate)
-            #try:
-            #    energies = IO.read_qfep(filename)
-            #except:
-            #    print "Could not retrieve energies for: " + filename
-            #    energies = [np.nan, np.nan, np.nan, np.nan, np.nan]
-
+                if not replicate in self.failed:
+                    self.failed.append(replicate)
+            
             for key in methods_list:
                 i += 1
                 try:
@@ -92,11 +95,11 @@ class Run(object):
             self.energies[replicate][FEP] = IO.read_qfep_verbose(filename)
         for method in methods:
             dG_array = []
-            for key in methods[method]:
+            for key in sorted(methods[method]):
                 print(method, key, methods[method][key])
                 dG_array.append(methods[method][key])
+            dG_array = [[float(i) for i in fep_stage] for fep_stage in dG_array]
             dG_array = np.array(dG_array)
-            dG_array = dG_array.astype(np.float)
             dG = f.avg_sem(dG_array)
             results[method]='{:6.2f}{:6.2f}'.format(*dG)
             
@@ -104,6 +107,7 @@ class Run(object):
             out.append(results[method])
 
         print(self.FEP, '{} {} {} {} {}'.format(*out))
+        print('crashes  {}'.format(len(self.failed)))
         
     def read_mdlog(self):
         mapping = {}
@@ -130,8 +134,15 @@ class Run(object):
         y_axis = {}
         x_axis = range(0,self.lambda_sum+1)
         avg = []
+        for replicate in self.energies:
+            for FEPstage in self.FEPstages:
+                if not FEPstage in self.energies[replicate] and not replicate in self.failed:
+                    self.failed.append(replicate)
         for replicate in self.failed:
-            del self.energies[replicate]
+            try:
+                del self.energies[replicate]
+            except:
+                continue
         for replicate in self.energies:
             y_axis[replicate] = [0]
             dG = 0
@@ -140,7 +151,7 @@ class Run(object):
                     energy = dG + energy
                     y_axis[replicate].append(energy)
                 dG+=self.energies[replicate][FEPstage][0][-1]
-        
+
         for y in y_axis:
             for i,energy in enumerate(y_axis[y]):
                 if len(avg) < self.lambda_sum + 1:
@@ -181,7 +192,8 @@ class Run(object):
             for re_file in re_files:
                 pdb_out = re_file.split('/')[-1][:-3]
                 repeat = '{:02d}'.format(int(re_file.split('/')[3]))
-                pdb_out = 'pdbs/{}_{}'.format(repeat, pdb_out)
+                fep_stage = re_file.split('/')[1]
+                pdb_out = 'pdbs/{}_{}_{}'.format(repeat, fep_stage, pdb_out)
                 outfile.write('rx {}\n'.format(re_file))
                 outfile.write('wp {}.pdb\n'.format(pdb_out))
                 outfile.write('y\n')
@@ -192,7 +204,7 @@ class Run(object):
             outfile.write('y\n')
             
             outfile.write('q\n')
-            
+
         cluster_options = getattr(s, self.cluster)
         qprep = cluster_options['QPREP']
         options = ' < re2pdb.inp > re2pdb.out'
@@ -232,23 +244,28 @@ if __name__ == "__main__":
     
     parser.add_argument('-C', '--cluster',
                         dest = "cluster",
-                        required = True,
+                        required = False,
                         help = "cluster information")
+    parser.add_argument('-esc', '--end-state-catastrophe',
+                        dest = "esc",
+                        required = False,
+                        help = "Add this argument in case you have singularities in the final lambda windows resulting in only nan values")
     
     
     args = parser.parse_args()
     run = Run(FEP = args.FEP,
               color = args.color,
               cluster = args.cluster,
-              PDB = args.PDB
+              PDB = args.PDB,
+              esc = args.esc
              )
     
     run.create_environment()
     run.read_FEPs()
     run.read_mdlog()
     
-    if plot == True:
-        run.plot_data()
+#    if plot == True:
+#        run.plot_data()
         
     if args.PDB == True:
         run.write_re2pdb()

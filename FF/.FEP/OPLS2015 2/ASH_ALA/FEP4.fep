@@ -1,7 +1,8 @@
-!ASH (ASP-H)--> ALA
+!ASH(ASP-H)-->ALA
 
 [FEP]
 states 2
+softcore_use_max_potential on
 
 [atoms]
 1 1	 ! CB
@@ -10,16 +11,16 @@ states 2
 4 4	 ! CG   becomes HC 		
 5 5  ! OD1  disappear
 6 6  ! OD2  disappear
-7 7  ! HD1  disappear			
+7 7  ! HD1  disappear				
 	     
 [change_charges]
-1 	0 	-0.18
-2	0	0.06
-3	0	0.06
-4 	0	0.06
-5 	0	0
-6  	0 	0
-7  	0 	0
+1   0   0
+2   0   0
+3   0   0
+4   0   0
+5   0   0
+6   0   0
+7   0   0
 
 [atom_types]
 !Type	Ai	Bi	Ci	ai	A1(1-4)	Bi(1-4)	Mass
@@ -38,7 +39,7 @@ C	1802.24	34.18	0	0	1274.38	24.17	12.01
 1   CT  CT 
 2   HC  HC
 3   HC  HC
-4   HC  HC 
+4   C2  HC 
 5   ODUM  ODUM 
 6   ODUM  ODUM
 7   HDUM  HDUM
@@ -47,7 +48,7 @@ C	1802.24	34.18	0	0	1274.38	24.17	12.01
 1 	0 	0 
 2   0	0
 3  	0	0
-4   0	0
+4  20	0
 5   0	0
 6   0	0
 7   0   0
@@ -57,4 +58,4 @@ C	1802.24	34.18	0	0	1274.38	24.17	12.01
 2	680.0	1.090	!HC	CT	
 
 [change_bonds]
-1	4	2	2
+1	4	1	2
