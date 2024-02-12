@@ -1,8 +1,9 @@
 import glob
 import statistics
-# import pandas
+import pandas as pd
 import argparse
 import os
+import shutil
 
 class Run(object):
     """
@@ -18,6 +19,13 @@ class Run(object):
         shell_restraints = []
         total_restraints = []
         replicate = runfolder.split("/")[-1]
+        FEP_path = []
+        path_seperation = "/"
+        for path_pieces in runfolder.split("/"):
+            FEP_path.append(path_pieces)
+            if "FEP" in path_pieces:
+                break
+        FEP_path_total = path_seperation.join(FEP_path)
         for file in md_files:
             with open(file) as logfile:
                 for line in logfile:
@@ -44,12 +52,15 @@ class Run(object):
         average_shell = statistics.mean(shell_restraints)
         average_total = statistics.mean(total_restraints)
         list_for_df = [dGBAR, average_solute, average_shell, average_total]
-        print(average_solute)
-        print(dGBAR)
-        print(average_shell)
-        print(average_total)
-        # df = pd.read_csv('input.csv')
-        # df[replicate] = list_for_df
+
+        if replicate == "1":
+            shutil.copyfile('/gpfs/scratch1/nodespecific/int6/yricky/template_outputfile.csv', '/gpfs/scratch1/nodespecific/int6/yricky/' + FEP_path_total)
+            df = pd.read_csv('/gpfs/scratch1/nodespecific/int6/yricky/' + FEP_path_total + "/template_outputfile.csv")
+            df[replicate] = list_for_df
+        else:
+            df = pd.read_csv('/gpfs/scratch1/nodespecific/int6/yricky/' + FEP_path_total + "/template_outputfile.csv")
+            df[replicate] = list_for_df
+            df.to_csv(''/gpfs/scratch1/nodespecific/int6/yricky/' + FEP_path_total + "/template_outputfile.csv"', index=False)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -64,5 +75,4 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     run = Run(FEP = args.FEP)
-
     run.return_restraints()
