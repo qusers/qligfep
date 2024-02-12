@@ -12,11 +12,12 @@ class Run(object):
 
     def return_restraints(self):
         md_files = sorted(glob.glob(self.FEP + '/md*.log'))
-        qfepfile = sorted(glob.glob(self.FEP + '/qfep*.out'))
+        runfolder = str(self.FEP)
+        qfepfile = sorted(glob.glob(self.FEP + '/qfep*.out')) 
         solute_restraints = []
         shell_restraints = []
         total_restraints = []
-        replicate = self.FEP.split[-1]
+        replicate = runfolder.split("/")[-1]
         for file in md_files:
             with open(file) as logfile:
                 for line in logfile:
@@ -30,7 +31,7 @@ class Run(object):
                         shell_restraints.append(float(shell_restraint))
                         total_restraints.append(float(total_restraint))
         with open(qfepfile[0]) as qfepfile_out:
-            for line in energies:
+            for line in qfepfile_out:
                 pass
             dGBAR = line
             dGBAR = dGBAR.strip('\n').split(" ")[-1]
@@ -42,8 +43,11 @@ class Run(object):
         average_solute = statistics.mean(solute_restraints)
         average_shell = statistics.mean(shell_restraints)
         average_total = statistics.mean(total_restraints)
-        list_for_df = [dG_BAR, average_solute, average_shell, average_total]
+        list_for_df = [dGBAR, average_solute, average_shell, average_total]
         print(average_solute)
+        print(dGBAR)
+        print(average_shell)
+        print(average_total)
         # df = pd.read_csv('input.csv')
         # df[replicate] = list_for_df
 
@@ -61,6 +65,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     run = Run(FEP = args.FEP)
 
-    run.return_dG_BAR_method()
     run.return_restraints()
-    run.print_results()
