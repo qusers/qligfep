@@ -37,6 +37,7 @@ class Run(object):
         os.chdir(self.rootdir)
         
     def make_pdb_files(self):
+        angles = []
         replacements = {}
         repfolders = sorted(glob.glob(self.FEP + '/*/'))
         directories = [repfolders[0] + entry for entry in os.listdir(repfolders[0]) if os.path.isdir(repfolders[0] + entry)]
@@ -50,6 +51,7 @@ class Run(object):
         for folder in directories:
             qfepfilesrep = sorted(glob.glob(folder + '/*.re'))
             qfepfilesrep = [file_ for file_ in qfepfilesrep if "md"in file_]
+            lentgh_md_files = len(qfepfilesrep)
             qfepfilesrep = sorted(qfepfilesrep)
             for file in qfepfilesrep:
                 if self.convert_files == True:
@@ -66,16 +68,26 @@ class Run(object):
         print(no_of_states)
         for state_num in range(1, no_of_states + 1):
             # first dihedral
-            print(cmd.get_dihedral(atom1="resi 111 and name N",atom2="resi 111 and name CA",atom3="resi 111 and name CB",atom4="resi 111 and name CG1",state=state_num))
+            angles.append(str(round(cmd.get_dihedral(atom1="resi 111 and name N",atom2="resi 111 and name CA",atom3="resi 111 and name CB",atom4="resi 111 and name CG1",state=state_num),2)))
 
             # second dihedral
-            #print(cmd.get_dihedral(atom1="resi 111 and name N",atom2="resi 111 and name CA",atom3="resi 111 and name CB",atom4="resi 111 and name CG2",state=state_num))
-    
+            # print(cmd.get_dihedral(atom1="resi 111 and name N",atom2="resi 111 and name CA",atom3="resi 111 and name CB",atom4="resi 111 and name CG2",state=state_num))
+        angles_per_replicate = list(run.chunks(angles, lentgh_md_files))
+        print(angles_per_replicate)
+        angles_tabular_form = list(zip(*angles_per_replicate))
+        for angles_per_rep in angles_tabular_form:
+            print(', '.join(angles_per_rep))
+
     def replace_placeholders(self, replacements, convertion_Q_file_path, convertion_Q_output):
         with open(convertion_Q_file_path) as infile, open(convertion_Q_output, 'w') as outfile:
             for line in infile:
                 line = run.replace(line, replacements)
                 outfile.write(line)
+
+    def chunks(self, lst, n):
+        """Yield successive n-sized chunks from lst."""
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
