@@ -867,7 +867,8 @@ class Run(object):
         replacements['LIGPRM'] = self.FF + '_' + self.lig1 + '_' + self.lig2 + '_merged.prm'
         replacements['LIGPDB'] = self.lig1 + '_' + self.lig2 + '.pdb'
         replacements['CENTER'] = center
-        replacements['SOLDENS'] = f'{f.get_density('protein.pdb', center, self.sphereradius)}:.5f}'
+        target_density = f.get_density('protein.pdb', center, self.sphereradius)
+        replacements['SOLDENS'] = f'{target_density}:.5f}'
         replacements['SPHERE'] = f'{self.sphereradius:.1f}'
         if self.system =='vacuum':
             replacements['solvate'] = '!solvate'
