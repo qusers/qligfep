@@ -7,6 +7,7 @@ rp LIGPDB
 ! set solute_density 0.05794 
 ! NOTE, this is now large for water system, change for protein system
 set solvent_pack 2.5
+solute_density   SOLDENS
 boundary 1 CENTER SPHERE
 solvate CENTER SPHERE SOLVENT
 !addbond at1 at2 y

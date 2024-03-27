@@ -50,8 +50,6 @@ class Run(object):
         self.ABS_waters = []
         self.lipid_C = 0
 
-        print('sanity check')
-        
         if self.system == 'protein':
             # Get last atom and residue from complexfile!
             with open('protein.pdb') as infile:
@@ -59,12 +57,8 @@ class Run(object):
                     try:
                         resnr = int(line[22:26])
                         atnr = int(line[6:11])
-                        names = line[12:22]
                     except:
                         continue
-                    if 'POP' in names:
-                        atm_name = names.split()[0]
-                        print(atm_name)
 
 
                 self.residueoffset = resnr
@@ -873,6 +867,7 @@ class Run(object):
         replacements['LIGPRM'] = self.FF + '_' + self.lig1 + '_' + self.lig2 + '_merged.prm'
         replacements['LIGPDB'] = self.lig1 + '_' + self.lig2 + '.pdb'
         replacements['CENTER'] = center
+        replacements['SOLDENS'] = f'{f.get_density('protein.pdb', center, self.sphereradius)}:.5f}'
         replacements['SPHERE'] = f'{self.sphereradius:.1f}'
         if self.system =='vacuum':
             replacements['solvate'] = '!solvate'
