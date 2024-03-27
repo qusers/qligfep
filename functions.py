@@ -104,6 +104,7 @@ def get_atoms_in_sphere(pdb_file, center, radius):
     return atoms
 
 def get_density(pdb_file, center, radius):
+    center = np.array([float(v) for v in center.split()])
     protein_vol = 1/17.30 # A**-3
     lipid_vol = 1/29.15 # A**-3
 
