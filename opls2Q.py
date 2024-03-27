@@ -217,7 +217,10 @@ class Run(object):
             # Add other parameter generators later
             v = 'OPLS 14'
             v = v.split(' ')
-            ffld_serv = s.SCHROD_DIR + 'utilities/ffld_server'
+            if os.path.exists('/proc/sys/fs/binfmt_misc/WSLInterop') == False:
+                ffld_serv = s.SCHROD_DIR + 'utilities/ffld_server'
+            if os.path.exists('/proc/sys/fs/binfmt_misc/WSLInterop') == True:
+                ffld_serv = s.SCHROD_DIR + 'utilities/ffld_server.exe'
             struct_conv = s.SCHROD_DIR + 'utilities/structconvert'
             # Running command line tool has been moved to IO, change function!
             if self.AA == True:
