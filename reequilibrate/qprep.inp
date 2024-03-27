@@ -1,0 +1,18 @@
+rl /gpfs/scratch1/nodespecific/int6/yricky/FF/OPLS2005.lib 
+rl /gpfs/scratch1/nodespecific/int6/yricky/inputfiles_softcore_check/isobutylbenzene/isobutylbenzene.lib
+rprm OPLS2005_isobutylbenzene.prm
+! TO DO Change if protein system is used
+rp protein.pdb 
+! set solute_density 0.05794 
+! NOTE, this is now large for water system, change for protein system
+set solvent_pack 2.5
+boundary 1 26.929 6.158 4.216 25
+solvate 26.929 6.158 4.216 25 4 water.pdb
+!addbond at1 at2 y
+maketop MKC_p 
+writetop dualtop.top 
+wp top_p.pdb y 
+mask none 
+mask not excluded 
+wp complexnotexcluded.pdb y 
+q 
