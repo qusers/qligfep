@@ -48,6 +48,7 @@ class Run(object):
         #Temporary until flag is here
         self.ABS = False #True
         self.ABS_waters = []
+        self.lipid_C = 0
         
         if self.system == 'protein':
             # Get last atom and residue from complexfile!
@@ -56,9 +57,11 @@ class Run(object):
                     try:
                         resnr = int(line[22:26])
                         atnr = int(line[6:11])
-                        
+                        names = int(line[13:21])
                     except:
                         continue
+                    if 'POP' in names:
+                        print(names.split()[0])
 
                 self.residueoffset = resnr
                 self.atomoffset = atnr
