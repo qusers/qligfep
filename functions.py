@@ -83,6 +83,41 @@ def overlapping_pairs(pdbfile, reslist, include=('ATOM', 'HETATM')):
                         
     return atomlist
 
+def get_atoms_in_sphere(pdb_file, center, radius):
+    atoms = []
+    with open(pdb_file) as infile:
+        for line in infile:
+            try:
+                resname = line[17:20].strip()
+                atmname = line[12:16].strip()
+                element = atmname[0] # not always true ofc. but will work for POP
+                x = float(line[30:38])
+                y = float(line[38:46])
+                z = float(line[46:54])
+            except:
+                continue
+            if resname == 'HOH': continue
+            atom_coords = np.array([x, y, z])
+            distance = np.linalg.norm(atom_coords - center)
+            if distance <= radius and element != 'H':
+                atoms.append((resname, atmname, element, distance))
+    return atoms
+
+def get_density(pdb_file, center, radius):
+    center = np.array([float(v) for v in center.split()])
+    protein_vol = 0.05794 # A**-3
+    lipid_vol = 0.03431 # A**-3 from octane
+
+    atoms = get_atoms_in_sphere(pdb_file, center, radius)
+    n_atoms = len(atoms)
+
+    # counting all POP carbon atoms, this includes the headgroup carbons.
+    n_lipids = len([a for a in atoms if (a[0] == 'POP' and a[2] == 'C')]) 
+    n_protein = n_atoms - n_lipids
+
+    density = (n_protein * protein_vol + n_lipids * lipid_vol) / n_atoms
+    return density
+
 def kT(T):
     k = 0.0019872041 # kcal/(mol.K)
     kT = k * T

@@ -22,6 +22,7 @@ class Run(object):
                  system, 
                  cluster, 
                  sphereradius, 
+                 rest_shell_width, 
                  cysbond, 
                  start, 
                  temperature, 
@@ -37,6 +38,7 @@ class Run(object):
         self.rootdir = os.getcwd()
         self.cluster = cluster
         self.sphereradius = sphereradius
+        self.rest_shell_width = rest_shell_width
         self.cysbond = cysbond
         self.start = start
         self.include = ['ATOM', 'HETATM']
@@ -46,7 +48,8 @@ class Run(object):
         #Temporary until flag is here
         self.ABS = False #True
         self.ABS_waters = []
-        
+        self.lipid_C = 0
+
         if self.system == 'protein':
             # Get last atom and residue from complexfile!
             with open('protein.pdb') as infile:
@@ -54,9 +57,9 @@ class Run(object):
                     try:
                         resnr = int(line[22:26])
                         atnr = int(line[6:11])
-                        
                     except:
                         continue
+
 
                 self.residueoffset = resnr
                 self.atomoffset = atnr
@@ -384,7 +387,7 @@ class Run(object):
                 outfile.write(line)
     
     def write_water_pdb(self, writedir):
-        header = self.sphereradius + '.0 SPHERE\n'
+        header = f'{self.sphereradius:.1f} SPHERE\n'
         with open('water.pdb') as infile, open(writedir + '/water.pdb', 'w') as outfile:
             outfile.write(header)
             for line in infile:
@@ -472,7 +475,7 @@ class Run(object):
         replacements['ATOM_END_LIG1']   =   '{:<7}'.format(self.atomoffset + lig_size1)           
         replacements['ATOM_START_LIG2'] =   '{:<6}'.format(self.atomoffset + lig_size1 + 1)
         replacements['ATOM_END_LIG2']   =   '{:<7}'.format(self.atomoffset + lig_size1 + lig_size2)
-        replacements['SPHERE']          =   self.sphereradius
+        replacements['SPHERE']          =   '{:<7}'.format(self.sphereradius - self.rest_shell_width)
         replacements['ATOM_END']        =   '{:<6}'.format(self.atomoffset + lig_total)
         replacements['EQ_LAMBDA']       =   '0.500 0.500'
         
@@ -600,7 +603,7 @@ class Run(object):
         replacements['ATOM_END_LIG1']   =   '{:<7}'.format(self.atomoffset + lig_size1)           
         replacements['ATOM_START_LIG2'] =   '{:<6}'.format(self.atomoffset + lig_size1 + 1)
         replacements['ATOM_END_LIG2']   =   '{:<7}'.format(self.atomoffset + lig_size1 + lig_size2)
-        replacements['SPHERE']          =   self.sphereradius
+        replacements['SPHERE']          =   '{:<7}'.format(self.sphereradius - self.rest_shell_width)
         replacements['ATOM_END']        =   '{:<6}'.format(self.atomoffset + lig_total)        
         replacements['EQ_LAMBDA']       =   '1.000 0.000'
 
@@ -864,7 +867,9 @@ class Run(object):
         replacements['LIGPRM'] = self.FF + '_' + self.lig1 + '_' + self.lig2 + '_merged.prm'
         replacements['LIGPDB'] = self.lig1 + '_' + self.lig2 + '.pdb'
         replacements['CENTER'] = center
-        replacements['SPHERE'] = self.sphereradius
+        target_density = f.get_density('protein.pdb', center, self.sphereradius)
+        replacements['SOLUTEDENS'] = f'{target_density:.5f}'
+        replacements['SPHERE'] = f'{self.sphereradius:.1f}'
         if self.system =='vacuum':
             replacements['solvate'] = '!solvate'
         if self.system == 'water':
@@ -937,10 +942,19 @@ def parseargs(args: list[str] = []) -> argparse.Namespace:
     parser.add_argument('-r', '--sphereradius',
                         dest = "sphereradius",
                         required = False,
-                        default = '15',
+                        type=float,
+                        default = 15.0,
                         help = "size of the simulation sphere"
                        )
 
+    parser.add_argument('--rest_shell_width',
+                        dest = "rest_shell_width",
+                        required = False,
+                        type=float,
+                        default = 0.0,
+                        help = "Width of outer shell used for solute restraints, recommended for membrane proteins."
+                       )
+    
     parser.add_argument('-b', '--cysbond',
                         dest = "cysbond",
                         default = None,
@@ -993,6 +1007,7 @@ if __name__ == "__main__":
               system = args.system,
               cluster = args.cluster,
               sphereradius = args.sphereradius,
+              rest_shell_width = args.rest_shell_width,
               cysbond = args.cysbond,
               start = args.start,
               temperature = args.temperature,
