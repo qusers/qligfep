@@ -8,7 +8,7 @@ rp LIGPDB
 
 ! solvation
 set solvent_pack 2.5
-solute_density SOLDENS
+solute_density SOLUTEDENS
 boundary 1 CENTER SPHERE
 solvate CENTER SPHERE SOLVENT
 

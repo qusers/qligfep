@@ -868,7 +868,7 @@ class Run(object):
         replacements['LIGPDB'] = self.lig1 + '_' + self.lig2 + '.pdb'
         replacements['CENTER'] = center
         target_density = f.get_density('protein.pdb', center, self.sphereradius)
-        replacements['SOLDENS'] = f'{target_density:.5f}'
+        replacements['SOLUTEDENS'] = f'{target_density:.5f}'
         replacements['SPHERE'] = f'{self.sphereradius:.1f}'
         if self.system =='vacuum':
             replacements['solvate'] = '!solvate'
