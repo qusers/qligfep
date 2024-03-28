@@ -105,12 +105,14 @@ def get_atoms_in_sphere(pdb_file, center, radius):
 
 def get_density(pdb_file, center, radius):
     center = np.array([float(v) for v in center.split()])
-    protein_vol = 1/17.30 # A**-3
-    lipid_vol = 1/29.15 # A**-3
+    protein_vol = 0.05794 # A**-3
+    lipid_vol = 0.03431 # A**-3 from octane
 
-    atoms = get_atoms_in_sphere(pdb_file, center, r)
+    atoms = get_atoms_in_sphere(pdb_file, center, radius)
     n_atoms = len(atoms)
-    n_lipids = len([a for a in atoms if (a[0] == 'POP' and a[2] == 'C')])
+
+    # counting all POP carbon atoms, this includes the headgroup carbons.
+    n_lipids = len([a for a in atoms if (a[0] == 'POP' and a[2] == 'C')]) 
     n_protein = n_atoms - n_lipids
 
     density = (n_protein * protein_vol + n_lipids * lipid_vol) / n_atoms

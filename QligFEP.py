@@ -475,7 +475,7 @@ class Run(object):
         replacements['ATOM_END_LIG1']   =   '{:<7}'.format(self.atomoffset + lig_size1)           
         replacements['ATOM_START_LIG2'] =   '{:<6}'.format(self.atomoffset + lig_size1 + 1)
         replacements['ATOM_END_LIG2']   =   '{:<7}'.format(self.atomoffset + lig_size1 + lig_size2)
-        replacements['SPHERE']          =   f'{self.sphereradius - self.rest_shell_width}'
+        replacements['SPHERE']          =   '{:<7}'.format(self.sphereradius - self.rest_shell_width)
         replacements['ATOM_END']        =   '{:<6}'.format(self.atomoffset + lig_total)
         replacements['EQ_LAMBDA']       =   '0.500 0.500'
         
@@ -603,7 +603,7 @@ class Run(object):
         replacements['ATOM_END_LIG1']   =   '{:<7}'.format(self.atomoffset + lig_size1)           
         replacements['ATOM_START_LIG2'] =   '{:<6}'.format(self.atomoffset + lig_size1 + 1)
         replacements['ATOM_END_LIG2']   =   '{:<7}'.format(self.atomoffset + lig_size1 + lig_size2)
-        replacements['SPHERE']          =   f'{(self.sphereradius - self.rest_shell_width):.1f}'
+        replacements['SPHERE']          =   '{:<7}'.format(self.sphereradius - self.rest_shell_width)
         replacements['ATOM_END']        =   '{:<6}'.format(self.atomoffset + lig_total)        
         replacements['EQ_LAMBDA']       =   '1.000 0.000'
 
