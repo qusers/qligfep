@@ -13,9 +13,23 @@ class Run(object):
     """
     Setup residue FEPs using either a single or dual topology approach
     """
-    def __init__(self, cofactor, mutation, include, forcefield, windows,
-                 sampling, system, cluster, temperature, replicates, dual, 
-                 preplocation, start, *args, **kwargs):
+    def __init__(self,
+                 cofactor,
+                 mutation,
+                 include,
+                 forcefield,
+                 windows,
+                 sampling,
+                 system,
+                 cluster,
+                 rest_shell_width, 
+                 temperature,
+                 replicates,
+                 dual, 
+                 preplocation,
+                 start,
+                 *args,
+                 **kwargs):
         
         self.cofactor = [cofactor]
         # Check whether all required files are there:
@@ -72,6 +86,7 @@ class Run(object):
         self.systemsize = 0
         self.system = system
         self.cluster = cluster
+        self.rest_shell_width = rest_shell_width
         self.FEPlist = []
         self.dual = dual
         self.start = start
@@ -587,6 +602,13 @@ class Run(object):
         elif self.system == 'vacuum':
             replacements['solvate']='!solvate'
         
+        # bit ugly to join the coordinates again but in Qligfep these were never split.
+        # so the f.get_density expects a string not a list.
+        center = ' '.join(self.sphere)
+        radius = float(self.radius)
+        target_density = f.get_density('protein.pdb', center, radius)
+        replacements['SOLUTEDENS'] = f'{target_density:.5f}'
+
         src = s.INPUT_DIR + '/qprep_resFEP.inp'
         self.qprep = self.directory + '/inputfiles/qprep.inp'
         libraries = [self.forcefield + '.lib']
@@ -599,12 +621,12 @@ class Run(object):
                 outfile.write('rl ' + self.MUTresn + '.lib\n')    
             for line in infile:
                 line = IO.replace(line, replacements)
-                if line.split()[0] == '!Added':
+                if line.startswith('!Added'):
                     for libraryfile in libraries:
                         outfile.write('rl ' + libraryfile + '\n')
                     continue
                         
-                if line.split()[0] == '!addbond':
+                if line.startswith('!addbond'):
                     for CYX in self.CYX:
                         outline = 'addbond {}:SG {}:SG y\n'.format(*CYX)
                         outfile.write(outline)
@@ -626,6 +648,7 @@ class Run(object):
         self.lambdas = IO.get_lambdas(self.windows, self.sampling)
 
     def write_EQ(self):
+        self.replacements['SPHERE'] = '{:<7}'.format(float(self.radius) - self.rest_shell_width)
         for line in self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]:
             if line[2] == 'CA' and self.system == 'water'              \
             or line[2] == 'CA' and self.system == 'vacuum':             \
@@ -641,6 +664,7 @@ class Run(object):
                 for line in infile:
                     outline = IO.replace(line, self.replacements)
                     outfile.write(outline)
+        self.replacements['SPHERE'] = self.radius
                     
     def write_MD(self):
         # Get restraint for water and vacuum systems
@@ -648,6 +672,7 @@ class Run(object):
         #    if line[2] == 'CA' and self.system == 'water'              \
         #    or line[2] == 'CA' and self.system == 'vacuum':             \                self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1],
         #                                                                      line[1])
+        self.replacements['SPHERE'] = '{:<7}'.format(float(self.radius) - self.rest_shell_width)
         
         if self.start == '1':
             for i in range(0, int(self.windows) + 1):
@@ -737,6 +762,7 @@ class Run(object):
                                                                 l2)
                 
                 self.mdfiles.append('md_{}_{}'.format(l1,l2))
+        self.replacements['SPHERE'] = self.radius
 
 
     def write_runfile(self):
@@ -1100,11 +1126,19 @@ if __name__ == "__main__":
                         required = True,
                         help = "Cluster to use.")
     
+    parser.add_argument('--rest_shell_width',
+                        dest = "rest_shell_width",
+                        required = False,
+                        type=float,
+                        default = 0.0,
+                        help = "Width of outer shell used for solute restraints, recommended for membrane proteins."
+                       )
+
     parser.add_argument('-P', '--preplocation',
                     dest = "preplocation",
                     default = 'LOCAL',
                     help = "define this variable if you are setting up your system elsewhere")
-    
+
     parser.add_argument('-d', '--dual',
                         dest = "dual",
                         default = False,
@@ -1127,6 +1161,7 @@ if __name__ == "__main__":
               windows = args.windows,
               system = args.system,
               cluster = args.cluster,
+              rest_shell_width = args.rest_shell_width,
               temperature = args.temperature,
               replicates = args.replicates,
               preplocation = args.preplocation,
