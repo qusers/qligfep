@@ -602,6 +602,13 @@ class Run(object):
         elif self.system == 'vacuum':
             replacements['solvate']='!solvate'
         
+        # bit ugly to join the coordinates again but in Qligfep these were never split.
+        # so the f.get_density expects a string not a list.
+        center = ' '.join(self.sphere)
+        radius = float(self.radius)
+        target_density = f.get_density('protein.pdb', center, radius)
+        replacements['SOLUTEDENS'] = f'{target_density:.5f}'
+
         src = s.INPUT_DIR + '/qprep_resFEP.inp'
         self.qprep = self.directory + '/inputfiles/qprep.inp'
         libraries = [self.forcefield + '.lib']
@@ -614,12 +621,12 @@ class Run(object):
                 outfile.write('rl ' + self.MUTresn + '.lib\n')    
             for line in infile:
                 line = IO.replace(line, replacements)
-                if line.split()[0] == '!Added':
+                if line.startswith('!Added'):
                     for libraryfile in libraries:
                         outfile.write('rl ' + libraryfile + '\n')
                     continue
                         
-                if line.split()[0] == '!addbond':
+                if line.startswith('!addbond'):
                     for CYX in self.CYX:
                         outline = 'addbond {}:SG {}:SG y\n'.format(*CYX)
                         outfile.write(outline)
