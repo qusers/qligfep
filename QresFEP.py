@@ -1116,7 +1116,7 @@ if __name__ == "__main__":
                         required = False,
                         help = "List of temperatures, default taken from settings.py")
     
-    parser.add_argument('-r', '--replicates',
+    parser.add_argument('-R', '--replicates',
                         dest = "replicates",
                         required = False,
                         help = "Amount of replicates, default taken from settings.py")   
