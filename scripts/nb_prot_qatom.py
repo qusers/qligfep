@@ -3,8 +3,7 @@ import sys
 import os
 import numpy as np
 
-sys.path.append('/home/w/wije/pfs/software/qligfep/')
-
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import IO
 import settings as s
 

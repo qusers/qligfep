@@ -13,7 +13,7 @@ import IO
 
 class Run(object):
     """
-    Setup residue FEPs using either a single or dual topology approach
+    Setup plain MD simulations for LIE calcuations
     """
     def __init__(self, ligand, cofactor, forcefield, include, system,
                  preplocation, cluster, temperature, replicates,
@@ -70,8 +70,8 @@ class Run(object):
             os.makedirs(self.directory)
             os.makedirs(self.directory + '/inputfiles')
             
-        files = {self.directory + '/inputfiles/' + self.forcefield + '_pymemdyn.lib': \
-                 s.FF_DIR + '/' + self.forcefield + '_pymemdyn.lib',
+        files = {self.directory + '/inputfiles/' + self.forcefield + '.lib': \
+                 s.FF_DIR + '/' + self.forcefield + '.lib',
                 }
         
         if self.cofactor[0] != None:
@@ -230,9 +230,9 @@ class Run(object):
         elif self.system == 'vacuum':
             replacements['solvate']='!solvate'
         
-        src = s.INPUT_DIR + '/qprep_resFEP.inp'
+        src = s.INPUT_DIR + '_old/qprep_resFEP.inp'
         self.qprep = self.directory + '/inputfiles/qprep.inp'
-        libraries = [self.forcefield + '_pymemdyn.lib']
+        libraries = [self.forcefield + '.lib']
         if self.cofactor[0] != None:
             for filename in self.cofactor:
                 libraries.append(filename + '.lib')
@@ -255,7 +255,7 @@ class Run(object):
                 
     def run_qprep(self):
         os.chdir(self.directory + '/inputfiles/')
-        qprep = s.Q_DIR[self.preplocation] + 'qprep5' # use either qprep / Qprep6
+        qprep = '/home/apps/apps/Q/5.10.1/bin/qprep5' # use either qprep / Qprep6
         options = ' < qprep.inp > qprep.out'         # based on Q version to use
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -277,7 +277,7 @@ class Run(object):
         self.replacements['ATOM_START_LIG1'] = '{}'.format(1)
         self.replacements['EQ_LAMBDA'] = '1.000 0.000'
         
-        for EQ_file in glob.glob(s.INPUT_DIR + '/eq*.inp'):
+        for EQ_file in glob.glob(s.INPUT_DIR + '_old/eq*.inp'):
             src = EQ_file
             EQ_file = EQ_file.split('/')
             tgt = self.directory + '/inputfiles/' + EQ_file[-1]
@@ -288,7 +288,7 @@ class Run(object):
                     
     def write_MD(self):
         self.replacements['FILE_N'] = 'eq5'
-        src = s.INPUT_DIR + '/md_LIE_XXX.inp'
+        src = s.INPUT_DIR + '_old/md_LIE_XXX.inp'
         for i in range(1, self.time):
             tgt = self.directory + '/inputfiles/md_LIE_{:03d}.inp'.format(i)
             self.replacements['FILE'] = 'md_LIE_{:03d}'.format(i)
@@ -302,7 +302,7 @@ class Run(object):
         
     def write_runfile(self):
         ntasks = getattr(s, self.cluster)['NTASKS']
-        src = s.INPUT_DIR + '/run.sh'
+        src = s.INPUT_DIR + '_old/run.sh'
         tgt = self.directory + '/inputfiles/run' + self.cluster + '.sh'
         EQ_files = sorted(glob.glob(self.directory + '/inputfiles/eq*.inp'))
 
@@ -310,6 +310,16 @@ class Run(object):
 
         replacements = IO.merge_two_dicts(self.replacements, getattr(s, self.cluster))
         replacements['FEPS'] = 'FEP1.fep'
+        if self.cluster == 'TETRA':
+            replacements['QDYN'] = 'qdyn=/proj/uucompbiochem/users/x_lucko/software/q5.10/bin/qdyn5p'
+            replacements['QFEP'] = '/proj/uucompbiochem/users/x_lucko/software/q5.10/bin/qfep5'
+            replacements['QCALC'] = '/proj/uucompbiochem/users/x_lucko/software/q5.10/bin/qcalc5'
+            replacements['QPREP'] = '/proj/uucompbiochem/users/x_lucko/software/q5.10/bin/qprep5'
+        elif self.cluster == 'DARDEL':
+            replacements['QDYN'] = 'qdyn=/cfs/klemming/projects/supr/uucompbiochem/lucko/software/q5.10.1/bin/qdyn5p'
+            replacements['QFEP'] = '/cfs/klemming/projects/supr/uucompbiochem/lucko/software/q5.10.1/bin/qfep5'
+            replacements['QCALC'] = '/cfs/klemming/projects/supr/uucompbiochem/lucko/software/q5.10.1/bin/qcalc5'
+            replacements['QPREP'] = '/cfs/klemming/projects/supr/uucompbiochem/lucko/software/q5.10.1/bin/qprep5'
             
         with open(src) as infile, open(tgt, 'w') as outfile:
             for line in infile:

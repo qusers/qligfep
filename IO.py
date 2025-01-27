@@ -143,12 +143,15 @@ def restraint_matrix(mutation):
     """
     Matrix stroring appropriate restraints for side chain overlap of given mutation
     """
-    wt, mut = AA(AA(mutation[0])), AA(AA(mutation[2]))
+    wt, mut = mutation[0], mutation[2]
+    if not len(mutation[0]) == 3:
+        wt, mut = AA(AA(mutation[0])), AA(AA(mutation[2]))
     
     sidechains = {
         'ASP': ['CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2'],
         'GLU': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'OE2'],
         'HID': ['CB', 'HB2', 'HB3', 'CG', 'ND1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2'],
+        'HIE': ['CB', 'HB2', 'HB3', 'CG', 'ND1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2', 'HE2'],
         'ARG': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'NE', 'HE', 'CZ', 'NH1', 'HH11', 'HH12', 'NH2', 'HH21', 'HH22'],
         'LYS': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'NZ', 'HZ1', 'HZ2', 'HZ3'],
         'ALA': ['CB', 'HB1', 'HB2', 'HB3'],
@@ -171,6 +174,33 @@ def restraint_matrix(mutation):
     mut_chain = [x.lower() for x in sidechains[mut]]
 
     return wt_chain, mut_chain
+
+def heavy_atom_match(wt, mut, hybrid_res):
+    """
+    Function to return equivalent heavy atoms in wild type and mutant amino acid side chain
+    """
+    wt = [x for x in wt if not x[0] == 'H']
+    mut = [x for x in mut if not x[0] == 'h']
+    
+    coords_wt, coords_mut = {}, {}
+
+    for atom in hybrid_res:
+        if atom[2] in wt:
+            coords_wt[atom[2]] = [float(atom[8]), float(atom[9]), float(atom[10])]
+        if atom[2] in mut:
+            coords_mut[atom[2]] = [float(atom[8]), float(atom[9]), float(atom[10])]
+    
+    ha_pairs = []
+    for coord1 in coords_wt:
+        for coord2 in coords_mut:
+            if coord1[0] == coord2[0].upper():
+                if f.euclidian_overlap(coords_wt[coord1], coords_mut[coord2], 0.5):
+                    ha_pairs.append([coord1, coord2])
+                else:
+                    pass
+            else:
+                pass
+    return ha_pairs
 
 
 def read_prm(prmfiles):
@@ -301,14 +331,14 @@ def merge_two_dicts(x, y):
     return z
 
 def regex_str_int(line):
-    a = re.split("(\d+)", line)
+    a = re.split(r"(\d+)", line)
     return a
     
-def read_qfep(qfep):
+def read_qfep(qfep, gly):
     """
     Reads a given qfep.out file.
 
-    returns [Zwanzig, dGfr, dGr, TI, OS, BAR]
+    returns [Zwanzig, dGfr, dGr, BAR]
     """
     with open(qfep) as infile:
         block = 0
@@ -334,46 +364,81 @@ def read_qfep(qfep):
                 if line[3] == 'Reaction':
                     block = 0
 
-            if len(line) > 1:
-                if block == 1:
-                    if line[0] == '1.000000':
-                        Zwanzig_r = float(line[4])
+            if not gly:
+                if len(line) > 1:
+                    if block == 1:
+                        if line[0] == '1.000000':
+                            Zwanzig_r = float(line[4])
 
-                    elif line[0] == '0.000000':
-                        Zwanzig_f = float(line[2])
+                        elif line[0] == '0.000000':
+                            Zwanzig_f = float(line[2])
 
-                        if line[5] == '-Infinity':
-                            Zwanzig = np.nan
+                            if line[5] == '-Infinity':
+                                Zwanzig = np.nan
+
+                            else:
+                                Zwanzig = float(line[5])
+
+                    if block == 2 and line[0] == '0.000000':
+                        try:
+                            TI = line[2]
+                            if line[2] == '-Infinity':
+                                TI = np.nan
+                        except:
+                            TI = np.nan
+
+                    if block == 3 and line[0] == '0.000000':
+                        if line[2] == '-Infinity':
+                            OS = np.nan
 
                         else:
-                            Zwanzig = float(line[5])
+                            OS = float(line[2])
 
-                if block == 2 and line[0] == '0.000000':
-                    try:
-                        TI = line[2]
+                    if block == 4 and line[0] == '0.000000':
                         if line[2] == '-Infinity':
+                            BAR = np.nan
+                        else:
+                            BAR = float(line[2])
+            else:
+                if len(line) > 1:
+                    if block == 1:
+                        if line[0] == '0.000000':
+                            Zwanzig_r = float(line[4])
+
+                        elif line[0] == '1.000000':
+                            Zwanzig_f = float(line[2])
+
+                            if line[5] == '-Infinity':
+                                Zwanzig = np.nan
+
+                            else:
+                                Zwanzig = float(line[5])
+
+                    if block == 2 and line[0] == '1.000000':
+                        try:
+                            TI = line[2]
+                            if line[2] == '-Infinity':
+                                TI = np.nan
+                        except:
                             TI = np.nan
-                    except:
-                        TI = np.nan
 
-                if block == 3 and line[0] == '0.000000':
-                    if line[2] == '-Infinity':
-                        OS = np.nan
+                    if block == 3 and line[0] == '1.000000':
+                        if line[2] == '-Infinity':
+                            OS = np.nan
 
-                    else:
-                        OS = float(line[2])
+                        else:
+                            OS = float(line[2])
 
-                if block == 4 and line[0] == '0.000000':
-                    if line[2] == '-Infinity':
-                        BAR = np.nan
-                    else:
-                        BAR = float(line[2])
-    try: OS
-    except: OS = np.nan
+                    if block == 4 and line[0] == '1.000000':
+                        if line[2] == '-Infinity':
+                            BAR = np.nan
+                        else:
+                            BAR = float(line[2])
+                            
     try: BAR
     except: BAR = np.nan
                         
-    return [Zwanzig, Zwanzig_f, Zwanzig_r, OS, BAR]
+    return [Zwanzig, Zwanzig_f, Zwanzig_r, BAR]
 
 def read_qfep_esc(qfep):
     """
@@ -444,7 +509,7 @@ def read_qfep_esc(qfep):
     try: BAR
     except: BAR = np.nan
 
-    return [Zwanzig, Zwanzig_f, Zwanzig_r, OS, BAR]
+    return [Zwanzig, Zwanzig_f, Zwanzig_r, BAR]
 
 def read_qfep_verbose(qfep):
     """

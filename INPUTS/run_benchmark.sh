@@ -20,8 +20,8 @@ fepfiles=(FEPS)
 temperature=298
 run=10
 finalMDrestart=md_0000_1000.re
-wt_res="RES_WT"
-mut_res="RES_MUT"
+wt_res=RES_WT
+mut_res=RES_MUT
 
 seed=1
 
@@ -81,9 +81,9 @@ fi
 echo $fepfile
 #RUN_FILES
 timeout 30s QFEP < qfep.inp > qfep.out
-#rm *.log
-#rm *.dcd
-#mv md_0000_1000.re md_0000_1000.re.keep
-#rm *.re
-#mv md_0000_1000.re.keep md_0000_1000.re
+rm *.log
+rm *.dcd
+mv md_0000_1000.re md_0000_1000.re.keep
+rm *.re
+mv md_0000_1000.re.keep md_0000_1000.re
 done

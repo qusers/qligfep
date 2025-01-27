@@ -191,6 +191,7 @@ class Run(object):
                 if line.startswith(self.include):
                     header = IO.pdb_parse_in(line)
                     RES_ref = header[6] - 1
+                    #self.offset = RES_ref
                     break
                     
             for line in infile:
@@ -570,6 +571,7 @@ class Run(object):
                     if self.PDB[chain][key][2].strip() == 'CA':
                         PDB_resi = self.PDB[chain][key][6]
                         Q_resi = self.log['QRESN'][chain][PDB_resi]
+                        #Q_resi = PDB_resi - self.offset
                         resn = self.PDB[chain][key][4]
                         outfile.write('{:<10}{:<10}{:10}{:10}\n'.format(Q_resi,PDB_resi,chain,resn))
                     

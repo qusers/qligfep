@@ -6,8 +6,7 @@ import sys
 import os
 import argparse
 
-# Add this path so we can find the QligFEP modules
-sys.path.append('../')
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import IO
 import settings as s
 import functions as f

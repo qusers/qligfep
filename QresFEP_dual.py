@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 
 import argparse
+from pickle import TRUE
 import re
 import os
 import shutil
+from ssl import HAS_TLSv1_3
 import sys
 import glob
+from decimal import Decimal
+import numpy as np
 
 import functions as f
 import settings as s
@@ -81,6 +85,38 @@ class Run(object):
         self.nonAA = False
         self.timestep = timestep
         
+        self.atoms = {'CA': 0,
+                      'HA': 0, 'ha': 0, 'HA2': 0, 'ha2': 0, 'HA3': 0, 'ha3': 0,
+                      'CB': 0, 'cb': 0,
+                      'HB': 0, 'hb': 0, 'HB1': 0, 'hb1': 0, 'HB2': 0, 'hb2': 0, 'HB3': 0, 'hb3': 0,
+                      'CG': 0, 'cg': 0, 'CG1': 0, 'cg1': 0, 'CG2': 0, 'cg2': 0,
+                      'OG': 0, 'og': 0, 'OG1': 0, 'og1': 0,
+                      'SG': 0, 'sg': 0,
+                      'HG': 0, 'hg': 0, 'HG1': 0, 'hg1': 0, 'HG2': 0, 'hg2': 0, 'HG3': 0, 'hg3': 0,
+                      'HG11': 0, 'hg11': 0, 'HG12': 0, 'hg12': 0, 'HG13': 0, 'hg13': 0,
+                      'HG21': 0, 'hg21': 0, 'HG22': 0, 'hg22': 0, 'HG23': 0, 'hg23': 0,
+                      'CD': 0, 'cd': 0, 'CD1': 0, 'cd1': 0, 'CD2': 0, 'cd2': 0,
+                      'ND1': 0, 'nd1': 0, 'ND2': 0, 'nd2': 0,
+                      'OD1': 0, 'od1': 0, 'OD2': 0, 'od2': 0,
+                      'SD': 0, 'sd': 0,
+                      'HD': 0, 'hd': 0, 'HD1': 0, 'hd1': 0, 'HD2': 0, 'hd2': 0, 'HD3': 0, 'hd3': 0,
+                      'HD11': 0, 'hd11': 0, 'HD12': 0, 'hd12': 0, 'HD13': 0, 'hd13': 0,
+                      'HD21': 0, 'hd21': 0, 'HD22': 0, 'hd22': 0, 'HD23': 0, 'hd23': 0,
+                      'CE': 0, 'ce': 0, 'CE1': 0, 'ce1': 0, 'CE2': 0, 'ce2': 0, 'CE3': 0, 'ce3': 0,
+                      'OE1': 0, 'oe1': 0, 'OE2': 0, 'oe2': 0,
+                      'NE': 0, 'ne': 0, 'NE1': 0, 'ne1': 0, 'NE2': 0, 'ne2': 0,
+                      'HE': 0, 'he': 0, 'HE1': 0, 'he1': 0, 'HE2': 0, 'he2': 0, 'HE3': 0, 'he3': 0,
+                      'HE21': 0, 'he21': 0, 'HE22': 0, 'he22': 0,
+                      'CZ': 0, 'cz': 0, 'CZ2': 0, 'cz2': 0, 'CZ3': 0, 'cz3': 0,
+                      'NZ': 0, 'nz': 0,
+                      'HZ': 0, 'hz': 0, 'HZ1': 0, 'hz1': 0, 'HZ2': 0, 'hz2': 0, 'HZ3': 0, 'hz3': 0,
+                      'CH2': 0, 'ch2': 0,
+                      'OH': 0, 'oh': 0,
+                      'NH1': 0, 'nh1': 0, 'NH2': 0, 'nh2': 0,
+                      'HH': 0, 'hh': 0, 'HH2': 0, 'hh2': 0, 
+                      'HH11': 0, 'hh11': 0, 'HH12': 0, 'hh12': 0,
+                      'HH21': 0, 'hh21': 0, 'HH22': 0, 'hh22': 0}
+        
         self.replacements = {'ATOM_START_LIG1':'1',
                              'WATER_RESTRAINT':'',
                              'TEMP_VAR':self.temperature,
@@ -97,14 +133,12 @@ class Run(object):
     def checkFEP(self):
         if len(self.mutation[0]) == 1:
             AA_from = IO.AA(self.mutation[0])
-            
         else:
             AA_from = self.mutation[0]
         
         try:
             if len(self.mutation[2]) == 1:
                 AA_to = IO.AA(self.mutation[2])
-            
             else:
                 AA_to = self.mutation[2]
                 
@@ -115,6 +149,13 @@ class Run(object):
         mutation = '{}{}{}'.format(*self.mutation)
         FEPdir = s.FF_DIR + '/.FEP/' + self.forcefield +  '/' + AA_from + '_' + AA_to # + '_CI' # Include for charge correction
             
+        self.FromGly, self.ToGly = False, False
+        if self.mutation[0] == 'G' or self.mutation[0] == 'GLY':
+            self.FromGly = True
+            self.replacements['EQ_LAMBDA'] = '0.000 1.000'
+        if self.mutation[2] == 'G' or self.mutation[2] == 'GLY':
+            self.ToGly = True
+        
         if self.dual == True:
             print('Generating dual topology inputfiles')
             self.FEPlist = ['FEP1.fep', 'FEP2.fep']
@@ -195,11 +236,18 @@ class Run(object):
         
         elif len(self.mutation[2]) == 3:
             self.MUTresn = '{}2{}'.format(IO.AA(self.mutation[0]),IO.AA(self.mutation[2]))
-        self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA', 'HA2']
+        if self.ToGly == True or self.FromGly == True:
+            self.backbone = ['C', 'O', 'CA', 'N', 'H']
+        else: 
+            self.backbone = ['C', 'O', 'CA', 'N', 'H', 'HA']
         # Read in the mutant residue
         if self.dual == True:
             MUT = []
-            with open(self.mutation[2] + '.pdb') as infile:
+            if len(self.mutation[2]) == 1:
+                mut_res = '{}{}.pdb'.format(IO.AA(self.mutation[2]),self.mutation[1])
+            else:
+                mut_res = '{}{}.pdb'.format(self.mutation[2],self.mutation[1])
+            with open(mut_res) as infile:   # Reads the mutant residue pdb as MUTX.pdb
                 for line in infile:
                     if line.startswith(self.include):
                         line = IO.pdb_parse_in(line)
@@ -208,7 +256,6 @@ class Run(object):
                         line[6] = int(self.PDB2Q[self.chain][self.mutation[1]])
                         if line[2] in self.backbone:
                             continue
-
                         else:
                             MUT.append(line)
         
@@ -216,7 +263,6 @@ class Run(object):
         if self.cofactor != None:
             for line in self.cofactor:
                 pdb_files.append(line + '.pdb')
-        
         for pdb_file in pdb_files:
             with open(pdb_file) as infile:
                 for line in infile:
@@ -232,13 +278,12 @@ class Run(object):
                         # Change to hybrid residue name
                         if self.dual == True:
                             if str(line[6]) == self.PDB2Q[self.chain][self.mutation[1]]:
-                                line[4] = self.MUTresn  
+                                line[4] = self.MUTresn
                         
                         # Generate the dual topology residue in the PDB dictionary
                         # Construct the PDB dictionary            
                         try:
                             self.PDB[line[6]].append(line)
-
                         except:
                             self.PDB[line[6]] = [line]                        
                         
@@ -262,14 +307,12 @@ class Run(object):
 
                                             try:
                                                 self.PDB[MUTat[6]].append(MUTat)
-
                                             except:
                                                 self.PDB[MUTat[6]] = [MUTat]
 
                                             self.dualMUT['0'].append(MUTat)
                             
                                 self.dualMUT['1'].append(line)
-                            
                         self.systemsize += 1
                 
                 resoffset = len(self.PDB)
@@ -309,29 +352,34 @@ class Run(object):
 
                     except:
                         FFlib[RESname] = [line]
-
-
+        
         # Read the WT residue
         if len(self.mutation[0]) == 1:
             AA = IO.AA(self.mutation[0])
         else:
             AA = self.mutation[0]        
         for line in FFlib[AA]:
+            if 'C223' in line:  #Change atom type of GLY 
+                line = line.replace('C223','C224')
             if line.strip() in headers:
                 header = line.strip()
                 self.merged_lib[header] = []
                 
             else:
                 self.merged_lib[header].append(line)
-        
-        # Add CA CBx bond
-        self.merged_lib['[bonds]'].append('       CA     cb\n')
+
+        if self.FromGly == True:
+            self.merged_lib['[bonds]'].append('       CA     ha\n')
+        if self.ToGly == True:
+            self.merged_lib['[bonds]'].append('       CA     ha2\n')
+            self.merged_lib['[bonds]'].append('       CA     ha3\n')
+        else:
+            self.merged_lib['[bonds]'].append('       CA     cb\n')
         
         ## Read the mutant residue
         # Construct atom name replacements
         if len(self.mutation[2]) == 1:
             AA = IO.AA(self.mutation[2])
-            
         else:
             AA = self.mutation[2]
         for line in FFlib[AA]:
@@ -340,16 +388,14 @@ class Run(object):
             if line != headers[0]:
                 if len(line) > 2:
                     atom = line[1]
-                    if atom != 'H':
+                    if atom not in self.backbone:
                         replacements[atom] = atom.lower()
-                
                 if line == header[1]:
                     break
                 
         for line in FFlib[AA]:
             if line.strip() in headers:
                 header = line.strip()
-
             if line[0] == '!':
                 continue
             if len(line.split()) < 2:
@@ -361,20 +407,8 @@ class Run(object):
                     continue
                 
                 # Remove overlapping backbone definitions
-                if line.split()[0] == 'O' \
-                or line.split()[0] == 'C' \
-                or line.split()[0] == 'CA'     \
-                or line.split()[0] == 'N'   \
-                or line.split()[0] == 'H'     \
-                or line.split()[0] == 'HA':
-                    continue
-                    
-                if line.split()[1] == 'O' \
-                or line.split()[1] == 'C' \
-                or line.split()[1] == 'CA'     \
-                or line.split()[1] == 'N'   \
-                or line.split()[1] == 'H'     \
-                or line.split()[1] == 'HA':
+                if line.split()[0] in self.backbone \
+                or line.split()[1] in self.backbone:
                     continue
                 
                 # Merge the library on the reference
@@ -383,6 +417,7 @@ class Run(object):
         
         # Write out the merged library file
         out = self.directory + '/inputfiles/' + self.MUTresn + '.lib'
+        res_ID = int(self.PDB2Q[self.chain][self.mutation[1]])
         with open(out, 'w') as outfile:
             self.merged_lib['[charge_groups]'] = []
             cnt = 0
@@ -401,7 +436,7 @@ class Run(object):
                                                                         line[3]))
                     else:
                         outfile.write(line)
-
+                        
             
     def get_zeroforcebonded(self):
         if self.dual == False:
@@ -432,10 +467,9 @@ class Run(object):
         
         # Write out PDB file
         with open(pdb_tmp, 'w') as outfile:
-            mutPDB = self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]
-            for atom in mutPDB:            
-                outfile.write(IO.pdb_parse_out(atom) + '\n')
-
+            for item in self.PDB.items():
+                for atom in item[1]:
+                    outfile.write(IO.pdb_parse_out(atom) + '\n')
         
         with open(prm_tmp, 'w') as outfile:
             for key in headers:
@@ -445,6 +479,7 @@ class Run(object):
                     
         with open(qprep_tmp, 'w') as outfile:
             outfile.write('rl {}\n'.format(libfile.split('/')[-1]))
+            outfile.write('rl {}.lib\n'.format(self.forcefield))
             outfile.write('rprm {}\n'.format(prm_tmp.split('/')[-1]))
             outfile.write('rp {}\n'.format(pdb_tmp.split('/')[-1]))
             outfile.write('boundary 1 {} {} {} {}\n'.format(self.sphere[0],
@@ -456,7 +491,8 @@ class Run(object):
             
         # run qprep to get bonded parameters to be set to zero
         os.chdir(self.directory + '/inputfiles/')
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        cluster_options = getattr(s, self.preplocation)
+        qprep = cluster_options['QPREP']
         options = ' < tmp.inp > tmp.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -473,13 +509,22 @@ class Run(object):
                     continue
                 
                 # Create zero fk angles
+                if line[2] == 'bond':
+                    bond_prm = '{:11}{:11}{: 8.2f}{:>12.7}\n'.format(line[-2],
+                                                                     line[-1],
+                                                                     0.0,
+                                                                     0.0)
+                    if bond_prm not in self.zerofk['[bonds]']:
+                        self.zerofk['[bonds]'].append(bond_prm)
+                
                 if line[2] == 'angle':
                     angle_prm = '{:11}{:11}{:11}{: 8.2f}{:>12.7}\n'.format(line[-3],
                                                                            line[-2],
                                                                            line[-1],
                                                                            0.0,
                                                                            110.0)
-                    self.zerofk['[angles]'].append(angle_prm)
+                    if angle_prm not in self.zerofk['[angles]']:
+                        self.zerofk['[angles]'].append(angle_prm)
                     
                 # Create zero fk torsions
                 if line[2] == 'torsion':
@@ -491,8 +536,8 @@ class Run(object):
                                                                           1,
                                                                           '0.000',
                                                                           '1')
-                    
-                    self.zerofk['[torsions]'].append(torsion_prm)
+                    if torsion_prm not in self.zerofk['[torsions]']:
+                        self.zerofk['[torsions]'].append(torsion_prm)
 
         # ADD REMOVE FUNCTIONS FOR TMP FILES HERE
        # for tmp in glob.glob('tmp*'):
@@ -527,7 +572,7 @@ class Run(object):
                     outfile.write(line)
                 if self.dual == True:
                     if key in self.zerofk:
-                        outfile.write('! Zero order bonds dual topology\n')
+                        outfile.write('! Zero order {} dual topology\n'.format(key.strip('[]')))
                         for line in self.zerofk[key]:
                             outfile.write(line)
                         outfile.write('\n')
@@ -619,7 +664,8 @@ class Run(object):
         
     def run_qprep(self):
         os.chdir(self.directory + '/inputfiles/')
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        cluster_options = getattr(s, self.preplocation)
+        qprep = cluster_options['QPREP']
         options = ' < qprep.inp > qprep.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -637,7 +683,50 @@ class Run(object):
                 self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
                                                                               line[1])
         self.replacements['ATOM_END'] = '{}'.format(self.systemsize)
+
+        res_ID = int(self.PDB2Q[self.chain][self.mutation[1]])
+        top_p = self.directory + '/inputfiles/top_p.pdb'
+        with open(top_p, 'r') as file:
+                cnt = 0
+                for line in file:
+                    line = line.split()
+                    residue_number = int(line[4])
+                    if residue_number == res_ID:
+                        self.PDB[res_ID][cnt][2] = line[2]
+                        self.PDB[res_ID][cnt][8] = line[5]
+                        self.PDB[res_ID][cnt][9] = line[6]
+                        self.PDB[res_ID][cnt][10] = line[7]
+                        cnt += 1
+                        if line[2] in self.atoms:
+                            self.atoms[line[2]] = line[1] 
         
+        wt, mut = IO.restraint_matrix(self.mutation)
+        
+        wt_ids = sorted([int(self.atoms[x]) for x in wt])
+        mut_ids = sorted([int(self.atoms[x]) for x in mut])
+        
+        self.RES_WT = []
+        self.RES_MUT = []
+        
+        hybrid_res = self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]
+        for atom in hybrid_res:
+            if atom[1] in wt_ids:
+                if any(x in atom[2] for x in ['C', 'O', 'N', 'S']):
+                    self.RES_WT.append('{} {} {} {} 10.0 10.0 10.0 0'.format(atom[1], atom[8], atom[9], atom[10]))
+            elif atom[1] in mut_ids:
+                if any(x in atom[2].upper() for x in ['C', 'O', 'N', 'S']):
+                    self.RES_MUT.append('{} {} {} {} 10.0 10.0 10.0 0'.format(atom[1], atom[8], atom[9], atom[10]))                
+            else:
+                continue
+        
+        if self.FromGly == True:
+            self.replacements['MUT_RES'] = ''
+        else:
+            if mut:
+                self.replacements['MUT_RES'] = '\n'.join(self.RES_MUT)
+            else:
+                self.replacements['MUT_RES'] = ''
+
         for EQ_file in glob.glob(s.INPUT_DIR + '/eq*.inp'):
             src = EQ_file
             EQ_file = EQ_file.split('/')
@@ -650,10 +739,11 @@ class Run(object):
                     
     def write_MD(self):
         # Get restraint for water and vacuum systems
-        #for line in self.PDB[int(self.PDB2Q[self.mutation[1]])]:
-        #    if line[2] == 'CA' and self.system == 'water'              \
-        #    or line[2] == 'CA' and self.system == 'vacuum':             \                self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1],
-        #                                                                      line[1])
+        for line in self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]:
+            if line[2] == 'CA' and self.system == 'water'              \
+            or line[2] == 'CA' and self.system == 'vacuum':             \
+                self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
+                                                                              line[1])
         
         if self.start == '1':
             for i in range(0, int(self.windows) + 1):
@@ -663,73 +753,28 @@ class Run(object):
 
                 if self.lambdas[i] == '1.000':
                     src = s.INPUT_DIR + '/md_1000_0000.inp'
+                    if self.FromGly == True:
+                        self.replacements['FLOAT_LAMBDA1'] = self.lambdas[j]
+                        self.replacements['FLOAT_LAMBDA2'] = self.lambdas[i]
+                    else:
+                        self.replacements['FLOAT_LAMBDA1'] = self.lambdas[i]
+                        self.replacements['FLOAT_LAMBDA2'] = self.lambdas[j]
                     
                 else:
                     src = s.INPUT_DIR + '/md_XXXX_XXXX.inp'
-                    self.replacements['FLOAT_LAMBDA1'] = self.lambdas[i]
-                    self.replacements['FLOAT_LAMBDA2'] = self.lambdas[j]
+                    if self.FromGly == True:
+                        self.replacements['FLOAT_LAMBDA1'] = self.lambdas[j]
+                        self.replacements['FLOAT_LAMBDA2'] = self.lambdas[i]
+                    else:
+                        self.replacements['FLOAT_LAMBDA1'] = self.lambdas[i]
+                        self.replacements['FLOAT_LAMBDA2'] = self.lambdas[j]
                 
                 tgt = self.directory + '/inputfiles/md_{}_{}.inp'.format(lambda1,
                                                                          lambda2)
                 self.replacements['FILE'] = 'md_{}_{}'.format(lambda1,
                                                               lambda2)
-                
-                with open(src) as infile:
-                    with open(tgt, 'w') as outfile:
-                        for line in infile:
-                            outline = IO.replace(line, self.replacements)
-                            outfile.write(outline)
-
-                ## Store previous file
-                self.replacements['FILE_N'] = 'md_{}_{}'.format(lambda1,
-                                                                lambda2)
-                
-        if self.start == '0':
-            for i in range(0, int(self.windows) + 1):
-                j = int(self.windows) - i
-                lambda1 = self.lambdas[i].replace(".", "")
-                lambda2 = self.lambdas[j].replace(".", "")
-
-                if self.lambdas[i] == '1.000':
-                    src = s.INPUT_DIR + '/md_1000_0000.inp'
-                    
-                else:
-                    src = s.INPUT_DIR + '/md_XXXX_XXXX.inp'
-                    self.replacements['FLOAT_LAMBDA1'] = self.lambdas[i]
-                    self.replacements['FLOAT_LAMBDA2'] = self.lambdas[j]
-                
-                tgt = self.directory + '/inputfiles/md_{}_{}_F.inp'.format(lambda1,
-                                                                         lambda2)
-                self.replacements['FILE'] = 'md_{}_{}'.format(lambda1,
-                                                              lambda2)
-                
-                with open(src) as infile:
-                    with open(tgt, 'w') as outfile:
-                        for line in infile:
-                            outline = IO.replace(line, self.replacements)
-                            outfile.write(outline)
-
-                ## Store previous file
-                self.replacements['FILE_N'] = 'md_{}_{}'.format(lambda1,
-                                                                lambda2)
-            self.replacements['FILE_n-1'] = 'eq5'   
-            for i in reversed(range(0, int(self.windows) + 1)):
-                j = int(self.windows) - i
-                lambda1 = self.lambdas[i].replace(".", "")
-                lambda2 = self.lambdas[j].replace(".", "")
-                
-                if self.lambdas[i] == '0.000':
-                    src = s.INPUT_DIR + '/md_0000_1000.inp'
-                    
-                else:
-                    src = s.INPUT_DIR + '/md_XXXX_XXXX.inp'
-                    self.replacements['FLOAT_LAMBDA1'] = self.lambdas[i]
-                    self.replacements['FLOAT_LAMBDA2'] = self.lambdas[j]
-                
-                tgt = self.directory + '/inputfiles/md_{}_{}_R.inp'.format(lambda1,
-                                                                         lambda2)
-                self.replacements['FILE'] = 'md_{}_{}'.format(lambda1,
-                                                           lambda2)
+                self.replacements['MUT_RES'] = 'MUT_RES'
+                              
                 
                 with open(src) as infile:
                     with open(tgt, 'w') as outfile:
@@ -809,28 +854,39 @@ class Run(object):
 
     def write_runfile(self):
         ntasks = getattr(s, self.cluster)['NTASKS']
-        if self.start == '0':
-            src = s.INPUT_DIR + '/run_dual.sh'
-        else:
-            src = s.INPUT_DIR + '/run.sh'
+        src = s.INPUT_DIR + '/run_benchmark.sh'
         tgt = self.directory + '/inputfiles/run' + self.cluster + '.sh'
         EQ_files = sorted(glob.glob(self.directory + '/inputfiles/eq*.inp'))
         
         if self.start == '1':
             MD_files = reversed(sorted(glob.glob(self.directory + '/inputfiles/md*.inp')))
-        
-        elif self.start == '0':
-            MD_files = reversed(sorted(glob.glob(self.directory + '/inputfiles/md*_F.inp')))
-            MD_files_R = sorted(glob.glob(self.directory + '/inputfiles/md*_R.inp'))
             
         elif self.start == '0.5':
             MD_files = self.mdfiles[1:]
             half = int((len(MD_files)/2))
             md_1 = MD_files[0:half]
             md_2 = MD_files[half:]
-
+        
+        wt, mut = IO.restraint_matrix(self.mutation)
+        
+        wt_ids = sorted([int(self.atoms[x]) for x in wt])
+        mut_ids = sorted([int(self.atoms[x]) for x in mut])
+        
+        
+        if self.FromGly == True:
+            self.replacements['RES_WT']  = repr('\n'.join(self.RES_MUT))
+            self.replacements['RES_MUT'] = repr('')
+        else:
+            self.replacements['RES_WT']  = repr('\n'.join(self.RES_WT))
+            if mut:
+                self.replacements['RES_MUT'] = repr('\n'.join(self.RES_MUT))
+            else:
+                self.replacements['RES_MUT'] = repr('')
+                
+        
         replacements = IO.merge_two_dicts(self.replacements, getattr(s, self.cluster))
         replacements['FEPS'] = ' '.join(self.FEPlist)
+        replacements['JOBNAME'] = 'QresFEP'
             
         with open(src) as infile:
             with open(tgt, 'w') as outfile:
@@ -838,7 +894,6 @@ class Run(object):
                     if line.strip() == '#SBATCH -A ACCOUNT':
                         try:
                             replacements['ACCOUNT']
-                            
                         except:
                             line = ''
                     outline = IO.replace(line, replacements)
@@ -853,7 +908,7 @@ class Run(object):
                             outfile.write(outline)
                             
                     if line.strip() == '#RUN_FILES':
-                        if self.start == '1' or self.start == '0':
+                        if self.start == '1':
                             for line in MD_files:
                                 file_base = line.split('/')[-1][:-4]
                                 outline = 'time srun $qdyn {}.inp'  \
@@ -880,17 +935,22 @@ class Run(object):
                                 outfile.write(outline2)
                                 outfile.write(outline3)
                                 outfile.write('\n')
-                    
-                    if line.strip() == '#RUN_FILES_R':
-                        for line in MD_files_R:
-                            file_base = line.split('/')[-1][:-4]
-                            outline = 'time srun $qdyn {}.inp'  \
-                                      ' > {}.log\n'.format(file_base,
-                                                           file_base)
-                            outfile.write(outline)
+
+    def settimestep(self):
+        if self.timestep == '1fs':
+            self.replacements['NSTEPS1'] = '100000'
+            self.replacements['NSTEPS2'] = '10000'
+            self.replacements['STEPSIZE'] = '1.0'
+            self.replacements['STEPTOGGLE'] = 'off'
+            
+        if self.timestep == '2fs':
+            self.replacements['NSTEPS1'] = '50000'
+            self.replacements['NSTEPS2'] = '5000'
+            self.replacements['STEPSIZE'] = '2.0'
+            self.replacements['STEPTOGGLE'] = 'on' 
                         
     def write_submitfile(self):
-        IO.write_submitfile(self.directory, self.replacements)
+        IO.write_submitfile_benchmark(self.directory, self.replacements)
     
     def write_FEPfile(self):
         if self.dual == True:
@@ -970,20 +1030,7 @@ class Run(object):
                 
                                     outfile.write(outline)
                                 else:
-                                    outfile.write('\n')
-
-    def settimestep(self):
-        if self.timestep == '1fs':
-            self.replacements['NSTEPS1'] = '100000'
-            self.replacements['NSTEPS2'] = '10000'
-            self.replacements['STEPSIZE'] = '1.0'
-            self.replacements['STEPTOGGLE'] = 'off'
-            
-        if self.timestep == '2fs':
-            self.replacements['NSTEPS1'] = '50000'
-            self.replacements['NSTEPS2'] = '5000'
-            self.replacements['STEPSIZE'] = '2.0'
-            self.replacements['STEPTOGGLE'] = 'on'                            
+                                    outfile.write('\n')                           
                             
     def write_dualFEPfile(self):
         # The vdW paramers need to be extracted from the reference .prm file
@@ -993,10 +1040,11 @@ class Run(object):
         vdw_prms = IO.read_prm(prmfiles)['[atom_types]']
         
         ## Next, we start to construct the FEP file
-        ## Edit_lucien: this should actually be 2 FEP files, state 1: VWD+C -> soft+noC -> DUM
-        ##                                                   state 2: DUM -> soft+n0C -> VDW+C 
-        for fepfile in self.FEPlist:
-            with open(self.directory + '/inputfiles/' + fepfile, 'w') as outfile:
+        fepfiles = self.FEPlist.copy()
+        if self.FromGly:
+            fepfiles.reverse()
+        for i, fepfile in enumerate(self.FEPlist):
+            with open(self.directory + '/inputfiles/' + fepfiles[i], 'w') as outfile:
                 # First create the file header
                 outfile.write('! Dual topology QresFEP: ' + self.MUTresn + '\n\n')
                 outfile.write('[FEP]\n')
@@ -1011,7 +1059,7 @@ class Run(object):
                     cnt += 1
                     outfile.write('{:4d} {:4d} ! {:<4s}\n'.format(cnt, line[1], line[2]))
 
-                outfile.write('\n')
+                outfile.write('\n')               
 
                 # Write out [change_charges] section
                 cnt = 0
@@ -1019,33 +1067,30 @@ class Run(object):
 
                 for line in self.merged_lib['[atoms]']:
                     cnt += 1
-                    line = line.split()
+                    line = line.split()                    
                     if line[1][0].islower()  == False:
-                        if line[1] in self.backbone:    # Edit Lucien: it was also decharging backbone HA2 of GLY
-                            if line[1] == 'CA':
-                                if fepfile == 'FEP1.fep':
-                                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                                 '0.060', 
-                                                                                 '0.000'))
-                                else:
-                                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                                 '0.000', 
-                                                                                 '0.060'))
+                        if line[1] in self.backbone:
+                            if fepfile == 'FEP1.fep' and line[1] == 'CA' and self.FromGly == True:
+                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                            line[3], 
+                                                                            '0.140'))
+                            elif fepfile == 'FEP2.fep' and line[1] == 'CA' and self.FromGly == True:
+                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                             '0.140', 
+                                                                             '0.140'))                                                                
+                            elif fepfile == 'FEP2.fep' and line[1] == 'CA' and self.ToGly == True:
+                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                             '0.140', 
+                                                                             '0.080'))                                
                             else:
                                 outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                             '0.000', 
-                                                                             '0.000'))                                
-                                
+                                                                             line[3], 
+                                                                             line[3]))                            
                         else:
                             if fepfile == 'FEP1.fep':
-                                if line[1] == 'CB':
-                                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                                 str(float(line[3]) - 0.060), 
-                                                                                 '0.000'))
-                                else:
-                                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                                 line[3], 
-                                                                                 '0.000'))
+                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                             line[3], 
+                                                                             '0.000'))
                             else:
                                 outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
                                                                              '0.000', 
@@ -1057,14 +1102,9 @@ class Run(object):
                                                                          '0.000', 
                                                                          '0.000'))
                         else:
-                            if line[1] == 'cb':
-                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                             '0.000', 
-                                                                             str(float(line[3]) - 0.060)))
-                            else:
-                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                             '0.000', 
-                                                                             line[3]))
+                            outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                         '0.000', 
+                                                                         line[3]))
 
                 outfile.write('\n')
 
@@ -1076,25 +1116,14 @@ class Run(object):
                     if len(line) >= 7:
                         outfile.write('{:<8s}{:>10s}{:>10s}{:>10s}'\
                                       '{:>10s}{:>10s}{:>10s}{:>10s}\n'.format(line[0],
-                                                                        line[1],
-                                                                        line[3], 
-                                                                        '0.0000', 
-                                                                        '0.0000',
-                                                                        line[4],
-                                                                        line[5],
-                                                                        line[6],
-                                                                       ))
-                # Write out DUM entry        
-                outfile.write('{:<8s}{:>10s}{:>10s}{:>10s}'\
-                              '{:>10s}{:>10s}{:>10s}{:>10s}\n'.format('DUM',
-                                                                      '0.0000',
-                                                                      '0.0000',
-                                                                      '0.0000',
-                                                                      '0.0000',
-                                                                      '0.0000',
-                                                                      '0.0000',
-                                                                      '1.0080',
-                                                                       ))
+                                                                            line[1],
+                                                                            line[3], 
+                                                                            '0.0000', 
+                                                                            '0.0000',
+                                                                            line[4],
+                                                                            line[5],
+                                                                            line[6],
+                                                                            ))
                 outfile.write('\n')
 
                 # Write out [change_atoms] section
@@ -1104,29 +1133,23 @@ class Run(object):
                     cnt += 1
                     line = line.split()
                     if line[1][0].islower()  == False:
-                        if line[1] in self.backbone:            # Edit Lucien: it was also turing backbone HA2 of GLY into DUM
-#                            if line[2] == 'C223' and self.mutation[0] == 'GLY':     # Edit Lucien: it was not changing the GLY CA atom type of C223
-#                                if fepfile == 'FEP2.fep':                                        # into atom type C224 for CA of other residues
-#                                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt,        
-#                                                                                 line[2], 
-#                                                                                 'C224'))    
-#                            elif line[2] == 'C223' and self.mutation[2] == 'GLY':
-#                                if fepfile == 'FEP1.fep':
-#                                    outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt,        
-#                                                                                 line[2], 
-#                                                                                 'C224'))                                     
-#                            else:
-#                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-#                                                                             line[2], 
-#                                                                             line[2]))
-                            if line[1] == 'CA':
+                        if line[1] in self.backbone:
+                            if fepfile == 'FEP1.fep' and line[1] == 'CA' and self.FromGly == True:
+                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt,        
+                                                                             'C224', 
+                                                                             'C224'))
+                            elif fepfile == 'FEP2.fep' and line[1] == 'CA' and self.FromGly == True:
                                 outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                             'H140', 
-                                                                             'H140'))
+                                                                             'C224', 
+                                                                             'C224'))              
+                            elif fepfile == 'FEP2.fep' and line[1] == 'CA' and self.ToGly == True:
+                                outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
+                                                                             'C224', 
+                                                                             'C224'))         
                             else:
                                 outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                             'DUM', 
-                                                                             'DUM'))
+                                                                             line[2], 
+                                                                             line[2]))
                         else:
                             if fepfile == 'FEP1.fep':
                                 outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
@@ -1156,7 +1179,7 @@ class Run(object):
                     cnt += 1
                     line = line.split()
                     if line[1][0].islower()  == False:
-                        if line[1] in self.backbone:    # Edit Lucien: it was also applying softcore on backbone HA2 of GLY
+                        if line[1] in self.backbone:    
                              outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
                                                                           '0', 
                                                                           '0'))                       
@@ -1194,41 +1217,169 @@ class Run(object):
                         res_B.append(line[1])
                 for atom1 in res_A:
                     for atom2 in res_B:
-                        outfile.write('{:4d}{:4d}{:>5s}{:>5s}\n'.format(atom1, 
-                                                                        atom2, 
-                                                                        '1', 
-                                                                        '1'))
+                        outfile.write('{:6d}{:6d}{:>5s}{:>5s}\n'.format(atom1, atom2, '1', '1'))
                 outfile.write('\n')
                 
-                # Change_bond and bond_type for backbone CA of Gly mutation
-#                if self.mutation[0] == 'GLY':
-#                    if fepfile == 'FEP2.fep':
-#                        outfile.write('[bond_types]\n')
-#                        outfile.write('{:4s}{:8s}{:6s}{:10s}\n'.format('1','0.0','0.0','!C223 C157'))
-#                        outfile.write('{:4s}{:8s}{:6s}{:10s}\n'.format('2','536.0','1.529','!C224 C157'))
-#                        outfile.write('\n')
-#                        outfile.write('[change_bonds]\n')
-#                        for line in self.PDB[res_ID]:
-#                            if line[2] == 'CA':
-#                                CA = line[1]
-#                            elif line[2] == 'cb':
-#                                cb = line[1]
-#                        outfile.write('{:4d}{:6d}{:>5s}{:>5s}\n'.format(CA,cb,'1','2'))
-#                        
-#                if self.mutation[2] == 'GLY':
-#                    if fepfile == 'FEP1.fep':
-#                        outfile.write('[bond_types]\n')
-#                        outfile.write('{:4s}{:8s}{:6s}{:10s}\n'.format('1','0.0','0.0','!C223 C157'))
-#                        outfile.write('{:4s}{:8s}{:6s}{:10s}\n'.format('2','536.0','1.529','!C224 C157'))
-#                        outfile.write('\n')
-#                        outfile.write('[change_bonds]\n')
-#                        for line in self.PDB[res_ID]:
-#                            if line[2] == 'CA':
-#                                CA = line[1]
-#                            elif line[2] == 'cb':
-#                                cb = line[1]
-#                        outfile.write('{:4d}{:6d}{:>5s}{:>5s}\n'.format(CA,cb,'1','2'))
+                # Add bond section - if we were to touch bond parameters (in case of changing Gly CA) 
+                outfile.write('[bond_types]\n\n')
+                outfile.write('[change_bonds]\n\n')
+                
+                
+                # Add angles section
+                outfile.write('[angle_types]\n\n')
+                outfile.write('[change_angles]\n')
+
+                # Set zero angles for wild-type side chain atoms connecting through common backbone CA to mutant side chain atoms for Gly mutations
+                if self.FromGly == True or self.ToGly == True:
+                    if self.FromGly == True:
+                        outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n'.format(self.atoms['HA3'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n'.format(self.atoms['HA2'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n'.format(self.atoms['HA3'], self.atoms['CA'], self.atoms['ha'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n'.format(self.atoms['HA2'], self.atoms['CA'], self.atoms['ha'], 0, 0))
+
+                    elif self.ToGly == True:
+                        outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n'.format(self.atoms['ha3'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n'.format(self.atoms['ha2'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n'.format(self.atoms['ha3'], self.atoms['CA'], self.atoms['HA'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n'.format(self.atoms['ha2'], self.atoms['CA'], self.atoms['HA'], 0, 0))
+                    outfile.write('\n')
+
+                # Set zero angles for wild-type side chain atoms connecting through common backbone CA to mutant side chain atoms for non-Gly mutations
+                if self.FromGly == False and self.ToGly == False:
+                    outfile.write('{:6s}{:6s}{:6s}{:>5d}{:>5d}\n\n'.format(self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                
+                # Add torsions section
+                outfile.write('[torsion_types]\n\n')
+                outfile.write('[change_torsions]\n')
+                
+                # Set zero torsions for wild-type side chain atoms connecting through common backbone CA to mutant side chain atoms for Gly mutations
+                if self.FromGly == True or self.ToGly == True:
+                    if self.FromGly == True:
+                        if self.mutation[2] in ['ASP', 'GLU', 'HIS', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb3'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb3'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+
+                        elif self.mutation[2] in ['ILE', 'VAL', 'THR']:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            if self.mutation[2] == 'THR':
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['og1'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['og1'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            else:
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg1'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg1'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg2'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg2'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+
+                        elif self.mutation[2] in ['CYS', 'SER', 'ALA']:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb3'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb3'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            if self.mutation[2] == 'CYS':
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['sg'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['sg'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            elif self.mutation[2] == 'SER':
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['og'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['og'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+                            else:
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb1'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb1'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
+
+                    elif self.ToGly == True:
+                        if self.mutation[0] in ['ASP', 'GLU', 'HIS', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB3'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB3'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+
+                        elif self.mutation[0] in ['ILE', 'VAL', 'THR']:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            if self.mutation[0] == 'THR':
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['OG1'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['OG1'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            else:
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG1'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG1'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG2'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG2'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+
+                        elif self.mutation[0] in ['CYS', 'SER', 'ALA']:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB3'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB3'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            if self.mutation[0] == 'CYS':
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['SG'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['SG'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            elif self.mutation[0] == 'SER':
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['OG'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['OG'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                            else:
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB1'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
+                                outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB1'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
+                    outfile.write('\n')
+                    
+                # Set zero torsions for wild-type side chain atoms connecting through common backbone CA to mutant side chain atoms for non-Gly mutations
+                if self.FromGly == False and self.ToGly == False:
+                    
+                    if self.mutation[0] in ['ASP', 'GLU', 'HIS', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB3'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+
+                    elif self.mutation[0] in ['ILE', 'VAL', 'THR']:
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        if self.mutation[0] == 'THR':
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['OG1'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        else:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG1'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG2'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+
+                    elif self.mutation[0] in ['CYS', 'SER', 'ALA']:
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB3'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        if self.mutation[0] == 'CYS':
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['SG'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        elif self.mutation[0] == 'SER':
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['OG'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+                        else:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB1'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
+
+                    # Set zero torsions for mutant side chain atoms connecting through common backbone CA to wild-type side chain atoms
+                    if self.mutation[2] in ['ASP', 'GLU', 'HIS', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb3'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+
+                    elif self.mutation[2] in ['ILE', 'VAL', 'THR']:
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        if self.mutation[2] == 'THR':
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['og1'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        else:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg1'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg2'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+
+                    elif self.mutation[2] in ['CYS', 'SER', 'ALA']:
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb3'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        if self.mutation[2] == 'CYS':
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['sg'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        elif self.mutation[2] == 'SER':
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['og'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                        else:
+                            outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb1'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
+                    outfile.write('\n')
             
+                    
+                    
     def write_qfep(self):
         qfep_in = s.ROOT_DIR + '/INPUTS/qfep.inp'
         qfep_out = self.directory + '/inputfiles/qfep.inp'
@@ -1366,8 +1517,7 @@ if __name__ == "__main__":
               start = args.start,
               timestep = args.timestep,              
               mutchain = args.mutchain,
-              include = ('ATOM','HETATM')
-             )
+              include = ('ATOM','HETATM'))
     
     run.checkFEP()                      # 00
     run.create_environment()            # 01
@@ -1384,7 +1534,9 @@ if __name__ == "__main__":
     run.settimestep()                   # 12
     run.write_EQ()                      # 13
     run.write_MD()                      # 14
-    run.write_submitfile()              # 15
-    run.write_runfile()                 # 16
-    run.write_FEPfile()                 # 17
-    run.write_qfep()                    # 18
+    run.settimestep()                   # 15
+    run.write_submitfile()              # 16
+    run.write_runfile()                 # 17
+    run.write_FEPfile()                 # 18
+    run.write_qfep()                    # 19
+

@@ -112,8 +112,12 @@ class Run(object):
             print("residue not found in library, assuming non-natural AA")
             AA_to = 'X'
             self.nonAA = True
+
         mutation = '{}{}{}'.format(*self.mutation)
-        FEPdir = s.FF_DIR + '/.FEP/' + self.forcefield +  '/' + AA_from + '_' + AA_to # + '_CI' # Include for charge correction
+        if self.forcefield == 'OPLS2015_GTPase':
+            FEPdir = s.FF_DIR + '/.FEP/OPLS2015/' + AA_from + '_' + AA_to
+        else:
+            FEPdir = s.FF_DIR + '/.FEP/' + self.forcefield +  '/' + AA_from + '_' + AA_to
             
         if self.dual == True:
             print('Generating dual topology inputfiles')
@@ -185,6 +189,7 @@ class Run(object):
                         if chain not in self.PDB2Q:
                             self.PDB2Q[chain] = {}
                         self.PDB2Q[chain][line[1]] = line[0]
+
     def readpdb(self):
         atnr = 0
         if len(self.mutation[2]) == 1:
@@ -270,7 +275,7 @@ class Run(object):
                                             self.dualMUT['0'].append(MUTat)
                             
                                 self.dualMUT['1'].append(line)
-                            
+
                         self.systemsize += 1
                 
                 resoffset = len(self.PDB)
@@ -377,7 +382,7 @@ class Run(object):
                 or line.split()[1] == 'H'     \
                 or line.split()[1] == 'HA':
                     continue
-                # Check is Glycine backbone HA2 is not required here as well
+                # Check if Glycine backbone HA2 is not required here as well
                 
                 # Merge the library on the reference
                 line = IO.replace(line, replacements)
@@ -458,7 +463,9 @@ class Run(object):
             
         # run qprep to get bonded parameters to be set to zero
         os.chdir(self.directory + '/inputfiles/')
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        
+        cluster_options = getattr(s, self.preplocation)
+        qprep = cluster_options['QPREP']
         options = ' < tmp.inp > tmp.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -502,6 +509,12 @@ class Run(object):
         os.chdir('../../')
         
     def merge_prm(self):
+        if self.forcefield == 'OPLS2015_GTPase':
+            self.prm_merged = s.FF_DIR + '/' + self.forcefield + '.prm'
+            prm_merged = self.directory + '/inputfiles/' + self.forcefield + '.prm'
+            shutil.copyfile(self.prm_merged, prm_merged)
+            return
+        
         headers =['[options]', 
                   '[atom_types]',
                   '[bonds]',
@@ -517,7 +530,7 @@ class Run(object):
                 
         if self.nonAA == True:
             prmfiles.append(self.mutation[2] + '.prm')
-            
+
         prms = IO.read_prm(prmfiles)
         prm_merged = self.directory + '/inputfiles/' + self.forcefield + '_merged.prm'
         self.prm_merged = self.forcefield + '_merged.prm'
@@ -577,13 +590,20 @@ class Run(object):
                     if key not in waters_remove:
                         for water in waters[key]:
                             outfile.write(IO.pdb_parse_out(water) + '\n')
-                
+
     def write_qprep(self):
-        replacements = {'PRM':self.prm_merged,
-                        'PDB':self.PDBout,
-                        'CENTER':'{} {} {}'.format(*self.sphere),
-                        'SPHERE':self.radius,
-                       }
+        if self.forcefield == 'OPLS2015_GTPase':
+            replacements = {'PRM':self.forcefield + '.prm',
+                            'PDB':self.PDBout,
+                            'CENTER':'{} {} {}'.format(*self.sphere),
+                            'SPHERE':self.radius,
+               }
+        else:
+            replacements = {'PRM':self.prm_merged,
+                            'PDB':self.PDBout,
+                            'CENTER':'{} {} {}'.format(*self.sphere),
+                            'SPHERE':self.radius,
+                           }
         if self.system == 'protein':
             replacements['SOLVENT'] = '4 water.pdb'
             
@@ -617,10 +637,11 @@ class Run(object):
                     continue
                 
                 outfile.write(line)
-    
+
     def run_qprep(self):
         os.chdir(self.directory + '/inputfiles/')
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
+        cluster_options = getattr(s, self.preplocation)
+        qprep = cluster_options['QPREP']
         options = ' < qprep.inp > qprep.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -632,7 +653,7 @@ class Run(object):
         self.lambdas = IO.get_lambdas(self.windows, self.sampling)
 
     def write_EQ(self):
-        for line in self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]:
+        for line in self.PDB[int(self.PDB2Q[self.chain][str(self.mutation[1])])]:
             if line[2] == 'CA' and self.system == 'water'              \
             or line[2] == 'CA' and self.system == 'vacuum':             \
                 self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
@@ -785,10 +806,10 @@ class Run(object):
                             file_base = line.split('/')[-1][:-4]
                             outline = 'time mpirun -np {} $qdyn {}.inp' \
                                        ' > {}.log\n'.format(ntasks,
-                                                           file_base,
-                                                           file_base)
+                                                            file_base,
+                                                            file_base)
                             outfile.write(outline)
-                            
+
                     if line.strip() == '#RUN_FILES':
                         if self.start == '1':
                             for line in MD_files:
@@ -798,7 +819,7 @@ class Run(object):
                                                                file_base,
                                                                file_base)
                                 outfile.write(outline)
-                                
+
                         elif self.start == '0.5':
                             outline = 'time mpirun -np {} $qdyn {}.inp' \
                                        ' > {}.log\n\n'.format(ntasks,
@@ -914,8 +935,8 @@ class Run(object):
             self.replacements['NSTEPS1'] = '50000'
             self.replacements['NSTEPS2'] = '5000'
             self.replacements['STEPSIZE'] = '2.0'
-            self.replacements['STEPTOGGLE'] = 'on'                            
-                            
+            self.replacements['STEPTOGGLE'] = 'on'
+
     def write_dualFEPfile(self):
         # The vdW paramers need to be extracted from the reference .prm file
         prmfiles = [s.FF_DIR + '/' + self.forcefield + '.prm']
@@ -956,11 +977,11 @@ class Run(object):
                     else:
                         outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
                                                                      line[3], 
-                                                                     '0.0000'))
+                                                                     '0.000'))
                     
                 else:
                     outfile.write('{:4d}{:>10s}{:>10s}\n'.format(cnt, 
-                                                                 '0.0000', 
+                                                                 '0.000', 
                                                                  line[3]))
                     
             outfile.write('\n')
@@ -1076,6 +1097,7 @@ if __name__ == "__main__":
 
     
     parser.add_argument('-c', '--cofactor',
+                        nargs='*',
                         dest = "cofactor",
                         required = False,
                         help = "PDB files of cofactors (e.g. ligand) with *.prm and *.lib files")
@@ -1088,7 +1110,7 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--forcefield',
                         dest = "forcefield",
                         required = True,
-                        choices = ['OPLS2015', 'OPLS2005', 'SIDECHAIN', 'AMBER14sb','CHARMM36'],
+                        choices = ['OPLS2015', 'OPLS2005', 'OPLS2015_GTPase', 'SIDECHAIN', 'AMBER14sb','CHARMM36'],
                         help = "Forcefield to use.")
     
     parser.add_argument('-s', '--sampling',

@@ -6,9 +6,9 @@
 # 2019-09-18
 
 import sys
-installdir = '/home/vanderent/software/qligfep/' 
-sys.path.append(installdir)
+import os
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 import IO
 import functions
 import argparse

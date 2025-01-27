@@ -20,23 +20,24 @@ except:
 
 class Run(object):
     """
+    Store script arguments and set global variables
     """
-    def __init__(self, FEP, color, PDB, cluster, esc, *args, **kwargs):
+    def __init__(self, FEP, temp, cluster, color, PDB, esc, *args, **kwargs):
+        self.temp = temp
+        self.cluster = cluster
         self.esc = esc
-        self.cluster=cluster
         self.FEP = FEP.strip('/')
-        self.energies = {}
-        self.FEPstages = []
-        FEPfiles = glob.glob(self.FEP + '/inputfiles/FEP*.fep')
+        self.FromGly = False
+        if self.FEP[4:7] == 'GLY':
+            self.FromGly = True
+        #self.FromGly = False
+        FEPfiles = sorted(glob.glob(self.FEP + '/inputfiles/*.fep'))
+        self.FEPstages = [f'FEP{x}' for x in range(1, len(FEPfiles)+1)]
+        
         inputs = glob.glob(self.FEP + '/inputfiles/md*.inp')
-        inputs = [x for x in inputs if not '_F.inp' in x]
-        FEPfiles.sort()
         self.failed = []
-        for FEPfile in FEPfiles:
-            FEPstage = FEPfile.split('/')[-1]
-            FEPstage = FEPstage.split('.')[0]
-            self.FEPstages.append(FEPstage)
-            
+        self.energies = {}
+
         self.lambda_sum = len(FEPfiles) * (len(inputs)-1)
         
         colors = {'blue':['navy','lightblue'],
@@ -46,73 +47,85 @@ class Run(object):
         self.color = colors[color]
         
     def create_environment(self):
+        """
+        Creates analysis/ directory for generated plots and structure files
+        """
         self.analysisdir = self.FEP + '/analysis'
-        # Add overwrite function?
         if os.path.isdir(self.analysisdir) != True:
             os.mkdir(self.analysisdir)
     
     def read_FEPs(self):
-        methods_list = ['dG', 'dGf', 'dGr', 'dGos', 'dGbar']
+        """
+        Reads the qfep output files (qfep.out) and prints the energies per replicate
+        """
+        methods_list = ['dG', 'dGf', 'dGr', 'dGbar']
         methods = {'dG'     : {},
                    'dGf'    : {},
                    'dGr'    : {},
-                   'dGos'   : {},
                    'dGbar' :  {}
                   }
         results = {}
         out = []
         
-        FEPs = sorted(glob.glob(self.FEP + '/FEP*/*/*/qfep.out'))
+        # Loops over the FEPstages, temperatures and replicates
+        FEPs = sorted(glob.glob(f'{self.FEP}/FEP*/{self.temp}/*/qfep.out'))
         for filename in FEPs:
-            i = -1
             file_parse = filename.split('/')
             FEP = file_parse[1]
             temperature = file_parse[2]
             replicate = file_parse[3]
             
+            # In case of end-state catastrophe with single FEPstage, use read_qfep_esc(), otherwise default read_qfep()
             try:
                 if self.esc:
                     energies = IO.read_qfep_esc(filename)
                 else:
-                    energies = IO.read_qfep(filename)
+                    energies = IO.read_qfep(filename, self.FromGly)
+            # Append failed replicates and set their energies to NaN
             except:
                 print("Could not retrieve energies for: " + filename)
-                energies = [np.nan, np.nan, np.nan, np.nan, np.nan]
+                energies = [np.nan, np.nan, np.nan, np.nan]
                 if not replicate in self.failed:
                     self.failed.append(replicate)
             
-            for key in methods_list:
-                i += 1
+            # Store the energies from read_qfep in the methods dictionary
+            for i, method in enumerate(methods_list):
                 try:
-                    methods[key][FEP].append(energies[i])
+                    methods[method][FEP].append(energies[i])
                 except:
-                    methods[key][FEP] = [energies[i]]
+                    methods[method][FEP] = [energies[i]]
                     
-            # Construct for the energy figure
+            # Construct for the energy plot
             if not replicate in self.energies:
                 self.energies[replicate] = {}
                 
             self.energies[replicate][FEP] = IO.read_qfep_verbose(filename)
+        
+        # print the energies per method, FEPstage, and replicate, and calculate average total FEP energy and s.e.m.
         for method in methods:
             dG_array = []
+            energies = '{0:6.2f} {1:6.2f} {2:6.2f} {3:6.2f} {4:6.2f} {5:6.2f} {6:6.2f} {7:6.2f} {8:6.2f} {9:6.2f}'
+            #energies = '{0:6.2f} {1:6.2f} {2:6.2f} {3:6.2f} {4:6.2f}'
             for key in sorted(methods[method]):
-                print(method, key, methods[method][key])
+                print(f'{method:5} {key}', energies.format(*methods[method][key]))
                 dG_array.append(methods[method][key])
             dG_array = [[float(i) for i in fep_stage] for fep_stage in dG_array]
             dG_array = np.array(dG_array)
             dG = f.avg_sem(dG_array)
             results[method]='{:6.2f}{:6.2f}'.format(*dG)
-            
+
+        # Print average total FEP energy and s.e.m.
         for method in methods_list:
             out.append(results[method])
-
-        print(self.FEP, '{} {} {} {} {}'.format(*out))
+        print(self.FEP, '{} {} {} {}'.format(*out))
         print('crashes  {}'.format(len(self.failed)))
         
     def read_mdlog(self):
+        """
+        Read the qdyn md.log files to get plotting details
+        """
         mapping = {}
         cnt = -1
-        # Add temperature variable later
         md_files = glob.glob(self.FEP + '/FEP*/*/*/md*.log')        
         md_files.sort()
         md_ref = glob.glob(self.FEP + '/inputfiles/md*.inp')
@@ -131,8 +144,12 @@ class Run(object):
             (cumulative_l)
             
     def plot_data(self):
+        """
+        Plot the energy progression during the full FEP
+        """
         y_axis = {}
         x_axis = range(0,self.lambda_sum+1)
+        
         avg = []
         for replicate in self.energies:
             for FEPstage in self.FEPstages:
@@ -169,6 +186,9 @@ class Run(object):
         plt.savefig(self.analysisdir+'/dG.png',dpi=300,transparent=True)
         
     def write_re2pdb(self):
+        """
+        Write out pdb structures using qdyn .re files as input 
+        """
         curdir = os.getcwd()
         os.chdir(self.FEP + '/analysis')
         if not os.path.exists('pdbs'):
@@ -208,52 +228,59 @@ class Run(object):
         cluster_options = getattr(s, self.cluster)
         qprep = cluster_options['QPREP']
         options = ' < re2pdb.inp > re2pdb.out'
-        # Somehow Q is very annoying with this < > input style so had to implement
-        # another function that just calls os.system instead of using the preferred
-        # subprocess module....
         IO.run_command(qprep, options, string = True)
             
         os.chdir(curdir)
         
             
 if __name__ == "__main__":
+    """
+    Parser for user input arguments
+    """
     parser = argparse.ArgumentParser(
-        prog='protPREP',
+        prog='analyze_FEP.py',
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description = '       == Analyse FEP == ')
+        description = ' == Analyse FEP == \nProgram to extract dG energies from qfep.out files for a FEP directory')
+    
+    # Required command line arguments
+    required = parser.add_argument_group('required arguments')
+    required.add_argument('-F', '--FEP',
+                          dest = "FEP",
+                          required = True,
+                          help = "name of FEP directory (FEP_WT2MUT)")
+    required.add_argument('-T', '--temp',
+                         dest = "temp",
+                         required = True,
+                         help = "temperature")
+    
+    # Optional command line arguments
+    optional = parser.add_argument_group('optional arguments')
+    optional.add_argument('-C', '--cluster',
+                          dest = "cluster",
+                          required = False,
+                          help = "cluster information, e.g. CSB, TETRALITH, DARDEL")
+    optional.add_argument('-pdb', '--PDB',
+                          dest = "PDB",
+                          required = False,
+                          default = False,
+                          action = 'store_true',
+                          help = "Add this argument if you want .pdb files of the trajectory")
+    
+    optional.add_argument('-c', '--color',
+                          dest = "color",
+                          required = False,
+                          default = 'blue',
+                          choices = ['blue', 'red'],
+                          help = "color for the plot")
 
-    
-    parser.add_argument('-F', '--FEP',
-                        dest = "FEP",
-                        required = True,
-                        help = "name of FEP directory (FEP_$)")
-    
-    parser.add_argument('-pdb', '--PDB',
-                        dest = "PDB",
-                        required = False,
-                        default = False,
-                        action = 'store_true',
-                        help = "Add this argument if you want .pdb files of the trajectory")
-    
-    parser.add_argument('-c', '--color',
-                        dest = "color",
-                        required = False,
-                        default = 'blue',
-                        choices = ['blue', 'red'],
-                        help = "color for the plot")
-    
-    parser.add_argument('-C', '--cluster',
-                        dest = "cluster",
-                        required = False,
-                        help = "cluster information")
-    parser.add_argument('-esc', '--end-state-catastrophe',
-                        dest = "esc",
-                        required = False,
-                        help = "Add this argument in case you have singularities in the final lambda windows resulting in only nan values")
-    
+    optional.add_argument('-esc', '--end-state-catastrophe',
+                          dest = "esc",
+                          required = False,
+                          help = "Add this argument in case you have singularities in the final lambda windows resulting in only NaN values")
     
     args = parser.parse_args()
     run = Run(FEP = args.FEP,
+              temp = args.temp,
               color = args.color,
               cluster = args.cluster,
               PDB = args.PDB,
@@ -262,10 +289,9 @@ if __name__ == "__main__":
     
     run.create_environment()
     run.read_FEPs()
-    run.read_mdlog()
     
-#    if plot == True:
-#        run.plot_data()
-        
+    if plot == True:
+        run.read_mdlog()
+        run.plot_data()    
     if args.PDB == True:
         run.write_re2pdb()

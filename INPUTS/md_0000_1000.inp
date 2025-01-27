@@ -46,7 +46,10 @@ not excluded
 
 [sequence_restraints]
 WATER_RESTRAINT
+
+[atom_restraints]
 WT_RES
 MUT_RES
 
 [distance_restraints]
+DIST
