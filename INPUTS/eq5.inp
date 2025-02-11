@@ -45,8 +45,5 @@ EQ_LAMBDA
 [sequence_restraints]
 WATER_RESTRAINT
 
-[atom_restraints]
-MUT_RES
-
 [distance_restraints]
 DIST
