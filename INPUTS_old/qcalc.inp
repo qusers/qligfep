@@ -1,9 +1,0 @@
-dualtop.top
-8
-PROT_START
-PROT_END
-residue Q_ATOMS
-end
-go
-TRAJECTORIES
-end

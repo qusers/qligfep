@@ -8,6 +8,7 @@ import shutil
 from ssl import HAS_TLSv1_3
 import sys
 import glob
+import subprocess
 from decimal import Decimal
 import numpy as np
 
@@ -311,6 +312,7 @@ class Run(object):
                                                 self.PDB[MUTat[6]] = [MUTat]
 
                                             self.dualMUT['0'].append(MUTat)
+                                            self.systemsize += 1
                             
                                 self.dualMUT['1'].append(line)
                         self.systemsize += 1
@@ -335,6 +337,10 @@ class Run(object):
             headers.append('[charge_groups]')   
         
         libfiles = [s.FF_DIR + '/' + self.forcefield + '.lib']
+
+        if self.cofactor != None:
+            for filename in self.cofactor:
+                libfiles.append(filename + '.lib')
         if self.nonAA == True:
             libfiles.append(self.mutation[2] + '.lib')
         for libfile in libfiles:
@@ -361,8 +367,8 @@ class Run(object):
         for line in FFlib[AA]:
             if 'C223' in line:  #Change atom type of GLY 
                 line = line.replace('C223','C224')
-            if line.strip() in headers:
-                header = line.strip()
+            if line.strip().split()[0] in headers:
+                header = line.strip().split()[0]
                 self.merged_lib[header] = []
                 
             else:
@@ -458,6 +464,9 @@ class Run(object):
                  ]
         
         # Write tmp qprep.inp and prm file
+        if self.cofactor != None:
+            for filename in self.cofactor:
+                prmfile.append(filename + '.prm')
         if self.nonAA == True:
             prmfile.append(self.mutation[2] + '.prm')
         prms = IO.read_prm(prmfile)
@@ -466,11 +475,13 @@ class Run(object):
         pdb_tmp = self.directory + '/inputfiles/tmp.pdb'
         
         # Write out PDB file
+        # for atom in self.PDB[71]:
+            # print(atom)
         with open(pdb_tmp, 'w') as outfile:
             for item in self.PDB.items():
                 for atom in item[1]:
                     outfile.write(IO.pdb_parse_out(atom) + '\n')
-        
+
         with open(prm_tmp, 'w') as outfile:
             for key in headers:
                 outfile.write(key + '\n')
@@ -479,6 +490,9 @@ class Run(object):
                     
         with open(qprep_tmp, 'w') as outfile:
             outfile.write('rl {}\n'.format(libfile.split('/')[-1]))
+            if self.cofactor != None:
+                for cofactor in self.cofactor:
+                    outfile.write('rl {}.lib\n'.format(cofactor))
             outfile.write('rl {}.lib\n'.format(self.forcefield))
             outfile.write('rprm {}\n'.format(prm_tmp.split('/')[-1]))
             outfile.write('rp {}\n'.format(pdb_tmp.split('/')[-1]))
@@ -578,13 +592,77 @@ class Run(object):
                         outfile.write('\n')
                     
     def write_pdb(self):
-        PDBout = self.directory + '/inputfiles/complex.pdb'
-        self.PDBout = 'complex.pdb'
-        with open(PDBout, 'w') as outfile:
-            for key in self.PDB:
-                for line in self.PDB[key]:
-                    outline = IO.pdb_parse_out(line) + '\n'
-                    outfile.write(outline)
+        if self.system == 'protein':
+            PDBout = self.directory + '/inputfiles/complex.pdb'
+            self.PDBout = 'complex.pdb'
+            with open(PDBout, 'w') as outfile:
+                for key in self.PDB:
+                    for line in self.PDB[key]:
+                        outline = IO.pdb_parse_out(line) + '\n'
+                        outfile.write(outline)
+                        
+        elif self.system == 'water':
+            PDBout = self.directory + '/inputfiles/complex.pdb'
+            self.PDBout = 'complex.pdb'
+            with open(PDBout, 'w') as outfile:
+                tpt = [int(self.PDB2Q[self.chain][self.mutation[1]]) + i for i in range(-1, 2)]
+                resi = 1
+                i, ter = 0, 0
+                for res in tpt:
+                    resi += 1
+                    for line in self.PDB[res]:
+                        i += 1
+                        if line[2] == 'CA' and resi == 4:
+                            ter = i
+                        line[5] = ''
+                        line[6] = resi
+                        outline = IO.pdb_parse_out(line) + '\n'
+                        outfile.write(outline)
+            replacements = {'PDB': self.PDBout,
+                            'COMPLEX': 'complex',
+                            'TER': str(ter),
+                            'TRIPEPTIDE': 'tripeptide.pdb'}
+            with open(s.INPUT_DIR + '/tripeptide.pml') as pml_tmplt, \
+            open(self.directory + '/inputfiles/tripeptide.pml', 'w') as pml_trgt:
+                for line in pml_tmplt:
+                    line = IO.replace(line, replacements)
+                    pml_trgt.write(line)
+                pml_tmplt.close()
+                pml_trgt.close()
+            
+            cwd = self.directory + '/inputfiles'
+            pymol = ['pymol', '-c', 'tripeptide.pml']
+            
+            result = subprocess.run(pymol, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if result.returncode == 0:
+                print("pymol executed successfully")
+            else:
+                print("pymol error...")
+                
+            self.systemsize = 0
+            with open(self.directory + '/inputfiles/tripeptide.pdb', 'r') as infile, \
+                open(PDBout, 'w') as outfile:
+                    for line in infile:
+                        if line.startswith('ATOM'):
+                            line = re.sub('1HB ', ' HB1', line)
+                            line = re.sub('2HB ', ' HB2', line)
+                            line = re.sub('3HB ', ' HB3', line)
+                            line = re.sub('1HH3 ACE', 'HH31 ACE', line)
+                            line = re.sub('2HH3 ACE', 'HH32 ACE', line)
+                            line = re.sub('3HH3 ACE', 'HH33 ACE', line)
+                            line = re.sub(' CH3 NME', ' CA  NMA', line)
+                            line = re.sub('1HH3 NME', ' HA1 NMA', line)
+                            line = re.sub('2HH3 NME', ' HA2 NMA', line)
+                            line = re.sub('3HH3 NME', ' HA3 NMA', line)
+                            line = re.sub('NME', 'NMA', line)
+                            outfile.write(line)
+                            self.systemsize += 1
+                    infile.close()
+                    outfile.close()
+            
+        elif self.system == 'vacuum':
+            pass
+            
                     
     def select_waters(self):
         src = 'water.pdb'
@@ -680,25 +758,29 @@ class Run(object):
         for line in self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]:
             if line[2] == 'CA' and self.system == 'water'              \
             or line[2] == 'CA' and self.system == 'vacuum':             \
-                self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
-                                                                              line[1])
+                self.replacements['WATER_RESTRAINT'] = '19 19 1.0 0 0'
+                
         self.replacements['ATOM_END'] = '{}'.format(self.systemsize)
-
+        
         res_ID = int(self.PDB2Q[self.chain][self.mutation[1]])
+
         top_p = self.directory + '/inputfiles/top_p.pdb'
         with open(top_p, 'r') as file:
                 cnt = 0
                 for line in file:
-                    line = line.split()
-                    residue_number = int(line[4])
-                    if residue_number == res_ID:
-                        self.PDB[res_ID][cnt][2] = line[2]
-                        self.PDB[res_ID][cnt][8] = line[5]
-                        self.PDB[res_ID][cnt][9] = line[6]
-                        self.PDB[res_ID][cnt][10] = line[7]
-                        cnt += 1
-                        if line[2] in self.atoms:
-                            self.atoms[line[2]] = line[1] 
+                    if line.startswith('ATOM'):
+                        line = line.split()
+                        # residue_number = int(line[4])
+                        if '2' in line[3]:
+                    #    if residue_number == res_ID:
+                            self.PDB[res_ID][cnt][1] = int(line[1])
+                            self.PDB[res_ID][cnt][2] = line[2]
+                            self.PDB[res_ID][cnt][8] = line[5]
+                            self.PDB[res_ID][cnt][9] = line[6]
+                            self.PDB[res_ID][cnt][10] = line[7]
+                            cnt += 1
+                            if line[2] in self.atoms:
+                                self.atoms[line[2]] = line[1] 
         
         wt, mut = IO.restraint_matrix(self.mutation)
         
@@ -709,23 +791,32 @@ class Run(object):
         self.RES_MUT = []
         
         hybrid_res = self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]
-        for atom in hybrid_res:
-            if atom[1] in wt_ids:
-                if any(x in atom[2] for x in ['C', 'O', 'N', 'S']):
-                    self.RES_WT.append('{} {} {} {} 10.0 10.0 10.0 0'.format(atom[1], atom[8], atom[9], atom[10]))
-            elif atom[1] in mut_ids:
-                if any(x in atom[2].upper() for x in ['C', 'O', 'N', 'S']):
-                    self.RES_MUT.append('{} {} {} {} 10.0 10.0 10.0 0'.format(atom[1], atom[8], atom[9], atom[10]))                
-            else:
-                continue
+#        for atom in hybrid_res:
+#            if atom[1] in wt_ids:
+#                if any(x in atom[2] for x in ['C', 'O', 'N', 'S']):
+#                    self.RES_WT.append('{} {} {} {} 10.0 10.0 10.0 0'.format(atom[1], atom[8], atom[9], atom[10]))
+#            elif atom[1] in mut_ids:
+#                if any(x in atom[2].upper() for x in ['C', 'O', 'N', 'S']):
+#                    self.RES_MUT.append('{} {} {} {} 10.0 10.0 10.0 0'.format(atom[1], atom[8], atom[9], atom[10]))                
+#            else:
+#                continue
+        self.replacements['WT_RES'] = ''
+        self.replacements['MUT_RES'] = ''
+#        if self.FromGly == True:
+#            self.replacements['MUT_RES'] = ''
+#        else:
+#            if mut:
+#                self.replacements['MUT_RES'] = '\n'.join(self.RES_MUT)
+#            else:
+#                self.replacements['MUT_RES'] = ''
+
         
-        if self.FromGly == True:
-            self.replacements['MUT_RES'] = ''
-        else:
-            if mut:
-                self.replacements['MUT_RES'] = '\n'.join(self.RES_MUT)
-            else:
-                self.replacements['MUT_RES'] = ''
+        self.dist_rest = []
+        ha_pairs = IO.heavy_atom_match(wt, mut, hybrid_res)
+        for ha_pair in ha_pairs:
+            self.dist_rest.append('{} {} 0.0 0.5 10.0 0'.format(self.atoms[ha_pair[0]], self.atoms[ha_pair[1]]))
+        self.replacements['DIST'] = '\n'.join(self.dist_rest)
+        
 
         for EQ_file in glob.glob(s.INPUT_DIR + '/eq*.inp'):
             src = EQ_file
@@ -742,8 +833,7 @@ class Run(object):
         for line in self.PDB[int(self.PDB2Q[self.chain][self.mutation[1]])]:
             if line[2] == 'CA' and self.system == 'water'              \
             or line[2] == 'CA' and self.system == 'vacuum':             \
-                self.replacements['WATER_RESTRAINT'] = '{} {} 1.0 0 0'.format(line[1], 
-                                                                              line[1])
+                self.replacements['WATER_RESTRAINT'] = '19 19 1.0 0 0'
         
         if self.start == '1':
             for i in range(0, int(self.windows) + 1):
@@ -773,7 +863,7 @@ class Run(object):
                                                                          lambda2)
                 self.replacements['FILE'] = 'md_{}_{}'.format(lambda1,
                                                               lambda2)
-                self.replacements['MUT_RES'] = 'MUT_RES'
+#                self.replacements['MUT_RES'] = 'MUT_RES'
                               
                 
                 with open(src) as infile:
@@ -854,7 +944,7 @@ class Run(object):
 
     def write_runfile(self):
         ntasks = getattr(s, self.cluster)['NTASKS']
-        src = s.INPUT_DIR + '/run_benchmark.sh'
+        src = s.INPUT_DIR + '/run.sh'
         tgt = self.directory + '/inputfiles/run' + self.cluster + '.sh'
         EQ_files = sorted(glob.glob(self.directory + '/inputfiles/eq*.inp'))
         
@@ -903,7 +993,7 @@ class Run(object):
                         for line in EQ_files:
                             file_base = line.split('/')[-1][:-4]
                             outline = 'time srun $qdyn {}.inp' \
-                                       ' > {}.log\n'.format(file_base,
+                                       ' > {}.log\nwait\n'.format(file_base,
                                                            file_base)
                             outfile.write(outline)
                             
@@ -911,15 +1001,13 @@ class Run(object):
                         if self.start == '1':
                             for line in MD_files:
                                 file_base = line.split('/')[-1][:-4]
-                                outline = 'time srun $qdyn {}.inp'  \
-                                          ' > {}.log\n'.format(file_base,
-                                                               file_base)
+                                outline = 'echo {}\ntime srun $qdyn {}.inp'  \
+                                          ' > {}.log\nwait\n'.format(file_base,file_base,file_base)
                                 outfile.write(outline)
                                 
                         elif self.start == '0.5':
-                            outline = 'time srun $qdyn {}.inp' \
-                                       ' > {}.log\n\n'.format('md_0500_0500',
-                                                              'md_0500_0500')
+                            outline = 'echo {}\ntime srun $qdyn {}.inp' \
+                                       ' > {}.log\nwait\n\n'.format('md_0500_0500','md_0500_0500','md_0500_0500')
                             outfile.write(outline)
                             for i, md in enumerate(md_1):
                                 outline1 = 'time srun $qdyn {}.inp'  \
@@ -938,19 +1026,19 @@ class Run(object):
 
     def settimestep(self):
         if self.timestep == '1fs':
-            self.replacements['NSTEPS1'] = '100000'
+            self.replacements['NSTEPS1'] = '500000'
             self.replacements['NSTEPS2'] = '10000'
             self.replacements['STEPSIZE'] = '1.0'
             self.replacements['STEPTOGGLE'] = 'off'
             
         if self.timestep == '2fs':
             self.replacements['NSTEPS1'] = '50000'
-            self.replacements['NSTEPS2'] = '5000'
+            self.replacements['NSTEPS2'] = '10000'
             self.replacements['STEPSIZE'] = '2.0'
             self.replacements['STEPTOGGLE'] = 'on' 
                         
     def write_submitfile(self):
-        IO.write_submitfile_benchmark(self.directory, self.replacements)
+        IO.write_submitfile(self.directory, self.replacements)
     
     def write_FEPfile(self):
         if self.dual == True:
@@ -1228,7 +1316,7 @@ class Run(object):
                 # Add angles section
                 outfile.write('[angle_types]\n\n')
                 outfile.write('[change_angles]\n')
-
+                
                 # Set zero angles for wild-type side chain atoms connecting through common backbone CA to mutant side chain atoms for Gly mutations
                 if self.FromGly == True or self.ToGly == True:
                     if self.FromGly == True:
@@ -1255,7 +1343,7 @@ class Run(object):
                 # Set zero torsions for wild-type side chain atoms connecting through common backbone CA to mutant side chain atoms for Gly mutations
                 if self.FromGly == True or self.ToGly == True:
                     if self.FromGly == True:
-                        if self.mutation[2] in ['ASP', 'GLU', 'HIS', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                        if self.mutation[2] in ['ASP', 'GLU', 'HID', 'HIE', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
                             outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
                             outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
                             outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb3'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA2'], 0, 0))
@@ -1291,7 +1379,7 @@ class Run(object):
                                 outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb1'], self.atoms['cb'], self.atoms['CA'], self.atoms['HA3'], 0, 0))
 
                     elif self.ToGly == True:
-                        if self.mutation[0] in ['ASP', 'GLU', 'HIS', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                        if self.mutation[0] in ['ASP', 'GLU', 'HID', 'HIE', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
                             outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
                             outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha3'], 0, 0))
                             outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB3'], self.atoms['CB'], self.atoms['CA'], self.atoms['ha2'], 0, 0))
@@ -1330,7 +1418,7 @@ class Run(object):
                 # Set zero torsions for wild-type side chain atoms connecting through common backbone CA to mutant side chain atoms for non-Gly mutations
                 if self.FromGly == False and self.ToGly == False:
                     
-                    if self.mutation[0] in ['ASP', 'GLU', 'HIS', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                    if self.mutation[0] in ['ASP', 'GLU', 'HID', 'HIE', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
                         outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB2'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
                         outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB3'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
                         outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['CG'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
@@ -1354,7 +1442,7 @@ class Run(object):
                             outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['HB1'], self.atoms['CB'], self.atoms['CA'], self.atoms['cb'], 0, 0))
 
                     # Set zero torsions for mutant side chain atoms connecting through common backbone CA to wild-type side chain atoms
-                    if self.mutation[2] in ['ASP', 'GLU', 'HIS', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                    if self.mutation[2] in ['ASP', 'GLU', 'HID', 'HIE', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
                         outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb2'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
                         outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['hb3'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
                         outfile.write('{:6s}{:6s}{:6s}{:6s}{:4d}{:4d}\n'.format(self.atoms['cg'], self.atoms['cb'], self.atoms['CA'], self.atoms['CB'], 0, 0))
@@ -1433,7 +1521,7 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--forcefield',
                         dest = "forcefield",
                         required = True,
-                        choices = ['OPLS2015', 'OPLS2005', 'SIDECHAIN', 'AMBER14sb','CHARMM36'],
+                        choices = ['OPLSAAM', 'OPLS2015', 'OPLS2005', 'SIDECHAIN', 'AMBER14sb','CHARMM36'],
                         help = "Forcefield to use.")
     
     parser.add_argument('-s', '--sampling',
@@ -1473,7 +1561,7 @@ if __name__ == "__main__":
     
     parser.add_argument('-P', '--preplocation',
                     dest = "preplocation",
-                    default = 'LOCAL',
+                    default = 'CSB',
                     help = "define this variable if you are setting up your system elsewhere")
     
     parser.add_argument('-d', '--dual',

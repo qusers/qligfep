@@ -13,7 +13,7 @@ try:
     import matplotlib
     matplotlib.use('Agg')    
     import matplotlib.pyplot as plt
-    plot = True
+    plot = False
 except:
     print('cannot import matplotlib, skipping plot generation')
     plot = False

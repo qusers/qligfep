@@ -29,7 +29,7 @@ class Run(object):
         self.original_charges = {}
         self.chains = []
         self.forcefield = forcefield
-        self.log = {'INPUT':'protPREP.py -p {} -r {} -c {} -w={} -V={}'.format(prot, 
+        self.log = {'INPUT':'protprep.py -p {} -r {} -c {} -w={} -V={}'.format(prot, 
                                                                                sphereradius, 
                                                                                spherecenter, 
                                                                                water,
@@ -394,23 +394,22 @@ class Run(object):
         k = -1
         # Reduce coordinate array
         for chain in self.PDB:
+            if chain == 'w':
+                continue
             for key in self.PDB[chain]:
                 at = self.PDB[chain][key]
-                if at[4] == 'CYS' or at[4] == 'CYX' and at[2].strip() == 'SG':
-                    cys.append([at[6], (at[8], at[9], at[10])])
+                Q_resi = self.log['QRESN'][chain][at[6]]
+                if (at[4] == 'CYS' or at[4] == 'CYX') and at[2] == 'SG':
+                    cys.append([at[6], (at[8], at[9], at[10]), Q_resi])
 
-            # Construct S-S bond matrix
-            for SG_1 in cys:
-                cys_list = [SG_1[0]]
-                for SG_2 in cys:
-                    if SG_1 == SG_2:
-                        continue
-                    else:
-                        overlap = f.euclidian_overlap(SG_1[1], SG_2[1], cys_bond)
-                        if overlap:
-                            if SG_1[0] != SG_2[0]:
-                                print('Overlap between {} and {}'.format(SG_1[0], SG_2[0]))
-                                cysbond_list.append(str(SG_1[0]) + '-' + str(SG_2[0]))
+        # Construct S-S bond matrix
+        for i, SG_1 in enumerate(cys):
+            for SG_2 in cys[i+1:]:
+                    overlap = f.euclidian_overlap(SG_1[1], SG_2[1], cys_bond)
+                    if overlap:
+                        self.log['CYX'].append('{} {}'.format(SG_1[2], SG_2[2]))
+                        print('Overlap between {} and {}'.format(SG_1[0], SG_2[0]))
+                        cysbond_list.append(str(SG_1[0]) + '-' + str(SG_2[0]))
         cysbond_list = list(set(cysbond_list))
         for pair in cysbond_list:
             l1, l2 = pair.split('-')[0], pair.split('-')[1]
@@ -556,10 +555,9 @@ class Run(object):
             outfile.write('--------------------------------------------------------------------')  
             outfile.write('\n')
             outfile.write('The following S-S bonds have been found:\n')
-            outfile.write('{:10}{:10}{:10}{:10}{:10}{:10}\n'.format(
-                'Q_CYS1', 'Q_CYS2', 'PDB_CYS1', 'CHAIN','PDB_CYS2','CHAIN'))
+            outfile.write('{:10}{:10}\n'.format('Q_CYS1', 'Q_CYS2'))
             for line in self.log['CYX']:
-                outfile.write(line + '\n')
+                outfile.write('{:10}{:10}\n'.format(*line.split()))
             
             outfile.write('--------------------------------------------------------------------')  
             outfile.write('\n')

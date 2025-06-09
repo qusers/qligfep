@@ -149,6 +149,7 @@ def restraint_matrix(mutation):
     
     sidechains = {
         'ASP': ['CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2'],
+        'ASH': ['CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2', 'HD1'],
         'GLU': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'OE2'],
         'HID': ['CB', 'HB2', 'HB3', 'CG', 'ND1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2'],
         'HIE': ['CB', 'HB2', 'HB3', 'CG', 'ND1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2', 'HE2'],
@@ -403,16 +404,16 @@ def read_qfep(qfep, gly):
                 if len(line) > 1:
                     if block == 1:
                         if line[0] == '0.000000':
-                            Zwanzig_r = float(line[4])
+                            Zwanzig_r = -float(line[4])
 
                         elif line[0] == '1.000000':
-                            Zwanzig_f = float(line[2])
+                            Zwanzig_f = -float(line[2])
 
                             if line[5] == '-Infinity':
                                 Zwanzig = np.nan
 
                             else:
-                                Zwanzig = float(line[5])
+                                Zwanzig = -float(line[5])
 
                     if block == 2 and line[0] == '1.000000':
                         try:
@@ -427,13 +428,13 @@ def read_qfep(qfep, gly):
                             OS = np.nan
 
                         else:
-                            OS = float(line[2])
+                            OS = -float(line[2])
 
                     if block == 4 and line[0] == '1.000000':
                         if line[2] == '-Infinity':
                             BAR = np.nan
                         else:
-                            BAR = float(line[2])
+                            BAR = -float(line[2])
                             
     try: BAR
     except: BAR = np.nan

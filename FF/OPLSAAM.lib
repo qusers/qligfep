@@ -1,0 +1,4395 @@
+*-----------------------------------------------------------------------------------------------
+* Q residue library file for OPLS-AA/M 2015
+* Parameters extracted: from OPLS-AA/M Parameter file, OPLSA-AA/M Topology file
+* (https://zarbi.chem.yale.edu/oplsaam.html)
+*
+* A description of the parametrization procedure can be found in the following citation:
+*   Robertson, M. J.; Tirado-Rives, J.; Jorgensen, W. L. 
+*   Improved Peptide and Protein Torsional Energetics with the OPLS-AA Force Field. 
+*   J. Chem. Theory Comput. 2015, 11 (7), 3499-3509
+*   doi:10.1021/acs.jctc.5b00356.
+*
+* Manually curated at Åqvist lab (Lucien Koenekoop, 2025) 
+*
+* Name convention on basic and acidic a.a.:
+* ARG, ARN, HIP, HID, HIE, LYS, LYN, ASP, ASH, GLU, GLH
+*  +1    0   +1    0    0   +1    0   -1    0   -1    0
+*-----------------------------------------------------------------------------------------------
+{ALA} !            charge  0.0   ! Alanine     
+    [atoms] ! name  type  charge !
+        1     N     N238  -0.500 !     |         
+        2     H     H241   0.300 !   H-N         
+        3     CA    C224   0.140 !     |     HB1 
+        4     HA    H140   0.060 !     |    /    
+        5     CB    C135  -0.180 !  HA-CA--CB-HB2
+        6     HB1   H140   0.060 !     |    \    
+        7     HB2   H140   0.060 !     |     HB3 
+        8     HB3   H140   0.060 !   O=C         
+        9     C     C235   0.500 !     |         
+        10    O     O236  -0.500 !
+    [bonds]
+        CB    CA    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB1   
+        CB    HB2   
+        CB    HB3   
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB1   HB2   HB3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{ARG} !            charge  1.0   ! Arginine
+    [atoms]
+        1     N     N238  -0.500 !     |                      HH11    
+        2     H     H241   0.300 !   H-N                       |      
+        3     CA    C224   0.140 !     |   HB2 HG2 HD2 HE     NH1-HH12
+        4     HA    H140   0.060 !     |   |   |   |   |    //(+)     
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--NE--CZ         
+        6     HB2   H140   0.060 !     |   |   |   |         \        
+        7     HB3   H140   0.060 !     |   HB3 HG3 HD3        NH2-HH22
+        8     CG    C308  -0.050 !   O=C                       |      
+        9     HG2   H140   0.060 !     |                      HH21    
+        10    HG3   H140   0.060 
+        11    CD    C307   0.190 
+        12    HD2   H140   0.060 
+        13    HD3   H140   0.060 
+        14    NE    N303  -0.700 
+        15    HE    H304   0.440 
+        16    CZ    C302   0.640 
+        17    NH1   N300  -0.800 
+        18    HH11  H301   0.460 
+        19    HH12  H301   0.460 
+        20    NH2   N300  -0.800 
+        21    HH21  H301   0.460 
+        22    HH22  H301   0.460 
+        23    C     C235   0.500 
+        24    O     O236  -0.500 
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE    CD   
+        CZ    NE    
+        NH2   CZ    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        NE    HE    
+        NH1   HH11  
+        NH1   HH12  
+        NH2   HH21  
+        NH2   HH22  
+        O     C     
+        CZ    NH1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        NH2   CZ    NE    NH1   
+        HE    NE    CD    CZ    
+        HH12  NH1   CZ    HH11  
+        HH22  NH2   CZ    HH21  
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        NE    HE    CD    HD2   HD3   CG    HG2   HG3   CZ    NH1   HH11  HH12  NH2   HH21  HH22  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{ARN} !            charge  0.0   ! Nautral Arginine, deprotonated NH1
+    [atoms]
+        1     N     N238  -0.500 !     |                      HH11    
+        2     H     H241   0.300 !   H-N                       |      
+        3     CA    C224   0.140 !     |   HB2 HG2 HD2 HE     NH1     
+        4     HA    H140   0.060 !     |   |   |   |   |    //        
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--NE--CZ         
+        6     HB2   H140   0.060 !     |   |   |   |         \        
+        7     HB3   H140   0.060 !     |   HB3 HG3 HD3        NH2-HH22
+        8     CG    C308  -0.120 !   O=C                       |      
+        9     HG2   H140   0.060 !     |                      HH21    
+        10    HG3   H140   0.060
+        11    CD    C307   0.040
+        12    HD2   H140   0.060
+        13    HD3   H140   0.060
+        14    NE    N303  -0.620
+        15    HE    H304   0.380
+        16    CZ    C302   0.550
+        17    NH1   N300  -0.785
+        18    HH11  H301   0.380
+        19    NH2   N300  -0.785
+        20    HH21  H301   0.360
+        21    HH22  H301   0.360
+        22    C     C235   0.500
+        23    O     O236  -0.500
+    [bonds]
+        CB    CA
+        CG    CB
+        CD    CG
+        NE    CD
+        CZ    NE
+        NH2   CZ
+        N     H
+        N     CA
+        C     CA
+        CA    HA
+        CB    HB2
+        CB    HB3
+        CG    HG2
+        CG    HG3
+        CD    HD2
+        CD    HD3
+        NE    HE
+        NH1   HH11
+        NH2   HH21
+        NH2   HH22
+        O     C
+        CZ    NH1
+    [connections]
+        head  N
+        tail  C
+    [impropers]
+        H     N     -C    CA
+        O     C     CA    +N
+        NH2   CZ    NE    NH1
+        HE    NE    CD    CZ
+    [charge_groups]
+        N     H     CA    HA
+        CB    HB2   HB3
+        NE    HE    CD    HD2   HD3   CG    HG2   HG3   CZ    NH1   HH11  NH2   HH21  HH22
+        C     O
+*-----------------------------------------------------------------------------------------------
+{ASN} !            charge  0.0   ! Asparagine
+    [atoms]
+        1     N     N238  -0.500 !     |                                 
+        2     H     H241   0.300 !  HN-N                                 
+        3     CA    C224   0.140 !     |   HB2 OD1    HD21 (cis to OD1)  
+        4     HA    H140   0.060 !     |   |   ||    /                   
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--ND2                   
+        6     HB2   H140   0.060 !     |   |         \                   
+        7     HB3   H140   0.060 !     |   HB3        HD22 (trans to OD1)
+        8     CG    C235   0.500 !   O=C                                 
+        9     OD1   O236  -0.500 !     |                                 
+        10    ND2   N237  -0.760
+        11    HD21  H240   0.380
+        12    HD22  H240   0.380
+        13    C     C235   0.500
+        14    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND2   CG    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND2   HD21  
+        ND2   HD22  
+        C     O     
+        CG    OD1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        OD1   CG    CB    ND2   
+        HD22  ND2   CG    HD21  
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        CG    OD1   
+        ND2   HD21  HD22  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{ASP} !            charge -1.0    ! Aspartic acid
+    [atoms]
+        1     N     N238  -0.500 !     |               
+        2     H     H241   0.300 !   H-N               
+        3     CA    C224   0.140 !     |   HB2   OD1(-)
+        4     HA    H140   0.060 !     |   |    /      
+        5     CB    C274  -0.220 !  HA-CA--CB--CG      
+        6     HB2   H140   0.060 !     |   |    \\     
+        7     HB3   H140   0.060 !     |   HB3   OD2   
+        8     CG    C271   0.700 !   O=C               
+        9     OD1   O272  -0.800 !     |               
+        10    OD2   O272  -0.800
+        11    C     C235   0.500
+        12    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        OD2   CG    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        O     C     
+        CG    OD1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        OD2   CG    CB    OD1   
+    [charge_groups]
+        N     H     CA    HA    
+        CG    CB    HB2   HB3   OD1   OD2   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{ASH} !            charge  0.0    ! Neutral Aspartic acid, protonated OD1
+    [atoms]
+        1     N     N238  -0.500 !     |                
+        2     H     H241   0.300 !   H-N                
+        3     CA    C224   0.140 !     |   HB2   OD1-HD1   
+        4     HA    H140   0.060 !     |   |    /       
+        5     CB    C136  -0.120 !  HA-CA--CB--CG       
+        6     HB2   H140   0.060 !     |   |    \\      
+        7     HB3   H140   0.060 !     |   HB3   OD2     
+        8     CG    C267   0.520 !   O=C                   
+        9     OD2   O269  -0.440 !     |                 
+        10    OD1   O268  -0.530
+        11    C     C235   0.500
+        12    O     O236  -0.500
+        13    HD1   H270   0.450
+    [bonds]
+        CB    CA    
+        CG    CB    
+        OD2   CG    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        O     C     
+        CG    OD1   
+        OD1   HD1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        OD2   CG    CB    OD1   
+    [charge_groups]
+        N     H     CA    HA    
+        CG    CB    HB2   HB3   OD1   OD2   HD1   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{CYS} !            charge  0.0   ! Cysteine
+[atoms]
+        1     N     N238  -0.500 !     |             
+        2     H     H241   0.300 !   H-N             
+        3     CA    C224   0.140 !     |   HB2       
+        4     HA    H140   0.060 !     |   |         
+        5     CB    C206   0.060 !  HA-CA--CB--SG    
+        6     HB2   H140   0.060 !     |   |     \   
+        7     HB3   H140   0.060 !     |   HB3    HG
+        8     SG    S200  -0.335 !   O=C             
+        9     HG    H204   0.155 !     |             
+        10    C     C235   0.500
+        11    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        SG    CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        SG    HG   
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        SG    HG    CB    HB2   HB3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{CYX} !            charge  0.0   ! Cysteine disulfide
+    [atoms]
+        1     N     N238   -0.500 !     |            
+        2     H     H241    0.300 !   H-N            
+        3     CA    C224    0.140 !     |   HB2      
+        4     HA    H140    0.060 !     |   |        
+        5     CB    C214   0.0975 !  HA-CA--CB--SG   
+        6     HB2   H140    0.060 !     |   |     \  
+        7     HB3   H140    0.060 !     |   HB3    (SG--)
+        8     SG    S203  -0.2175 !   O=C            
+        9     C     C235    0.500 !     |            
+        10    O     O236   -0.500
+    [bonds]
+        CB    CA    
+        SG    CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        SG    CB    HB2   HB3    
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{GLN} !            charge  0.0   ! Glutamine
+    [atoms]
+        1     N     N238  -0.500 !     |                                    
+        2     H     H241   0.300 !   H-N                                    
+        3     CA    C224   0.140 !     |   HB2 HG2 OE1   HE21 (cis to OE1)  
+        4     HA    H140   0.060 !     |   |   |   ||    /                  
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--NE2                  
+        6     HB2   H140   0.060 !     |   |   |         \                  
+        7     HB3   H140   0.060 !     |   HB3 HG3       HE22 (trans to OE1)
+        8     CG    C136  -0.120 !   O=C                                    
+        9     HG2   H140   0.060 !     |                                    
+        10    HG3   H140   0.060
+        11    CD    C235   0.500
+        12    OE1   O236  -0.500
+        13    NE2   N237  -0.760
+        14    HE21  H240   0.380
+        15    HE22  H240   0.380
+        16    C     C235   0.500
+        17    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE2   CD   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        NE2   HE21  
+        NE2   HE22  
+        O     C     
+        CD    OE1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        OE1   CD    CG    NE2   
+        HE22  NE2   CD    HE21  
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    OE1   
+        NE2   HE21  HE22  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{GLU} !            charge -1.0   ! Glutamic acid
+    [atoms]
+        1     N     N238  -0.500 !     |                   
+        2     H     H241   0.300 !   H-N                   
+        3     CA    C224   0.140 !     |   HB2 HG2   OE1   
+        4     HA    H140   0.060 !     |   |   |    //     
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD      
+        6     HB2   H140   0.060 !     |   |   |    \      
+        7     HB3   H140   0.060 !     |   HB3 HG3   OE2(-)
+        8     CG    C274  -0.220 !   O=C                   
+        9     HG2   H140   0.060 !     |                   
+        10    HG3   H140   0.060
+        11    CD    C271   0.700
+        12    OE1   O272  -0.800
+        13    OE2   O272  -0.800
+        14    C     C235   0.500
+        15    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        OE2   CD  
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        O     C     
+        CD    OE1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        OE2   CD    CG    OE1   
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        CD    CG    HG2   HG3   OE1   OE2   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{GLH} !            charge  0.0   ! Neutral Glutamic acid, protonated OE1
+    [atoms]
+        1     N     N238  -0.500 !     |                   
+        2     H     H241   0.300 !   H-N                   
+        3     CA    C224   0.140 !     |   HB2 HG2   OE1-HE1   
+        4     HA    H140   0.060 !     |   |   |    /     
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD      
+        6     HB2   H140   0.060 !     |   |   |    \\      
+        7     HB3   H140   0.060 !     |   HB3 HG3   OE2
+        8     CG    C136  -0.120 !   O=C                   
+        9     HG2   H140   0.060 !     |                   
+        10    HG3   H140   0.060
+        11    CD    C267   0.520
+        12    OE2   O269  -0.440
+        13    OE1   O268  -0.530
+        14    C     C235   0.500
+        15    O     O236  -0.500
+        16    HE1   H270   0.450
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        OE2   CD    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        O     C     
+        CD    OE1   
+        OE1   HE1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        OE2   CD    CG    OE1   
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        CD    CG    HG2   HG3   OE1   OE2   HE1   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{GLY} !            charge  0.0   ! Glycine
+    [atoms]
+        1     N     N238  -0.500 !      |     
+        2     H     H241   0.300 !    H-N     
+        3     CA    C223   0.080 !      |     
+        4     HA2   H140   0.060 !  HA3-CA-HA2
+        5     HA3   H140   0.060 !      |     
+        6     C     C235   0.500 !    0=C     
+        7     O     O236  -0.500 !      |     
+    [bonds]
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA2   
+        CA    HA3   
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA2   HA3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{HID} !            charge  0.0   ! Histidine, protonated ND1
+    [atoms]
+        1     N     N238  -0.500 !     |          HD1    HE1
+        2     H     H241   0.300 !   H-N           |     /  
+        3     CA    C224   0.140 !     |   HB2    ND1--CE1  
+        4     HA    H140   0.060 !     |   |     /      ||  
+        5     CB    C505  -0.005 !  HA-CA--CB--CG       ||  
+        6     HB2   H140   0.060 !     |   |     \\     ||  
+        7     HB3   H140   0.060 !     |   HB3    CD2--NE2  
+        8     CG    C508   0.015 !   O=C           |        
+        9     ND1   N503  -0.570 !     |          HD2       
+        10    HD1   H504   0.420 
+        11    CE1   C506   0.295
+        12    HE1   H146   0.115
+        13    NE2   N511  -0.490
+        14    CD2   C507  -0.015
+        15    HD2   H146   0.115
+        16    C     C235   0.500
+        17    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        CE1   ND1   
+        NE2   CD2   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        O     C     
+        CG    CD2   
+        CE1   NE2   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        HD1   ND1   CG    CE1   
+        HD2   CD2   NE2   CG    
+        HE1   CE1   ND1   NE2   
+        CB    CG    ND1   CD2   
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CG    CB    HB2   HB3   ND1   HD1   CE1   HE1   NE2   CD2   HD2
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{HIE} !            charge  0.0   ! Histidine, protonated NE2
+    [atoms]
+        1     N     N238  -0.500 !     |                 HE1
+        2     H     H241   0.300 !   H-N                 /  
+        3     CA    C224   0.140 !     |   HB2    ND1==CE1  
+        4     HA    H140   0.060 !     |   |     /      |   
+        5     CB    C505  -0.005 !  HA-CA--CB--CG       |   
+        6     HB2   H140   0.060 !     |   |     \\     |   
+        7     HB3   H140   0.060 !     |   HB3    CD2--NE2  
+        8     CG    C507  -0.015 !   O=C           |     \  
+        9     ND1   N511  -0.490 !     |          HD2    HE2
+        10    CE1   C506   0.295 
+        11    HE1   H146   0.115
+        12    NE2   N503  -0.570
+        13    HE2   H504   0.420
+        14    CD2   C508   0.015
+        15    HD2   H146   0.115
+        16    C     C235   0.500
+        17    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        NE2   CD2   
+        N     H     
+        N     CA    
+        C     CA    
+        NE2   CE1   
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        NE2   HE2   
+        CD2   HD2   
+        CE1   HE1   
+        O     C     
+        CD2   CG    
+        CE1   ND1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        HE2   NE2   CE1   CD2   
+        HD2   CD2   NE2   CG    
+        HE1   CE1   ND1   NE2   
+        CB    CG    ND1   CD2   
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CG    CB    HB2   HB3   ND1   CE1   HE1   NE2   HE2   CD2   HD2 
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{HIP} !            charge  1.0   ! Charged Histidine, protonated ND1, NE2
+    [atoms]
+        1     N     N238  -0.500 !     |          HD1    HE1 
+        2     H     H241   0.300 !   H-N           |     /   
+        3     CA    C224   0.140 !     |   HB2    ND1--CE1   
+        4     HA    H140   0.060 !     |   |     /      ||   
+        5     CB    C505  -0.005 !  HA-CA--CB--CG       ||   
+        6     HB2   H140   0.060 !     |   |     \\     ||   
+        7     HB3   H140   0.060 !     |   HB3    CD2--NE2(+)
+        8     CG    C510   0.215 !   O=C           |     \  
+        9     ND1   N512  -0.540 !     |          HD2    HE2
+        10    HD1   H513   0.460
+        11    CE1   C509   0.385
+        12    HE1   H146   0.115
+        13    NE2   N512  -0.540
+        14    HE2   H513   0.460
+        15    CD2   C510   0.215  
+        16    HD2   H146   0.115  
+        17    C     C235   0.500
+        18    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        CE1   ND1   
+        NE2   CD2   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND1   HD1   
+        NE2   HE2   
+        CD2   HD2   
+        CE1   HE1   
+        O     C     
+        CD2   CG    
+        NE2   CE1   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        HD1   ND1   CG    CE1   
+        HE1   CE1   ND1   NE2   
+        HE2   NE2   CE1   CD2   
+        HD2   CD2   NE2   CG    
+        CB    CG    ND1   CD2   
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CG    CB    HB2   HB3   CD2   HD2   NE2   HE2   ND1   HD1   CE1   HE1
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{ILE} !            charge  0.0   ! Isoleucine
+    [atoms]
+        1     N     N238  -0.500 !     |    HG21 HG22     
+        2     H     H241   0.300 !   H-N      | /         
+        3     CA    C224   0.140 !     |     CG2--HG23    
+        4     HA    H140   0.060 !     |    /             
+        5     CB    C137  -0.060 !  HA-CA--CB-HB    HD11   
+        6     HB    H140   0.060 !     |    \       /     
+        7     CG2   C135  -0.180 !     |     CG1--CD--HD12 
+        8     HG21  H140   0.060 !   O=C    / \     \     
+        9     HG22  H140   0.060 !     | HG12 HG13  HD13  
+        10    HG23  H140   0.060
+        11    CG1   C136  -0.120
+        12    HG12  H140   0.060
+        13    HG13  H140   0.060
+        14    CD1   C135  -0.180
+        15    HD11  H140   0.060
+        16    HD12  H140   0.060
+        17    HD13  H140   0.060
+        18    C     C235   0.500
+        19    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG1   CB    
+        CG2   CB    
+        CD1   CG1   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB    
+        CG1   HG12  
+        CG1   HG13  
+        CG2   HG21  
+        CG2   HG22  
+        CG2   HG23  
+        CD1   HD11   
+        CD1   HD12   
+        CD1   HD13   
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB    
+        CG2   HG21  HG22  HG23  
+        CG1   HG12  HG13  
+        CD1   HD11  HD12  HD13   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{LEU} !            charge  0.0   ! Leucine
+    [atoms]
+        1     N     N238  -0.500 !     |        HD11 HD12 
+        2     H     H241   0.300 !   H-N          | /     
+        3     CA    C224   0.140 !     |   HB2   CD1--HD13
+        4     HA    H140   0.060 !     |   |    /         
+        5     CB    C136  -0.120 !  HA-CA--CB--CG-HG      
+        6     HB2   H140   0.060 !     |   |    \         
+        7     HB3   H140   0.060 !     |   HB3   CD2--HD23
+        8     CG    C137  -0.060 !   O=C          | \     
+        9     HG    H140   0.060 !     |        HD21 HD22 
+        10    CD1   C135  -0.180
+        11    HD11  H140   0.060
+        12    HD12  H140   0.060
+        13    HD13  H140   0.060
+        14    CD2   C135  -0.180
+        15    HD21  H140   0.060
+        16    HD22  H140   0.060
+        17    HD23  H140   0.060
+        18    C     C235   0.500
+        19    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD1   CG    
+        CD2   CG    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG    
+        CD1   HD11  
+        CD1   HD12  
+        CD1   HD13  
+        CD2   HD21  
+        CD2   HD22  
+        CD2   HD23  
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        CG    HG    
+        CD1   HD11  HD12  HD13  
+        CD2   HD21  HD22  HD23  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{LYS} !            charge  1.0   ! Lysine
+    [atoms]
+        1     N     N238  -0.500 !     |                          
+        2     H     H241   0.300 !   H-N                          
+        3     CA    C224   0.140 !     |   HB2 HG2 HD2 HE2    HZ1 
+        4     HA    H140   0.060 !     |   |   |   |   |  (+)/    
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--CE--NZ--HZ2
+        6     HB2   H140   0.060 !     |   |   |   |   |     \    
+        7     HB3   H140   0.060 !     |   HB3 HG3 HD3 HE3    HZ3 
+        8     CG    C136  -0.120 !   O=C                          
+        9     HG2   H140   0.060 !     |                          
+        10    HG3   H140   0.060
+        11    CD    C136  -0.120
+        12    HD2   H140   0.060
+        13    HD3   H140   0.060
+        14    CE    C292   0.190
+        15    HE2   H140   0.060
+        16    HE3   H140   0.060
+        17    NZ    N287  -0.300
+        18    HZ1   H290   0.330
+        19    HZ2   H290   0.330
+        20    HZ3   H290   0.330
+        21    C     C235   0.500
+        22    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        CE    CD    
+        NZ    CE    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        CE    HE2   
+        CE    HE3   
+        O     C     
+        NZ    HZ1   
+        NZ    HZ2   
+        NZ    HZ3   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    HD2   HD3   
+        NZ    HZ1   HZ2   HZ3   CE    HE2   HE3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{LYN} !            charge  0.0   ! Neutral Lysine, deprotonated NZ
+    [atoms]
+        1     N     N238  -0.500 !     |                          
+        2     H     H241   0.300 !   H-N                          
+        3     CA    C224   0.140 !     |   HB2 HG2 HD2 HE2    HZ1 
+        4     HA    H140   0.060 !     |   |   |   |   |     /    
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--CE--NZ    
+        6     HB2   H140   0.060 !     |   |   |   |   |     \    
+        7     HB3   H140   0.060 !     |   HB3 HG3 HD3 HE3    HZ2 
+        8     CG    C136  -0.120 !   O=C                          
+        9     HG2   H140   0.060 !     |                          
+        10    HG3   H140   0.060
+        11    CD    C136  -0.120
+        12    HD2   H140   0.060
+        13    HD3   H140   0.060
+        14    CE    C292   0.060
+        15    HE2   H140   0.060
+        16    HE3   H140   0.060
+        17    NZ    N287  -0.900
+        18    HZ1   H290   0.360
+        19    HZ2   H290   0.360
+        20    C     C235   0.500
+        21    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        CE    CD    
+        NZ    CE    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        CE    HE2   
+        CE    HE3   
+        O     C     
+        NZ    HZ1   
+        NZ    HZ2   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    HD2   HD3   
+        NZ    HZ1   HZ2   CE    HE2   HE3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{MET} !            charge   0.0   ! Methionine
+    [atoms]
+        1     N     N238   -0.500 !     |                      
+        2     H     H241    0.300 !   H-N                      
+        3     CA    C224    0.140 !     |   HB2 HG2     HE1    
+        4     HA    H140    0.060 !     |   |   |       |      
+        5     CB    C136   -0.120 !  HA-CA--CB--CG--SD--CE--HE3
+        6     HB2   H140    0.060 !     |   |   |       |      
+        7     HB3   H140    0.060 !     |   HB3 HG3     HE2    
+        8     CG    C210   0.0475 !   O=C                      
+        9     HG2   H140    0.060 !     |                      
+        10    HG3   H140    0.060
+        11    SD    S202   -0.335
+        12    CE    C209  -0.0125
+        13    HE1   H140    0.060
+        14    HE2   H140    0.060
+        15    HE3   H140    0.060
+        16    C     C235    0.500
+        17    O     O236   -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        SD    CG    
+        CE    SD    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CE    HE1   
+        CE    HE2   
+        CE    HE3   
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        SD    CG    HG2   HG3   CE    HE1   HE2   HE3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{PHE} !            charge  0.0   ! Phenylalanine
+    [atoms]
+        1     N     N238  -0.500 !     |        HD1  HE1     
+        2     H     H241   0.300 !   H-N         |    |      
+        3     CA    C224   0.140 !     |   HB2  CD1--CE1     
+        4     HA    H140   0.060 !     |   |    //     \\    
+        5     CB    C149  -0.005 !  HA-CA--CB--CG      CZ-HZ
+        6     HB2   H140   0.060 !     |   |    \      /     
+        7     HB3   H140   0.060 !     |   HB3  CD2==CE2     
+        8     CG    C145  -0.115 !   O=C         |    |      
+        9     CD1   C145  -0.115 !     |        HD2  HE2     
+        10    HD1   H146   0.115
+        11    CE1   C145  -0.115
+        12    HE1   H146   0.115
+        13    CZ    C145  -0.115
+        14    HZ    H146   0.115
+        15    CE2   C145  -0.115
+        16    HE2   H146   0.115
+        17    CD2   C145  -0.115
+        18    HD2   H146   0.115
+        19    C     C235   0.500
+        20    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        CE1   CD1   
+        CZ    CE2   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        O     C     
+        CD1   CG    
+        CZ    CE1   
+        CE2   CD2   
+        CE2   HE2   
+        CZ    HZ    
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        HD1   CD1   CG    CE1   
+        HE1   CE1   CD1   CZ    
+        HZ    CZ    CE1   CE2   
+        CB    CG    CD1   CD2   
+        HD2   CD2   CE2   CG    
+        HE2   CE2   CZ    CD2   
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   CG    
+        CD1   HD1   
+        CE1   HE1   
+        CZ    HZ    
+        CD2   HD2   
+        CE2   HE2   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{PRO} !            charge  0.0   ! Proline
+    [atoms]
+        1     N     N239  -0.140 !       HD2 HD3   
+        2     CA    C246   0.010 !     |   \ /     
+        3     HA    H140   0.060 !     N---CD   HG2
+        4     CB    C136  -0.120 !     |     \  /  
+        5     HB2   H140   0.060 !     |      CG   
+        6     HB3   H140   0.060 !     |     /  \  
+        7     CG    C136  -0.120 !  HA-CA--CB   HG3
+        8     HG2   H140   0.060 !     |   / \     
+        9     HG3   H140   0.060 !     | HB2 HB3   
+        10    CD    C245  -0.050 !   O=C           
+        11    HD2   H140   0.060 !     |           
+        12    HD3   H140   0.060 
+        13    C     C235   0.500
+        14    O     O236  -0.500
+    [bonds]
+        C     CA    
+        N     CA    
+        CA    CB    
+        CB    CG    
+        CG    CD   
+        N     CD   
+        HA    CA    
+        HG2   CG    
+        HG3   CG    
+        HD2   CD   
+        HD3   CD   
+        HB2   CB    
+        HB3   CB    
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        CD    N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     CD    HD2   HD3   CA    HA    
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{SER} !            charge  0.0   ! Serine
+    [atoms]
+        1     N     N238  -0.500 !     |             
+        2     H     H241   0.300 !   H-N             
+        3     CA    C224   0.140 !     |   HB2       
+        4     HA    H140   0.060 !     |   |         
+        5     CB    C157   0.145 !  HA-CA--CB--OG    
+        6     HB2   H140   0.060 !     |   |     \   
+        7     HB3   H140   0.060 !     |   HB3    HG
+        8     OG    O154  -0.683 !   O=C             
+        9     HG    H155   0.418 !     |             
+        10    C     C235   0.500
+        11    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        OG    CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        OG    HG   
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        OG    HG    CB    HB2   HB3   
+        C     O       
+*-----------------------------------------------------------------------------------------------
+{THR} !            charge  0.0   ! Threonine
+    [atoms]
+        1     N     N238  -0.500 !     |              
+        2     H     H241   0.300 !   H-N              
+        3     CA    C224   0.140 !     |     OG1--HG1 
+        4     HA    H140   0.060 !     |    /         
+        5     CB    C158   0.205 !  HA-CA--CB-HB      
+        6     HB    H140   0.060 !     |    \         
+        7     CG2   C135  -0.180 !     |     CG2--HG23
+        8     HG21  H140   0.060 !   O=C    / \       
+        9     HG22  H140   0.060 !     | HG21 HG22    
+        10    HG23  H140   0.060
+        11    OG1   O154  -0.683
+        12    HG1   H155   0.418
+        13    C     C235   0.500
+        14    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        OG1   CB    
+        CG2   CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB    
+        OG1   HG1   
+        CG2   HG21  
+        CG2   HG22  
+        CG2   HG23  
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        OG1   HG1   CB    HB    
+        CG2   HG21  HG22  HG23  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{TRP} !            charge  0.0   ! Tryptophan
+    [atoms]
+        1     N     N238  -0.500 !     |                  HE3       
+        2     H     H241   0.300 !   H-N                   |        
+        3     CA    C224   0.140 !     |   HB2            CE3       
+        4     HA    H140   0.060 !     |   |             /  \\      
+        5     CB    C136  -0.120 !  HA-CA--CB---CG-----CD2   CZ3-HZ3
+        6     HB2   H140   0.060 !     |   |    ||     ||     |     
+        7     HB3   H140   0.060 !     |   HB3  CD1    CE2   CH2-HH2
+        8     CG    C500   0.075 !   O=C       /   \   / \  //      
+        9     CD1   C514  -0.115 !     |     HD1    NE1   CZ2       
+        10    HD1   H146   0.115 !                   |     |        
+        11    NE1   N503  -0.570 !                  HE1   HZ2       
+        12    HE1   H504   0.420
+        13    CE2   C502   0.130
+        14    CZ2   C145  -0.115
+        15    HZ2   H146   0.115
+        16    CH2   C145  -0.115
+        17    HH2   H146   0.115
+        18    CZ3   C145  -0.115
+        19    HZ3   H146   0.115
+        20    CE3   C145  -0.115
+        21    HE3   H146   0.115
+        22    CD2   C501  -0.055
+        23    C     C235   0.500
+        24    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        NE1   CD1   
+        CZ2   CE2   
+        N     H     
+        N     CA    
+        C     CA    
+        CZ3   CH2   
+        CD2   CE3   
+        NE1   CE2   
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        NE1   HE1   
+        CE3   HE3   
+        CZ2   HZ2   
+        CZ3   HZ3   
+        CH2   HH2   
+        O     C     
+        CD1   CG    
+        CE2   CD2   
+        CZ3   CE3   
+        CH2   CZ2   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        CB    CG    CD1   CD2   
+        HD1   CD1   CG    NE1   
+        HE1   NE1   CD1   CE2   
+        HZ2   CZ2   CE2   CH2   
+        HH2   CH2   CZ2   CZ3   
+        HZ3   CZ3   CH2   CE3   
+        HE3   CE3   CZ3   CD2   
+        CE2   CD2   CE3   CG    
+        CZ2   CE2   CD2   NE1   
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   
+        NE1   HE1   CD1   HD1   CG    CD2   CE2   
+        CE3   HE3   
+        CZ3   HZ3   
+        CZ2   HZ2   
+        CH2   HH2   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{TYR} !            charge  0.0   ! Tyrosine
+    [atoms]
+        1     N     N238  -0.500 !     |        HD1  HE1       
+        2     H     H241   0.300 !   H-N         |    |        
+        3     CA    C224   0.140 !     |   HB2  CD1--CE1       
+        4     HA    H140   0.060 !     |   |   //      \\      
+        5     CB    C149  -0.005 !  HA-CA--CB--CG      CZ--OH  
+        6     HB2   H140   0.060 !     |   |    \      /     \ 
+        7     HB3   H140   0.060 !     |   HB3  CD2==CE2     HH
+        8     CG    C145  -0.115 !   O=C         |    |        
+        9     CD1   C145  -0.115 !     |        HD2  HE2       
+        10    HD1   H146   0.115
+        11    CE1   C145  -0.115
+        12    HE1   H146   0.115
+        13    CZ    C166   0.150
+        14    OH    O167  -0.585
+        15    HH    H168   0.435
+        16    CD2   C145  -0.115
+        17    HD2   H146   0.115
+        18    CE2   C145  -0.115
+        19    HE2   H146   0.115
+        20    C     C235   0.500
+        21    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        CE1   CD1   
+        CZ    CE2   
+        OH    CZ    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        CE2   HE2   
+        OH    HH    
+        O     C     
+        CD1   CG    
+        CE1   CZ    
+        CE2   CD2   
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        HD1   CD1   CG    CE1   
+        HE1   CE1   CD1   CZ    
+        OH    CZ    CE1   CE2   
+        CB    CG    CD1   CD2   
+        HD2   CD2   CE2   CG    
+        HE2   CE2   CZ    CD2   
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB2   HB3   CG    
+        CD1   HD1   
+        CE1   HE1   
+        OH    HH    CZ    
+        CD2   HD2   
+        CE2   HE2   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{VAL} !            charge  0.0   ! Valine
+    [atoms]
+        1     N     N238  -0.500 !     |    HG11 HG12 
+        2     H     H241   0.300 !   H-N      | /     
+        3     CA    C224   0.140 !     |     CG1--HG13
+        4     HA    H140   0.060 !     |    /         
+        5     CB    C137  -0.060 !  HA-CA--CB-HB      
+        6     HB    H140   0.060 !     |    \         
+        7     CG1   C135  -0.180 !     |     CG2--HG23
+        8     HG11  H140   0.060 !   O=C    / \       
+        9     HG12  H140   0.060 !     | HG21 HG22    
+        10    HG13  H140   0.060
+        11    CG2   C135  -0.180
+        12    HG21  H140   0.060
+        13    HG22  H140   0.060
+        14    HG23  H140   0.060
+        15    C     C235   0.500
+        16    O     O236  -0.500
+    [bonds]
+        CB    CA    
+        CG1   CB    
+        CG2   CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB    
+        CG1   HG11  
+        CG1   HG12  
+        CG1   HG13  
+        CG2   HG21  
+        CG2   HG22  
+        CG2   HG23  
+        O     C     
+    [connections]
+        head  N     
+        tail  C     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+    [charge_groups]
+        N     H     CA    HA    
+        CB    HB    
+        CG1   HG11  HG12  HG13  
+        CG2   HG21  HG22  HG23  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{ACE} !            charge  0.0   ! Acetylated N-terminus
+    [info]
+        SYBYLtype RESIDUE
+    [atoms]
+        1     C     C235   0.500 !       |     
+        2     O     O236  -0.500 !       C=O   
+        3     CH3   C135  -0.180 !       |     
+        4     HH31  H140   0.060 !  HA1-CA-HA3 
+        5     HH32  H140   0.060 !       |     
+        6     HH33  H140   0.060 !      HA2    
+    [bonds]
+        C     O   
+        C     CH3  
+        CH3   HH31  
+        CH3   HH32  
+        CH3   HH33  
+    [connections]
+        tail  C
+    [impropers]
+        O     C     CH3   +N  
+    [charge_groups]
+        CH3   HH31  HH32  HH33
+        C     O
+*-----------------------------------------------------------------------------------------------
+{NMA} !            charge  0.0   ! N-Methylamide C-terminus
+    [info]
+        SYBYLtype RESIDUE
+    [atoms]
+        1     N     N238  -0.500 !       |     
+        2     CA    C242   0.020 !       N-H   
+        3     H     H241   0.300 !       |      
+        4     HA1   H140   0.060 !  HA1-CA-HA3 
+        5     HA2   H140   0.060 !       |      
+        6     HA3   H140   0.060 !      HA2    
+    [bonds]
+        N     H
+        N     CA
+        CA    HA1
+        CA    HA2
+        CA    HA3
+    [connections]
+        head  N
+    [impropers]
+        H     N     -C    CA  
+    [charge_groups]
+        N     H     CA    HA1   HA2   HA3
+*-----------------------------------------------------------------------------------------------
+{NALA} !           charge  1.0   ! Alanine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2     
+        2     CA    C293   0.250 !    \ /        
+        3     HA    H140   0.060 !  (+)N--HT3     
+        4     CB    C135  -0.180 !     |     HB1      
+        5     HB1   H140   0.060 !     |    /     
+        6     HB2   H140   0.060 !  HA-CA--CB-HB2 
+        7     HB3   H140   0.060 !     |    \     
+        8     C     C235   0.500 !     |     HB3  
+        9     O     O236  -0.500 !   O=C          
+        10    HT1   H290   0.330 !     |         
+        11    HT2   H290   0.330 
+        12    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB1   
+        CB    HB2   
+        CB    HB3   
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB1   HB2   HB3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NARG} !           charge  2.0   ! Arginine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /                    HH11
+        3     HA    H140   0.060 !  (+)N--HT3                 |
+        4     CB    C136  -0.120 !     |   HB2 HG2 HD2 HE     NH1-HH12
+        5     HB2   H140   0.060 !     |   |   |   |   |    //(+)     
+        6     HB3   H140   0.060 !  HA-CA--CB--CG--CD--NE--CZ         
+        7     CG    C308  -0.050 !     |   |   |   |         \        
+        8     HG2   H140   0.060 !     |   HB3 HG3 HD3        NH2-HH22
+        9     HG3   H140   0.060 !   O=C                       |      
+        10    CD    C307   0.190 !     |                      HH21    
+        11    HD2   H140   0.060
+        12    HD3   H140   0.060
+        13    NE    N303  -0.700
+        14    HE    H304   0.440
+        15    CZ    C302   0.640
+        16    NH1   N300  -0.800
+        17    HH11  H301   0.460
+        18    HH12  H301   0.460
+        19    NH2   N300  -0.800
+        20    HH21  H301   0.460
+        21    HH22  H301   0.460
+        22    C     C235   0.500
+        23    O     O236  -0.500
+        24    HT1   H290   0.330
+        25    HT2   H290   0.330
+        26    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE    CD   
+        CZ    NE    
+        NH2   CZ    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        NE    HE    
+        NH1   HH11  
+        NH1   HH12  
+        NH2   HH21  
+        NH2   HH22  
+        O     C     
+        CZ    NH1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        NH2   CZ    NE    NH1   
+        HE    NE    CD    CZ    
+        HH12  NH1   CZ    HH11  
+        HH22  NH2   CZ    HH21  
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        NE    HE    CD    HD2   HD3   CG    HG2   HG3   CZ    NH1   HH11  HH12  NH2   HH21  HH22  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NARN} !           charge  1.0   ! Nautral Arginine N-terminal, deprotonated NH1 (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /                    HH11
+        3     HA    H140   0.060 !  (+)N--HT3                 |
+        4     CB    C136  -0.120 !     |   HB2 HG2 HD2 HE     NH1
+        5     HB2   H140   0.060 !     |   |   |   |   |    //     
+        6     HB3   H140   0.060 !  HA-CA--CB--CG--CD--NE--CZ         
+        7     CG    C308  -0.120 !     |   |   |   |         \        
+        8     HG2   H140   0.060 !     |   HB3 HG3 HD3        NH2-HH22
+        9     HG3   H140   0.060 !   O=C                       |      
+        10    CD    C307   0.040 !     |                      HH21    
+        11    HD2   H140   0.060
+        12    HD3   H140   0.060
+        13    NE    N303  -0.620
+        14    HE    H304   0.380
+        15    CZ    C302   0.550
+        16    NH1   N300  -0.785
+        17    HH11  H301   0.380
+        18    NH2   N300  -0.785
+        19    HH21  H301   0.360
+        20    HH22  H301   0.360
+        21    C     C235   0.500
+        22    O     O236  -0.500
+        23    HT1   H290   0.330
+        24    HT2   H290   0.330
+        25    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE    CD   
+        CZ    NE    
+        NH2   CZ    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        NE    HE    
+        NH1   HH11    
+        NH2   HH21  
+        NH2   HH22  
+        O     C     
+        CZ    NH1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        NH2   CZ    NE    NH1   
+        HE    NE    CD    CZ    
+        HH12  NH1   CZ    HH11  
+        HH22  NH2   CZ    HH21  
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3
+        NE    HE    CD    HD2   HD3   CG    HG2   HG3   CZ    NH1   HH11  NH2   HH21  HH22
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NASN} !           charge  1.0   ! Asparagine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C136  -0.120 !     |   HB2 OD1    HD21 (cis to OD1)  
+        5     HB2   H140   0.060 !     |   |   ||    /                   
+        6     HB3   H140   0.060 !  HA-CA--CB--CG--ND2                   
+        7     CG    C235   0.500 !     |   |         \                   
+        8     OD1   O236  -0.500 !     |   HB3        HD22 (trans to OD1)
+        9     ND2   N237  -0.760 !   O=C                                 
+        10    HD21  H240   0.380 !     |                                 
+        11    HD22  H240   0.380
+        12    C     C235   0.500
+        13    O     O236  -0.500
+        14    HT1   H290   0.330
+        15    HT2   H290   0.330
+        16    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND2   CG    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND2   HD21  
+        ND2   HD22  
+        C     O     
+        CG    OD1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        OD1   CG    CB    ND2   
+        HD22  ND2   CG    HD21  
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        CG    OD1   
+        ND2   HD21  HD22 
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NASP} !           charge  0.0   ! Aspartic acid N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C274  -0.220 !     |   HB2   OD1(-)
+        5     HB2   H140   0.060 !     |   |    /      
+        6     HB3   H140   0.060 !  HA-CA--CB--CG      
+        7     CG    C271   0.700 !     |   |    \\     
+        8     OD1   O272  -0.800 !     |   HB3   OD2   
+        9     OD2   O272  -0.800 !   O=C               
+        10    C     C235   0.500 !     |               
+        11    O     O236  -0.500
+        12    HT1   H290   0.330
+        13    HT2   H290   0.330
+        14    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        OD2   CG    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        O     C     
+        CG    OD1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        OD2   CG    CB    OD1   
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CG    CB    HB2   HB3   OD1   OD2   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NASH} !           charge  1.0   ! Neutral Aspartic acid N-terminal, protonated OD1 (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C136  -0.120 !     |   HB2   OD1-HD1
+        5     HB2   H140   0.060 !     |   |    /       
+        6     HB3   H140   0.060 !  HA-CA--CB--CG       
+        7     CG    C267   0.520 !     |   |    \\      
+        8     OD2   O269  -0.440 !     |   HB3   OD2    
+        9     OD1   O268  -0.530 !   O=C                
+        10    C     C235   0.500 !     |                
+        11    O     O236  -0.500
+        12    HD1   H270   0.450
+        13    HT1   H290   0.330
+        14    HT2   H290   0.330
+        15    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        OD2   CG    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        O     C     
+        CG    OD1   
+        OD1   HD1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        OD2   CG    CB    OD1   
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CG    CB    HB2   HB3   OD1   OD2   HD1   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NCYS} !           charge  1.0   ! Cysteine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C206   0.060 !     |   HB2       
+        5     HB2   H140   0.060 !     |   |         
+        6     HB3   H140   0.060 !  HA-CA--CB--SG    
+        7     SG    S200  -0.335 !     |   |     \   
+        8     HG    H204   0.155 !     |   HB3    HG 
+        9     C     C235   0.500 !   O=C             
+        10    O     O236  -0.500 !     |            
+        11    HT1   H290   0.330
+        12    HT2   H290   0.330
+        13    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        SG    CB    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        SG    HG   
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        SG    HG    CB    HB2   HB3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NCYX} !           charge  1.0   ! Cysteine disulfide N-terminal (standard)
+    [atoms]
+        1     N     N287   -0.300 !  HT1  HT2 
+        2     CA    C293    0.250 !    \ /    
+        3     HA    H140    0.060 !  (+)N--HT3
+        4     CB    C214   0.0975 !     |   HB2      
+        5     HB2   H140    0.060 !     |   |        
+        6     HB3   H140    0.060 !  HA-CA--CB--SG   
+        7     SG    S203  -0.2175 !     |   |     \  
+        8     C     C235    0.500 !     |   HB3    (SG--)
+        9     O     O236   -0.500 !   O=C            
+        10    HT1   H290    0.330 !     |            
+        11    HT2   H290    0.330
+        12    HT3   H290    0.330
+    [bonds]
+        CB    CA    
+        SG    CB    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        SG    CB    HB2   HB3    
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NGLN} !           charge  1.0   ! Glutamine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C136  -0.120 !     |   HB2 HG2 OE1   HE21 (cis to OE1)  
+        5     HB2   H140   0.060 !     |   |   |   ||    /                  
+        6     HB3   H140   0.060 !  HA-CA--CB--CG--CD--NE2                  
+        7     CG    C136  -0.120 !     |   |   |         \                  
+        8     HG2   H140   0.060 !     |   HB3 HG3       HE22 (trans to OE1)
+        9     HG3   H140   0.060 !   O=C                                    
+        10    CD    C235   0.500 !     |                                    
+        11    OE1   O236  -0.500
+        12    NE2   N237  -0.760
+        13    HE21  H240   0.380
+        14    HE22  H240   0.380
+        15    C     C235   0.500
+        16    O     O236  -0.500
+        17    HT1   H290   0.330
+        18    HT2   H290   0.330
+        19    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE2   CD    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        NE2   HE21  
+        NE2   HE22  
+        O     C     
+        CD    OE1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        OE1   CD    CG    NE2   
+        HE22  NE2   CD    HE21  
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    OE1   
+        NE2   HE21  HE22  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NGLU} !           charge  0.0   ! Glutamic acid N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C136  -0.120 !     |   HB2 HG2   OE1   
+        5     HB2   H140   0.060 !     |   |   |    //     
+        6     HB3   H140   0.060 !  HA-CA--CB--CG--CD      
+        7     CG    C274  -0.220 !     |   |   |    \      
+        8     HG2   H140   0.060 !     |   HB3 HG3   OE2(-)
+        9     HG3   H140   0.060 !   O=C                   
+        10    CD    C271   0.700 !     |                   
+        11    OE1   O272  -0.800
+        12    OE2   O272  -0.800
+        13    C     C235   0.500
+        14    O     O236  -0.500
+        15    H1    H290   0.330
+        16    H2    H290   0.330
+        17    H3    H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        OE2   CD    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        O     C     
+        CD    OE1   
+        H1    N     
+        H2    N     
+        H3    N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        OE2   CD    CG    OE1   
+    [charge_groups]
+        N     H1    H2    H3    CA    HA    
+        CB    HB2   HB3   
+        CD    CG    HG2   HG3   OE1   OE2   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NGLH} !           charge  1.0   ! Neutral Glutamic acid N-terminal, protonated OE1 (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C136  -0.120 !     |   HB2 HG2   OE1-HE1
+        5     HB2   H140   0.060 !     |   |   |    /   
+        6     HB3   H140   0.060 !  HA-CA--CB--CG--CD   
+        7     CG    C136  -0.120 !     |   |   |    \\  
+        8     HG2   H140   0.060 !     |   HB3 HG3   OE2
+        9     HG3   H140   0.060 !   O=C                
+        10    CD    C267   0.520 !     |                
+        11    OE2   O269  -0.440
+        12    OE1   O268  -0.530
+        13    C     C235   0.500
+        14    O     O236  -0.500
+        15    HE1   H270   0.450
+        16    HT1   H290   0.330
+        17    HT2   H290   0.330
+        18    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        OE2   CD   
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        O     C     
+        CD    OE1   
+        OE1   HE1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        OE2   CD1   CG    OE1   
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        CD    CG    HG2   HG3   OE1   OE2   HE1   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NGLY} !           charge  1.0   ! Glycine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !   HT1  HT2 
+        2     CA    C292   0.190 !     \ /    
+        3     HA2   H140   0.060 !   (+)N--HT3
+        4     HA3   H140   0.060 !      |     
+        5     C     C235   0.500 !  HA3-CA-HA2
+        6     O     O236  -0.500 !      |     
+        7     HT1   H290   0.330 !    0=C     
+        8     HT2   H290   0.330 !      |     
+        9     HT3   H290   0.330
+    [bonds]
+        N     CA    
+        C     CA    
+        CA    HA2   
+        CA    HA3   
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA2   HA3    
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NHID} !           charge  1.0   ! Histidine N-terminal, protonated ND1 (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /         HD1    HE1
+        3     HA    H140   0.060 !  (+)N--HT3      |     /
+        4     CB    C505  -0.005 !     |   HB2    ND1--CE1
+        5     HB2   H140   0.060 !     |   |     /      ||
+        6     HB3   H140   0.060 !  HA-CA--CB--CG       ||
+        7     CG    C508   0.015 !     |   |     \\     ||
+        8     ND1   N503  -0.570 !     |   HB3    CD2--NE2
+        9     HD1   H504   0.420 !   O=C           |      
+        10    CE1   C506   0.295 !     |          HD2     
+        11    HE1   H146   0.115
+        12    NE2   N511  -0.490
+        13    CD2   C507  -0.015
+        14    HD2   H146   0.115
+        15    C     C235   0.500
+        16    O     O236  -0.500
+        17    HT1   H290   0.330
+        18    HT2   H290   0.330
+        19    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        CE1   ND1   
+        NE2   CD2   
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        O     C     
+        CG    CD2   
+        CE1   NE2   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        HD1   ND1   CG    CE1   
+        HD2   CD2   NE2   CG    
+        HE1   CE1   ND1   NE2   
+        CB    CG    ND1   CD2   
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CG    CB    HB2   HB3   ND1   HD1   CE1   HE1   NE2   CD2   HD2
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NHIE} !           charge  1.0   ! Histidine N-terminal, protonated NE2 (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /                HE1
+        3     HA    H140   0.060 !  (+)N--HT3            /
+        4     CB    C505  -0.005 !     |   HB2    ND1==CE1  
+        5     HB2   H140   0.060 !     |   |     /      |   
+        6     HB3   H140   0.060 !  HA-CA--CB--CG       |   
+        7     CG    C507  -0.015 !     |   |     \\     |   
+        8     ND1   N511  -0.490 !     |   HB3    CD2--NE2  
+        9     CE1   C506   0.295 !   O=C           |     \  
+        10    HE1   H146   0.115 !     |          HD2    HE2
+        11    NE2   N503  -0.570
+        12    HE2   H504   0.420
+        13    CD2   C508   0.015
+        14    HD2   H146   0.115
+        15    C     C235   0.500
+        16    O     O236  -0.500
+        17    HT1   H290   0.330
+        18    HT2   H290   0.330
+        19    HT3   H290   0.330
+    [bonds] 
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        NE2   CD2   
+        N     CA    
+        C     CA    
+        NE2   CE1   
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        NE2   HE2   
+        CD2   HD2   
+        CE1   HE1   
+        O     C     
+        CD2   CG    
+        CE1   ND1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        HE2   NE2   CE1   CD2   
+        HD2   CD2   NE2   CG    
+        HE1   CE1   ND1   NE2   
+        CB    CG    ND1   CD2   
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CG    CB    HB2   HB3   ND1   CE1   HE1   NE2   HE2   CD2   HD2 
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NHIP} !           charge  2.0   ! Charged Histidine N-terminal, protonated ND1, NE2 (standard)
+    [atoms]
+        1     N     N287  -0.300 ! HT1  HT2  
+        2     CA    C293   0.250 !   \ /         HD1    HE1
+        3     HA    H140   0.060 ! (+)N--HT3      |     /
+        4     CB    C505  -0.005 !    |   HB2    ND1--CE1   
+        5     HB2   H140   0.060 !    |   |     /      ||   
+        6     HB3   H140   0.060 ! HA-CA--CB--CG       ||   
+        7     CG    C510   0.215 !    |   |     \\     ||   
+        8     ND1   N512  -0.540 !    |   HB3    CD2--NE2(+)
+        9     HD1   H513   0.460 !  O=C           |     \   
+        10    CE1   C509   0.385 !    |          HD2    HE2 
+        11    HE1   H146   0.115 
+        12    NE2   N512  -0.540 
+        13    HE2   H513   0.460
+        14    CD2   C510   0.215 
+        15    HD2   H146   0.115 
+        16    C     C235   0.500 
+        17    O     O236  -0.500
+        18    HT1   H290   0.330
+        19    HT2   H290   0.330
+        20    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        CE1   ND1   
+        NE2   CD2   
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND1   HD1   
+        NE2   HE2   
+        CD2   HD2   
+        CE1   HE1   
+        O     C     
+        CD2   CG    
+        NE2   CE1   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        HD1   ND1   CG    CE1   
+        HE1   CE1   ND1   NE2   
+        HE2   NE2   CE1   CD2   
+        HD2   CD2   NE2   CG    
+        CB    CG    ND1   CD2   
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA  
+        CG    CB    HB2   HB3   CD2   HD2   NE2   HE2   ND1   HD1   CE1   HE1
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NILE} !           charge  1.0   ! Isoleucine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /   HG21 HG22
+        3     HA    H140   0.060 !  (+)N-HT3  | /    
+        4     CB    C137  -0.060 !     |     CG2--HG23    
+        5     HB    H140   0.060 !     |    /             
+        6     CG2   C135  -0.180 !  HA-CA--CB-HB    HD11  
+        7     HG21  H140   0.060 !     |    \       /     
+        8     HG22  H140   0.060 !     |     CG1--CD--HD12
+        9     HG23  H140   0.060 !   O=C    / \     \     
+        10    CG1   C136  -0.120 !     | HG12 HG13  HD13  
+        11    HG12  H140   0.060
+        12    HG13  H140   0.060
+        13    CD1   C135  -0.180
+        14    HD11  H140   0.060
+        15    HD12  H140   0.060
+        16    HD13  H140   0.060
+        17    C     C235   0.500
+        18    O     O236  -0.500
+        19    HT1   H290   0.330
+        20    HT2   H290   0.330
+        21    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG1   CB    
+        CG2   CB    
+        CD1   CG1   
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB    
+        CG1   HG12  
+        CG1   HG13  
+        CG2   HG21  
+        CG2   HG22  
+        CG2   HG23  
+        CD1   HD11   
+        CD1   HD12   
+        CD1   HD13   
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB    
+        CG2   HG21  HG22  HG23  
+        CG1   HG12  HG13  
+        CD1   HD11  HD12  HD13   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NLEU} !           charge  1.0   ! Leucine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2  
+        2     CA    C293   0.250 !    \ /       HD11 HD12
+        3     HA    H140   0.060 !  (+)N--HT3     | /    
+        4     CB    C136  -0.120 !     |   HB2   CD1--HD13
+        5     HB2   H140   0.060 !     |   |    /         
+        6     HB3   H140   0.060 !  HA-CA--CB--CG-HG      
+        7     CG    C137  -0.060 !     |   |    \         
+        8     HG    H140   0.060 !     |   HB3   CD2--HD23
+        9     CD1   C135  -0.180 !   O=C          | \     
+        10    HD11  H140   0.060 !     |        HD21 HD22 
+        11    HD12  H140   0.060
+        12    HD13  H140   0.060
+        13    CD2   C135  -0.180
+        14    HD21  H140   0.060
+        15    HD22  H140   0.060
+        16    HD23  H140   0.060
+        17    C     C235   0.500
+        18    O     O236  -0.500
+        19    HT1   H290   0.330
+        20    HT2   H290   0.330
+        21    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD1   CG    
+        CD2   CG    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG    
+        CD1   HD11  
+        CD1   HD12  
+        CD1   HD13  
+        CD2   HD21  
+        CD2   HD22  
+        CD2   HD23  
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        CG    HG    
+        CD1   HD11  HD12  HD13  
+        CD2   HD21  HD22  HD23  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NLYS} !           charge  2.0   ! Lysine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C136  -0.120 !     |   HB2 HG2 HD2 HE2    HZ1 
+        5     HB2   H140   0.060 !     |   |   |   |   |  (+)/    
+        6     HB3   H140   0.060 !  HA-CA--CB--CG--CD--CE--NZ--HZ2
+        7     CG    C136  -0.120 !     |   |   |   |   |     \    
+        8     HG2   H140   0.060 !     |   HB3 HG3 HD3 HE3    HZ3 
+        9     HG3   H140   0.060 !   O=C                          
+        10    CD    C136  -0.120 !     |                          
+        11    HD2   H140   0.060
+        12    HD3   H140   0.060
+        13    CE    C292   0.190
+        14    HE2   H140   0.060
+        15    HE3   H140   0.060
+        16    NZ    N287  -0.300
+        17    HZ1   H290   0.330
+        18    HZ2   H290   0.330
+        19    HZ3   H290   0.330
+        20    C     C235   0.500
+        21    O     O236  -0.500
+        22    HT1   H290   0.330
+        23    HT2   H290   0.330
+        24    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        CE    CD   
+        NZ    CE    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        CE    HE2   
+        CE    HE3   
+        O     C     
+        NZ    HZ1   
+        NZ    HZ2   
+        NZ    HZ3   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    HD2   HD3   
+        NZ    HZ1   HZ2   HZ3   CE    HE2   HE3     
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NLYN} !           charge  1.0   ! Neutral Lysine N-terminal, deprotonated NZ (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C136  -0.120 !     |   HB2 HG2 HD2 HE2    HZ1 
+        5     HB2   H140   0.060 !     |   |   |   |   |     /    
+        6     HB3   H140   0.060 !  HA-CA--CB--CG--CD--CE--NZ
+        7     CG    C136  -0.120 !     |   |   |   |   |     \    
+        8     HG2   H140   0.060 !     |   HB3 HG3 HD3 HE3    HZ2
+        9     HG3   H140   0.060 !   O=C                          
+        10    CD    C136  -0.120 !     |                          
+        11    HD2   H140   0.060
+        12    HD3   H140   0.060
+        13    CE    C292   0.060
+        14    HE2   H140   0.060
+        15    HE3   H140   0.060
+        16    NZ    N287  -0.900
+        17    HZ1   H290   0.360
+        18    HZ2   H290   0.360
+        19    C     C235   0.500
+        20    O     O236  -0.500
+        21    HT1   H290   0.330
+        22    HT2   H290   0.330
+        23    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        CE    CD   
+        NZ    CE    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        CE    HE2   
+        CE    HE3   
+        O     C     
+        NZ    HZ1   
+        NZ    HZ2   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    HD2   HD3   
+        NZ    HZ1   HZ2   CE    HE2   HE3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NMET} !           charge  1.0   ! Methionine N-terminal (standard)
+    [atoms]
+        1     N     N287   -0.300 !  HT1  HT2 
+        2     CA    C293    0.250 !    \ /    
+        3     HA    H140    0.060 !  (+)N--HT3
+        4     CB    C136   -0.120 !     |   HB2 HG2     HE1    
+        5     HB2   H140    0.060 !     |   |   |       |      
+        6     HB3   H140    0.060 !  HA-CA--CB--CG--SD--CE--HE3
+        7     CG    C210   0.0475 !     |   |   |       |      
+        8     HG2   H140    0.060 !     |   HB3 HG3     HE2    
+        9     HG3   H140    0.060 !   O=C                      
+        10    SD    S202   -0.335 !     |                      
+        11    CE    C209  -0.0125
+        12    HE1   H140    0.060
+        13    HE2   H140    0.060
+        14    HE3   H140    0.060
+        15    C     C235    0.500
+        16    O     O236   -0.500
+        17    HT1   H290    0.330
+        18    HT2   H290    0.330
+        19    HT3   H290    0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        SD    CG    
+        CE    SD    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CE    HE1   
+        CE    HE2   
+        CE    HE3   
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        SD    CG    HG2   HG3   CE    HE1   HE2   HE3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NPHE} !           charge  1.0   ! Phenylalanine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !   HT1  HT2    HD1  HE1    
+        2     CA    C293   0.250 !     \ /        |    |     
+        3     HA    H140   0.060 !  HT3-N(+) HB2 CD1--CE1    
+        4     CB    C149  -0.005 !      |    /   //     \\   
+        5     HB2   H140   0.060 !   HA-CA--CB--CG      CZ-HZ
+        6     HB3   H140   0.060 !      |   |    \      /    
+        7     CG    C145  -0.115 !      |   HB3  CD2==CE2    
+        8     CD1   C145  -0.115 !    O=C         |    |     
+        9     HD1   H146   0.115 !      |        HD2  HE2    
+        10    CE1   C145  -0.115 
+        11    HE1   H146   0.115 
+        12    CZ    C145  -0.115 
+        13    HZ    H146   0.115
+        14    CD2   C145  -0.115
+        15    HD2   H146   0.115
+        16    CE2   C145  -0.115
+        17    HE2   H146   0.115
+        18    C     C235   0.500
+        19    O     O236  -0.500
+        20    HT1   H290   0.330
+        21    HT2   H290   0.330
+        22    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        CE1   CD1   
+        CZ    CE2   
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        O     C     
+        CD1   CG    
+        CZ    CE1   
+        CE2   CD2   
+        CE2   HE2   
+        CZ    HZ    
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        HD1   CD1   CG    CE1   
+        HE1   CE1   CD1   CZ    
+        HZ    CZ    CE1   CE2   
+        CB    CG    CD1   CD2   
+        HD2   CD2   CE2   CG    
+        HE2   CE2   CZ    CD2   
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   CG    
+        CD1   HD1   
+        CE1   HE1   
+        CZ    HZ    
+        CD2   HD2   
+        CE2   HE2    
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NPRO} !           charge  1.0   ! Proline N-terminal (standard)
+    [atoms]
+        1     N     N309  -0.200 !  HT2   HD2 HD3    
+        2     CA    C295   0.230 !    \     \ /       
+        3     HA    H140   0.060 !   (+)N---CD   HG2 
+        4     CB    C136  -0.120 !    / |     \  /  
+        5     HB2   H140   0.060 !  HT1 |      CG    
+        6     HB3   H140   0.060 !      |     /  \   
+        7     CG    C136  -0.120 !   HA-CA--CB   HG3 
+        8     HG2   H140   0.060 !      |   / \      
+        9     HG3   H140   0.060 !      | HB2 HB3    
+        10    CD    C296   0.170 !    O=C            
+        11    HD2   H140   0.060 !      |            
+        12    HD3   H140   0.060 
+        13    C     C235   0.500 
+        14    O     O236  -0.500 
+        15    HT1   H310   0.310 
+        16    HT2   H310   0.310
+    [bonds]
+        C     CA    
+        N     CA    
+        CA    CB    
+        CB    CG    
+        CG    CD   
+        N     CD   
+        HA    CA    
+        HG2   CG    
+        HG3   CG    
+        HD2   CD   
+        HD3   CD   
+        HB2   CB    
+        HB3   CB    
+        O     C     
+        HT1   N     
+        HT2   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   CD    HD2   HD3   CA    HA     
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NSER} !           charge  1.0   ! Serine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C157   0.145 !     |   HB2      
+        5     HB2   H140   0.060 !     |   |        
+        6     HB3   H140   0.060 !  HA-CA--CB--OG   
+        7     OG    O154  -0.683 !     |   |     \  
+        8     HG    H155   0.418 !     |   HB3    HG
+        9     C     C235   0.500 !   O=C            
+        10    O     O236  -0.500 !     |            
+        11    HT1   H290   0.330
+        12    HT2   H290   0.330
+        13    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        OG    CB    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        OG    HG   
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        OG    HG    CB    HB2   HB3   
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NTHR} !           charge  1.0   ! Threonine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /    
+        3     HA    H140   0.060 !  (+)N--HT3
+        4     CB    C158   0.205 !     |     OG1--HG1 
+        5     HB    H140   0.060 !     |    /         
+        6     OG1   O154  -0.683 !  HA-CA--CB-HB      
+        7     HG1   H155   0.418 !     |    \         
+        8     CG2   C135  -0.180 !     |     CG2--HG23
+        9     HG21  H140   0.060 !   O=C    / \       
+        10    HG22  H140   0.060 !     | HG21 HG22    
+        11    HG23  H140   0.060
+        12    C     C235   0.500
+        13    O     O236  -0.500
+        14    HT1   H290   0.330
+        15    HT2   H290   0.330
+        16    HT3   H290   0.330
+    [bonds]
+       CB     CA    
+       OG1    CB    
+       CG2    CB    
+       N      CA    
+       C      CA    
+       CA     HA    
+       CB     HB    
+       OG1    HG1   
+       CG2    HG21  
+       CG2    HG22  
+       CG2    HG23  
+       O      C     
+       HT1    N     
+       HT2    N     
+       HT3    N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        OG1   HG1   CB    HB    
+        CG2   HG21  HG22  HG23  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NTRP} !           charge  1.0   ! Tryptophan N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /                 HE3
+        3     HA    H140   0.060 !  (+)N--HT3              |
+        4     CB    C136  -0.120 !     |   HB2            CE3        
+        5     HB2   H140   0.060 !     |   |             /  \\       
+        6     HB3   H140   0.060 !  HA-CA--CB---CG-----CD2   CZ3-HZ3 
+        7     CG    C500   0.075 !     |   |    ||     ||     |      
+        8     CD1   C514  -0.115 !     |   HB3  CD1    CE2   CH2-HH2 
+        9     HD1   H146   0.115 !   O=C       /   \   / \  //       
+        10    NE1   N503  -0.570 !     |     HD1    NE1   CZ2        
+        11    HE1   H504   0.420 !                   |     |         
+        12    CE2   C502   0.130 !                  HE1   HZ2       
+        13    CD2   C501  -0.055 
+        14    CE3   C145  -0.115
+        15    HE3   H146   0.115
+        16    CZ3   C145  -0.115
+        17    HZ3   H146   0.115
+        18    CZ2   C145  -0.115
+        19    HZ2   H146   0.115
+        20    CH2   C145  -0.115
+        21    HH2   H146   0.115
+        22    C     C235   0.500
+        23    O     O236  -0.500
+        24    HT1   H290   0.330
+        25    HT2   H290   0.330
+        26    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        NE1   CD1   
+        CZ2   CE2   
+        N     CA    
+        C     CA    
+        CZ3   CH2   
+        CD2   CE3   
+        NE1   CE2   
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        NE1   HE1   
+        CE3   HE3   
+        CZ2   HZ2   
+        CZ3   HZ3   
+        CH2   HH2   
+        O     C     
+        CD1   CG    
+        CE2   CD2   
+        CZ3   CE3   
+        CH2   CZ2   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        CB    CG    CD1   CD2   
+        HD1   CD1   CG    NE1   
+        HE1   NE1   CD1   CE2   
+        HZ2   CZ2   CE2   CH2   
+        HH2   CH2   CZ2   CZ3   
+        HZ3   CZ3   CH2   CE3   
+        HE3   CE3   CZ3   CD2   
+        CE2   CD2   CE3   CG    
+        CZ2   CE2   CD2   NE1   
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   
+        NE1   HE1   CD1   HD1   CG    CD2   CE2   
+        CE3   HE3   
+        CZ3   HZ3   
+        CZ2   HZ2   
+        CH2   HH2    
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NTYR} !           charge  1.0   ! Tyrosine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /       HD1  HE1  
+        3     HA    H140   0.060 !  (+)N--HT3    |    | 
+        4     CB    C149  -0.005 !     |   HB2  CD1--CE1       
+        5     HB2   H140   0.060 !     |   |   //      \\      
+        6     HB3   H140   0.060 !  HA-CA--CB--CG      CZ--OH  
+        7     CG    C145  -0.115 !     |   |    \      /     \ 
+        8     CD1   C145  -0.115 !     |   HB3  CD2==CE2     HH
+        9     HD1   H146   0.115 !   O=C         |    |        
+        10    CE1   C145  -0.115 !     |        HD2  HE2       
+        11    HE1   H146   0.115
+        12    CZ    C166   0.150
+        13    OH    O167  -0.585
+        14    HH    H168   0.435
+        15    CD2   C145  -0.115
+        16    HD2   H146   0.115
+        17    CE2   C145  -0.115
+        18    HE2   H146   0.115
+        19    C     C235   0.500
+        20    O     O236  -0.500
+        21    HT1   H290   0.330
+        22    HT2   H290   0.330
+        23    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        CE1   CD1   
+        CZ    CE2   
+        OH    CZ    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        CE2   HE2   
+        OH    HH    
+        O     C     
+        CD1   CG    
+        CE1   CZ    
+        CE2   CD2   
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+        HD1   CD1   CG    CE1   
+        HE1   CE1   CD1   CZ    
+        OH    CZ    CE1   CE2   
+        CB    CG    CD1   CD2   
+        HD2   CD2   CE2   CG    
+        HE2   CE2   CZ    CD2   
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB2   HB3   CG    
+        CD1   HD1   
+        CE1   HE1   
+        OH    HH    CZ    
+        CD2   HD2   
+        CE2   HE2  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{NVAL} !           charge  1.0   ! Valine N-terminal (standard)
+    [atoms]
+        1     N     N287  -0.300 !  HT1  HT2 
+        2     CA    C293   0.250 !    \ /   HG11 HG12 
+        3     HA    H140   0.060 !  (+)N--HT3 | /    
+        4     CB    C137  -0.060 !     |     CG1--HG13
+        5     HB    H140   0.060 !     |    /         
+        6     CG1   C135  -0.180 !  HA-CA--CB-HB      
+        7     HG11  H140   0.060 !     |    \         
+        8     HG12  H140   0.060 !     |     CG2--HG23
+        9     HG13  H140   0.060 !   O=C    / \       
+        10    CG2   C135  -0.180 !     | HG21 HG22    
+        11    HG21  H140   0.060
+        12    HG22  H140   0.060
+        13    HG23  H140   0.060
+        14    C     C235   0.500
+        15    O     O236  -0.500
+        16    HT1   H290   0.330
+        17    HT2   H290   0.330
+        18    HT3   H290   0.330
+    [bonds]
+        CB    CA    
+        CG1   CB    
+        CG2   CB    
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB    
+        CG1   HG11  
+        CG1   HG12  
+        CG1   HG13  
+        CG2   HG21  
+        CG2   HG22  
+        CG2   HG23  
+        O     C     
+        HT1   N     
+        HT2   N     
+        HT3   N     
+    [connections]
+        tail  C     
+    [impropers]
+        O     C     CA    +N    
+    [charge_groups]
+        N     HT1   HT2   HT3   CA    HA    
+        CB    HB    
+        CG1   HG11  HG12  HG13  
+        CG2   HG21  HG22  HG23  
+        C     O     
+*-----------------------------------------------------------------------------------------------
+{CALA} !           charge -1.0   ! Alanine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |         
+        2     H     H241   0.300 !   H-N         
+        3     CA    C283   0.040 !     |     HB1 
+        4     HA    H140   0.060 !     |    /    
+        5     CB    C135  -0.180 !  HA-CA--CB-HB2
+        6     HB1   H140   0.060 !     |    \    
+        7     HB2   H140   0.060 !     |     HB3 
+        8     HB3   H140   0.060 !   O=C         
+        9     C     C271   0.700 !     |         
+        10    O     O272  -0.800 !    OXT(-)
+        11    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB1   
+        CB    HB2   
+        CB    HB3   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB1   HB2   HB3      
+*-----------------------------------------------------------------------------------------------
+{CARG} !           charge  0.0   ! Arginine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                      HH11    
+        2     H     H241   0.300 !   H-N                       |      
+        3     CA    C283   0.040 !     |   HB2 HG2 HD2 HE     NH1-HH12
+        4     HA    H140   0.060 !     |   |   |   |   |    //(+)     
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--NE--CZ         
+        6     HB2   H140   0.060 !     |   |   |   |         \        
+        7     HB3   H140   0.060 !     |   HB3 HG3 HD3        NH2-HH22
+        8     CG    C308  -0.050 !   O=C                       |      
+        9     HG2   H140   0.060 !     |                      HH21    
+        10    HG3   H140   0.060 !    OXT(-)
+        11    CD    C307   0.190
+        12    HD2   H140   0.060
+        13    HD3   H140   0.060
+        14    NE    N303  -0.700
+        15    HE    H304   0.440
+        16    CZ    C302   0.640
+        17    NH1   N300  -0.800
+        18    HH11  H301   0.460
+        19    HH12  H301   0.460
+        20    NH2   N300  -0.800
+        21    HH21  H301   0.460
+        22    HH22  H301   0.460
+        23    C     C271   0.700
+        24    O     O272  -0.800
+        25    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE    CD   
+        CZ    NE    
+        NH2   CZ    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        NE    HE    
+        NH1   HH11  
+        NH1   HH12  
+        NH2   HH21  
+        NH2   HH22  
+        CZ    NH1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        NH2   CZ    NE    NH1   
+        HE    NE    CD    CZ    
+        HH12  NH1   CZ    HH11  
+        HH22  NH2   CZ    HH21  
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        NE    HE    CD    HD2   HD3   CG    HG2   HG3   CZ    NH1   HH11  HH12  NH2   HH21  HH22      
+*-----------------------------------------------------------------------------------------------
+{CARN} !           charge -1.0   ! Neutral Arginine C-terminal, deprotonated NH1 (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                      HH11    
+        2     H     H241   0.300 !   H-N                       |      
+        3     CA    C283   0.040 !     |   HB2 HG2 HD2 HE     NH1     
+        4     HA    H140   0.060 !     |   |   |   |   |    //        
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--NE--CZ         
+        6     HB2   H140   0.060 !     |   |   |   |         \        
+        7     HB3   H140   0.060 !     |   HB3 HG3 HD3        NH2-HH22
+        8     CG    C308  -0.120 !   O=C                       |      
+        9     HG2   H140   0.060 !     |                      HH21    
+        10    HG3   H140   0.060 !    OXT(-)
+        11    CD    C307   0.040
+        12    HD2   H140   0.060
+        13    HD3   H140   0.060
+        14    NE    N303  -0.620
+        15    HE    H304   0.380
+        16    CZ    C302   0.550
+        17    NH1   N300  -0.785
+        18    HH11  H301   0.380
+        19    NH2   N300  -0.785
+        20    HH21  H301   0.360
+        21    HH22  H301   0.360
+        22    C     C271   0.700
+        23    O     O272  -0.800
+        24    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE    CD   
+        CZ    NE    
+        NH2   CZ    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        NE    HE    
+        NH1   HH11  
+        NH2   HH21  
+        NH2   HH22  
+        CZ    NH1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        NH2   CZ    NE    NH1   
+        HE    NE    CD    CZ    
+        HH22  NH2   CZ    HH21  
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3
+        NE    HE    CD    HD2   HD3   CG    HG2   HG3   CZ    NH1   HH11  NH2   HH21  HH22    
+*-----------------------------------------------------------------------------------------------
+{CASN} !           charge -1.0   ! Asparagine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                                 
+        2     H     H241   0.300 !   H-N                                 
+        3     CA    C283   0.040 !     |   HB2 OD1    HD21 (cis to OD1)  
+        4     HA    H140   0.060 !     |   |   ||    /                   
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--ND2                   
+        6     HB2   H140   0.060 !     |   |         \                   
+        7     HB3   H140   0.060 !     |   HB3        HD22 (trans to OD1)
+        8     CG    C235   0.500 !   O=C                                 
+        9     OD1   O236  -0.500 !     |                                 
+        10    ND2   N237  -0.760 !    OXT(-)
+        11    HD21  H240   0.380
+        12    HD22  H240   0.380
+        13    C     C271   0.700
+        14    O     O272  -0.800
+        15    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND2   CG    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND2   HD21  
+        ND2   HD22  
+        CG    OD1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        OD1   CG    CB    ND2   
+        HD22  ND2   CG    HD21  
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        CG    OD1   
+        ND2   HD21  HD22  
+*-----------------------------------------------------------------------------------------------
+{CASP} !           charge -2.0   ! Aspartic acid C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |               
+        2     H     H241   0.300 !   H-N               
+        3     CA    C283   0.040 !     |   HB2   OD1(-)
+        4     HA    H140   0.060 !     |   |    /      
+        5     CB    C274  -0.220 !  HA-CA--CB--CG      
+        6     HB2   H140   0.060 !     |   |    \\     
+        7     HB3   H140   0.060 !     |   HB3   OD2   
+        8     CG    C271   0.700 !   O=C               
+        9     OD1   O272  -0.800 !     |               
+        10    OD2   O272  -0.800 !    OXT(-)
+        11    C     C271   0.700
+        12    O     O272  -0.800
+        13    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        OD2   CG    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    OD1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        OD2   CG    CB    OD1   
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CG    CB    HB2   HB3   OD1   OD2   
+*-----------------------------------------------------------------------------------------------
+{CASH} !           charge -1.0   ! Neutral Aspartic acid C-terminal, protonated OD1 (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                 
+        2     H     H241   0.300 !   H-N                 
+        3     CA    C283   0.040 !     |   HB2   OD1-HD1 
+        4     HA    H140   0.060 !     |   |    /        
+        5     CB    C136  -0.120 !  HA-CA--CB--CG        
+        6     HB2   H140   0.060 !     |   |    \\       
+        7     HB3   H140   0.060 !     |   HB3   OD2     
+        8     CG    C267   0.520 !   O=C                 
+        9     OD2   O269  -0.440 !     |                
+        10    OD1   O268  -0.530 !    OXT(-)
+        11    C     C271   0.700
+        12    HD1   H270   0.450
+        13    O     O272  -0.800
+        14    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        OD2   CG    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    OD1   
+        OD1   HD1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        OD2   CG    CB    OD1   
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CG    CB    HB2   HB3   OD1   OD2   HD1
+*-----------------------------------------------------------------------------------------------
+{CCYS} !           charge -1.0   ! Cysteine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |            
+        2     H     H241   0.300 !   H-N            
+        3     CA    C283   0.040 !     |   HB2      
+        4     HA    H140   0.060 !     |   |        
+        5     CB    C206   0.060 !  HA-CA--CB--SG   
+        6     HB2   H140   0.060 !     |   |     \  
+        7     HB3   H140   0.060 !     |   HB3    HG
+        8     SG    S200  -0.335 !   O=C            
+        9     HG    H204   0.155 !     |            
+        10    C     C271   0.700 !    OXT(-)
+        11    O     O272  -0.800
+        12    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        SG    CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        SG    HG   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        SG    HG    CB    HB2   HB3   
+*-----------------------------------------------------------------------------------------------
+{CCYX} !           charge -1.0   ! Cysteine disulfide C-terminal (standard)
+    [atoms]
+        1     N     N238   -0.500 !     |            
+        2     H     H241    0.300 !   H-N            
+        3     CA    C283    0.040 !     |   HB2      
+        4     HA    H140    0.060 !     |   |        
+        5     CB    C214   0.0975 !  HA-CA--CB--SG   
+        6     HB2   H140    0.060 !     |   |     \  
+        7     HB3   H140    0.060 !     |   HB3    (SG--)
+        8     SG    S203  -0.2175 !   O=C            
+        9     C     C271    0.700 !     |            
+        10    O     O272   -0.800 !    OXT(-)
+        11    OXT   O272   -0.800
+    [bonds]
+        CB    CA    
+        SG    CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        SG    CB    HB2   HB3    
+*-----------------------------------------------------------------------------------------------
+{CGLN} !           charge -1.0   ! Glutamine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                                    
+        2     H     H241   0.300 !   H-N                                    
+        3     CA    C283   0.040 !     |   HB2 HG2 OE1   HE21 (cis to OE1)  
+        4     HA    H140   0.060 !     |   |   |   ||    /                  
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--NE2                  
+        6     HB2   H140   0.060 !     |   |   |         \                  
+        7     HB3   H140   0.060 !     |   HB3 HG3       HE22 (trans to OE1)
+        8     CG    C136  -0.120 !   O=C                                    
+        9     HG2   H140   0.060 !     |                                    
+        10    HG3   H140   0.060 !    OXT(-)
+        11    CD    C235   0.500
+        12    OE1   O236  -0.500
+        13    NE2   N237  -0.760
+        14    HE21  H240   0.380
+        15    HE22  H240   0.380
+        16    C     C271   0.700
+        17    O     O272  -0.800
+        18    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE2   CD   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        NE2   HE21  
+        NE2   HE22  
+        CD    OE1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        OE1   CD    CG    NE2   
+        HE22  NE2   CD    HE21  
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    OE1   
+        NE2   HE21  HE22  
+*-----------------------------------------------------------------------------------------------
+{CGLU} !           charge -2.0   ! Glutamic acid C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                   
+        2     H     H241   0.300 !   H-N                   
+        3     CA    C283   0.040 !     |   HB2 HG2   OE1   
+        4     HA    H140   0.060 !     |   |   |    //     
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD      
+        6     HB2   H140   0.060 !     |   |   |    \      
+        7     HB3   H140   0.060 !     |   HB3 HG3   OE2(-)
+        8     CG    C274  -0.220 !   O=C                   
+        9     HG2   H140   0.060 !     |                   
+        10    HG3   H140   0.060 !    OXT(-)
+        11    CD    C271   0.700
+        12    OE1   O272  -0.800
+        13    OE2   O272  -0.800
+        14    C     C271   0.700
+        15    O     O272  -0.800
+        16    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        OE2   CD     
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    OE1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        OE2   CD    CG    OE1   
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        CD    CG    HG2   HG3   OE1   OE2    
+*-----------------------------------------------------------------------------------------------
+{CGLH} !           charge -1.0   ! Neutral Glutamic acid C-terminal, protonated OE1 (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                
+        2     H     H241   0.300 !   H-N                
+        3     CA    C283   0.040 !     |   HB2 HG2   OE1-HE1
+        4     HA    H140   0.060 !     |   |   |    /   
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD   
+        6     HB2   H140   0.060 !     |   |   |    \\  
+        7     HB3   H140   0.060 !     |   HB3 HG3   OE2
+        8     CG    C136  -0.120 !   O=C                
+        9     HG2   H140   0.060 !     |                
+        10    HG3   H140   0.060 !    OXT(-)
+        11    CD    C267   0.520
+        12    OE2   O269  -0.440
+        13    OE1   O268  -0.530
+        14    C     C271   0.700
+        15    HE1   H270   0.450
+        16    O     O272  -0.800
+        17    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        OE2   CD   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    OE1   
+        OE1   HE1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        OE2   CD1   CG    OE1   
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        CD    CG    HG2   HG3   OE1   OE2   HE1   
+*-----------------------------------------------------------------------------------------------
+{CGLY} !           charge -1.0   ! Glycine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !      |     
+        2     H     H241   0.300 !    H-N     
+        3     CA    C284  -0.020 !      |     
+        4     HA2   H140   0.060 !  HA3-CA-HA2
+        5     HA3   H140   0.060 !      |     
+        6     C     C271   0.700 !    0=C     
+        7     O     O272  -0.800 !      |     
+        8     OXT   O272  -0.800 !     OXT(-)
+    [bonds]
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA2   
+        CA    HA3   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA2   HA3     
+*-----------------------------------------------------------------------------------------------
+{CHID} !           charge -1.0   ! Histidine C-terminal, protonated ND1 (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |          HD1    HE1
+        2     H     H241   0.300 !   H-N           |     /  
+        3     CA    C283   0.040 !     |   HB2    ND1--CE1  
+        4     HA    H140   0.060 !     |   |     /      ||  
+        5     CB    C505  -0.005 !  HA-CA--CB--CG       ||  
+        6     HB2   H140   0.060 !     |   |     \\     ||  
+        7     HB3   H140   0.060 !     |   HB3    CD2--NE2  
+        8     CG    C508   0.015 !   O=C           |        
+        9     ND1   N503  -0.570 !     |          HD2       
+        10    HD1   H504   0.420 !    OXT(-)
+        11    CE1   C506   0.295
+        12    HE1   H146   0.115
+        13    NE2   N511  -0.490
+        14    CD2   C507  -0.015
+        15    HD2   H146   0.115
+        16    C     C271   0.700
+        17    O     O272  -0.800
+        18    OXT   O272  -0.800
+    [bonds] 
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        CE1   ND1   
+        NE2   CD2   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        CG    CD2   
+        CE1   NE2   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        HD1   ND1   CG    CE1   
+        HD2   CD2   NE2   CG    
+        HE1   CE1   ND1   NE2   
+        CB    CG    ND1   CD2   
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CG    CB    HB2   HB3   ND1   HD1   CE1   HE1   NE2   CD2   HD2
+*-----------------------------------------------------------------------------------------------
+{CHIE} !           charge -1.0   ! Histidine C-terminal, protonated NE2 (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                 HE1
+        2     H     H241   0.300 !   H-N                 /  
+        3     CA    C283   0.040 !     |   HB2    ND1==CE1  
+        4     HA    H140   0.060 !     |   |     /      |   
+        5     CB    C505  -0.005 !  HA-CA--CB--CG       |   
+        6     HB2   H140   0.060 !     |   |     \\     |   
+        7     HB3   H140   0.060 !     |   HB3    CD2--NE2  
+        8     CG    C507  -0.015 !   O=C           |     \  
+        9     ND1   N511  -0.490 !     |          HD2    HE2
+        10    CE1   C506   0.295 !    OXT(-)
+        11    HE1   H146   0.115
+        12    NE2   N503  -0.570
+        13    HE2   H504   0.420
+        14    CD2   C508   0.015
+        15    HD2   H146   0.115
+        16    C     C271   0.700
+        17    O     O272  -0.800
+        18    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        NE2   CD2   
+        N     H     
+        N     CA    
+        C     CA    
+        NE2   CE1   
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        NE2   HE2   
+        CD2   HD2   
+        CE1   HE1   
+        CD2   CG    
+        CE1   ND1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        HE2   NE2   CE1   CD2   
+        HD3   CD2   NE2   CG    
+        HE1   CE1   ND1   NE2   
+        CB    CG    ND1   CD2   
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CG    CB    HB2   HB3   ND1   CE1   HE1   NE2   HE2   CD2   HD2 
+*-----------------------------------------------------------------------------------------------
+{CHIP} !           charge  0.0   ! Chraged Histidine C-terminal, protonated ND1, NE2 (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |          HD1    HE1 
+        2     H     H241   0.300 !   H-N           |     /   
+        3     CA    C283   0.040 !     |   HB2    ND1--CE1   
+        4     HA    H140   0.060 !     |   |     /      ||   
+        5     CB    C505  -0.005 !  HA-CA--CB--CG       ||   
+        6     HB2   H140   0.060 !     |   |     \\     ||   
+        7     HB3   H140   0.060 !     |   HB3    CD2--NE2(+)
+        8     CG    C510   0.215 !   O=C           |     \   
+        9     ND1   N512  -0.540 !     |          HD2    HE2 
+        10    HD1   H513   0.460 !    OXT(-)                 
+        11    CE1   C509   0.385
+        12    HE1   H146   0.115
+        13    NE2   N512  -0.540
+        14    HE2   H513   0.460
+        15    CD2   C510   0.215
+        16    HD2   H146   0.115
+        17    C     C271   0.700
+        18    O     O272  -0.800
+        19    OXT   O272  -0.800
+    [bonds] 
+        CB    CA    
+        CG    CB    
+        ND1   CG    
+        CE1   ND1   
+        NE2   CD2   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        ND1   HD2   
+        NE2   HE2   
+        CD2   HD2   
+        CE1   HE1   
+        CD2   CG    
+        NE2   CE1   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        HD2   ND1   CG    CE1   
+        HE1   CE1   ND1   NE2   
+        HE2   NE2   CE1   CD2   
+        HD3   CD2   NE2   CG    
+        CB    CG    ND1   CD2   
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CG    CB    HB2   HB3   CD2   HD2   NE2   HE2   ND1   HD1   CE1   HE1
+*-----------------------------------------------------------------------------------------------
+{CILE} !           charge -1.0   ! Isoleucine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |    HG21 HG22     
+        2     H     H241   0.300 !   H-N      | /         
+        3     CA    C283   0.040 !     |     CG2--HG23    
+        4     HA    H140   0.060 !     |    /             
+        5     CB    C137  -0.060 !  HA-CA--CB-HB    HD11  
+        6     HB    H140   0.060 !     |    \       /     
+        7     CG2   C135  -0.180 !     |     CG1--CD--HD12
+        8     HG21  H140   0.060 !   O=C    / \     \     
+        9     HG22  H140   0.060 !     | HG12 HG13  HD13  
+        10    HG23  H140   0.060 !    OXT(-)
+        11    CG1   C136  -0.120
+        12    HG12  H140   0.060
+        13    HG13  H140   0.060
+        14    CD1   C135  -0.180
+        15    HD11  H140   0.060
+        16    HD12  H140   0.060
+        17    HD13  H140   0.060
+        18    C     C271   0.700
+        19    O     O272  -0.800
+        20    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG1   CB    
+        CG2   CB    
+        CD1   CG1   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB    
+        CG1   HG12  
+        CG1   HG13  
+        CG2   HG21  
+        CG2   HG22  
+        CG2   HG23  
+        CD1   HD11   
+        CD1   HD12   
+        CD1   HD13   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB    
+        CG2   HG21  HG22  HG23  
+        CG1   HG12  HG13  
+        CD1   HD11  HD12  HD13  
+*-----------------------------------------------------------------------------------------------
+{CLEU} !           charge -1.0   ! Leucine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |        HD11 HD12 
+        2     H     H241   0.300 !   H-N          | /     
+        3     CA    C283   0.040 !     |   HB2   CD1--HD13
+        4     HA    H140   0.060 !     |   |    /         
+        5     CB    C136  -0.120 !  HA-CA--CB--CG-HG      
+        6     HB2   H140   0.060 !     |   |    \         
+        7     HB3   H140   0.060 !     |   HB3   CD2--HD23
+        8     CG    C137  -0.060 !   O=C          | \     
+        9     HG    H140   0.060 !     |        HD21 HD22 
+        10    CD1   C135  -0.180 !    OXT(-)
+        11    HD11  H140   0.060
+        12    HD12  H140   0.060
+        13    HD13  H140   0.060
+        14    CD2   C135  -0.180
+        15    HD21  H140   0.060
+        16    HD22  H140   0.060
+        17    HD23  H140   0.060
+        18    C     C271   0.700
+        19    O     O272  -0.800
+        20    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD1   CG    
+        CD2   CG    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG    
+        CD1   HD11  
+        CD1   HD12  
+        CD1   HD13  
+        CD2   HD21  
+        CD2   HD22  
+        CD2   HD23  
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        CG    HG    
+        CD1   HD11  HD12  HD13  
+        CD2   HD21  HD22  HD23 
+*-----------------------------------------------------------------------------------------------
+{CLYS} !           charge  0.0   ! Lysine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                          
+        2     H     H241   0.300 !   H-N                          
+        3     CA    C283   0.040 !     |   HB2 HG2 HD2 HE2    HZ1 
+        4     HA    H140   0.060 !     |   |   |   |   |  (+)/    
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--CE--NZ--HZ2
+        6     HB2   H140   0.060 !     |   |   |   |   |     \    
+        7     HB3   H140   0.060 !     |   HB3 HG3 HD3 HE3    HZ3 
+        8     CG    C136  -0.120 !   O=C                          
+        9     HG2   H140   0.060 !     |                          
+        10    HG3   H140   0.060 !    OXT(-)
+        11    CD    C136  -0.120
+        12    HD2   H140   0.060  
+        13    HD3   H140   0.060  
+        14    CE    C292   0.190  
+        15    HE2   H140   0.060  
+        16    HE3   H140   0.060  
+        17    NZ    N287  -0.300  
+        18    HZ1   H290   0.330  
+        19    HZ2   H290   0.330  
+        20    HZ3   H290   0.330 
+        21    C     C271   0.700 
+        22    O     O272  -0.800
+        23    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        CE    CD   
+        NZ    CE    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        CE    HE2   
+        CE    HE3   
+        NZ    HZ1   
+        NZ    HZ2   
+        NZ    HZ3   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    HD2   HD3   
+        NZ    HZ1   HZ2   HZ3   CE    HE2   HE3   
+*-----------------------------------------------------------------------------------------------
+{CLYN} !           charge -1.0   ! Neutral Lysine C-terminal, deprotonated NZ (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                          
+        2     H     H241   0.300 !   H-N                          
+        3     CA    C224   0.040 !     |   HB2 HG2 HD2 HE2    HZ1 
+        4     HA    H140   0.060 !     |   |   |   |   |     /    
+        5     CB    C136  -0.120 !  HA-CA--CB--CG--CD--CE--NZ    
+        6     HB2   H140   0.060 !     |   |   |   |   |     \    
+        7     HB3   H140   0.060 !     |   HB3 HG3 HD3 HE3    HZ2 
+        8     CG    C136  -0.120 !   O=C                          
+        9     HG2   H140   0.060 !     |                          
+        10    HG3   H140   0.060 !    OXT(-)
+        11    CD    C136  -0.120
+        12    HD2   H140   0.060
+        13    HD3   H140   0.060
+        14    CE    C292   0.060
+        15    HE2   H140   0.060
+        16    HE3   H140   0.060
+        17    NZ    N287  -0.900
+        18    HZ1   H290   0.360
+        19    HZ2   H290   0.360
+        20    C     C235   0.700
+        21    O     O236  -0.800
+        22    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        CE    CD   
+        NZ    CE    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        CE    HE2   
+        CE    HE3   
+        NZ    HZ1   
+        NZ    HZ2   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        CG    HG2   HG3   
+        CD    HD2   HD3   
+        NZ    HZ1   HZ2   CE    HE2   HE3   
+*-----------------------------------------------------------------------------------------------
+{CMET} !           charge -1.0   ! Methionine C-terminal (standard)
+    [atoms]
+        1     N     N238   -0.500 !     |                      
+        2     H     H241    0.300 !   H-N                      
+        3     CA    C283    0.040 !     |   HB2 HG2     HE1    
+        4     HA    H140    0.060 !     |   |   |       |      
+        5     CB    C136   -0.120 !  HA-CA--CB--CG--SD--CE--HE3
+        6     HB2   H140    0.060 !     |   |   |       |      
+        7     HB3   H140    0.060 !     |   HB3 HG3     HE2    
+        8     CG    C210   0.0475 !   O=C                      
+        9     HG2   H140    0.060 !     |                      
+        10    HG3   H140    0.060 !    OXT(-)
+        11    SD    S202   -0.335
+        12    CE    C209  -0.0125
+        13    HE1   H140    0.060
+        14    HE2   H140    0.060
+        15    HE3   H140    0.060
+        16    C     C271    0.700
+        17    O     O272   -0.800
+        18    OXT   O272   -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        SD    CG    
+        CE    SD    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CE    HE1   
+        CE    HE2   
+        CE    HE3   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        SD    CG    HG2   HG3   CE    HE1   HE2   HE3   
+*-----------------------------------------------------------------------------------------------
+{CPHE} !           charge -1.0   ! Phenylalanine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |        HD1  HE1    
+        2     H     H241   0.300 !   H-N         |    |     
+        3     CA    C283   0.040 !     |   HB2  CD1--CE1    
+        4     HA    H140   0.060 !     |   |    //     \\   
+        5     CB    C149  -0.005 !  HA-CA--CB--CG      CZ-HZ
+        6     HB2   H140   0.060 !     |   |    \      /    
+        7     HB3   H140   0.060 !     |   HB3  CD2==CE2    
+        8     CG    C145  -0.115 !   O=C         |    |     
+        9     CD1   C145  -0.115 !     |        HD2  HE2    
+        10    HD1   H146   0.115 !    OXT(-)
+        11    CE1   C145  -0.115
+        12    HE1   H146   0.115
+        13    CZ    C145  -0.115
+        14    HZ    H146   0.115
+        15    CD2   C145  -0.115
+        16    HD2   H146   0.115
+        17    CE2   C145  -0.115
+        18    HE2   H146   0.115
+        19    C     C271   0.700
+        20    O     O272  -0.800
+        21    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        CE1   CD1   
+        CZ    CE2   
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        CD1   CG    
+        CZ    CE1   
+        CE2   CD2   
+        CE2   HE2   
+        CZ    HZ    
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        HD1   CD1   CG    CE1   
+        HE1   CE1   CD1   CZ    
+        HZ    CZ    CE1   CE2   
+        CB    CG    CD1   CD2   
+        HD2   CD2   CE2   CG    
+        HE2   CE2   CZ    CD2   
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   CG    
+        CD1   HD1   
+        CE1   HE1   
+        CZ    HZ    
+        CD2   HD2   
+        CE2   HE2   
+*-----------------------------------------------------------------------------------------------
+{CPRO} !           charge -1.0   ! Proline C-terminal (standard)
+    [atoms]
+        1     N     N239  -0.140 !       HD2 HD3   
+        2     CA    C285  -0.090 !     |   \ /     
+        3     HA    H140   0.060 !     N---CD   HG2
+        4     CB    C136  -0.120 !     |     \  /  
+        5     HB2   H140   0.060 !     |      CG   
+        6     HB3   H140   0.060 !     |     /  \  
+        7     CG    C136  -0.120 !  HA-CA--CB   HG3
+        8     HG2   H140   0.060 !     |   / \     
+        9     HG3   H140   0.060 !     | HB2 HB3    
+        10    CD    C245  -0.050 !   O=C           
+        11    HD2   H140   0.060 !     |           
+        12    HD3   H140   0.060 !    OXT(-)         
+        13    C     C271   0.700 
+        14    O     O272  -0.800 
+        15    OXT   O272  -0.800 
+    [bonds]
+        C     CA    
+        N     CA    
+        CA    CB    
+        CB    CG    
+        CG    CD    
+        N     CD   
+        HA    CA    
+        HG2   CG    
+        HG3   CG    
+        HD2   CD   
+        HD3   CD   
+        HB2   CB    
+        HB3   CB    
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        CD    N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        N     CD    HD2   HD3   CA    HA    C     O     OXT    
+        CB    HB2   HB3   
+        CG    HG2   HG3 
+*-----------------------------------------------------------------------------------------------
+{CSER} !           charge -1.0   ! Serine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |            
+        2     H     H241   0.300 !   H-N            
+        3     CA    C283   0.040 !     |   HB2      
+        4     HA    H140   0.060 !     |   |        
+        5     CB    C157   0.145 !  HA-CA--CB--OG   
+        6     HB2   H140   0.060 !     |   |     \  
+        7     HB3   H140   0.060 !     |   HB3    HG
+        8     OG    O154  -0.683 !   O=C            
+        9     HG    H155   0.418 !     |            
+        10    C     C271   0.700 !    OXT(-)
+        11    O     O272  -0.800
+        12    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        OG    CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        OG    HG   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        OG    HG    CB    HB2   HB3   
+*-----------------------------------------------------------------------------------------------
+{CTHR} !           charge -1.0   ! Threonine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |              
+        2     H     H241   0.300 !   H-N              
+        3     CA    C283   0.040 !     |     OG1--HG1 
+        4     HA    H140   0.060 !     |    /         
+        5     CB    C158   0.205 !  HA-CA--CB-HB      
+        6     HB    H140   0.060 !     |    \         
+        7     OG1   O154  -0.683 !     |     CG2--HG23
+        8     HG1   H155   0.418 !   O=C    / \       
+        9     CG2   C135  -0.180 !     | HG21 HG22    
+        10    HG21  H140   0.060 !    OXT(-)
+        11    HG22  H140   0.060
+        12    HG23  H140   0.060
+        13    C     C271   0.700
+        14    O     O272  -0.800
+        15    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        OG1   CB    
+        CG2   CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB    
+        OG1   HG1   
+        CG2   HG21  
+        CG2   HG22  
+        CG2   HG23  
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        OG1   HG1   CB    HB    
+        CG2   HG21  HG22  HG23  
+*-----------------------------------------------------------------------------------------------
+{CTRP} !           charge -1.0   ! Tryptophan C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |                  HE3        
+        2     H     H241   0.300 !   H-N                   |         
+        3     CA    C283   0.040 !     |   HB2            CE3        
+        4     HA    H140   0.060 !     |   |             /  \\       
+        5     CB    C136  -0.120 !  HA-CA--CB---CG-----CD2   CZ3-HZ3 
+        6     HB2   H140   0.060 !     |   |    ||     ||     |      
+        7     HB3   H140   0.060 !     |   HB3  CD1    CE2   CH2-HH2 
+        8     CG    C500   0.075 !   O=C       /   \   / \  //       
+        9     CD1   C514  -0.115 !     |     HD1    NE1   CZ2        
+        10    HD1   H146   0.115 !    OXT(-)         |     |        
+        11    NE1   N503  -0.570 !                  HE1   HZ2       
+        12    HE1   H504   0.420 
+        13    CE2   C502   0.130
+        14    CD2   C501  -0.055
+        15    CE3   C145  -0.115
+        16    HE3   H146   0.115
+        17    CZ3   C145  -0.115
+        18    HZ3   H146   0.115
+        19    CZ2   C145  -0.115
+        20    HZ2   H146   0.115
+        21    CH2   C145  -0.115
+        22    HH2   H146   0.115
+        23    C     C271   0.700
+        24    O     O272  -0.800
+        25    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        NE1   CD1   
+        CZ2   CE2   
+        N     H     
+        N     CA    
+        C     CA    
+        CZ3   CH2   
+        CD2   CE3   
+        NE1   CE2   
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        NE1   HE1   
+        CE3   HE3   
+        CZ2   HZ2   
+        CZ3   HZ3   
+        CH2   HH2   
+        CD1   CG    
+        CE2   CD2   
+        CZ3   CE3   
+        CH2   CZ2   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        CB    CG    CD1   CD2   
+        HD1   CD1   CG    NE1   
+        HE1   NE1   CD1   CE2   
+        HZ2   CZ2   CE2   CH2   
+        HH2   CH2   CZ2   CZ3   
+        HZ3   CZ3   CH2   CE3   
+        HE3   CE3   CZ3   CD2   
+        CE2   CD2   CE3   CG    
+        CZ2   CE2   CD2   NE1   
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   
+        NE1   HE1   CD1   HD1   CG    CD2   CE2   
+        CE3   HE3   
+        CZ3   HZ3   
+        CZ2   HZ2   
+        CH2   HH2   
+*-----------------------------------------------------------------------------------------------
+{CTYR} !           charge -1.0   ! Tyrosine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |        HD1  HE1       
+        2     H     H241   0.300 !   H-N         |    |        
+        3     CA    C283   0.040 !     |   HB2  CD1--CE1       
+        4     HA    H140   0.060 !     |   |   //      \\      
+        5     CB    C149  -0.005 !  HA-CA--CB--CG      CZ--OH  
+        6     HB2   H140   0.060 !     |   |    \      /     \ 
+        7     HB3   H140   0.060 !     |   HB3  CD2==CE2     HH
+        8     CG    C145  -0.115 !   O=C         |    |        
+        9     CD1   C145  -0.115 !     |        HD2  HE2       
+        10    HD1   H146   0.115 !    OXT(-)
+        11    CE1   C145  -0.115
+        12    HE1   H146   0.115
+        13    CZ    C166   0.150
+        14    OH    O167  -0.585
+        15    HH    H168   0.435
+        16    CD2   C145  -0.115
+        17    HD2   H146   0.115
+        18    CE2   C145  -0.115
+        19    HE2   H146   0.115
+        20    C     C271   0.700
+        21    O     O272  -0.800
+        22    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD2   CG    
+        CE1   CD1   
+        CZ    CE2   
+        OH    CZ    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CD1   HD1   
+        CD2   HD2   
+        CE1   HE1   
+        CE2   HE2   
+        OH    HH    
+        CD1   CG    
+        CE1   CZ    
+        CE2   CD2   
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        HD1   CD1   CG    CE1   
+        HE1   CE1   CD1   CZ    
+        OH    CZ    CE1   CE2   
+        CB    CG    CD1   CD2   
+        HD2   CD2   CE2   CG    
+        HE2   CE2   CZ    CD2   
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB2   HB3   CG    
+        CD1   HD1   
+        CE1   HE1   
+        OH    HH    CZ    
+        CD2   HD2   
+        CE2   HE2   
+*-----------------------------------------------------------------------------------------------
+{CVAL} !           charge -1.0   ! Valine C-terminal (standard)
+    [atoms]
+        1     N     N238  -0.500 !     |    HG11 HG12 
+        2     H     H241   0.300 !   N-N      | /     
+        3     CA    C283   0.040 !     |     CG1--HG13
+        4     HA    H140   0.060 !     |    /         
+        5     CB    C137  -0.060 !  HA-CA--CB-HB      
+        6     HB    H140   0.060 !     |    \         
+        7     CG1   C135  -0.180 !     |     CG2--HG23
+        8     HG11  H140   0.060 !   O=C    / \       
+        9     HG12  H140   0.060 !     | HG21 HG22    
+        10    HG13  H140   0.060 !    OXT(-)
+        11    CG2   C135  -0.180
+        12    HG21  H140   0.060
+        13    HG22  H140   0.060
+        14    HG23  H140   0.060
+        15    C     C271   0.700
+        16    O     O272  -0.800
+        17    OXT   O272  -0.800
+    [bonds]
+        CB    CA    
+        CG1   CB    
+        CG2   CB    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB    
+        CG1   HG11  
+        CG1   HG12  
+        CG1   HG13  
+        CG2   HG21  
+        CG2   HG22  
+        CG2   HG23  
+        C     OXT   
+        C     O     
+    [connections]
+        head  N     
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    OXT   
+    [charge_groups]
+        C     O     OXT   N     H     CA    HA     
+        CB    HB    
+        CG1   HG11  HG12  HG13  
+        CG2   HG21  HG22  HG23  
+*-----------------------------------------------------------------------------------------------
+{TIP3} !           charge  0.0   ! tip3p water model, generate using noangle nodihedral
+    [atoms]
+        1     OH2   OT    -0.834 ! H1     H2
+        2     H1    HT     0.417 !   \   /  
+        3     H2    HT     0.417 !    OH2   
+    [bonds]
+        OH2   H1    
+        OH2   H2    
+        H1    H2    
+    [charge_groups]
+        OH2   H1    H2    
+*-----------------------------------------------------------------------------------------------
+{HOH} !            charge  0.0   ! tip3p water model, generate using noangle nodihedral
+    [info]
+        solvent 1
+        density 0.0335
+    [atoms]
+        1     O     OT    -0.834 ! H1     H2
+        2     H1    HT     0.417 !   \   /  
+        3     H2    HT     0.417 !     O    
+    [bonds]
+        O     H1
+        O     H2
+        H1    H2
+    [charge_groups]
+        O     H1    H2
+*------------------------------------------------------------------
+{WAT} !            charge  0.0   ! tip3p water model, generate using noangle nodihedral
+    [atoms]
+        1     O     OT    -0.834 ! H1     H2
+        2     H1    HT     0.417 !   \   /  
+        3     H2    HT     0.417 !     O    
+    [bonds]
+        O     H1
+        O     H2
+        H1    H2
+    [charge_groups]
+        O     H1    H2
+*-----------------------------------------------------------------------------------------------
+{SOL} !            charge  0.0   ! tip3p water model, generate using noangle nodihedral
+    [atoms]
+        1     O     OT    -0.834 ! H1     H2
+        2     H1    HT     0.417 !   \   /  
+        3     H2    HT     0.417 !     O    
+    [bonds]
+        O     H1
+        O     H2
+        H1    H2
+    [charge_groups]
+        O     H1    H2
+*-----------------------------------------------------------------------------------------------
+{Na+} !           charge  1.0   ! Sodium ion
+    [info]
+        SYBYLtype GROUP
+    [atoms]
+        1     SOD   SOD   1.000
+    [charge_groups]
+        SOD 
+*-----------------------------------------------------------------------------------------------
+{SOD} !           charge  1.0   ! Sodium ion
+    [info]
+        SYBYLtype GROUP
+    [atoms]
+        1     SOD   SOD   1.000
+    [charge_groups]
+        SOD 
+*-----------------------------------------------------------------------------------------------
+{Cl-} !           charge  -1.0   ! Chloride ion
+    [info]
+        SYBYLtype  GROUP
+    [atoms]
+        1     CLA   CLA   -1.000
+    [charge_groups]
+        CLA 
+*-----------------------------------------------------------------------------------------------
+{CLA} !           charge  -1.0   ! Chloride ion
+    [info]
+        SYBYLtype GROUP
+    [atoms]
+        1     CLA   CLA   -1.000
+    [charge_groups]
+        CLA
+*-----------------------------------------------------------------------------------------------
+{ZN} !            charge  2.0   ! Zinc ion
+    [info]
+        SYBYLtype GROUP
+    [atoms]
+        1     ZN    ZN    2.000
+    [charge_groups]
+        ZN
+*-----------------------------------------------------------------------------------------------
+{MG2} !            charge  2.0   ! Magnesium ion (Kamerlin et al 2014, J Phys Chem)
+    [info]
+        SYBYLtype GROUP
+    [atoms]
+        1     DMG   DMG   -1.00 
+        2     H1    DH1    0.50
+        3     H2    DH2    0.50
+        4     H3    DH3    0.50
+        5     H4    DH4    0.50
+        6     H5    DH5    0.50
+        7     H6    DH6    0.50
+    [bonds]
+        DMG   H1 
+        DMG   H2 
+        DMG   H3 
+        DMG   H4 
+        DMG   H5 
+        DMG   H6 
+        H1    H2
+        H1    H4
+        H1    H5
+        H1    H6
+        H2    H3
+        H2    H5
+        H2    H6
+        H3    H4
+        H3    H5
+        H3    H6
+        H4    H5
+        H4    H6
+    [charge_groups]
+        DMG   H1    H2    H3    H4    H5    H6 
+*-----------------------------------------------------------------------------------------------
+{PO4} !            charge -2.0   ! Phosphate ion
+    [info]
+        SYBYLtype RESIDUE
+    [atoms]
+        1     P1    TP3    1.9180 ! O1(-) O2-HO2
+        2     O1    TO2Z  -1.1200 !   \   /     
+        3     O2    TOS   -0.9380 !     P       
+        4     O3    TO2Z  -1.1200 !   //  \     
+        5     O4    TO2Z  -1.1200 !  O3   O4(-) 
+        6     HO2   THO    0.3800 
+    [bonds]
+        P1    O1
+        P1    O2
+        P1    O3
+        P1    O4
+        O2    HO2
+    [charge_groups]
+        P1    O1    O2    O3    O4    HO2
+*-----------------------------------------------------------------------------------------------
+{POPC} !           charge  0.0   ! 1-palmitoyl-2-oleoyl-sn-glycero-3-phosphocholine
+    [info]
+        SYBYLtype RESIDUE
+    [atoms]
+        1     N4    LNL   -0.500 !              C2                      
+        2     P8    LP     1.700 !              |(+)                      
+        3     C12   LC2    0.400 !         C1 - N4 - C3                          
+        4     O7    LOS   -0.800 !              |                      
+        5     C13   LH1    0.300 !              C5                      
+        6     O11   LOS   -0.700 !              |                      
+        7     C32   LC2    0.500 !              C6                      
+        8     O9    LOM   -0.800 !              |                      
+        9     O10   LOM   -0.800 !              O7                      
+        10    C5    LH2    0.300 !         (-)  |                      
+        11    C1    LC3    0.400 !         O9 - P8 = O10                      
+        12    C2    LC3    0.400 !              |                      
+        13    C3    LC3    0.400 !             O11                      
+        14    C6    LC2    0.400 !              |                      
+        15    C15   LC     0.700 !             C12                      
+        16    O14   LOS   -0.700 !              |                      
+        17    C17   LP2    0.000 !             C13                      
+        18    O16   LO    -0.700 !            /   \                      
+        19    C18   LP2    0.000 !          O14   C32                       
+        20    C19   LP2    0.000 !           |     |                    	  
+        21    C20   LP2    0.000 !    O16 = C15   O33                      
+        22    C21   LP2    0.000 !           |     |                    
+        23    C22   LP2    0.000 !          C17   C34 = O35                       
+        24    C23   LP2    0.000 !           |     |                    
+        25    C24   LH1    0.000 !          C18   C36                       
+        26    C34   LC     0.800 !           |     |                   
+        27    O33   LOS   -0.700 !          C19   C37                    
+        28    C36   LP2    0.000 !           |     |                   
+        29    O35   LO    -0.600 !          C20   C38                 
+        30    C37   LP2    0.000 !           |     |                  
+        31    C38   LP2    0.000 !          C21   C39                 
+        32    C39   LP2    0.000 !           |     |                  
+        33    C40   LP2    0.000 !          C22   C40                 
+        34    C41   LP2    0.000 !           |     |                  
+        35    C42   LP2    0.000 !          C23   C41                 
+        36    C43   LP2    0.000 !           ||    |                  
+        37    C25   LH1    0.000 !          C24   C42                 
+        38    C26   LP2    0.000 !           |     |                  
+        39    C27   LP2    0.000 !          C25   C43                
+        40    C28   LP2    0.000 !           |     |                 
+        41    C29   LP2    0.000 !          C26   C44                
+        42    C30   LP2    0.000 !           |     |                 
+        43    C31   LP2    0.000 !           .     .                
+        44    CA1   LP2    0.000 !           .     .                 
+        45    CA2   LP3    0.000 !           .     .               
+        46    C44   LP2    0.000 !           |     |                 
+        47    C45   LP2    0.000 !          C32   C48                
+        48    C46   LP2    0.000 !           |     |                 
+        49    C47   LP2    0.000 !          CA1   C49                
+        50    C48   LP2    0.000 !           |     |                 
+        51    C49   LP2    0.000 !          CA2   C50                
+        52    C50   LP3    0.000 !                                  
+    [bonds]
+        N4    C1
+        N4    C2
+        N4    C3
+        N4    C5
+        C5    C6
+        C6    O7
+        P8    O7
+        P8    O11
+        P8    O9
+        P8    O10
+        C12   O11
+        C12   C13
+        C13   O14
+        C15   O14
+        C15   O16
+        C15   C17
+        C17   C18
+        C18   C19
+        C19   C20
+        C20   C21
+        C21   C22
+        C22   C23
+        C23   C24
+        C24   C25
+        C25   C26
+        C26   C27
+        C27   C28
+        C28   C29
+        C29   C30
+        C30   C31
+        C31   CA1
+        CA1   CA2
+        C13   C32
+        C32   O33
+        C34   O33
+        C34   O35
+        C34   C36
+        C36   C37
+        C37   C38
+        C38   C39
+        C39   C40
+        C40   C41
+        C41   C42
+        C42   C43
+        C43   C44
+        C44   C45
+        C45   C46
+        C46   C47
+        C47   C48
+        C48   C49
+        C49   C50
+    [impropers]
+        O14   C15   O16   C17
+        O33   C34   O35   C36
+        O14   C13   C12   C32
+    [charge_groups]
+        C6    N4    C1    C2    C3    C5    P8    O7    O9    O10   O11
+        O14   C12   C13   C15   O16
+        C17   C18   C19        
+        C20   C21        
+        C22   C23        
+        C24   C25                       
+        C26   C27        
+        C28   C29        
+        C30   C31        
+        CA1   CA2                             
+        O33   C32   C34   O35
+        C36   C37   C38        
+        C39   C40        
+        C41   C42        
+        C43   C44
+        C45   C46               
+        C47   C48	
+        C49   C50
+*-----------------------------------------------------------------------------------------------
+{DUM}  !          charge  0.0   ! Dummy atom, placeholder
+    [atoms]
+        1     DUM   DUM   0.000
+    [charge_groups]
+        DUM
+*-----------------------------------------------------------------------------------------------
