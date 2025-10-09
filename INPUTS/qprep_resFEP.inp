@@ -1,24 +1,16 @@
 !Added libraries:
 rprm PRM 
-
-! TO DO Change if protein system is used
 rp PDB 
-
-! solvation
-set solvent_pack 2.5
-set solute_density SOLUTEDENS
+! set solute_density 0.05794 
+! Solvent_pack is turned off 
+! set solvent_pack 0.0
 boundary 1 CENTER SPHERE
 solvate CENTER SPHERE SOLVENT
-
-! CYS bonds
 !addbond at1 at2 y
-
-! topology
 maketop MKC_p 
 writetop dualtop.top 
 wp top_p.pdb y 
-
-! masked pdb file
+rt dualtop.top
 mask none 
 mask not excluded 
 wp complexnotexcluded.pdb y 

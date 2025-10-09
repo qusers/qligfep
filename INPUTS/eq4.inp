@@ -46,3 +46,4 @@ EQ_LAMBDA
 ATOM_START_LIG1 ATOM_END  5.0 0  0
 
 [distance_restraints]
+DIST

@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+
 import argparse
 from subprocess import check_output
-import os
+import os, sys
 import collections
 from time import gmtime, strftime
 import numpy as np
@@ -14,7 +16,7 @@ class Run(object):
     Prepare a protein for usage in spherical boundary conditions.
     """
     def __init__(self, prot, sphereradius, spherecenter, include, water, 
-                 preplocation, origin, noclean, *args, **kwargs):
+                 preplocation, origin, noclean, forcefield, *args, **kwargs):
         self.prot = prot
         self.radius = float(sphereradius)
         self.center = spherecenter
@@ -26,8 +28,8 @@ class Run(object):
         self.origin = origin
         self.original_charges = {}
         self.chains = []
-            
-        self.log = {'INPUT':'protPREP.py -p {} -r {} -c {} -w={} -V={}'.format(prot, 
+        self.forcefield = forcefield
+        self.log = {'INPUT':'protprep.py -p {} -r {} -c {} -w={} -V={}'.format(prot, 
                                                                                sphereradius, 
                                                                                spherecenter, 
                                                                                water,
@@ -55,13 +57,12 @@ class Run(object):
                 if line.startswith(self.include):
                     line = IO.pdb_parse_in(line)
                     if center[0] == 'RESN':
-                        if line[5] == center[2]:
-                            if line[6] == int(center[1]) \
-                            and line[2].strip() == 'CA':
-                                self.center = [float(line[8]),
-                                               float(line[9]), 
-                                               float(line[10])
-                                              ]
+                        if line[6] == int(center[1]) \
+                        and (line[2].strip() == 'CB' or line[2].strip() == 'HA3'):
+                            self.center = [float(line[8]),
+                                           float(line[9]), 
+                                           float(line[10])
+                                          ]
 
                     elif center[0] == 'ATN':
                         if line[1] == int(center[1]):
@@ -140,10 +141,10 @@ class Run(object):
                             else:
                                 self.original_charges[line[5]][line[6]] = \
                                 IO.charged_res[line[4]][line[2]]
-                
+
                     if write == True:
                         outfile.write(line_out + '\n')
-            
+
         elif self.origin == 'maestro':
             with open(self.prot) as infile, \
                  open(self.prot[:-4] + '_noH.pdb', 'w') as outfile:
@@ -151,8 +152,18 @@ class Run(object):
                     if line.startswith(self.include):
                         line = IO.pdb_parse_in(line)
                         if line[2][0] != 'H':
-                            outline = IO.pdb_parse_out(line)
-                            outfile.write(outline  + '\n')
+                            # Correction of capped termini by maestro
+                            if line[4] == 'NMA':
+                                outline = IO.pdb_parse_out(line)
+                                outline = f.correct_CT(outline)
+                                outfile.write(outline  + '\n')
+                            elif line[4] == 'ACE':
+                                outline = IO.pdb_parse_out(line)
+                                outline = f.correct_NT(outline)
+                                outfile.write(outline  + '\n')
+                            else:	
+                                outline = IO.pdb_parse_out(line)
+                                outfile.write(outline  + '\n')
                         
                         # Get the charges from the hydrogen connections
                         if line[4] in IO.charged_res:
@@ -165,8 +176,6 @@ class Run(object):
 
                                 else:
                                     self.original_charges[line[5]][line[6]] = IO.charged_res[line[4]][line[2]]
-
-
     
     def readpdb(self):
         i = 0
@@ -182,6 +191,7 @@ class Run(object):
                 if line.startswith(self.include):
                     header = IO.pdb_parse_in(line)
                     RES_ref = header[6] - 1
+                    #self.offset = RES_ref
                     break
                     
             for line in infile:
@@ -231,6 +241,11 @@ class Run(object):
                             i += 1
                             self.log['PDB2Q'][line[5]][i] = line[6]
                             self.log['QRESN'][line[5]][line[6]] = i
+        try:                    
+            if len(self.PDB['w']) == 0:
+                del(self.PDB['w'])
+        except:
+            pass
         
     def decharge(self):
         charged_res = {'GLU':['GLH', 'CD', -1], 
@@ -272,35 +287,36 @@ class Run(object):
                 at = self.PDB[chain][key]
                 if chain not in decharge:
                     continue
-                if at[6] in decharge[chain] and at[2].strip() == charged_res[at[4]][1]:
-                    coord1 = [float(at[8]), 
-                              float(at[9]), 
-                              float(at[10])
-                             ]
-                    for chain2 in self.PDB:
-                        for key2 in self.PDB[chain2]:
-                            at_2 = self.PDB[chain2][key2]
-                            if at_2[4] in charged_res:
-                                if at_2[2].strip() == charged_res[at_2[4]][1]:
-                                    coord2 = [float(at_2[8]), 
-                                              float(at_2[9]), 
-                                              float(at_2[10])
-                                             ]
-                                    if at == at_2:
-                                        continue
-                                    if at_2[6] in decharge[chain]:
-                                        continue
-                                    
-                                    if at_2[6] in decharge[chain2]:
-                                        continue
-                                        
-                                    if f.euclidian_overlap(coord1, coord2, 4.0) == True:
-                                        decharge[chain2].append(at_2[6])
-                                        outline = '{:<10}{:<10}{:<10}{:<10}'.format(
-                                                      self.log['QRESN'][chain2][at_2[6]],
-                                                                                at_2[6],
-                                                                                chain2,
-                                                                                at_2[4])
+                if at[6] in decharge[chain] and at[4].strip() in charged_res.keys():
+                    if at[6] in decharge[chain] and at[2].strip() == charged_res[at[4]]:
+                        coord1 = [float(at[8]), 
+                                  float(at[9]), 
+                                  float(at[10])
+                                 ]
+                        for chain2 in self.PDB:
+                            for key2 in self.PDB[chain2]:
+                                at_2 = self.PDB[chain2][key2]
+                                if at_2[4] in charged_res:
+                                    if at_2[2].strip() == charged_res[at_2[4]][1]:
+                                        coord2 = [float(at_2[8]), 
+                                                  float(at_2[9]), 
+                                                  float(at_2[10])
+                                                 ]
+                                        if at == at_2:
+                                            continue
+                                        if at_2[6] in decharge[chain]:
+                                            continue
+
+                                        if at_2[6] in decharge[chain2]:
+                                            continue
+
+                                        if f.euclidian_overlap(coord1, coord2, 4.0) == True:
+                                            decharge[chain2].append(at_2[6])
+                                            outline = '{:<10}{:<10}{:<10}{:<10}'.format(
+                                                          self.log['QRESN'][chain2][at_2[6]],
+                                                                                    at_2[6],
+                                                                                    chain2,
+                                                                                    at_2[4])
                                         self.log['DECHARGE'].append(outline)
         
         # Get the charged residues in the sphere and the total charge of these residues in the sphere
@@ -310,7 +326,7 @@ class Run(object):
                 if chain not in decharge:
                     continue
         
-                if at[6] in decharge[chain]:
+                if at[6] in decharge[chain] and at[4].strip() in charged_res.keys():
                     at[4] = charged_res[at[4]][0]
                     continue
 
@@ -373,52 +389,38 @@ class Run(object):
         cys = []
         cyx = []
         cys_bond = 2.2
-        cys_mat = []
+        cysbond_list = []
         i = 0
         k = -1
         # Reduce coordinate array
         for chain in self.PDB:
+            if chain == 'w':
+                continue
             for key in self.PDB[chain]:
                 at = self.PDB[chain][key]
-                if at[4] == 'CYS' or at[4] == 'CYX' and at[2].strip() == 'SG':
-                    cys.append([at[6], (at[8], at[9], at[10])])
+                Q_resi = self.log['QRESN'][chain][at[6]]
+                if (at[4] == 'CYS' or at[4] == 'CYX') and at[2] == 'SG':
+                    cys.append([at[6], (at[8], at[9], at[10]), Q_resi])
 
-            # Construct S-S bond matrix
-            for SG_1 in cys:
-                cys_list = [SG_1[0]]
-                for SG_2 in cys:
-                    cys_list.append(f.euclidian_overlap(SG_1[1], SG_2[1], cys_bond))
-                cys_mat.append(cys_list)
-
-            # Fix to better handling
-            try:
-                total = len(cys_mat[0]) -1
-
-                for line in cys_mat:
-                    k += 1
-                    for j in range(i, total):
-                        if cys_mat[i][j+1] == True and cys_mat[k][0] != cys_mat[j][0]:
-                            cyx.append(cys_mat[k][0])
-                            cyx.append(cys_mat[j][0])
-                            outline = '{:<10}{:<10}{:<10}{:<10}{:<10}{:<10}'.format(self.log['QRESN'][chain][cys_mat[k][0]], 
-                                                                        self.log['QRESN'][chain][cys_mat[j][0]],
-                                                                        cys_mat[k][0],
-                                                                                    chain,
-                                                                        cys_mat[j][0],
-                                                                                   chain)
-                            self.log['CYX'].append(outline)
-
-                    i += 1
-                    
-                
+        # Construct S-S bond matrix
+        for i, SG_1 in enumerate(cys):
+            for SG_2 in cys[i+1:]:
+                    overlap = f.euclidian_overlap(SG_1[1], SG_2[1], cys_bond)
+                    if overlap:
+                        self.log['CYX'].append('{} {}'.format(SG_1[2], SG_2[2]))
+                        print('Overlap between {} and {}'.format(SG_1[0], SG_2[0]))
+                        cysbond_list.append(str(SG_1[0]) + '-' + str(SG_2[0]))
+        cysbond_list = list(set(cysbond_list))
+        for pair in cysbond_list:
+            l1, l2 = pair.split('-')[0], pair.split('-')[1]
+            if int(l1) < int(l2):
+                cyx.append(int(l1))
+                cyx.append(int(l2))
                 for chain in self.PDB:
                     for key in self.PDB[chain]:
                         at = self.PDB[chain][key]
                         if at[6] in cyx and at[4] == 'CYS':
                             self.PDB[chain][key][4] = 'CYX'
-
-            except:
-                return None
                 
     def write_tmpPDB(self):
         with open(self.prot[:-4] + '_tmp.pdb', 'w') as outfile:
@@ -428,7 +430,11 @@ class Run(object):
                     outline = IO.pdb_parse_out(self.PDB[chain][atom]) + '\n'
                     outfile.write(outline)
                 if len(self.PDB) != 1:
-                    outfile.write('GAP\n')
+#                    outfile.write('GAP\n')
+                    if chain == list(self.PDB)[-1]:
+                        outfile.write('END')
+                    else:
+                        outfile.write('TER\n')
         
     def write_qprep(self):
         replacements = {'FF_LIB'    :   s.FF_DIR + '/OPLS2015.lib',
@@ -438,7 +444,20 @@ class Run(object):
                         'SPHERE'    :   '{:.1f}'.format(self.radius),
                         'SOLVENT'   :   '1 HOH'
                        }
+
+        if self.forcefield == 'openFF':
+            replacements['FF_LIB'] = s.FF_DIR + '/AMBER14sb.lib'
+            replacements['FF_PRM'] = s.FF_DIR + '/AMBER14sb.prm'
+
+        if self.forcefield == 'GTPase':
+            replacements['FF_LIB'] = s.FF_DIR + '/OPLS2015_GTPase.lib'
+            replacements['FF_PRM'] = s.FF_DIR + '/OPLS2015_GTPase.prm'
         
+        if self.forcefield == 'pymemdyn':
+            replacements['FF_LIB'] = s.FF_DIR + '/OPLS2015_pymemdyn.lib'
+            replacements['FF_PRM'] = s.FF_DIR + '/OPLS2015.prm'        
+
+
         with open (s.INPUT_DIR + '/qprep_protprep.inp') as infile, \
             open ('qprep.inp', 'w') as outfile:
             for line in infile:
@@ -451,7 +470,8 @@ class Run(object):
                         outfile.write(outline)            
         
     def run_qprep(self):
-        qprep = s.LOCAL['QPREP']
+        cluster_options = getattr(s, self.preplocation)
+        qprep = cluster_options['QPREP']
         options = ' < qprep.inp > qprep.out'
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
@@ -464,6 +484,11 @@ class Run(object):
                  'SOL': ['OW1', 'HW1', 'HW2'] 
                 }
         waters_tokeep = []
+        
+        with open('qprep.out') as infile:
+            for line in infile:
+                if 'ERROR' in line:
+                    sys.exit('>>> ERROR in Qprep')
         
         with open('top_p.pdb') as infile:
             for line in infile:
@@ -530,10 +555,9 @@ class Run(object):
             outfile.write('--------------------------------------------------------------------')  
             outfile.write('\n')
             outfile.write('The following S-S bonds have been found:\n')
-            outfile.write('{:10}{:10}{:10}{:10}{:10}{:10}\n'.format(
-                'Q_CYS1', 'Q_CYS2', 'PDB_CYS1', 'CHAIN','PDB_CYS2','CHAIN'))
+            outfile.write('{:10}{:10}\n'.format('Q_CYS1', 'Q_CYS2'))
             for line in self.log['CYX']:
-                outfile.write(line + '\n')
+                outfile.write('{:10}{:10}\n'.format(*line.split()))
             
             outfile.write('--------------------------------------------------------------------')  
             outfile.write('\n')
@@ -542,9 +566,10 @@ class Run(object):
             outfile.write('{:10}{:10}{:10}{:10}\n'.format('Q_RESN', 'PDB_IN', 'CHAIN','RESNAME'))
             for chain in self.PDB:
                 for key in self.PDB[chain]:
-                    if self.PDB[chain][key][2].strip() == 'CB':
+                    if self.PDB[chain][key][2].strip() == 'CA':
                         PDB_resi = self.PDB[chain][key][6]
                         Q_resi = self.log['QRESN'][chain][PDB_resi]
+                        #Q_resi = PDB_resi - self.offset
                         resn = self.PDB[chain][key][4]
                         outfile.write('{:<10}{:<10}{:10}{:10}\n'.format(Q_resi,PDB_resi,chain,resn))
                     
@@ -604,6 +629,12 @@ if __name__ == "__main__":
                         default = 'maestro',
                         choices = ['maestro', 'gromacs'],
                         help = "Use this flag to specficy with which program the .pdb file was written")
+
+    parser.add_argument('-f', '--forcefield',
+                        dest = "forcefield",
+                        default = 'OPLS2015',
+                        choices = ['OPLS2015', 'openFF', 'GTPase', 'pymemdyn'],
+                        help = "Use this flag to specficy with which forcefield library to use.")
     
     args = parser.parse_args()
     run = Run(prot = args.prot,
@@ -613,7 +644,8 @@ if __name__ == "__main__":
               noclean = args.noclean,
               preplocation = args.preplocation,
               origin = args.origin,
-              include = ('ATOM','HETATM')
+              include = ('ATOM','HETATM'),
+              forcefield = args.forcefield
              )
     
     run.get_center_coordinates()        # 00

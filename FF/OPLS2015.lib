@@ -1884,7 +1884,7 @@
          O      C      CA     +N    
     [charge_groups]
         N     H     CA    HA    
-        CB    HB2   HB3   ND1   HD1   CG    CE1   HE1   NE2   CD2   HD2
+        CG    CB    HB2   HB3   ND1   HD1   CE1   HE1   NE2   CD2   HD2
         C     O     
 *------------------------------------------------------------------
 {HIE}            !charge: 0.00 ||  neutral His, proton on NE2
@@ -1936,7 +1936,7 @@
          O      C      CA     +N    
     [charge_groups]
         N     H     CA    HA    
-        CB    HB2   HB3   ND1   CG    CE1   HE1   NE2   HE2   CD2   HD2 
+        CG    CB    HB2   HB3   ND1   CE1   HE1   NE2   HE2   CD2   HD2 
         C     O     
 *------------------------------------------------------------------
 {HIP}            !charge: 1.00 ||  Protonated His
@@ -1991,7 +1991,7 @@
          O      C      CA     +N    
     [charge_groups]
         N     H     CA    HA    
-        CB    HB2   HB3   CD2   HD2   CG    NE2   HE2   ND1   HD1   CE1 HE1
+        CG    CB    HB2   HB3   CD2   HD2   NE2   HE2   ND1   HD1   CE1 HE1
         C     O     
 *------------------------------------------------------------------
 {ILE}            !charge: 0.00 ||  
@@ -4075,7 +4075,7 @@
          1 SOD     SOD          1.000
 *----------------------------------------------------------------------
 
-{POP}                 ! POPC
+{POPC}                 ! POPC
     [info]
         SYBYLtype  RESIDUE     !SYBYL substructure type
     [atoms]
@@ -4303,4 +4303,9 @@ CA  HA3
                 !      # name     type     charge
                          1 ZN      ZN          2.000
                          
+*----------------------------------------------------------------------
+{DUM}
+           
+[atoms]
+1   DUM       DUM      0.000
 *----------------------------------------------------------------------
