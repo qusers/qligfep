@@ -1,0 +1,14 @@
+rl FF_LIB 
+rprm FF_PRM
+
+rp PROTPDB 
+
+set solvent_pack 2.5
+boundary 1 CENTER SPHERE
+solvate CENTER SPHERE SOLVENT
+
+!addbond at1 at2 y
+
+maketop MKC_p 
+wp top_p.pdb y
+q 
