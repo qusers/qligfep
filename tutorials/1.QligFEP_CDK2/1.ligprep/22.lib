@@ -1,5 +1,8 @@
 {LIG}     ! atoms no   49   total charge -0.000 
 
+[info] 
+ SYBYLtype RESIDUE 
+
 [atoms] 
    1   C1        XC1          0.8648
    2   C2        XC2          0.4010
@@ -121,3 +124,29 @@ N22       C24       C23       C13
 C23       H46       C24       C10
 
 [charge_groups]
+C1
+C2 H27 
+C3 H28  H29 
+C4 H30 
+C5 H31  H32 
+C6 H33  H34 
+C7 H35  H36 
+C8 H37  H38 
+C9 H39  H40 
+C10 H41 
+C11 H42 
+C12
+C13 H43 
+N14
+C15
+O16
+C17
+N18
+N19 H44 
+C20
+N21
+N22 H45 
+C23
+C24 H46 
+S25
+C26 H47  H48  H49 

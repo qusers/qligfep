@@ -22,12 +22,13 @@ class Run(object):
     """
     Store script arguments and set global variables
     """
-    def __init__(self, FEP, temp, cluster, color, PDB, esc, *args, **kwargs):
+    def __init__(self, FEP, temp, cluster, color, PDB, esc, start, *args, **kwargs):
         self.temp = temp
         self.cluster = cluster
         self.esc = esc
         self.FEP = FEP.strip('/')
         self.FromGly = False
+        self.start = start
         if self.FEP[4:7] == 'GLY':
             self.FromGly = True
         #self.FromGly = False
@@ -80,7 +81,7 @@ class Run(object):
                 if self.esc:
                     energies = IO.read_qfep_esc(filename)
                 else:
-                    energies = IO.read_qfep(filename, self.FromGly)
+                    energies = IO.read_qfep(filename, self.FromGly, self.start, FEP)
             # Append failed replicates and set their energies to NaN
             except:
                 print("Could not retrieve energies for: " + filename)
@@ -255,17 +256,24 @@ if __name__ == "__main__":
     
     # Optional command line arguments
     optional = parser.add_argument_group('optional arguments')
+    optional.add_argument('-l', '--start',
+                          dest = "start",
+                          default = '1',
+                          choices = ['1', '0.5', '0'],
+                          help = "Started FEP in the middle or endpoint")
+
     optional.add_argument('-C', '--cluster',
                           dest = "cluster",
                           required = False,
                           help = "cluster information, e.g. CSB, TETRALITH, DARDEL")
+
     optional.add_argument('-pdb', '--PDB',
                           dest = "PDB",
                           required = False,
                           default = False,
                           action = 'store_true',
                           help = "Add this argument if you want .pdb files of the trajectory")
-    
+
     optional.add_argument('-c', '--color',
                           dest = "color",
                           required = False,
@@ -284,7 +292,8 @@ if __name__ == "__main__":
               color = args.color,
               cluster = args.cluster,
               PDB = args.PDB,
-              esc = args.esc
+              esc = args.esc,
+              start = args.start
              )
     
     run.create_environment()

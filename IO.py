@@ -10,6 +10,34 @@ import functions as f
 import settings as s
 
 ## Some useful objects TO DO add GLH etc.
+atoms = [
+    'N', 'H', 'C', 'O',
+    'CA',
+    'HA', 'HA2', 'HA3',
+    'CB',
+    'HB', 'HB1', 'HB2', 'HB3',
+    'CG', 'CG1', 'CG2',
+    'OG', 'OG1',
+    'SG',
+    'HG', 'HG1', 'HG2', 'HG3', 'HG11', 'HG12', 'HG13', 'HG21', 'HG22', 'HG23',
+    'CD', 'CD1', 'CD2',
+    'ND1', 'ND2',
+    'OD1', 'OD2',
+    'SD',
+    'HD', 'HD1', 'HD2', 'HD3', 'HD11', 'HD12', 'HD13', 'HD21', 'HD22', 'HD23',
+    'CE', 'CE1', 'CE2', 'CE3',
+    'OE1', 'OE2',
+    'NE', 'NE1', 'NE2',
+    'HE', 'HE1', 'HE2', 'HE3', 'HE21', 'HE22',
+    'CZ', 'CZ2', 'CZ3',
+    'NZ',
+    'HZ', 'HZ1', 'HZ2', 'HZ3',
+    'CH2',
+    'OH',
+    'NH1', 'NH2',
+    'HH', 'HH2', 'HH11', 'HH12', 'HH21', 'HH22'
+]
+
 charged_res = {'HIS': {'HD1' : 'HID',
                        'HE2' : 'HIE'},
                'GLU': {'HE2' : 'GLH'},
@@ -151,10 +179,14 @@ def restraint_matrix(mutation):
         'ASP': ['CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2'],
         'ASH': ['CB', 'HB2', 'HB3', 'CG', 'OD1', 'OD2', 'HD1'],
         'GLU': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'OE2'],
+        'GLH': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'OE1', 'OE2', 'HE1'],
         'HID': ['CB', 'HB2', 'HB3', 'CG', 'ND1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2'],
         'HIE': ['CB', 'HB2', 'HB3', 'CG', 'ND1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2', 'HE2'],
+        'HIP': ['CB', 'HB2', 'HB3', 'CG', 'ND1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'NE2', 'HE2'],
         'ARG': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'NE', 'HE', 'CZ', 'NH1', 'HH11', 'HH12', 'NH2', 'HH21', 'HH22'],
+        'ARN': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'NE', 'HE', 'CZ', 'NH1', 'HH11', 'NH2', 'HH21', 'HH22'],
         'LYS': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'NZ', 'HZ1', 'HZ2', 'HZ3'],
+        'LYN': ['CB', 'HB2', 'HB3', 'CG', 'HG2', 'HG3', 'CD', 'HD2', 'HD3', 'CE', 'HE2', 'HE3', 'NZ', 'HZ1', 'HZ2'],
         'ALA': ['CB', 'HB1', 'HB2', 'HB3'],
         'CYS': ['CB', 'HB2', 'HB3', 'SG', 'HG'],
         'PHE': ['CB', 'HB2', 'HB3', 'CG', 'CD1', 'HD1', 'CD2', 'HD2', 'CE1', 'HE1', 'CE2', 'HE2', 'CZ', 'HZ'],
@@ -261,69 +293,49 @@ def read_prm(prmfiles):
 
 def get_lambdas(windows, sampling):
     windows = int(windows)
-    step = int(windows/2)
     lambdas = []
-    lmbda_1 = []
-    lmbda_2 = []
-    k_dic = {'sigmoidal':-1.1, 
-             'linear':1000,
-             'exponential':-1.1,
-             'reverse_exponential':1.1
-            }
-    k = k_dic[sampling]
 
-    if sampling == 'sigmoidal': 
-        for i in range(0, step + 1):
-            lmbda1 = '{:.3f}'.format(0.5 * (f.sigmoid(float(i)/float(step), k) + 1))
-            lmbda2 = '{:.3f}'.format(0.5 * (-f.sigmoid(float(i)/float(step), k) + 1))
-            lmbda_1.append(lmbda1)
-            lmbda_2.append(lmbda2)
-
-        lmbda_2 = lmbda_2[1:]
-
-        for i in reversed(lmbda_2):
-            lambdas.append(i)
-
-        for i in lmbda_1:
-            lambdas.append(i)
+    if sampling == 'sigmoidal':
+        lambdas = [f'{l:.3f}' for l in (1 - f.sigmoidal(windows))]
+    
+    elif sampling == 'exponential':
+        lambdas = [f'{l:.3f}' for l in (1 - f.exponential(windows, -3))]
+    elif sampling == 'reverse_exponential':
+        lambdas = [f'{l:.3f}' for l in (1 - f.exponential(windows, 3))]
 
     else:
-        for i in range(0, windows + 1):
-            lmbda = '{:.3f}'.format(f.sigmoid(float(i)/float(windows), k))
-            lambdas.append(lmbda)
+        lambdas = [f'{l:.3f}' for l in (1 - f.linear(windows))]
 
     lambdas = lambdas[::-1]
     return lambdas   
 
 def write_submitfile(writedir, replacements):
-    submit_in = s.ROOT_DIR + '/INPUTS/FEP_submit.sh'
-    submit_out = writedir + ('/FEP_submit.sh')
-    with open(submit_in) as infile, open (submit_out, 'w') as outfile:
-        for line in infile:
+    submit_tmplt = s.ROOT_DIR + '/INPUTS/FEP_submit.sh'
+    submit_file = f"{writedir}/FEP_submit.sh"
+    with open(submit_tmplt) as submit_in, open (submit_file, 'w') as submit_out:
+        for line in submit_in:
             line = replace(line, replacements)
-            outfile.write(line)
+            submit_out.write(line)
 
     try:
-        st = os.stat(submit_out)
-        os.chmod(submit_out, st.st_mode | stat.S_IEXEC)
-
+        st = os.stat(submit_file)
+        os.chmod(submit_file, st.st_mode | stat.S_IEXEC)
     except:
-        print("WARNING: Could not change permission for " + submit_out)
+        print(f"WARNING: Could not change permission for {submit_file}")
 
 def write_submitfile_benchmark(writedir, replacements):
-    submit_in = s.ROOT_DIR + '/INPUTS/FEP_submit_benchmark.sh'
-    submit_out = writedir + ('/FEP_submit.sh')
-    with open(submit_in) as infile, open (submit_out, 'w') as outfile:
-        for line in infile:
+    submit_tmplt = f"{s.ROOT_DIR}/INPUTS/FEP_submit_benchmark.sh"
+    submit_file = f"{writedir}/FEP_submit.sh"
+    with open(submit_tmplt) as submit_in, open (submit_file, 'w') as submit_out:
+        for line in submit_in:
             line = replace(line, replacements)
-            outfile.write(line)
+            submit_out.write(line)
 
     try:
-        st = os.stat(submit_out)
-        os.chmod(submit_out, st.st_mode | stat.S_IEXEC)
-
+        st = os.stat(submit_file)
+        os.chmod(submit_file, st.st_mode | stat.S_IEXEC)
     except:
-        print("WARNING: Could not change permission for " + submit_out)
+        print(f"WARNING: Could not change permission for {submit_file}")
 
 def merge_two_dicts(x, y):
     """Given two dicts, merge them into a new dict as a shallow copy."""
@@ -335,7 +347,7 @@ def regex_str_int(line):
     a = re.split(r"(\d+)", line)
     return a
     
-def read_qfep(qfep, gly):
+def read_qfep(qfep, gly, start, FEP):
     """
     Reads a given qfep.out file.
 
@@ -365,13 +377,20 @@ def read_qfep(qfep, gly):
                 if line[3] == 'Reaction':
                     block = 0
 
+            if start == '1' or (start == '0.5' and FEP == 'FEP2'):
+                lambda_start = '1.000000'
+                lambda_end   = '0.000000'
+            if start == '0.5' and FEP == 'FEP1':
+                lambda_start = '0.000000'
+                lambda_end   = '1.000000'
+
             if not gly:
                 if len(line) > 1:
                     if block == 1:
-                        if line[0] == '1.000000':
+                        if line[0] == lambda_start:
                             Zwanzig_r = float(line[4])
 
-                        elif line[0] == '0.000000':
+                        elif line[0] == lambda_end:
                             Zwanzig_f = float(line[2])
 
                             if line[5] == '-Infinity':
@@ -380,7 +399,7 @@ def read_qfep(qfep, gly):
                             else:
                                 Zwanzig = float(line[5])
 
-                    if block == 2 and line[0] == '0.000000':
+                    if block == 2 and line[0] == lambda_end:
                         try:
                             TI = line[2]
                             if line[2] == '-Infinity':
@@ -388,14 +407,14 @@ def read_qfep(qfep, gly):
                         except:
                             TI = np.nan
 
-                    if block == 3 and line[0] == '0.000000':
+                    if block == 3 and line[0] == lambda_end:
                         if line[2] == '-Infinity':
                             OS = np.nan
 
                         else:
                             OS = float(line[2])
 
-                    if block == 4 and line[0] == '0.000000':
+                    if block == 4 and line[0] == lambda_end:
                         if line[2] == '-Infinity':
                             BAR = np.nan
                         else:
@@ -403,10 +422,10 @@ def read_qfep(qfep, gly):
             else:
                 if len(line) > 1:
                     if block == 1:
-                        if line[0] == '0.000000':
+                        if line[0] == lambda_end:
                             Zwanzig_r = -float(line[4])
 
-                        elif line[0] == '1.000000':
+                        elif line[0] == lambda_start:
                             Zwanzig_f = -float(line[2])
 
                             if line[5] == '-Infinity':
@@ -415,7 +434,7 @@ def read_qfep(qfep, gly):
                             else:
                                 Zwanzig = -float(line[5])
 
-                    if block == 2 and line[0] == '1.000000':
+                    if block == 2 and line[0] == lambda_start:
                         try:
                             TI = line[2]
                             if line[2] == '-Infinity':
@@ -423,18 +442,23 @@ def read_qfep(qfep, gly):
                         except:
                             TI = np.nan
 
-                    if block == 3 and line[0] == '1.000000':
+                    if block == 3 and line[0] == lambda_start:
                         if line[2] == '-Infinity':
                             OS = np.nan
 
                         else:
                             OS = -float(line[2])
 
-                    if block == 4 and line[0] == '1.000000':
+                    if block == 4 and line[0] == lambda_start:
                         if line[2] == '-Infinity':
                             BAR = np.nan
                         else:
                             BAR = -float(line[2])
+    if start == '0.5' and FEP == 'FEP1':
+        Zwanzig *= -1
+        Zwanzig_f *= -1
+        Zwanzig_r *= -1
+        BAR *= -1
                             
     try: BAR
     except: BAR = np.nan
@@ -576,5 +600,4 @@ def read_qfep_verbose(qfep):
                         array[4].append(np.float(line[2]))
                     except:
                         array[4].append(np.nan)
-    
     return array   

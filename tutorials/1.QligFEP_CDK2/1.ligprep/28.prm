@@ -824,5 +824,5 @@ XN19       XN21       XC20       XC17            4.000   180.000
 XH48       XC1        XN22       XC23            1.000   180.000
 XN22       XC24       XC23       XC13            4.000   180.000
 XC23       XH49       XC24       XC10            1.100   180.000
-XH50       XS25       XN28       XC29            1.000   180.000
+XC29       XS25       XN28       XH50            1.000   180.000
 ! End ligand improper parameters

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 import re
 import os
@@ -11,11 +13,11 @@ import IO
 
 class Run(object):
     """
-    Setup residue FEPs using either a single or dual topology approach
+    Setup plain MD simulations for LIE calcuations
     """
     def __init__(self, ligand, cofactor, forcefield, include, system,
                  preplocation, cluster, temperature, replicates,
-                 radius,
+                 radius, time,
                  *args, **kwargs):
         # Argparse arguments
         self.ligand         = ligand
@@ -46,6 +48,7 @@ class Run(object):
         self.PDB2Q          = {}
         self.PDB            = {}
         self.systemsize     = 0
+        self.convergence    = False
 
         
         # Add cofactors to list for further pdb/prm parsing
@@ -55,6 +58,11 @@ class Run(object):
         if self.system == 'water' or self.system == 'vacuum':
             self.sphere = f.COG(self.ligand +'.pdb')
             self.radius = radius
+        if time == 'conv':
+            self.time = 101
+            self.convergence = True
+        else:
+            self.time = int(time) + 1
     
     def create_environment(self):
         self.directory = 'LIE_{}'.format(self.ligand)
@@ -131,7 +139,6 @@ class Run(object):
                         # Construct the PDB dictionary            
                         try:
                             self.PDB[line[6]].append(line)
-
                         except:
                             self.PDB[line[6]] = [line]                        
                         
@@ -208,6 +215,7 @@ class Run(object):
                         outfile.write(IO.pdb_parse_out(water) + '\n')                    
                     
     def write_qprep(self):
+#        replacements = {'PRM':s.FF_DIR+'/'+self.forcefield+'.prm', #self.prm_merged,
         replacements = {'PRM':self.prm_merged,
                         'PDB':self.PDBout,
                         'CENTER':'{} {} {}'.format(*self.sphere),
@@ -222,7 +230,7 @@ class Run(object):
         elif self.system == 'vacuum':
             replacements['solvate']='!solvate'
         
-        src = s.INPUT_DIR + '/qprep_resFEP.inp'
+        src = s.INPUT_DIR + '/qprep_QresFEP.inp'
         self.qprep = self.directory + '/inputfiles/qprep.inp'
         libraries = [self.forcefield + '.lib']
         if self.cofactor[0] != None:
@@ -247,8 +255,8 @@ class Run(object):
                 
     def run_qprep(self):
         os.chdir(self.directory + '/inputfiles/')
-        qprep = s.Q_DIR[self.preplocation] + 'qprep'
-        options = ' < qprep.inp > qprep.out'
+        qprep = '/home/apps/apps/Q/5.10.1/bin/qprep5' # use either qprep / Qprep6
+        options = ' < qprep.inp > qprep.out'         # based on Q version to use
         # Somehow Q is very annoying with this < > input style so had to implement
         # another function that just calls os.system instead of using the preferred
         # subprocess module....
@@ -269,7 +277,7 @@ class Run(object):
         self.replacements['ATOM_START_LIG1'] = '{}'.format(1)
         self.replacements['EQ_LAMBDA'] = '1.000 0.000'
         
-        for EQ_file in glob.glob(s.INPUT_DIR + '/eq*.inp'):
+        for EQ_file in glob.glob(s.INPUT_DIR + '_old/eq*.inp'):
             src = EQ_file
             EQ_file = EQ_file.split('/')
             tgt = self.directory + '/inputfiles/' + EQ_file[-1]
@@ -280,21 +288,21 @@ class Run(object):
                     
     def write_MD(self):
         self.replacements['FILE_N'] = 'eq5'
-        src = s.INPUT_DIR + '/md_LIE_XX.inp'
-        for i in range(1, 11):
-            tgt = self.directory + '/inputfiles/md_LIE_{:02d}.inp'.format(i)
-            self.replacements['FILE'] = 'md_LIE_{:02d}'.format(i)
+        src = s.INPUT_DIR + '_old/md_LIE_XXX.inp'
+        for i in range(1, self.time):
+            tgt = self.directory + '/inputfiles/md_LIE_{:03d}.inp'.format(i)
+            self.replacements['FILE'] = 'md_LIE_{:03d}'.format(i)
             
             with open(src) as infile, open(tgt, 'w') as outfile:
                 for line in infile:
                     outline = IO.replace(line, self.replacements)
                     outfile.write(outline)                
         
-            self.replacements['FILE_N'] = 'md_LIE_{:02d}'.format(i)
+            self.replacements['FILE_N'] = 'md_LIE_{:03d}'.format(i)
         
     def write_runfile(self):
         ntasks = getattr(s, self.cluster)['NTASKS']
-        src = s.INPUT_DIR + '/run.sh'
+        src = s.INPUT_DIR + '_old/run.sh'
         tgt = self.directory + '/inputfiles/run' + self.cluster + '.sh'
         EQ_files = sorted(glob.glob(self.directory + '/inputfiles/eq*.inp'))
 
@@ -302,6 +310,16 @@ class Run(object):
 
         replacements = IO.merge_two_dicts(self.replacements, getattr(s, self.cluster))
         replacements['FEPS'] = 'FEP1.fep'
+        if self.cluster == 'TETRA':
+            replacements['QDYN'] = 'qdyn=/proj/uucompbiochem/users/x_lucko/software/q5.10/bin/qdyn5p'
+            replacements['QFEP'] = '/proj/uucompbiochem/users/x_lucko/software/q5.10/bin/qfep5'
+            replacements['QCALC'] = '/proj/uucompbiochem/users/x_lucko/software/q5.10/bin/qcalc5'
+            replacements['QPREP'] = '/proj/uucompbiochem/users/x_lucko/software/q5.10/bin/qprep5'
+        elif self.cluster == 'DARDEL':
+            replacements['QDYN'] = 'qdyn=/cfs/klemming/projects/supr/uucompbiochem/lucko/software/q5.10.1/bin/qdyn5p'
+            replacements['QFEP'] = '/cfs/klemming/projects/supr/uucompbiochem/lucko/software/q5.10.1/bin/qfep5'
+            replacements['QCALC'] = '/cfs/klemming/projects/supr/uucompbiochem/lucko/software/q5.10.1/bin/qcalc5'
+            replacements['QPREP'] = '/cfs/klemming/projects/supr/uucompbiochem/lucko/software/q5.10.1/bin/qprep5'
             
         with open(src) as infile, open(tgt, 'w') as outfile:
             for line in infile:
@@ -319,22 +337,26 @@ class Run(object):
                 if line.strip() == '#EQ_FILES':
                     for line in EQ_files:
                         file_base = line.split('/')[-1][:-4]
-                        outline = 'time mpirun -np {} $qdyn {}.inp' \
-                                   ' > {}.log\n'.format(ntasks,
-                                                       file_base,
-                                                       file_base)
+                        outline = 'time srun $qdyn {}.inp' \
+                                   ' > {}.log\n'.format(file_base,
+                                                        file_base)
                         outfile.write(outline)
                         
                 if line.strip() == '#RUN_FILES':
-                    for line in MD_files:
+                    for i, line in enumerate(MD_files):
                         file_base = line.split('/')[-1][:-4]
-                            
-                        outline = 'time mpirun -np {} $qdyn {}.inp'  \
-                                  ' > {}.log\n'.format(ntasks,
-                                                      file_base,
-                                                      file_base)
-                            
+                        outline = 'time srun $qdyn {}.inp'  \
+                                  ' > {}.log\n'.format(file_base,
+                                                       file_base)
                         outfile.write(outline)     
+                        
+                        if self.convergence == True:
+                            if i > 8:
+                                outfile.write('convergence=$(python $check -L $workdir -r $run)\n')
+                                outfile.write('echo $convergence\n')
+                                outfile.write('if [ $convergence -eq 1 ]; then\n')
+                                outfile.write('    break\n')
+                                outfile.write('fi\n')
 
     def write_submitfile(self):
         IO.write_submitfile(self.directory, self.replacements)                        
@@ -402,7 +424,7 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--forcefield',
                         dest = "forcefield",
                         required = True,
-                        choices = ['OPLS2015', 'OPLS2005'],
+                        choices = ['OPLS2015', 'OPLS2005', 'OPLS2015_GTPase'],
                         help = "Forcefield to use.")
     
     parser.add_argument('-S', '--system',
@@ -434,7 +456,12 @@ if __name__ == "__main__":
     parser.add_argument('-R', '--radius',
                         dest = "radius",
                         default = '25',
-                        help = "Desired radius of the system") # Add something to do this automatically?     
+                        help = "Desired radius of the system") # Add something to do this automatically?
+
+    parser.add_argument('-t', '--time',
+                        dest = "time",
+                        default = 10,
+                        help = "Desired length of the simulation time per replicate x 10 ps")
     
     args = parser.parse_args()
     run = Run(ligand        = args.ligand,
@@ -446,6 +473,7 @@ if __name__ == "__main__":
               temperature   = args.temperature,
               replicates    = args.replicates,
               radius        = args.radius,
+              time          = args.time,
               include       = ('ATOM', 'HETATM')
              )
     

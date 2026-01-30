@@ -92,4 +92,4 @@ data_2 = get_results(1)
 el_diff = data_1[2] - data_2[2]
 for i in range(0, len(el_diff)):
     if el_diff[i] > 1.0:
-        print( i, el_diff[i])
+        print i, el_diff[i]
