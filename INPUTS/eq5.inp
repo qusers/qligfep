@@ -47,3 +47,6 @@ WATER_RESTRAINT
 
 [distance_restraints]
 DIST
+
+[wall_restraints]
+WALL

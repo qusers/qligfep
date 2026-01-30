@@ -839,7 +839,7 @@ class Run(object):
         replacements = {}
         center = f.COG(self.lig1 + '.pdb')
         center = '{:} {:} {:}'.format(center[0], center[1], center[2])
-        qprep_in = s.ROOT_DIR + '/INPUTS/qprep.inp'
+        qprep_in = s.ROOT_DIR + '/INPUTS/qprep_QligFEP.inp'
         qprep_out = writedir + '/qprep.inp'
         replacements['FF_LIB'] = s.ROOT_DIR + '/FF/' + self.forcefield + '.lib'
         replacements['LIG1']   = self.lig1 + '.lib'

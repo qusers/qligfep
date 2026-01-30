@@ -1,8 +1,19 @@
 import IO
 import numpy as np
 
-def sigmoid(t, k):
-    return ( k * t / (k -t + 1.0))
+def linear(N):
+    return 1 - np.arange(N) / (N - 1)
+
+def sigmoid(N, k=1.1):
+    return k * np.arange(N) / (k - np.arange(N) + 1.0)
+
+def sigmoidal(N, k=6):
+    y = 1 / (1 + np.exp(np.linspace(-k, k, N)))
+    return (y - y.min()) / (y.max() - y.min())
+
+def exponential(N, k=3):
+    return 1 - (np.exp(k * (np.arange(N) / (N - 1))) - 1) / (np.exp(k) - 1)
+
 
 def COG(pdbfile, include='ATOM,HETATM'):
     """
