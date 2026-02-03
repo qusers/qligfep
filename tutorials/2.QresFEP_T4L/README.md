@@ -11,7 +11,8 @@ The workflow consist of the following 4 steps:
 4. Analyse the FEP simulation output files
 
 This folder contains all the required files to follow these steps. We will now proceed with the first step.
-IMPORTANT: Make sure to execute the root repository initialization script in the before starting this tutorial:
+
+IMPORTANT: Make sure to execute the root repository initialization script before starting this tutorial:
 
     [Navigate to your /home/user/software/qligfep directory and execute...]
     bash qligfep_init.sh
