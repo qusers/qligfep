@@ -219,7 +219,7 @@ with the -C CLUSTER flag, to write out PDB files of the simulation trajectories 
 The following should be printed out to your terminal:
 
     dG    FEP1  65.80  64.16  64.14  63.97  65.09  62.16  63.71  66.45  65.96  63.24     (Zwanzig dG for each replicate in FEP1 stage)
-    dG    FEP1  65.80  64.16  64.14  63.97  65.09  62.16  63.71  66.45  65.96  63.24     (Zwanzig dG for each replicate in FEP2 stage)
+    dG    FEP2   5.90   2.97   4.28   3.15   3.48   5.51   6.63   4.63   4.84   6.65     (Zwanzig dG for each replicate in FEP2 stage)
     dGf   FEP1  65.87  64.12  64.19  64.01  65.13  62.10  63.83  66.45  66.00  63.16     (forward dG for each replicate in FEP1 stage)
     dGf   FEP2   6.06   3.24   4.36   3.36   3.83   5.83   6.80   4.95   5.07   6.92     (forward dG for each replicate in FEP2 stage)
     dGr   FEP1 -65.74 -64.19 -64.09 -63.93 -65.05 -62.23 -63.59 -66.44 -65.93 -63.33     (reverse dG for each replicate in FEP1 stage)
