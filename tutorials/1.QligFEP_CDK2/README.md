@@ -2,7 +2,7 @@
 
 This folder contains a step by step tutorial to setup and
 analyze ligFEP calculations, as reported in Jespers et al. 
-(REF_to_submitted).  
+(https://doi.org/10.1186/s13321-019-0348-5).  
 
 The workflow consists of four main steps:  
 
