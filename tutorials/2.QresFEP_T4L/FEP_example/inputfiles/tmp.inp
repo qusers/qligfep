@@ -1,0 +1,7 @@
+rl R2A.lib
+rl OPLSAAM.lib
+rprm tmp.prm
+rp tmp.pdb
+boundary 1 2.638 9.425 8.87 25.0
+maketop tmp.top
+q

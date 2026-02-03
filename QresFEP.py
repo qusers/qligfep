@@ -20,7 +20,7 @@ class Run(object):
     Setup residue FEPs using either a single or dual topology approach
     """
     def __init__(self, mutation, mutchain, system, tripeptide, dual, cofactors,
-                 forcefield, sampling, start, windows, timestep, temperature,
+                 forcefield, windows, sampling, start, timestep, temperature,
                  replicates, cluster, preplocation, *args, **kwargs):
         
         self.mutation = re.split('(\d+)', mutation)
@@ -532,7 +532,7 @@ class Run(object):
                         if self.mutation[0] in ['ARG', 'LYS', 'HIP']:
                             charge -= 1
 
-                        try: # Add counter ions to the reference water sphere to mathc the total of the protein sphere
+                        try: # Add counter ions to the reference water sphere to match the total of the protein sphere
                             xyz = counter_ions.minimize_coulomb_on_sphere(abs(charge), int(float(self.radius))-11, self.sphere)
                             self.ions = len(xyz)
                             offset = next(id)
@@ -1043,23 +1043,25 @@ if __name__ == "__main__":
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '===== Generate input files for running residue FEP with Q; First run protprep.py for required input files =====')
     
-    parser.add_argument('-m', '--mutation',
+    required = parser.add_argument_group('required arguments')
+    required.add_argument('-m', '--mutation',
                         dest = "mutation",
                         required = True,
                         help = "The intended mutation, input as $WT$RESN$MUT (e.g. ALA123GLY); residue number in original PDB file")
 
-    parser.add_argument('-mc', '--mutchain',
+    required.add_argument('-mc', '--mutchain',
                         dest = "mutchain",
                         required = True,
                         help = "Specficy the PDB chain of the intended mutations")
 
-    parser.add_argument('-S', '--system',
+    required.add_argument('-S', '--system',
                         dest = "system",
                         required = True,
                         choices = ['protein', 'water', 'vacuum'],
                         help = "Specify system type; either protein, water or vacuum")
 
-    parser.add_argument('-t', '--tripeptide',
+    optional = parser.add_argument_group('optional arguments')
+    optional.add_argument('-t', '--tripeptide',
                         dest = "tripeptide",
                         required = False,
                         default = 'A',
@@ -1067,63 +1069,63 @@ if __name__ == "__main__":
                         help = "If system is water, use to specify flanking residues of mutable X in reference tripeptide: \
                                 A: AXA (Ala)  |  G: GXG  (Gly) |  X: X (None)  |  Z: ZXZ (Natural sequence)")
 
-    parser.add_argument('-d', '--dual',
+    optional.add_argument('-d', '--dual',
                         dest = "dual",
                         default = False,
                         action = 'store_true',
                         help = "Turn on for dual topology FEP")
 
-    parser.add_argument('-c', '--cofactors',
+    optional.add_argument('-c', '--cofactors',
                         nargs='*',
                         dest = "cofactors",
                         required = False,
                         help = "If cofactor(s), input name(s) (e.g. ligand); .pdb, .prm and .lib files are required")
 
-    parser.add_argument('-f', '--forcefield',
+    optional.add_argument('-f', '--forcefield',
                         dest = "forcefield",
                         default = 'OPLSAAM',
                         choices = ['OPLSAAM', 'OPLS2015', 'OPLS2005', 'SIDECHAIN', 'AMBER14sb','CHARMM36'],
                         help = "Use to specficy forcefield")
-    
-    parser.add_argument('-s', '--sampling',
+        
+    optional.add_argument('-w', '--windows',
+                        dest = "windows",
+                        default = '50',
+                        help = "Use to specify number of lambda windows per FEP stage")
+
+    optional.add_argument('-s', '--sampling',
                         dest = "sampling",
                         default = 'linear',
                         choices = ['linear', 'sigmoidal', 'exponential', 'reverse_exponential'],
                         help = "Use to specify sampling strategy")
 
-    parser.add_argument('-l', '--start',
+    optional.add_argument('-l', '--start',
                         dest = "start",
                         default = '1',
                         choices = ['1', '0.5', '0'],
                         help = "Specify starting point of FEP simulations; either start (1), middle (0.5) or end (0) lambda point")
-    
-    parser.add_argument('-w', '--windows',
-                        dest = "windows",
-                        default = '50',
-                        help = "Use to specify number of lambda windows per FEP stage")
 
-    parser.add_argument('-ts', '--timestep',
+    optional.add_argument('-ts', '--timestep',
                         dest = "timestep",
                         default = "2fs",
                         choices = ['1fs','2fs'],
                         help = "Use to specify timestep")
     
-    parser.add_argument('-T', '--temperature',
+    optional.add_argument('-T', '--temperature',
                         dest = "temperature",
                         default = '298',
                         help = "Use to specify intended simulation temperature")
     
-    parser.add_argument('-r', '--replicates',
+    optional.add_argument('-r', '--replicates',
                         dest = "replicates",
                         default = '10',
                         help = "Use to specify intended number of simulation replicates")   
     
-    parser.add_argument('-C', '--cluster',
+    optional.add_argument('-C', '--cluster',
                         dest = "cluster",
                         default = s.DEFAULT,
                         help = "Use to specify HPC cluster to run simulations")
     
-    parser.add_argument('-P', '--preplocation',
+    optional.add_argument('-P', '--preplocation',
                         dest = "preplocation",
                         default = s.DEFAULT,
                         help = "Use to specify location of Q executables QresFEP ought to use")
@@ -1136,9 +1138,9 @@ if __name__ == "__main__":
               dual = args.dual,
               cofactors = args.cofactors,
               forcefield = args.forcefield,
+              windows = args.windows,
               sampling = args.sampling,
               start = args.start,
-              windows = args.windows,
               timestep = args.timestep,
               temperature = args.temperature,
               replicates = args.replicates,

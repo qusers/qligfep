@@ -1,0 +1,210 @@
+--------------------------------------------------------------------------------
+Welcome to qprep version: 6.0.1
+ 
+This version was compiled using: GCC version 9.4.0
+ 
+And using the following compiler options: 
+-mtune=generic -march=x86-64 -O3 -Wall -std=legacy -ffree-line-length-none -fcray-pointer -fall-intrinsics -fpre-include=/usr/include/finclude/math-vector-fortran.h
+
+ 
+For command line options type qprep --help  or qprep -h at the terminal.
+ 
+If you are using the interactive mode you can type "help"
+at the prompt. To quit type "quit".
+--------------------------------------------------------------------------------
+
+qprep> 
+Reading molecular library R2A.lib
+
+name  atoms  net Q  bonds  rules   imps Q-grps
+R2A      28   1.00     27      0      6    none, creating default
+
+Accumulated no. of library entries loaded =   1
+
+qprep> 
+Reading molecular library OPLSAAM.lib
+
+name  atoms  net Q  bonds  rules   imps Q-grps
+ALA      10   0.00      9      0      2      3
+ARG      24   1.00     23      0      6      4
+ARN      23   0.00     22      0      4      4
+ASN      14   0.00     13      0      4      5
+ASP      12  -1.00     11      0      3      3
+ASH      13   0.00     12      0      3      3
+CYS      11   0.00     10      0      2      3
+CYX      10   0.00      9      0      2      3
+GLN      17   0.00     16      0      4      6
+GLU      15  -1.00     14      0      3      4
+GLH      16   0.00     15      0      3      4
+GLY       7   0.00      6      0      2      2
+HID      17  -0.00     17      0      6      3
+HIE      17  -0.00     17      0      6      3
+HIP      18   1.00     18      0      7      3
+ILE      19   0.00     18      0      2      6
+LEU      19   0.00     18      0      2      6
+LYS      22   1.00     21      0      2      6
+LYN      21   0.00     20      0      2      6
+MET      17   0.00     16      0      2      4
+PHE      20   0.00     20      0      8      8
+PRO      14   0.00     14      0      2      4
+SER      11   0.00     10      0      2      3
+THR      14   0.00     13      0      2      4
+TRP      24   0.00     25      0     11      8
+TYR      21   0.00     21      0      8      8
+VAL      16   0.00     15      0      2      5
+ACE       6  -0.00      5      0      1      2
+NMA       6   0.00      5      0      1      1
+NALA     12   1.00     11      0      1      3
+NARG     26   2.00     25      0      5      4
+NARN     25   1.00     24      0      5      4
+NASN     16   1.00     15      0      3      5
+NASP     14   0.00     13      0      2      3
+NASH     15   1.00     14      0      2      3
+NCYS     13   1.00     12      0      1      3
+NCYX     12   1.00     11      0      1      3
+NGLN     19   1.00     18      0      3      6
+NGLU     17   0.00     16      0      2      4
+NGLH     18   1.00     17      0      2      4
+NGLY      9   1.00      8      0      1      2
+NHID     19   1.00     19      0      5      3
+NHIE     19   1.00     19      0      5      3
+NHIP     20   2.00     20      0      6      3
+NILE     21   1.00     20      0      1      6
+NLEU     21   1.00     20      0      1      6
+NLYS     24   2.00     23      0      1      6
+NLYN     23   1.00     22      0      1      6
+NMET     19   1.00     18      0      1      4
+NPHE     22   1.00     22      0      7      8
+NPRO     16   1.00     16      0      1      4
+NSER     13   1.00     12      0      1      3
+NTHR     16   1.00     15      0      1      4
+NTRP     26   1.00     27      0     10      8
+NTYR     23   1.00     23      0      7      8
+NVAL     18   1.00     17      0      1      5
+CALA     11  -1.00     10      0      2      2
+CARG     25  -0.00     24      0      6      3
+CARN     24  -1.00     23      0      5      3
+CASN     15  -1.00     14      0      4      4
+CASP     13  -2.00     12      0      3      2
+CASH     14  -1.00     13      0      3      2
+CCYS     12  -1.00     11      0      2      2
+CCYX     11  -1.00     10      0      2      2
+CGLN     18  -1.00     17      0      4      5
+CGLU     16  -2.00     15      0      3      3
+CGLH     17  -1.00     16      0      3      3
+CGLY      8  -1.00      7      0      2      1
+CHID     18  -1.00     18      0      6      2
+CHIE     18  -1.00     18      0      6      2
+CHIP     19  -0.00     19      0      7      2
+CILE     20  -1.00     19      0      2      5
+CLEU     20  -1.00     19      0      2      5
+CLYS     23   0.00     22      0      2      5
+CLYN     22  -1.00     21      0      2      5
+CMET     18  -1.00     17      0      2      3
+CPHE     21  -1.00     21      0      8      7
+CPRO     15  -1.00     15      0      2      3
+CSER     12  -1.00     11      0      2      2
+CTHR     15  -1.00     14      0      2      3
+CTRP     25  -1.00     26      0     11      7
+CTYR     22  -1.00     22      0      8      7
+CVAL     17  -1.00     16      0      2      4
+TIP3      3   0.00      3      0      0      1
+HOH       3   0.00      3      0      0      1
+WAT       3   0.00      3      0      0      1
+SOL       3   0.00      3      0      0      1
+Na+       1   1.00      0      0      0      1
+SOD       1   1.00      0      0      0      1
+Cl-       1  -1.00      0      0      0      1
+CLA       1  -1.00      0      0      0      1
+ZN        1   2.00      0      0      0      1
+MG2       7   2.00     18      0      0      1
+PO4       6  -2.00      5      0      0      1
+POPC     52   0.00     51      0      3     18
+DUM       1   0.00      0      0      0      1
+
+Accumulated no. of library entries loaded =  97
+
+qprep> 
+Reading force field parameter file.
+Forcefield type:               AMBER
+Lennard-Jones combination rule:GEOMETRIC
+Scaling of 1-4 electrostatics: 0.500
+Cut-off rule:                  switching atoms
+Improper potential:            PERIODIC
+Improper generation:           EXPLICIT
+Coulomb constant:              332.0716
+Read   96 atom types
+Read    0 atom type alias names
+Read    0 LJ type 2 pairs
+Read  177 bond types
+Read   47 unique bond parameters
+>>>>> WARNING: No SYBYL bond type for one or more bond types.
+Read  462 angle types
+Read   77  unique angle parameters
+Read 1476 torsion types
+Read  215 unique torsion parameters
+Read  107 improper types
+Force field parameters successfully read.
+
+qprep> 
+PDB file contains  1052 atoms.
+The number of atoms in the topology will be  1052
+molecule    1: MET     1 - GLY    64
+
+Successfully read PDB file with    1 molecules,
+   64 residues total (   64 in solute).
+ 1052 atoms total ( 1052 in solute).
+
+Sequence listing:
+
+MET  LYS  THR  GLU  TRP  PRO  GLU  LEU  VAL  GLY  LYN  SER  VAL  ALA  ALA  ALA 
+LYS  LYN  VAL  ILE  LEU  GLN  ASP  LYS  PRO  GLU  ALA  GLN  ILE  ILE  VAL  LEU 
+PRO  VAL  GLY  THR  ILE  VAL  THR  MET  GLU  TYR  R2A  ILE  ASP  ARG  VAL  ARG 
+LEU  PHE  VAL  ASH  LYN  LEU  ASH  ASN  ILE  ALA  GLN  VAL  PRO  ARG  VAL  GLY 
+
+qprep> 
+Simulation sphere center                =      2.638   9.425   8.870
+Simulation radius                       =     25.000
+qprep> >>>>> WARNING: System has not been solvated.
+Using boundary center as solvent center.
+Assigned  1052 atom types.
+Assigned  1052 atomic charges.
+Made      1059 solute bonds.
+Made         0 extra bonds.
+Made         0 solvent bonds.
+Made      1941 solute angles.
+Made         0 solvent angles.
+>>> Missing angle type for atom types C136     C224     C135    
+ atoms:          676         674         696
+>>> Missing torsion type for atom types C308     C136     C224     C135    
+ atoms:          679         676         674         696
+>>> Missing torsion type for atom types H140     C136     C224     C135    
+ atoms:          677         676         674         696
+>>> Missing torsion type for atom types H140     C136     C224     C135    
+ atoms:          678         676         674         696
+>>> Missing torsion type for atom types C136     C224     C135     H140    
+ atoms:          676         674         696         697
+>>> Missing torsion type for atom types C136     C224     C135     H140    
+ atoms:          676         674         696         698
+>>> Missing torsion type for atom types C136     C224     C135     H140    
+ atoms:          676         674         696         699
+Made      3919 solute torsions.
+Made         0 solvent torsions.
+Made       179 solute impropers.
+Made         0 solvent impropers.
+Made      2814 entries in the 1-4 neighbour list.
+Made         9 entries in the long-range 1-4 neighbour list.
+Made      2999 entries in list of excluded neighbours.
+Made         1 entries in list of long-range excluded neighbours.
+Made         0 solute hydrogens.
+Made         0 solvent hydrogens.
+Made      288 solute  charge groups comprising a total of   1010 atoms.
+Made        0 solvent charge groups comprising a total of      0 atoms.
+Skipped    12excluded charge groups comprising a total of     42 atoms.
+Effective water radius                     :  0.00
+
+ERROR: There are missing parameters!
+
+You need to add parameters and do readprm + maketop again.
+parameter file: tmp.prm
+qprep> 

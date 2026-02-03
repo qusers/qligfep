@@ -465,60 +465,62 @@ if __name__ == "__main__":
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description = '===== Prepare a protein file with qprep for further processing; required for QligFEP and QresFEP =====')
     
-    parser.add_argument('-p', '--prot',
+    required = parser.add_argument_group('required arguments')
+    required.add_argument('-p', '--prot',
                         dest = "prot",
                         required = True,
                         help = "PDB file of the protein")
-
-    parser.add_argument('-mc', '--mutchain',
+    
+    required.add_argument('-r', '--sphereradius',
+                        dest = "sphereradius",
+                        required = True,
+                        default = 25,
+                        help = "Radius of intended sphere (in Å)")    
+    
+    required.add_argument('-c', '--spherecenter',
+                        dest = "spherecenter",
+                        required = True,
+                        help = "Center of intended sphere; Either residue number (RESN:$), atomnumber (ATN:$) or explicit coordinates (X:Y:Z)")
+    
+    optional = parser.add_argument_group('optional arguments')
+    optional.add_argument('-mc', '--mutchain',
                         dest = "mutchain",
                         required=False,
-                        default = False,
                         help = "Use to specficy the PDB chain if intended center is residue number")
 
-    parser.add_argument('-w', '--nowater',
+    optional.add_argument('-f', '--forcefield',
+                        dest = "forcefield",
+                        default = 'OPLSAAM',
+                        choices = ['OPLSAAM', 'OPLS2015', 'OPLS2005', 'AMBER14sb', 'CHARMM36'],
+                        help = "Use to specficy forcefield")
+
+    optional.add_argument('-w', '--nowater',
                         dest = "water",
                         required = False,
                         default = True,
                         action = 'store_false',
                         help = "Turn on if crystal waters ought to be removed")
 
-    parser.add_argument('-f', '--forcefield',
-                        dest = "forcefield",
-                        default = 'OPLSAAM',
-                        choices = ['OPLSAAM', 'OPLS2015', 'OPLS2005', 'AMBER14sb', 'CHARMM36'],
-                        help = "Use to specficy forcefield")
-    
-    parser.add_argument('-r', '--sphereradius',
-                        dest = "sphereradius",
-                        required = True,
-                        help = "Radius of intended sphere")    
-    
-    parser.add_argument('-c', '--spherecenter',
-                        dest = "spherecenter",
-                        required = True,
-                        help = "Center of intended sphere; Either residue number (RESN:$), atomnumber (ATN:$) or explicit coordinates (X:Y:Z)")
-    
-    parser.add_argument('--noclean',
+    optional.add_argument('--noclean',
                         dest = "noclean",
                         default = False,
                         action = 'store_true',
                         help = "Turn on if qprep input files ought not be deleted")
     
-    parser.add_argument('-P', '--preplocation',
+    optional.add_argument('-P', '--preplocation',
                         dest = "preplocation",
                         default = s.DEFAULT,
-                        help = "Use to specify location of Q executables protprep ought to use")
+                        help = "Use to specify location of Q executables protprep ought to use (as in settings.py)")
     
     args = parser.parse_args()
     run = Run(prot       = args.prot,
               radius     = args.sphereradius,
               center     = args.spherecenter,
+              mutchain   = args.mutchain,
+              forcefield = args.forcefield,
               water      = args.water,
               noclean    = args.noclean,
-              cluster    = args.preplocation,
-              forcefield = args.forcefield,
-              mutchain   = args.mutchain)
+              cluster    = args.preplocation,)
     
     run.get_center_coordinates()        # 00
     run.prepwizard_parse()              # 01

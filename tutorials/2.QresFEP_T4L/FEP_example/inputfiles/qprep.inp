@@ -1,0 +1,17 @@
+rl R2A.lib
+rl OPLSAAM.lib
+rprm OPLSAAM_merged.prm 
+rp complex.pdb 
+! set solute_density 0.05794 
+! Solvent_pack is turned off 
+! set solvent_pack 0.0
+boundary 1 2.638 9.425 8.87 25.0
+solvate 2.638 9.425 8.87 25.0 4 water.pdb
+maketop MKC_p 
+writetop dualtop.top 
+wp top_p.pdb y 
+rt dualtop.top
+mask none 
+mask not excluded 
+wp complexnotexcluded.pdb y 
+q 

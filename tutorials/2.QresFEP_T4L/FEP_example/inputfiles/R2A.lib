@@ -1,0 +1,77 @@
+{R2A}
+
+
+    [atoms]
+     1 N         N238      -0.500    
+     2 H         H241      0.300     
+     3 CA        C224      0.140     
+     4 HA        H140      0.060     
+     5 CB        C136      -0.120    
+     6 HB2       H140      0.060     
+     7 HB3       H140      0.060     
+     8 CG        C308      -0.050    
+     9 HG2       H140      0.060     
+    10 HG3       H140      0.060     
+    11 CD        C307      0.190     
+    12 HD2       H140      0.060     
+    13 HD3       H140      0.060     
+    14 NE        N303      -0.700    
+    15 HE        H304      0.440     
+    16 CZ        C302      0.640     
+    17 NH1       N300      -0.800    
+    18 HH11      H301      0.460     
+    19 HH12      H301      0.460     
+    20 NH2       N300      -0.800    
+    21 HH21      H301      0.460     
+    22 HH22      H301      0.460     
+    23 C         C235      0.500     
+    24 O         O236      -0.500    
+    25 cb        C135      -0.180    
+    26 hb1       H140      0.060     
+    27 hb2       H140      0.060     
+    28 hb3       H140      0.060     
+
+    [bonds]
+        CB    CA    
+        CG    CB    
+        CD    CG    
+        NE    CD   
+        CZ    NE    
+        NH2   CZ    
+        N     H     
+        N     CA    
+        C     CA    
+        CA    HA    
+        CB    HB2   
+        CB    HB3   
+        CG    HG2   
+        CG    HG3   
+        CD    HD2   
+        CD    HD3   
+        NE    HE    
+        NH1   HH11  
+        NH1   HH12  
+        NH2   HH21  
+        NH2   HH22  
+        O     C     
+        CZ    NH1   
+       CA     cb
+        cb    hb1   
+        cb    hb2   
+        cb    hb3   
+
+    [connections]
+        head  N     
+        tail  C     
+
+    [impropers]
+        H     N     -C    CA    
+        O     C     CA    +N    
+        NH2   CZ    NE    NH1   
+        HE    NE    CD    CZ    
+        HH12  NH1   CZ    HH11  
+        HH22  NH2   CZ    HH21  
+
+    [info]
+
+    [charge_groups]

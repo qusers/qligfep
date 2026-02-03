@@ -241,50 +241,52 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog='analyze_FEP.py',
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description = ' == Analyse FEP == \nProgram to extract dG energies from qfep.out files for a FEP directory')
+        description = '===== Analyse FEP output files from Q; Extracts free energy change (ΔG) for a FEP mutation simulation output directory (FEP_{WT}2{MUT}) =====')
     
     # Required command line arguments
     required = parser.add_argument_group('required arguments')
     required.add_argument('-F', '--FEP',
                           dest = "FEP",
                           required = True,
-                          help = "name of FEP directory (FEP_WT2MUT)")
+                          help = "Specify the FEP directory (FEP_WT2MUT)")
+
     required.add_argument('-T', '--temp',
                          dest = "temp",
                          required = True,
-                         help = "temperature")
-    
-    # Optional command line arguments
-    optional = parser.add_argument_group('optional arguments')
-    optional.add_argument('-l', '--start',
+                         help = "Specificy for which temperature to analyze")
+
+    required.add_argument('-l', '--start',
                           dest = "start",
                           default = '1',
                           choices = ['1', '0.5', '0'],
-                          help = "Started FEP in the middle or endpoint")
-
+                          help = "Specify starting point of FEP simulations; either start (1), middle (0.5) or end (0) lambda point")
+    
+    # Optional command line arguments
+    optional = parser.add_argument_group('optional arguments')
     optional.add_argument('-C', '--cluster',
                           dest = "cluster",
                           required = False,
-                          help = "cluster information, e.g. CSB, TETRALITH, DARDEL")
+                          default = s.DEFAULT,
+                          help = "Use to specify HPC cluster of analysis")
 
     optional.add_argument('-pdb', '--PDB',
                           dest = "PDB",
                           required = False,
                           default = False,
                           action = 'store_true',
-                          help = "Add this argument if you want .pdb files of the trajectory")
+                          help = "Use to generate PDB files of the trajectory")
 
     optional.add_argument('-c', '--color',
                           dest = "color",
                           required = False,
                           default = 'blue',
                           choices = ['blue', 'red'],
-                          help = "color for the plot")
+                          help = "Use to specify the color for the energy propagation plot")
 
     optional.add_argument('-esc', '--end-state-catastrophe',
                           dest = "esc",
                           required = False,
-                          help = "Add this argument in case you have singularities in the final lambda windows resulting in only NaN values")
+                          help = "Use in case of singularities in the final lambda windows resultin in NaN energy values")
     
     args = parser.parse_args()
     run = Run(FEP = args.FEP,
@@ -293,8 +295,7 @@ if __name__ == "__main__":
               cluster = args.cluster,
               PDB = args.PDB,
               esc = args.esc,
-              start = args.start
-             )
+              start = args.start)
     
     run.create_environment()
     run.read_FEPs()
