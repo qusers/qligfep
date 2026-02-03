@@ -50,6 +50,7 @@ based on thermal stability shifts of T4L mutants.
     - Q_PATH:   the path to your Q installation
     - SCHROD:   the path to your Schrödinger installation
     - DEFAULT:  your working HPC cluster (or localhost)
+    
     You can modify you setting.py script further manually to add more clusters or cluster options.
 
 ## Requirements
