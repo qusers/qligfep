@@ -12,7 +12,7 @@ The workflow consist of the following 4 steps:
 
 This folder contains all the required files to follow these steps. We will now proceed with the first step.
 
-IMPORTANT: Make sure to execute the root repository initialization script before starting this tutorial:
+[**IMPORTANT**]: Make sure to execute the root repository initialization script before starting this tutorial:
 
     [Navigate to your /home/user/software/qligfep directory and execute...]
     bash qligfep_init.sh
@@ -23,7 +23,7 @@ The subject of this tutorial is the bacteriophage T4 lysozyme (T4L), an often us
 Here we will use the T4L structure of PDB entry 2LZM (https://www.rcsb.org/structure/2LZM), a high resolution structure (1.7 Å) which was not only used in our benchmark but also by others.
 
 A PDB file contains information and coordinates for all atoms in the protein structure (ATOM lines), and possibly also of several other moieties (so called co-crystallizing agents), 
-e.g. water molecules, ligands, and/or ions (HETATM lines). Check the raw T4L PDB file *2LZM.pdb* that is directly downloaded from the RCSB Protein Data Bank.
+e.g., water molecules, ligands, and/or ions (HETATM lines). Check the raw T4L PDB file *2LZM.pdb* that is directly downloaded from the RCSB Protein Data Bank.
 The raw PDB file usually contains formatting which is not compatible with the forcefield formating used by our MD simulation software **Q** (https://www.sciencedirect.com/science/article/pii/S1093326399000121?via%3Dihub).
 We also might want to remove redundant parts of the raw PDB file that should not be present in our simulation structure, and possibly we might need to add missing parts to our structure (certain amino acid side chains,
 or even whole amino acid loops from low-resolution regions might be missing). This can be handled with several solutions - the one we regularly use makes use of Schrödinger's **Protein Preparation Wizard** software 
@@ -46,7 +46,7 @@ Now that we know what all options are for, prepare our T4L structure by running 
 The following files should have been generated:
 
 - *protein.pdb*   (contains the protein structure)
-- *protPREP.log*  (log file of protprep.py, will be used to extract information by QresFEP.py)
+- *protPREP.log*  (log file of protprep.py, will be used to extract information by `QresFEP.py`)
 - *water.pdb*     (contains the water molecules)
 
 # 2. Generate mutant amino acid structures
@@ -121,12 +121,12 @@ In this case two things are vital: 1. protprep was centered on RESN:39 and 2. *A
 want to perform the simulation in the protein system, or as a tripeptide (which serves as the reference state - to complete a thermodynamic cycle). We do this with the -S SYSTEM argument. In case we choose a tripeptide system, we should
 also indicate which type of flanking residues we prefer in our tripeptide using the -t TRIPEPTIDE flag; this can either be alanine (option A), glycine (option G), no flanking residues (option X - effectively a monopeptide), or
 the natural sequence neighbouring amino acids (option Z). 
-[!IMPORTANT]: if running charge-changing mutations, option Z results in less stable results.
+[**IMPORTANT**]: if running charge-changing mutations, option Z results in less stable results.
 By turning on the -d DUAL flag, the dual/hybrid topology FEP protocol will be utilized (check reference https://www.nature.com/articles/s42004-025-01771-0); this is the recommended protocol, and also allows all amino acids mutations.
 Otherwise, the single topology FEP protocol will be used (check reference https://pubs.acs.org/doi/full/10.1021/acs.jctc.9b00538); this protocol only allows for mutations to alanine (and a select few other mutations).
 In the case a cofactor (e.g., ligand) should be included, use the -c COFACTOR argument. With the -f FORCEFIELD argument the forcefield of use is indicated once again. The -w WINDOWS argument is used to indicate how many FEP windows per
 FEP stage should be used. 
-[!NOTE]: Dual topology mutations are always done in 2 FEP stages, so using -w 25 will results in the transformation being spread out over in total 2 x 25 = 50 FEP windows; Single topology mutations will depend on the residue
+[**NOTE**]: Dual topology mutations are always done in 2 FEP stages, so using -w 25 will results in the transformation being spread out over in total 2 x 25 = 50 FEP windows; Single topology mutations will depend on the residue
 side-chain size (5 - 9 stages).
 The -s SAMPLING option determines how the FEP windows will be distributed along the transformation, either in equal steps (linear) or unequal steps (other options). With the -l START argument it can be determined
 on which window along the transformation to start the simulations from (and in which direction(s) the tranformation will then be simulated). Using the -ts TIMESTEP argument the simulation time step can be set to either 1 or 2 fs,
@@ -148,7 +148,7 @@ The following files should have been generated:
 - FEP_LEU39ALA/inputfiles/OPLSAAM.lib               (forcefield library input file for `qprep`)
 - FEP_LEU39ALA/inputfiles/OPLSAAM_merged.prm        (forcefield parameter input file for `qprep`)
 - FEP_LEU39ALA/inputfiles/qfep.inp                  (input file for `qfep`)
-- FEP_LEU39ALA/inputfiles/qprep.inp                 (input file for `qprep` - it was run during QresFEP.py to generate the topology file (dualtop.top))
+- FEP_LEU39ALA/inputfiles/qprep.inp                 (input file for `qprep` - it was run during `QresFEP.py` to generate the topology file (dualtop.top))
 - FEP_LEU39ALA/inputfiles/qprep.out                 (output file from `qprep`)
 - FEP_LEU39ALA/inputfiles/L2A.lib                   (hybrid residue library file for `qprep`)
 - FEP_LEU39ALA/inputfiles/runCLUSTER.pdb            (SLURM runfile for simulation submission on the HPC CLUSTER)
