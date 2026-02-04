@@ -48,8 +48,6 @@ not excluded
 WATER_RESTRAINT
 
 [atom_restraints]
-WT_RES
-MUT_RES
 
 [distance_restraints]
 DIST

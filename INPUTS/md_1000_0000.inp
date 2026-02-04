@@ -48,8 +48,6 @@ FLOAT_LAMBDA1 FLOAT_LAMBDA2
 WATER_RESTRAINT
 
 [atom_restraints]
-WT_RES
-MUT_RES
 
 [distance_restraints]
 DIST
