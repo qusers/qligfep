@@ -1,13 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-
-try:
-    from scipy.optimize import minimize
-    _HAVE_SCIPY = True
-except Exception:
-    _HAVE_SCIPY = False
-
 import argparse
 
 # ----------------------------
@@ -141,8 +132,6 @@ def minimize_coulomb_on_sphere(
     armijo_c=1e-4,
     eps0=1e-3,
     eps_final=0.0,
-    refine_with_scipy=True,
-    scipy_maxiter=500,
     seed=None,
     verbose=False,
     verbose_every=100,
@@ -221,42 +210,6 @@ def minimize_coulomb_on_sphere(
 
     return xyz
 
-def plot_points_on_sphere(xyz, ax=None, show=True, title=None, s=30):
-    """
-    xyz: (N,3) array of unit vectors.
-    Draws a unit sphere and the particle locations.
-    """
-    if ax is None:
-        fig = plt.figure(figsize=(6, 6))
-        ax = fig.add_subplot(111, projection='3d')
-    else:
-        fig = ax.figure
-
-    # sphere surface (light mesh)
-    u = np.linspace(0, 2*np.pi, 80)
-    v = np.linspace(0, np.pi, 40)
-    xs = np.outer(np.cos(u), np.sin(v))
-    ys = np.outer(np.sin(u), np.sin(v))
-    zs = np.outer(np.ones_like(u), np.cos(v))
-    ax.plot_wireframe(xs, ys, zs, linewidth=0.4, alpha=0.4)
-
-    # scatter points
-    ax.scatter(xyz[:,0], xyz[:,1], xyz[:,2], s=s, depthshade=True)
-
-    # equal aspect
-    m = 1.1
-    ax.set_xlim([-m, m]); ax.set_ylim([-m, m]); ax.set_zlim([-m, m])
-    ax.set_box_aspect([1,1,1])
-
-    # labels and view
-    if title:
-        ax.set_title(title)
-    ax.set_xlabel('x'); ax.set_ylabel('y'); ax.set_zlabel('z')
-    ax.view_init(elev=20, azim=35)
-
-    if show:
-        plt.show()
-    return ax
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()#description="Process some arguments.")

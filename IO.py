@@ -4,7 +4,6 @@ from subprocess import check_output
 import os
 import stat
 import numpy as np
-import pandas as pd
 
 import functions as f
 import settings as s
@@ -38,11 +37,11 @@ atoms = [
     'HH', 'HH2', 'HH11', 'HH12', 'HH21', 'HH22'
 ]
 
-charged_res = {'HIS': {'HD1' : 'HID',
-                       'HE2' : 'HIE'},
-               'GLU': {'HE2' : 'GLH'},
-               'ASP': {'HD2' : 'ASH'}
-              }    
+charged_res = {
+    'HIS': {'HD1' : 'HID', 'HE2' : 'HIE'},
+    'GLU': {'HE2' : 'GLH'},
+    'ASP': {'HD2' : 'ASH'}
+}    
 
 def pdb_parse_in(line, include=('ATOM','HETATM')):
     """

@@ -943,14 +943,14 @@ class Run(object):
                         if self.FromGly and atn == 'ha': # Only charge mutant HA in FEP1 stage of Gly mutations
                             types = ('DUM', 'H140') if fepfile == 'FEP1.fep' else ('H140', 'H140')
                         else: # Charge mutant atoms in the FEP2 stage in all other cases
-                            types = ('DUM', 'DUM') if fepfile == 'FEP1.fep' else ('DUM', att)
+                            types = ('DUM', att) if fepfile == 'FEP1.fep' else (att, att)
                     else: # Wild-type side chain atoms
                         if self.ToGly and atn == 'HA': # Only decharge wild-type HA in FEP2 stage of Gly mutations
                             types = ('H140', 'H140') if fepfile == 'FEP1.fep' else ('H140', 'DUM')
                         elif atn in self.backbone: # Always keep backbone charges (C, O, CA, N, H)
                                 types = (att, att)
                         else: # Decharge wild-type atoms in the FEP1 stage in all other cases
-                            types = (att, 'DUM') if fepfile == 'FEP1.fep' else ('DUM', 'DUM')
+                            types = (att, att) if fepfile == 'FEP1.fep' else (att, 'DUM')
                     
                     fep_out.write(f"{id:4d}{types[0]:>10s}{types[1]:>10s}\n")
 
