@@ -5,7 +5,6 @@
 #SBATCH --job-name=JOBNAME 
 #SBATCH -A ACCOUNT
 #SBATCH -p PARTITION
-#SBATCH --mem=2G
 #              d-hh:mm:ss
 #SBATCH --time=TIME
 

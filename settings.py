@@ -21,7 +21,7 @@ $DEFAULT = {'NODES'        : '1',
        'EXCLUDE'      : '',
        'MODULES'      : '\n',
        'QDYN'         : 'qdyn=' + Q_DIR['CSB'] + 'qdynp',
-       'QPREP'        : Q_DIR['CSB'] + 'qprep',
-       'QFEP'         : Q_DIR['CSB'] + 'qfep',
-       'QCALC'        : Q_DIR['CSB'] + 'qcalc'
+       'QPREP'        : Q_DIR['$DEFAULT'] + 'qprep',
+       'QFEP'         : Q_DIR['$DEFAULT'] + 'qfep',
+       'QCALC'        : Q_DIR['$DEFAULT'] + 'qcalc'
       }
