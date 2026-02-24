@@ -1,15 +1,24 @@
 !Added libraries:
-rprm PRM 
-rp PDB 
-! set solute_density 0.05794 
-! Solvent_pack is turned off 
-! set solvent_pack 0.0
+rprm PRM
+
+! pdb input file
+rp PDB
+
+! solvation
+set solvent_pack 2.5
+set solute_density SOLUTEDENS
 boundary 1 CENTER SPHERE
 solvate CENTER SPHERE SOLVENT
+
+! CYX bonds
 !addbond at1 at2 y
+
+! topology
 maketop MKC_p 
 writetop dualtop.top 
 wp top_p.pdb y 
+
+! masked pdb file
 rt dualtop.top
 mask none 
 mask not excluded 
