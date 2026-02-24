@@ -52,11 +52,9 @@ def euclidian_overlap(coord1, coord2, distance):
     if ((coord1[0]-coord2[0])**2 + 
         (coord1[1]-coord2[1])**2 + 
         (coord1[2]-coord2[2])**2) < distance**2:
-#        print(((coord1[0]-coord2[0])**2 + (coord1[1]-coord2[1])**2 + (coord1[2]-coord2[2])**2), "<", distance**2)
         return True
 
     else:
-#        print(((coord1[0]-coord2[0])**2 + (coord1[1]-coord2[1])**2 + (coord1[2]-coord2[2])**2), ">", distance**2)
         return False
 
 def overlapping_pairs(pdbfile, reslist, include=('ATOM', 'HETATM')):
@@ -113,7 +111,7 @@ def correct_CT(inline):
         except:
             resi = ' {} '.format(int(line[4][:-1]) + 1)
             outline = inline[:13] + ati + inline[17:24] + resi + inline[27:]
-#    print(outline)
+
     return outline
 
 def correct_NT(inline):
