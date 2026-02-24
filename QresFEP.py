@@ -654,6 +654,7 @@ class Run(object):
 
     # Write the equilibration (eq) MD input files
     def write_EQ(self):
+        self.replacements['SPHERE'] = f"{float(self.radius) - self.shell_rest:<7}"
         # Set anchor restrain on mutable residue CA (atom 19) to the sphere system
         if self.system in ('water', 'vacuum'):
             self.replacements['WATER_RESTRAINT'] = '19 19 1.0 0 0'
@@ -682,6 +683,7 @@ class Run(object):
                         resi_match = (resi == match) if self.system == 'water' else (resi == self.PDB2Q[self.chain][self.mutation[1]])
                         if resi_match and atn in self.atoms:
                             self.atoms[atn] = id
+        self.replacements['SPHERE'] = self.radius
 
         # Determine distance restraints between heavy atoms of the wild-type and mutant side chains
         self.dist_rest = []
@@ -711,6 +713,7 @@ class Run(object):
 
     # Write the production (md) MD input files
     def write_MD(self):
+        self.replacements['SPHERE'] = f"{float(self.radius) - self.shell_rest:<7}"
         # Set anchor restrain on mutable residue CA (atom 19) to the spphere system
         if self.system in ('water', 'vacuum'):
             self.replacements['WATER_RESTRAINT'] = '19 19 1.0 0 0'
@@ -771,6 +774,8 @@ class Run(object):
                 
                 # Store previous file
                 self.replacements['FILE_N'] = f'md_{lambda1}_{lambda2}'
+        
+        self.replacements['SPHERE'] = self.radius
 
     # Write the bash run script for the HPC cluster (run{HPC}.sh)
     def write_runfile(self):
