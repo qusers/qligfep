@@ -19,13 +19,14 @@ class Run(object):
     """
     Setup residue FEPs using either a single or dual topology approach
     """
-    def __init__(self, mutation, mutchain, system, tripeptide, dual, cofactors,
-                 forcefield, windows, sampling, start, timestep, temperature,
-                 replicates, cluster, preplocation, *args, **kwargs):
+    def __init__(self, mutation, mutchain, system, shell_rest, tripeptide, 
+                 dual, cofactors, forcefield, windows, sampling, start, timestep, 
+                 temperature, replicates, cluster, preplocation, *args, **kwargs):
         
         self.mutation = re.split('(\d+)', mutation)
         self.chain = mutchain
         self.system = system
+        self.shell_rest = shell_rest
         self.tpt = tripeptide
         self.dual = dual
         self.cofactors = cofactors
@@ -600,6 +601,9 @@ class Run(object):
         elif self.system == 'vacuum':
             replacements['solvate']='!solvate'
         
+        target_density = f.get_density('protein.pdb', self.sphere, self.radius)
+        replacements['SOLUTEDENS'] = f'{target_density:.5f}'
+
         libraries = [f"{self.forcefield}.lib"]
         if self.cofactors:
             for cofactor in self.cofactors:
@@ -615,13 +619,13 @@ class Run(object):
                     line = IO.replace(line, replacements)
                     
                     # Add additional library files
-                    if line.split()[0] == '!Added':
+                    if line.startswith('!Added'):
                         for lib in libraries:
                             qprep_out.write(f'rl {lib}\n')
                         continue
                     
                     # Add sulfide bridges between cysteine residues (SG atoms)
-                    if line.split()[0] == '!addbond':
+                    if line.startswith('!addbond'):
                         for cyx in self.CYX:
                             outline = 'addbond {}:SG {}:SG y\n'.format(*cyx)
                             qprep_out.write(outline)
@@ -650,7 +654,7 @@ class Run(object):
 
     # Write the equilibration (eq) MD input files
     def write_EQ(self):
-        # Set anchor restrain on mutable residue CA (atom 19) to the spphere system
+        # Set anchor restrain on mutable residue CA (atom 19) to the sphere system
         if self.system in ('water', 'vacuum'):
             self.replacements['WATER_RESTRAINT'] = '19 19 1.0 0 0'
         # Set final solute atom to define sequence restraint limit                
@@ -1061,6 +1065,13 @@ if __name__ == "__main__":
                         help = "Specify system type; either protein, water or vacuum")
 
     optional = parser.add_argument_group('optional arguments')
+    optional.add_argument('-sh', '--shell_rest',
+                        dest = "shell_rest",
+                        required = False,
+                        type=float,
+                        default = 0.0,
+                        help = "Specity width of outer shell used for solute restraints; recommended for membrane proteins.")
+
     optional.add_argument('-t', '--tripeptide',
                         dest = "tripeptide",
                         required = False,
@@ -1134,6 +1145,7 @@ if __name__ == "__main__":
     run = Run(mutation = args.mutation,
               mutchain = args.mutchain,
               system = args.system,
+              shell_rest = args.shell_rest,
               tripeptide = args.tripeptide,
               dual = args.dual,
               cofactors = args.cofactors,
