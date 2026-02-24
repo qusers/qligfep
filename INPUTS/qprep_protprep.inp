@@ -1,14 +1,18 @@
 rl FF_LIB 
 rprm FF_PRM
 
+! pdb input file
 rp PROTPDB 
 
+! solvation
 set solvent_pack 2.5
 boundary 1 CENTER SPHERE
 solvate CENTER SPHERE SOLVENT
 
+! CYX bonds
 !addbond at1 at2 y
 
+! pdb file
 maketop MKC_p 
 wp top_p.pdb y
 q 

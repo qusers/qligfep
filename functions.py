@@ -52,11 +52,9 @@ def euclidian_overlap(coord1, coord2, distance):
     if ((coord1[0]-coord2[0])**2 + 
         (coord1[1]-coord2[1])**2 + 
         (coord1[2]-coord2[2])**2) < distance**2:
-#        print(((coord1[0]-coord2[0])**2 + (coord1[1]-coord2[1])**2 + (coord1[2]-coord2[2])**2), "<", distance**2)
         return True
 
     else:
-#        print(((coord1[0]-coord2[0])**2 + (coord1[1]-coord2[1])**2 + (coord1[2]-coord2[2])**2), ">", distance**2)
         return False
 
 def overlapping_pairs(pdbfile, reslist, include=('ATOM', 'HETATM')):
@@ -96,6 +94,41 @@ def overlapping_pairs(pdbfile, reslist, include=('ATOM', 'HETATM')):
                         
     return atomlist
 
+def get_atoms_in_sphere(pdb_file, center, radius):
+    atoms = []
+    with open(pdb_file) as infile:
+        for line in infile:
+            try:
+                resname = line[17:20].strip()
+                atmname = line[12:16].strip()
+                element = atmname[0]
+                x = float(line[30:38])
+                y = float(line[38:46])
+                z = float(line[46:54])
+            except:
+                continue
+            if resname == 'HOH': continue
+            atom_coords = np.array([x, y, z])
+            distance = np.linalg.norm(atom_coords - np.array(center))
+            if distance <= float(radius) and element != 'H':
+                atoms.append((resname, atmname, element, distance))
+    return atoms
+
+def get_density(pdb_file, center, radius):
+    center = np.array(center)
+    protein_vol = 0.05794 # A**-3
+    lipid_vol = 0.03431 # A**-3 from octane
+
+    atoms = get_atoms_in_sphere(pdb_file, center, radius)
+    n_atoms = len(atoms)
+
+    # counting all POP carbon atoms, this includes the headgroup carbons.
+    n_lipids = len([a for a in atoms if (a[0] == 'POP' and a[2] == 'C')]) 
+    n_protein = n_atoms - n_lipids
+
+    density = (n_protein * protein_vol + n_lipids * lipid_vol) / n_atoms
+    return density
+
 def correct_CT(inline):
     line = inline.split()
     if line[2] == 'N' or line[2] == 'CA' or line[2] == 'H':
@@ -113,7 +146,7 @@ def correct_CT(inline):
         except:
             resi = ' {} '.format(int(line[4][:-1]) + 1)
             outline = inline[:13] + ati + inline[17:24] + resi + inline[27:]
-#    print(outline)
+
     return outline
 
 def correct_NT(inline):

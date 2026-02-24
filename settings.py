@@ -20,7 +20,7 @@ $DEFAULT = {'NODES'        : '1',
        'PARTITION'    : '',
        'EXCLUDE'      : '',
        'MODULES'      : '\n',
-       'QDYN'         : 'qdyn=' + Q_DIR['CSB'] + 'qdynp',
+       'QDYN'         : 'qdyn=' + Q_DIR['$DEFAULT'] + 'qdynp',
        'QPREP'        : Q_DIR['$DEFAULT'] + 'qprep',
        'QFEP'         : Q_DIR['$DEFAULT'] + 'qfep',
        'QCALC'        : Q_DIR['$DEFAULT'] + 'qcalc'
