@@ -63,16 +63,19 @@ class TestQresFEPValidation:
     STANDARD_AAS = "ACDEFGHIKLMNPQRSTVWY"  # Standard amino acids
     
     def test_valid_mutation_format_single_letter(self):
-        """Test that single-letter mutation format is accepted"""
-        # Example: A39V (Alanine 39 to Valine)
-        mutations = ["A39V", "G25S", "L153I", "M10K", "W99Y", "P100A"]
+        """Test that single-letter mutation format is accepted (residue #1-999)"""
+        # Example: A39V (Alanine 39 to Valine), M1K (Met 1 to Lys), P999A (Pro 999 to Ala)
+        mutations = ["A39V", "G25S", "L153I", "M1K", "W99Y", "P100A", "A1V", "K999R"]
         
         for mutation in mutations:
-            # Should not raise an error
-            assert len(mutation) >= 4, f"Mutation format invalid: {mutation}"
+            # Format: <source_AA><residue_number><target_AA>
+            # Source AA: position 0 (uppercase letter)
+            # Residue number: positions 1 to -1 (1-3 digits)
+            # Target AA: position -1 (uppercase letter)
             assert mutation[0].isalpha() and mutation[0].isupper(), f"First position must be uppercase AA: {mutation}"
             assert mutation[-1].isalpha() and mutation[-1].isupper(), f"Last position must be uppercase AA: {mutation}"
             assert mutation[1:-1].isdigit(), f"Middle must be residue number: {mutation}"
+            assert len(mutation) >= 3, f"Mutation must be at least 3 chars (min: X1Y): {mutation}"
 
     def test_invalid_mutation_format_raises_error(self):
         """Test that invalid mutation formats are rejected"""
@@ -126,19 +129,22 @@ class TestQresFEPValidation:
             assert chain in valid_chains, "Chain should be single letter"
 
     def test_residue_number_boundaries(self):
-        """Test residue numbers at boundaries"""
+        """Test residue numbers at boundaries (1-999 range)"""
         valid_mutations = [
-            "M1K",       # Start of chain
-            "A5000V",    # Large residue number
-            "G999S",     # Three-digit
-            "P100A",     # Three-digit mid-range
+            "M1K",       # Single-digit: start of chain
+            "A2V",       # Single-digit: valid
+            "P9G",       # Single-digit: boundary
+            "G10S",      # Double-digit: start
+            "L99I",      # Double-digit: max two-digit
+            "W100Y",     # Triple-digit: min three-digit
+            "A999V",     # Triple-digit: max reasonable residue
         ]
         
         for mutation in valid_mutations:
-            assert mutation[0] in self.STANDARD_AAS
-            assert mutation[-1] in self.STANDARD_AAS
+            assert mutation[0] in self.STANDARD_AAS, f"Source AA not standard: {mutation}"
+            assert mutation[-1] in self.STANDARD_AAS, f"Target AA not standard: {mutation}"
             res_num = int(mutation[1:-1])
-            assert res_num > 0, f"Residue number must be positive: {mutation}"
+            assert 1 <= res_num <= 9999, f"Residue number out of range: {mutation}"
 
 
 # ============================================================================
