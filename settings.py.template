@@ -1,0 +1,37 @@
+import os
+# Root directory of the setup FEP modules
+ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+# The directories to the input FF and run related input files are given here
+FF_DIR = os.path.join(ROOT_DIR, "FF")
+INPUT_DIR = os.path.join(ROOT_DIR, "INPUTS")
+
+# Dicionary of locations of Q executables
+# NOTE: Q_PATH should be the directory containing the Q binaries (qprep, qdyn, qfep, qcalc)
+# Examples:
+#   /usr/local/q/bin (for system-wide Q installation)
+#   /path/to/qligfep/Q/bin (for local Q in repository)
+Q_DIR = {'$CLUSTER_NAME': '$Q_PATH/',
+        }
+
+BIN = os.path.join(ROOT_DIR, "bin")
+
+# Schrodinger directory (optional for certain forcefields)
+SCHROD_DIR = '$SCHROD_DIR'
+
+# Default cluster to use when not specified
+DEFAULT = '$CLUSTER_NAME'
+
+# CLUSTER INPUTS. To add your own cluster, use the same input as below.
+# Each cluster needs an entry in Q_DIR with the path to its Q binaries.
+$CLUSTER_NAME = {'NODES'        : '1',
+       'NTASKS'       : '8',
+       'TIME'         : '1-00:00:00',  # d-hh:mm:ss
+       'PARTITION'    : '',
+       'EXCLUDE'      : '',
+       'MODULES'      : '\n',
+       'QDYN'         : 'qdyn=' + Q_DIR['$CLUSTER_NAME'] + 'qdyn',
+       'QPREP'        : Q_DIR['$CLUSTER_NAME'] + 'qprep',
+       'QFEP'         : Q_DIR['$CLUSTER_NAME'] + 'qfep',
+       'QCALC'        : Q_DIR['$CLUSTER_NAME'] + 'qcalc'
+      }
