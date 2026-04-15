@@ -252,8 +252,157 @@ class TestLambdaSpacing:
         assert pytest.approx(first_third_gap, rel=0.2) == last_third_gap
 
 
+class TestQresFEPCore:
+    """Core unit tests for QresFEP workflow utilities"""
+
+    def test_io_read_prm_merges_sections(self, temp_output_dir):
+        """Test that IO.read_prm correctly parses minimal prm files"""
+        prm_file = Path(temp_output_dir) / 'test.prm'
+        prm_file.write_text(
+            '[options]\n'
+            'option1 1\n'
+            '[atom_types]\n'
+            'H    1.008\n'
+            '[bonds]\n'
+            'H O 0.96 330.0\n'
+            '[angles]\n'
+            'H O H 104.5 35.0\n'
+            '[torsions]\n'
+            'H O H 0.0 0.0 0.0 0 0 0\n'
+            '[impropers]\n'
+            'C N CA H 0.0 0.0 0.0 0 0 0\n'
+        )
+
+        from IO import read_prm
+        result = read_prm([str(prm_file)])
+
+        assert isinstance(result, dict)
+        assert '[options]' in result
+        assert '[atom_types]' in result
+        assert '[bonds]' in result
+        assert '[angles]' in result
+        assert '[torsions]' in result
+        assert '[impropers]' in result
+        assert any('option1' in line for line in result['[options]'])
+        assert any('H    1.008' in line for line in result['[atom_types]'])
+        assert any('H O 0.96 330.0' in line for line in result['[bonds]'])
+
+    def test_io_get_lambdas_returns_monotonic_values(self):
+        """Test that IO.get_lambdas returns monotonic lambda sequences"""
+        from IO import get_lambdas
+
+        linear_lambdas = get_lambdas(11, 'linear')
+        assert linear_lambdas[0] == '1.000'
+        assert linear_lambdas[-1] == '0.000'
+        assert all(float(linear_lambdas[i]) >= float(linear_lambdas[i+1]) for i in range(len(linear_lambdas)-1))
+
+        exp_lambdas = get_lambdas(11, 'exponential')
+        assert exp_lambdas[0] == '1.000'
+        assert exp_lambdas[-1] == '0.000'
+        assert all(float(exp_lambdas[i]) >= float(exp_lambdas[i+1]) for i in range(len(exp_lambdas)-1))
+
+    def test_run_read_input_and_readpdb(self, temp_output_dir):
+        """Test that Run.read_input and Run.readpdb can parse minimal prep files"""
+        cwd = Path(temp_output_dir)
+        cwd.mkdir(exist_ok=True)
+        old_cwd = Path.cwd()
+        os.chdir(cwd)
+        try:
+            # Create required minimal files for Run initialization
+            (cwd / 'protein.pdb').write_text(
+                'ATOM      1  N   LEU A  39      10.000  11.000  12.000  1.00 20.00           N  \n'
+                'ATOM      2  CA  LEU A  39      11.000  12.000  13.000  1.00 20.00           C  \n'
+                'ATOM      3  C   LEU A  39      12.000  13.000  14.000  1.00 20.00           C  \n'
+                'ATOM      4  O   LEU A  39      12.500  13.500  15.000  1.00 20.00           O  \n'
+            )
+            (cwd / 'water.pdb').write_text('')
+            (cwd / 'protPREP.log').write_text(
+                'INFO center: 10.0 11.0 12.0\n'
+                'INFO radius: 5\n'
+                'INFO charge is 5\n'
+                'Q_CYS1\n'
+                '7 9\n'
+                '-\n'
+                'pdbfile 39 A\n'
+            )
+
+            run = Run(
+                mutation='LEU39ALA',
+                mutchain='A',
+                system='protein',
+                shell_rest=0.0,
+                tripeptide='A',
+                dual=False,
+                cofactors=None,
+                forcefield='OPLSAAM',
+                windows='50',
+                sampling='linear',
+                start='1',
+                timestep='2fs',
+                temperature='298',
+                replicates='1',
+                cluster=s.DEFAULT,
+                preplocation=s.DEFAULT,
+            )
+
+            run.read_input()
+            assert run.sphere == [10.0, 11.0, 12.0]
+            assert run.radius == '5'
+            assert run.charge == 5
+            assert run.CYX == [['7', '9']]
+            assert run.PDB2Q['A']['39'] == 'pdbfile'
+
+            run.readpdb()
+            assert 39 in run.PDB
+            assert run.systemsize >= 1
+        finally:
+            os.chdir(old_cwd)
+
+    def test_run_settimestep_assigns_correct_replacements(self, temp_output_dir):
+        """Test that settimestep populates replacement variables correctly"""
+        cwd = Path(temp_output_dir)
+        cwd.mkdir(exist_ok=True)
+        (cwd / 'protein.pdb').write_text('')
+        (cwd / 'water.pdb').write_text('')
+        (cwd / 'protPREP.log').write_text('')
+
+        old_cwd = Path.cwd()
+        os.chdir(cwd)
+        try:
+            run = Run(
+                mutation='LEU39ALA',
+                mutchain='A',
+                system='protein',
+                shell_rest=0.0,
+                tripeptide='A',
+                dual=False,
+                cofactors=None,
+                forcefield='OPLSAAM',
+                windows='50',
+                sampling='linear',
+                start='1',
+                timestep='1fs',
+                temperature='298',
+                replicates='1',
+                cluster=s.DEFAULT,
+                preplocation=s.DEFAULT,
+            )
+            run.settimestep()
+            assert run.replacements['NSTEPS1'] == '500000'
+            assert run.replacements['NSTEPS2'] == '10000'
+            assert run.replacements['STEPSIZE'] == '1.0'
+            assert run.replacements['STEPTOGGLE'] == 'off'
+
+            run.timestep = '2fs'
+            run.settimestep()
+            assert run.replacements['NSTEPS1'] == '1250000'
+            assert run.replacements['STEPSIZE'] == '2.0'
+            assert run.replacements['STEPTOGGLE'] == 'on'
+        finally:
+            os.chdir(old_cwd)
+
+
 class TestFunctionUtilities:
-    """Tests for utility functions (TIER 2)"""
 
     def test_center_of_geometry(self):
         """Test center of geometry calculation"""

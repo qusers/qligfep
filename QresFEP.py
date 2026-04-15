@@ -23,7 +23,7 @@ class Run(object):
                  dual, cofactors, forcefield, windows, sampling, start, timestep, 
                  temperature, replicates, cluster, preplocation, *args, **kwargs):
         
-        self.mutation = re.split('(\d+)', mutation)
+        self.mutation = re.split(r'(\d+)', mutation)
         self.chain = mutchain
         self.system = system
         self.shell_rest = shell_rest
@@ -47,6 +47,8 @@ class Run(object):
         self.systemsize = 0
         self.FEPlist = []
         self.nonAA = False
+        self.FromGly = False
+        self.ToGly = False
 
         # Check whether all required files are there:
         required = ['protein.pdb', 'water.pdb', 'protPREP.log']
@@ -141,33 +143,43 @@ class Run(object):
         with open('protPREP.log') as infile:
             for line in infile:
                 line = line.split()
+                if not line:
+                    continue
+
                 if len(line) > 1:
                     if line[1] == 'center:':
                         self.sphere = [float(coord) for coord in line[2:]]
-                        
+
                     if line[1] == 'radius:':
                         self.radius = line[2]
                         self.replacements['SPHERE'] = self.radius
-                    
-                    if line[1] == 'charge':
-                        self.charge = int(line[4])
-                        
-                    if line[0] == 'Q_CYS1':
-                        block = 1
-                        
-                    if line[0] == 'pdbfile':
-                        block = 2
-                        
-                    if line[0][0] == '-':
-                        block = 0
-                        
-                    if block == 1:
-                        if line[0].isdigit():
-                            self.CYX.append([line[0], line[1]])
 
-                    if block == 2 and (len(line) == 3 or len(line) == 4):
-                        chain = ' ' if len(line) == 3 else line[2]
-                        self.PDB2Q.setdefault(chain, {})[line[1]] = line[0]
+                    if line[1] == 'charge':
+                        # protPREP.log charge line may be formatted as:
+                        # INFO charge is 5
+                        # INFO charge = 5
+                        # parse the final token as the charge value
+                        try:
+                            self.charge = int(line[-1])
+                        except (ValueError, IndexError):
+                            raise ValueError(f"Unable to parse charge from protPREP.log line: {' '.join(line)}")
+
+                if line[0] == 'Q_CYS1':
+                    block = 1
+
+                if line[0] == 'pdbfile':
+                    block = 2
+
+                if line[0][0] == '-':
+                    block = 0
+
+                if block == 1 and len(line) > 1:
+                    if line[0].isdigit():
+                        self.CYX.append([line[0], line[1]])
+
+                if block == 2 and len(line) >= 3:
+                    chain = line[2] if len(line) >= 3 else ' '
+                    self.PDB2Q.setdefault(chain, {})[line[1]] = line[0]
 
     # Read protprep.py generated protein.pdb
     def readpdb(self):
