@@ -14,6 +14,7 @@ Run only unit tests: pytest tests/test_qresfep.py -v -m "not integration"
 import pytest
 import os
 import sys
+import subprocess
 from pathlib import Path
 import tempfile
 import shutil
@@ -22,6 +23,7 @@ import numpy as np
 # Add parent directory to path to import QresFEP
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+import settings as s
 from QresFEP import Run
 
 
@@ -42,6 +44,15 @@ def t4l_pdb(tutorial_data_path):
     if not pdb_file.exists():
         pytest.skip(f"Tutorial data not found: {pdb_file}")
     return str(pdb_file)
+
+
+@pytest.fixture
+def tutorial_example_path(tutorial_data_path):
+    """Path to the QresFEP example output set"""
+    example_path = tutorial_data_path / "FEP_example"
+    if not example_path.exists():
+        pytest.skip(f"Tutorial example data not found: {example_path}")
+    return example_path
 
 
 @pytest.fixture
@@ -295,201 +306,119 @@ class TestQresFEPIntegration:
     """Full integration tests for QresFEP pipeline (TIER 3)"""
 
     @pytest.mark.integration
-    def test_single_topology_a39v_setup(self, t4l_pdb, temp_output_dir):
-        """Test complete setup for single-topology A39V mutation"""
-        
+    def test_qresfep_cli_help(self):
+        """Test that QresFEP CLI help runs successfully"""
+        result = subprocess.run(
+            [sys.executable, str(Path(__file__).parent.parent / "QresFEP.py"), "-h"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert "Generate input files for running residue FEP" in result.stdout
+
+    @pytest.mark.integration
+    def test_checkFEP_template_exists(self, temp_output_dir):
+        """Test that a known FEP template is available for a valid mutation"""
+        cwd = Path(temp_output_dir)
+        cwd.mkdir(exist_ok=True)
+        for filename in ["protein.pdb", "water.pdb", "protPREP.log"]:
+            (cwd / filename).write_text("")
+
+        old_cwd = Path.cwd()
+        os.chdir(cwd)
         try:
             run = Run(
-                mutation="A39V",
-                mutation_chain="A",
-                system=t4l_pdb,
-                forcefield="OPLS2015",
-                topology="single",
-                lambdas=11,
-                output_dir=temp_output_dir,
+                mutation="LEU39ALA",
+                mutchain="A",
+                system="protein",
+                shell_rest=0.0,
+                tripeptide="A",
+                dual=False,
+                cofactors=None,
+                forcefield="OPLSAAM",
+                windows="50",
+                sampling="linear",
+                start="1",
+                timestep="2fs",
+                temperature="298",
+                replicates="1",
+                cluster=s.DEFAULT,
+                preplocation=s.DEFAULT,
             )
-            
-            # Verify Run object was created without errors
-            assert run is not None
-            assert hasattr(run, "mutation")
-            
-            # Verify output directory structure
-            output_path = Path(temp_output_dir)
-            assert output_path.exists(), "Output directory should be created"
-            
-        except Exception as e:
-            pytest.skip(f"Integration test requires full QresFEP setup: {e}")
+            run.checkFEP()
+        finally:
+            os.chdir(old_cwd)
+
+        assert run.FEPdir is not None
+        assert "OPLSAAM" in str(run.FEPdir)
+        assert any(fep.endswith(".fep") for fep in run.FEPlist)
 
     @pytest.mark.integration
-    def test_dual_topology_a39v_setup(self, t4l_pdb, temp_output_dir):
-        """Test complete setup for dual-topology A39V mutation"""
-        
+    def test_create_environment_copies_forcefield(self, temp_output_dir):
+        """Test that QresFEP can create its working environment and copy forcefield files"""
+        cwd = Path(temp_output_dir)
+        cwd.mkdir(exist_ok=True)
+        for filename in ["protein.pdb", "water.pdb", "protPREP.log"]:
+            (cwd / filename).write_text("")
+
+        old_cwd = Path.cwd()
+        os.chdir(cwd)
         try:
             run = Run(
-                mutation="A39V",
-                mutation_chain="A",
-                system=t4l_pdb,
-                forcefield="OPLS2015",
-                topology="dual",
-                lambdas=11,
-                output_dir=temp_output_dir,
+                mutation="LEU39ALA",
+                mutchain="A",
+                system="protein",
+                shell_rest=0.0,
+                tripeptide="A",
+                dual=False,
+                cofactors=None,
+                forcefield="OPLSAAM",
+                windows="50",
+                sampling="linear",
+                start="1",
+                timestep="2fs",
+                temperature="298",
+                replicates="1",
+                cluster=s.DEFAULT,
+                preplocation=s.DEFAULT,
             )
-            
-            assert run is not None
-            
-            # Dual topology should generate library files
-            output_path = Path(temp_output_dir)
-            lib_files = list(output_path.glob("**/*.lib"))
-            # May or may not exist depending on implementation
-            # assert len(lib_files) > 0, "Dual topology should generate .lib files"
-            
-        except Exception as e:
-            pytest.skip(f"Integration test requires full QresFEP setup: {e}")
+            run.checkFEP()
+            run.create_environment()
+
+            output_dir = cwd / f"FEP_{run.mutation[0]}{run.mutation[1]}{run.mutation[2]}"
+            assert output_dir.exists()
+            assert (output_dir / "inputfiles" / "OPLSAAM.lib").exists()
+        finally:
+            os.chdir(old_cwd)
 
     @pytest.mark.integration
-    def test_multiple_mutations_serial(self, t4l_pdb, temp_output_dir):
-        """Test setup for multiple mutations (simulating batch processing)"""
-        
-        mutations = [
-            ("A39V", "A"),
-            ("G25S", "A"),
-            ("L153I", "A"),
-        ]
-        
-        successful_mutations = 0
-        
-        for mutation, chain in mutations:
-            try:
-                run = Run(
-                    mutation=mutation,
-                    mutation_chain=chain,
-                    system=t4l_pdb,
-                    forcefield="OPLS2015",
-                    topology="single",
-                    lambdas=11,
-                    output_dir=str(Path(temp_output_dir) / mutation),
-                )
-                assert run is not None
-                successful_mutations += 1
-                
-            except Exception as e:
-                # Skip silently for integration tests
-                pass
-        
-        # At least some mutations should succeed
-        if successful_mutations == 0:
-            pytest.skip("Full QresFEP pipeline not available for integration test")
+    def test_tutorial_fep_example_structure(self, tutorial_example_path):
+        """Test that the QresFEP tutorial example output contains expected files"""
+        example_files = {
+            "inputfiles/qprep.inp",
+            "inputfiles/qfep.inp",
+            "inputfiles/FEP1.fep",
+            "inputfiles/FEP2.fep",
+            "inputfiles/OPLSAAM.lib",
+            "inputfiles/dualtop.top",
+            "FEP_submit.sh",
+        }
+        for relpath in example_files:
+            assert (tutorial_example_path / relpath).exists(), f"Missing tutorial example file: {relpath}"
+
+        # Check that the tutorial example uses the correct forcefield in qprep input
+        qprep_text = (tutorial_example_path / "inputfiles" / "qprep.inp").read_text()
+        assert "OPLSAAM" in qprep_text
+        assert "qfep" in (tutorial_example_path / "inputfiles" / "runTETRA.sh").read_text()
 
     @pytest.mark.integration
-    def test_different_forcefields(self, t4l_pdb, temp_output_dir):
-        """Test setup with different forcefield options"""
-        
-        forcefields = ["OPLS2015", "AMBER14sb", "CHARMM36"]
-        
-        successful_ffs = 0
-        
-        for ff in forcefields:
-            try:
-                run = Run(
-                    mutation="A39V",
-                    mutation_chain="A",
-                    system=t4l_pdb,
-                    forcefield=ff,
-                    topology="single",
-                    lambdas=11,
-                    output_dir=str(Path(temp_output_dir) / ff),
-                )
-                assert run is not None
-                successful_ffs += 1
-                
-            except Exception as e:
-                # Skip silently for integration tests
-                pass
-        
-        if successful_ffs == 0:
-            pytest.skip("Full QresFEP pipeline not available for integration test")
-
-    @pytest.mark.integration
-    def test_lambda_sampling_methods(self, t4l_pdb, temp_output_dir):
-        """Test FEP setup with different lambda sampling methods"""
-        
-        sampling_methods = ["linear", "sigmoid", "sigmoidal", "exponential"]
-        
-        for sampling in sampling_methods:
-            try:
-                run = Run(
-                    mutation="A39V",
-                    mutation_chain="A",
-                    system=t4l_pdb,
-                    forcefield="OPLS2015",
-                    topology="single",
-                    sampling=sampling,
-                    lambdas=11,
-                    output_dir=str(Path(temp_output_dir) / sampling),
-                )
-                assert run is not None
-                
-            except Exception as e:
-                pytest.skip(f"Lambda sampling method '{sampling}' not available: {e}")
-
-    @pytest.mark.integration
-    def test_temperature_parameters(self, t4l_pdb, temp_output_dir):
-        """Test FEP setup with different temperature settings"""
-        
-        temperatures = [298, 310, 323]  # Biological temps
-        
-        for temp in temperatures:
-            try:
-                run = Run(
-                    mutation="A39V",
-                    mutation_chain="A",
-                    system=t4l_pdb,
-                    forcefield="OPLS2015",
-                    topology="single",
-                    temperature=temp,
-                    lambdas=11,
-                    output_dir=str(Path(temp_output_dir) / f"T{temp}"),
-                )
-                assert run is not None
-                
-            except Exception as e:
-                pytest.skip(f"Temperature parameter not fully implemented: {e}")
-
-    @pytest.mark.integration
-    def test_lambda_window_counts(self, t4l_pdb, temp_output_dir):
-        """Test FEP setup with different numbers of lambda windows"""
-        # This test is skipped because Run() requires many parameters beyond just lambdas
-        # Integration tests would require full Q setup, protPREP.log, protein.pdb, water.pdb files
-        pytest.skip("Full QresFEP pipeline not available for basic integration test")
-
-    @pytest.mark.integration
-    def test_output_file_structure(self, t4l_pdb, temp_output_dir):
-        """Test that required output files are generated"""
-        
-        try:
-            run = Run(
-                mutation="A39V",
-                mutation_chain="A",
-                system=t4l_pdb,
-                forcefield="OPLS2015",
-                topology="single",
-                lambdas=11,
-                output_dir=temp_output_dir,
-            )
-            
-            output_path = Path(temp_output_dir)
-            
-            # Check for expected file types
-            expected_extensions = [".inp", ".pdb", ".sh"]  # Q input, PDB, submission script
-            
-            for ext in expected_extensions:
-                files = list(output_path.rglob(f"*{ext}"))
-                # At least one file of each type should be generated
-                # (commented out if not fully implemented)
-                # assert len(files) > 0, f"Should generate at least one {ext} file"
-            
-        except Exception as e:
-            pytest.skip(f"Output file generation not fully implemented: {e}")
+    def test_tutorial_fep_example_fep_files(self, tutorial_example_path):
+        """Test that tutorial example FEP input files are present and non-empty"""
+        for fname in ["inputfiles/FEP1.fep", "inputfiles/FEP2.fep"]:
+            path = tutorial_example_path / fname
+            content = path.read_text()
+            assert "FEP" in content or "fep" in content.lower()
+            assert len(content) > 100
 
 
 # ============================================================================
