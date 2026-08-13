@@ -819,14 +819,14 @@ class Run(object):
     # Define the time step and runtime for final eq step and md steps
     def settimestep(self):
         if self.timestep == '1fs':
-            self.replacements['NSTEPS1'] = '500000'
+            self.replacements['NSTEPS1'] = '100000'
             self.replacements['NSTEPS2'] = '10000'
             self.replacements['STEPSIZE'] = '1.0'
             self.replacements['STEPTOGGLE'] = 'off'
             
         if self.timestep == '2fs':
-            self.replacements['NSTEPS1'] = '1250000'
-            self.replacements['NSTEPS2'] = '10000'
+            self.replacements['NSTEPS1'] = '50000'
+            self.replacements['NSTEPS2'] = '5000'
             self.replacements['STEPSIZE'] = '2.0'
             self.replacements['STEPTOGGLE'] = 'on' 
                         
@@ -1004,7 +1004,7 @@ class Run(object):
                 fep_out.write('\n[torsion_types]\n\n[change_torsions]\n')
                 wt, mut = self.mutation[0], self.mutation[2] # Define wild-type and mutant residues
                 for resi in [wt, mut]: # Define relevant side-chain atoms for each amino acid (templates)
-                    if resi in ['ASP', 'GLU', 'HID', 'HIE', 'ARG', 'LYS', 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
+                    if resi in ['ASP', 'ASH', 'GLU', 'GLH', 'HID', 'HIE', 'HIP', 'ARG', 'ARN', 'LYS', 'LYN' 'PHE', 'LEU', 'MET', 'TRP', 'TYR', 'ASN', 'GLN']:
                         atoms = ['HB2', 'HB3', 'CG']
                     elif resi in ['ILE', 'VAL', 'THR']:
                         atoms = ['HB', 'CG2']
