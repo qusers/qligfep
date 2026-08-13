@@ -6,6 +6,7 @@ export PATH=${QLIGFEP}:${PATH}
 
 export PYTHONPATH=${QLIGFEP}:${PYTHONPATH}
 
+#TODO check if default settings.py are already set, if not run rest of the script, else don't
 
 echo "Please enter the absolute path to your Q directory (e.g., /home/user/software/q6):"
 read Q_PATH
